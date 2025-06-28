@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taska Elite - Explore Professional Talent</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/overview.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background: #fff;
+            color: #333;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            padding-bottom: 60px;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-menu a {
+            color: #2c3e50;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-menu a:hover, .nav-menu a.active {
+            color: #0000ff;
+        }
+
+        .hamburger {
+            display: none;
+        }
+
+        .dark-mode-toggle {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .dashboard-content {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .dashboard-section h1 {
+            font-size: 2rem;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .dashboard-section p {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        .filter-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            background: #fafafa;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid #eee;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-group label {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .custom-input, .custom-dropdown {
+            width: 100%;
+            padding: 0.85rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            background: #fff;
+            color: #333;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .custom-input:focus, .custom-dropdown:focus {
+            outline: none;
+            border-color: #888;
+            box-shadow: 0 0 5px rgba(136, 136, 136, 0.2);
+        }
+
+        .apply-filter-btn {
+            padding: 0.85rem 2rem;
+            background: #555;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: background 0.3s ease, transform 0.1s ease;
+            align-self: flex-end;
+        }
+
+        .apply-filter-btn:hover {
+            background: #444;
+            transform: translateY(-1px);
+        }
+
+        .apply-filter-btn:active {
+            transform: translateY(1px);
+        }
+
+        /* Loading Animation */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1001;
+        }
+
+        .loader {
+            width: 60px;
+            height: 60px;
+            border: 5px solid #3498db;
+            border-top: 5px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            position: relative;
+        }
+
+        .loader::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 5px solid #2ecc71;
+            border-top: 5px solid transparent;
+            border-radius: 50%;
+            animation: spin 1.5s linear infinite reverse;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Updated Professional Card Styles */
+        .professionals-list {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 cards per row */
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .professional-card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .professional-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .professional-info h3 {
+            font-size: 1.4rem;
+            color: #2c3e50;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .professional-info p {
+            font-size: 1rem;
+            color: #666;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .professional-info p strong {
+            color: #2c3e50;
+        }
+
+        .professional-actions {
+            margin-top: 1rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .connect-btn {
+            padding: 0.6rem 1.2rem;
+            background: #3498db; /* Blue for Connect */
+            color: #fff;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        .connect-btn.sent {
+            background: #2ecc71; /* Green for Connection Sent */
+        }
+
+        .connect-btn.approve {
+            background: #f1c40f; /* Yellow for Approve Request */
+        }
+
+        .connect-btn.connected {
+            background: #95a5a6; /* Grey for Connected */
+            cursor: default;
+        }
+
+        .connect-btn:hover:not(.sent):not(.approve):not(.connected) {
+            background: #2980b9;
+            transform: scale(1.05);
+        }
+
+        .connect-btn.sent:hover {
+            background: #27ae60;
+            transform: scale(1.05);
+        }
+
+        .connect-btn.approve:hover {
+            background: #e1b107;
+            transform: scale(1.05);
+        }
+
+        .connect-btn.connected:hover {
+            background: #95a5a6; /* No hover effect for connected */
+            transform: none;
+        }
+
+        .view-profile {
+            color: #3498db;
+            cursor: pointer;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .view-profile:hover {
+            color: #2980b9;
+        }
+
+        /* Pagination Styles */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .pagination-btn {
+            width: 40px;
+            height: 40px;
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 50%;
+            color: #2c3e50;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
+        }
+
+        .pagination-btn:hover {
+            background: #3498db;
+            color: #fff;
+            transform: scale(1.1);
+        }
+
+        .pagination-btn:disabled {
+            background: #f0f0f0;
+            color: #999;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .pagination-number {
+            width: 40px;
+            height: 40px;
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2c3e50;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
+        }
+
+        .pagination-number.active {
+            background: #3498db;
+            color: #fff;
+            border-color: #3498db;
+        }
+
+        .pagination-number:hover:not(.active) {
+            background: #ecf0f1;
+            transform: scale(1.1);
+        }
+
+        /* Updated Profile Popup Styles */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 999;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        .profile-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.95);
+            background: #fff;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            width: 90%;
+            max-width: 450px;
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+
+        .profile-popup.active {
+            display: block;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .profile-popup h2 {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin: 0 0 1.5rem 0;
+            text-align: center;
+        }
+
+        .profile-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .profile-detail {
+            background: #f9f9f9;
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            color: #666;
+        }
+
+        .profile-detail strong {
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        .profile-popup .close-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .profile-popup .close-btn:hover {
+            color: #666;
+        }
+
+        footer {
+            background: #fff;
+            padding: 1rem;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            color: #333;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+            border-top: 1px solid #e0e0e0;
+        }
+
+        footer a {
+            color: #666;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            color: #444;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .navbar .nav-menu {
+                display: none;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                right: 0;
+                background: #ffffff;
+                flex-direction: column;
+                padding: 1rem;
+                border-top: 1px solid #e0e0e0;
+            }
+            .navbar .nav-menu.active {
+                display: flex;
+            }
+            .navbar .hamburger {
+                display: block;
+            }
+            .contact { display: block; }
+            .contact-avatar { display: none; }
+            .chat-area.active { 
+                position: fixed; 
+                top: 60px; 
+                left: 0; 
+                width: 100%; 
+                height: calc(100% - 60px); 
+                z-index: 999; 
+                border-radius: 0; 
+            }
+            .chat-header .back-btn { display: block; }
+            .chat-messages { max-height: calc(100vh - 200px); }
+        }
+        @media (min-width: 769px) {
+            .chat-interface { flex-direction: row; gap: 2rem; padding: 1.8rem; }
+            .sidebar { flex: 1; max-width: 320px; }
+            .chat-area { flex: 2; }
+            .contact { display: flex; align-items: center; }
+            .contact-avatar { 
+                display: flex; 
+                width: 40px; 
+                height: 40px; 
+                border-radius: 50%; 
+                background: #e5e5e5; 
+                color: #333333; 
+                align-items: center; 
+                justify-content: center; 
+                font-size: 1.2rem; 
+                margin-right: 1rem; 
+            }
+        }
+    </style>
+</head>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const hamburger = document.querySelector('.navbar .hamburger');
+        const navMenu = document.querySelector('.navbar .nav-menu');
+        hamburger.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+    });
+</script>
+<body>
+    <nav class="navbar">
+        <div class="logo">Taska Elite</div>
+        <ul class="nav-menu">
+            <li><a href="overview.html">Overview</a></li>
+            <li><a href="connections.html">Connections</a></li>
+            <li><a href="explore.html" class="active">Explore</a></li>
+            <li><a href="tasks.html">Tasks</a></li>
+            <li><a href="profile.html">Profile</a></li>
+            <li><a href="../index.html">Logout</a></li>
+        </ul>
+        <div class="hamburger">☰</div>
+    </nav>
+
+    <main class="dashboard-content">
+        <br><br><br>
+        <section class="dashboard-section">
+            <h1>Explore Professional Talent</h1>
+            <p>Connect with industry professionals to gain insights and opportunities.</p>
+
+            <div class="filter-options">
+                <div class="filter-group">
+                    <label for="search-input">Search by Name</label>
+                    <input type="text" id="search-input" class="custom-input" placeholder="e.g., Priya">
+                </div>
+                <div class="filter-group">
+                    <label for="company">Company</label>
+                    <select id="company" class="custom-dropdown">
+                        <option value="all">All Companies</option>
+                        <option value="google">Google</option>
+                        <option value="microsoft">Microsoft</option>
+                        <option value="amazon">Amazon</option>
+                        <option value="tcs">TCS</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="profession">Profession</label>
+                    <select id="profession" class="custom-dropdown">
+                        <option value="all">All Professions</option>
+                        <option value="software engineer">Software Engineer</option>
+                        <option value="data scientist">Data Scientist</option>
+                        <option value="product manager">Product Manager</option>
+                        <option value="consultant">Consultant</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <button class="apply-filter-btn" onclick="applyFilters(1)">Search</button>
+                </div>
+            </div>
+
+            <div class="loading-overlay" id="loadingOverlay">
+                <div class="loader"></div>
+            </div>
+            <div class="professionals-list" id="professionals-list"></div>
+            <div class="pagination" id="pagination"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2025 Taska Elite. All rights reserved. | <a href="#" class="privacy-policy">Privacy Policy</a></p>
+    </footer>
+
+    <!-- Profile Popup -->
+    <div class="overlay" id="overlay"></div>
+    <div class="profile-popup" id="profilePopup">
+        <button class="close-btn" onclick="closeProfilePopup()">×</button>
+        <div id="profileContent"></div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+        import { getDatabase, ref, onValue, push, get, remove, set } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDZIDlEtaNRxODoFhRw0xF2yYFBqqBexqo",
+            authDomain: "taska-45011.firebaseapp.com",
+            databaseURL: "https://taska-45011-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "taska-45011",
+            storageBucket: "taska-45011.firebasestorage.app",
+            messagingSenderId: "205487498813",
+            appId: "1:205487498813:web:0de2c9eab567482781ec54"
+        };
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const userId = localStorage.getItem('userId');
+        let professionalsData = [];
+        const sentRequests = new Map();
+        const receivedRequests = new Map();
+        const connectedProfiles = new Set();
+        const itemsPerPage = 9; // 3 cards per row, 3 rows per page
+        let isInitialLoad = true;
+
+        if (!userId) {
+            setTimeout(() => {
+                alert("Please log in or sign up first.");
+                window.location.href = '../login.html';
+            }, 1000);
+        }
+
+        const professionalsList = document.getElementById('professionals-list');
+        const pagination = document.getElementById('pagination');
+        const professionalsRef = ref(db, 'professionalslist');
+        const profilePopup = document.getElementById('profilePopup');
+        const profileContent = document.getElementById('profileContent');
+        const overlay = document.getElementById('overlay');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+
+        // Audio for connection request sound (LinkedIn-like)
+        const connectSound = new Audio('../assets/ding.mp3'); // Placeholder; replace with a suitable sound
+
+        async function checkConnectionStatus(professionalId) {
+            const requestsRef = ref(db, 'connection_requests');
+            const snapshot = await get(requestsRef);
+            if (snapshot.exists()) {
+                snapshot.forEach((childSnapshot) => {
+                    const request = childSnapshot.val();
+                    const requestId = childSnapshot.key;
+                    if (request.from === userId && request.to === professionalId) {
+                        if (request.status === 'pending') {
+                            sentRequests.set(professionalId, requestId);
+                        } else if (request.status === 'accepted') {
+                            connectedProfiles.add(professionalId);
+                        }
+                    } else if (request.to === userId && request.from === professionalId) {
+                        if (request.status === 'pending') {
+                            receivedRequests.set(professionalId, requestId);
+                        } else if (request.status === 'accepted') {
+                            connectedProfiles.add(professionalId);
+                        }
+                    }
+                });
+            }
+        }
+
+        onValue(professionalsRef, (snapshot) => {
+            professionalsData = [];
+            snapshot.forEach((childSnapshot) => {
+                const professional = childSnapshot.val();
+                professional.id = childSnapshot.key;
+                professionalsData.push(professional);
+            });
+            applyFilters(1);
+            if (isInitialLoad) {
+                loadingOverlay.style.display = 'none';
+                isInitialLoad = false;
+            }
+        });
+
+        window.applyFilters = async (page = 1) => {
+            connectedProfiles.clear();
+            sentRequests.clear();
+            receivedRequests.clear();
+            for (const professional of professionalsData) {
+                await checkConnectionStatus(professional.id);
+            }
+
+            const search = document.getElementById('search-input').value.toLowerCase();
+            const company = document.getElementById('company').value;
+            const profession = document.getElementById('profession').value;
+
+            const filteredProfessionals = professionalsData.filter(professional => {
+                const matchesSearch = professional.name.toLowerCase().includes(search);
+                const matchesCompany = company === 'all' || (professional.company && professional.company.toLowerCase() === company.toLowerCase());
+                const matchesProfession = profession === 'all' || (professional.position && professional.position.toLowerCase() === profession.toLowerCase());
+                const notConnected = !connectedProfiles.has(professional.id); // Exclude connected users
+                return matchesSearch && matchesCompany && matchesProfession && notConnected;
+            });
+
+            const totalPages = Math.ceil(filteredProfessionals.length / itemsPerPage);
+            const startIndex = (page - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const paginatedProfessionals = filteredProfessionals.slice(startIndex, endIndex);
+
+            professionalsList.innerHTML = paginatedProfessionals.map(professional => {
+                const isSent = sentRequests.has(professional.id);
+                const isReceived = receivedRequests.has(professional.id);
+                let buttonClass = '';
+                let buttonText = 'Connect';
+                if (isSent) {
+                    buttonClass = 'sent';
+                    buttonText = 'Connection Sent';
+                } else if (isReceived) {
+                    buttonClass = 'approve';
+                    buttonText = 'Approve Request';
+                }
+                return `
+                    <div class="professional-card">
+                        <div class="professional-info">
+                            <h3>${professional.name || 'Unnamed'}</h3>
+                            <p>${professional.name || 'Unnamed'} works as a <strong>${professional.jobRole || 'Not set'}</strong> at <strong>${professional.company || 'Not set'}</strong></p>
+                        </div>
+                        <div class="professional-actions">
+                            <button class="connect-btn ${buttonClass}" 
+                                onclick="toggleConnectionRequest('${professional.id}', this)">
+                                ${buttonText}
+                            </button>
+                            <span class="view-profile" onclick="showProfile('${professional.id}')">View Profile</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            updatePagination(page, totalPages);
+        };
+
+        function updatePagination(currentPage, totalPages) {
+            pagination.innerHTML = `
+                <button class="pagination-btn" onclick="applyFilters(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>‹</button>
+                ${Array.from({ length: totalPages }, (_, i) => `
+                    <span class="pagination-number ${currentPage === i + 1 ? 'active' : ''}" 
+                        onclick="applyFilters(${i + 1})">${i + 1}</span>
+                `).join('')}
+                <button class="pagination-btn" onclick="applyFilters(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>›</button>
+            `;
+        }
+
+        window.toggleConnectionRequest = async (professionalId, button) => {
+            if (sentRequests.has(professionalId)) {
+                const requestId = sentRequests.get(professionalId);
+                await remove(ref(db, `connection_requests/${requestId}`));
+                sentRequests.delete(professionalId);
+                button.classList.remove('sent');
+                button.textContent = 'Connect';
+                alert('Connection request removed!');
+            } else if (receivedRequests.has(professionalId)) {
+                const requestId = receivedRequests.get(professionalId);
+                try {
+                    await Promise.all([
+                        set(ref(db, `studentslist/${userId}/connections/${professionalId}`), true),
+                        set(ref(db, `professionalslist/${professionalId}/connections/${userId}`), true),
+                        remove(ref(db, `connection_requests/${requestId}`))
+                    ]);
+                    receivedRequests.delete(professionalId);
+                    connectedProfiles.add(professionalId);
+                    button.classList.remove('approve');
+                    button.classList.add('connected');
+                    button.textContent = 'Connected';
+                    alert('Connection request approved!');
+                    connectSound.play(); // Play sound on approval
+                } catch (error) {
+                    alert('Failed to approve request: ' + error.message);
+                }
+            } else {
+                const requestData = {
+                    from: userId,
+                    to: professionalId,
+                    status: 'pending',
+                    timestamp: new Date().toISOString()
+                };
+                const newRequestRef = await push(ref(db, 'connection_requests'), requestData);
+                sentRequests.set(professionalId, newRequestRef.key);
+                button.classList.add('sent');
+                button.textContent = 'Connection Sent';
+                alert('Connection request sent!');
+                connectSound.play(); // Play sound on send
+            }
+        };
+
+        window.showProfile = async (targetUserId) => {
+            try {
+                const professionalRef = ref(db, `professionalslist/${targetUserId}`);
+                const snapshot = await get(professionalRef);
+                
+                if (snapshot.exists()) {
+                    const profileData = snapshot.val();
+                    profileContent.innerHTML = `
+                        <h2>${profileData.name || 'Unnamed'}</h2>
+                        <div class="profile-details">
+                            <div class="profile-detail"><strong>Company:</strong> ${profileData.company || 'Not set'}</div>
+                            <div class="profile-detail"><strong>Position:</strong> ${profileData.jobRole || 'Not set'}</div>
+                            <div class="profile-detail"><strong>Email:</strong> ${profileData.email || 'Not set'}</div>
+                            <div class="profile-detail"><strong>Experience:</strong> ${profileData.experience || 'Not set'}</div>
+                            <div class="profile-detail"><strong>Bio:</strong> ${profileData.bio || 'Not set'}</div>
+                        </div>
+                    `;
+                    profilePopup.classList.add('active');
+                    overlay.classList.add('active');
+                } else {
+                    profileContent.innerHTML = `
+                        <h2>Profile Not Found</h2>
+                        <div class="profile-details">
+                            <div class="profile-detail">No data available for this professional.</div>
+                        </div>
+                    `;
+                    profilePopup.classList.add('active');
+                    overlay.classList.add('active');
+                }
+            } catch (error) {
+                console.error('Error fetching profile:', error);
+                profileContent.innerHTML = `
+                    <h2>Error</h2>
+                    <div class="profile-details">
+                        <div class="profile-detail">Failed to load profile: ${error.message}</div>
+                    </div>
+                `;
+                profilePopup.classList.add('active');
+                overlay.classList.add('active');
+            }
+        };
+
+        window.closeProfilePopup = () => {
+            profilePopup.classList.remove('active');
+            overlay.classList.remove('active');
+        };
+
+        overlay.addEventListener('click', closeProfilePopup);
+
+        applyFilters(1);
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'91fb5a8aac66ed86',t:'MTc0MTg2NzA0NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

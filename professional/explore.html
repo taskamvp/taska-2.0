@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taska Elite - Explore IIT Talent</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/overview.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background: #f4f5eb; min-height: 100vh; color: #6B7280; padding-bottom: 60px; }
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo { font-size: 1.5rem; font-weight: 600; color: #2c3e50; }
+        .nav-menu { display: flex; gap: 1.5rem; list-style: none; }
+        .nav-menu a { color: #2c3e50; text-decoration: none; font-weight: 500; }
+        .nav-menu a:hover, .nav-menu a.active { color: #0000ff; }
+        .hamburger { display: none; font-size: 1.5rem; cursor: pointer; }
+        .dashboard-content { padding: 2rem 1rem; max-width: 1200px; margin: 0 auto; }
+        .dashboard-section h1 { font-size: 2rem; color: #374151; margin-bottom: 0.5rem; }
+        .dashboard-section p { font-size: 1rem; margin-bottom: 1.5rem; }
+        .search-container {
+            background: linear-gradient(135deg, #ffffff 0%, #ffffff 100%);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .search-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(43, 108, 176, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .search-box {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: #ffffff;
+            padding: 0.5rem;
+            border-radius: 50px;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+        .search-box:hover,
+        .search-box:focus-within {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+        .search-icon {
+            color: #2B6CB0;
+            font-size: 1.4rem;
+            margin-left: 1rem;
+            transition: transform 0.3s ease;
+        }
+        .search-box:hover .search-icon {
+            transform: scale(1.1);
+        }
+        .search-input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 1rem 0.5rem;
+            font-size: 1.1rem;
+            color: #374151;
+            outline: none;
+            font-weight: 400;
+            border-radius: 50px;
+        }
+        .search-input::placeholder {
+            color: #9CA3AF;
+            font-style: italic;
+        }
+        .search-btn {
+            padding: 0.9rem 2rem;
+            background: linear-gradient(90deg, #2B6CB0 0%, #1E4A80 100%);
+            color: #FFFFFF;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .search-btn:hover {
+            background: linear-gradient(90deg, #2C5282 0%, #1A3A66 100%);
+            transform: scale(1.05);
+        }
+        .search-btn::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: rgba(255, 255, 255, 0.2);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .search-btn:hover::after {
+            opacity: 1;
+        }
+        .btn-text {
+            font-size: 1.1rem;
+        }
+        .btn-icon {
+            font-size: 1rem;
+            transition: transform 0.3s ease;
+        }
+        .search-btn:hover .btn-icon {
+            transform: translateX(4px);
+        }
+        .search-info {
+            margin-top: 1.5rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, #ffffff 0%, #f0f4f8 100%);
+            border-radius: 16px;
+            border: 1px solid rgba(43, 108, 176, 0.15);
+            text-align: center;
+            transition: opacity 0.3s ease, max-height 0.3s ease;
+            max-height: 600px;
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+        }
+        .search-info::before {
+            content: '';
+            position: absolute;
+            top: -20%;
+            left: -20%;
+            width: 140%;
+            height: 140%;
+            background: radial-gradient(circle, rgba(43, 108, 176, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: -1;
+        }
+        .search-info.hidden {
+            opacity: 0;
+            max-height: 0;
+            padding: 0;
+            margin-top: 0;
+        }
+        .search-info h3 {
+            font-size: 1.7rem;
+            font-weight: 600;
+            color: #1F2937;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #2B6CB0, #1E4A80);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .search-info p {
+            font-size: 1.0 rem;
+            color: #4B5563;
+            line-height: 1.6;
+            margin-bottom: 0.75rem;
+        }
+        .search-info .highlight {
+            color: #2B6CB0;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        .search-info .highlight:hover {
+            color: #1E4A80;
+        }
+        .search-info .ai-icon {
+            font-size: 2rem;
+            color: #2B6CB0;
+            margin-bottom: 1rem;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(249, 250, 251, 0.9); display: none; justify-content: center; align-items: center; z-index: 1001; }
+        .loader { width: 200px; height: 4px; background: #E5E7EB; position: relative; overflow: hidden; border-radius: 2px; }
+        .loader::before { content: ''; position: absolute; left: -50%; height: 100%; width: 50%; background: #374151; animation: lineLoading 1.5s infinite ease-in-out; }
+        @keyframes lineLoading { 0% { left: -50%; } 50% { left: 50%; } 100% { left: 150%; } }
+        .students-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 2rem;
+            align-items: center;
+        }
+        .student-card {
+            background: #FFFFFF;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 900px;
+            min-height: 200px;
+            display: flex;
+            align-items: flex-start;
+            gap: 1.5rem;
+            transition: transform 0.2s ease;
+        }
+        .student-card:hover {
+            transform: translateY(-5px);
+        }
+        .student-card img.profile-pic {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+        .student-card .card-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .student-card h3 {
+            font-size: 1.5rem;
+            color: #374151;
+            font-weight: 600;
+        }
+        .student-card h4 {
+            font-size: 1rem;
+            color: #6B7280;
+            font-weight: 400;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .student-card .year-badge {
+            background: #E5E7EB;
+            color: #374151;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        .student-card p.description {
+            font-size: 0.95rem;
+            color: #4B5563;
+            line-height: 1.5;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            max-height: 4.5em;
+        }
+        .student-card p.description.expanded {
+            -webkit-line-clamp: unset;
+            max-height: none;
+        }
+        .student-card a.read-more {
+            color: #2B6CB0;
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-decoration: underline;
+            align-self: flex-start;
+        }
+        .student-card a.read-more:hover {
+            opacity: 0.7;
+        }
+        .student-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            align-items: center;
+        }
+        .ai-intro-btn {
+            padding: 0.6rem 1.5rem;
+            background: #2B6CB0;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: background 0.3s ease;
+        }
+        .ai-intro-btn:hover {
+            background: #2C5282;
+        }
+        .ai-intro-btn.connected {
+            background: #4CAF50;
+            cursor: not-allowed;
+        }
+        .ai-intro-btn.connected:hover {
+            background: #4CAF50;
+            transform: none;
+        }
+        .view-profile {
+            color: #374151;
+            text-decoration: underline;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+        .view-profile:hover {
+            opacity: 0.7;
+        }
+        .social-icons {
+            display: flex;
+            gap: 0.75rem;
+        }
+        .social-icon {
+            font-size: 1.25rem;
+            color: #374151;
+            cursor: pointer;
+        }
+        .social-icon:hover {
+            transform: scale(1.1);
+        }
+        .social-icon.linkedin:hover {
+            color: #0077B5;
+        }
+        .pagination { display: none; }
+        .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.3); z-index: 999; }
+        .overlay.active { display: block; }
+        .profile-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #ffffff;
+            padding: 1.5rem;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            z-index: 1000;
+            border: 1px solid #e5e7eb;
+        }
+        .profile-popup.active { display: block; }
+        .profile-section {
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            gap: 1rem;
+            align-items: start;
+        }
+        .profile-section img.profile-pic {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #e5e7eb;
+        }
+        .profile-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .profile-details h2 {
+            font-size: 1.5rem;
+            color: #1F2937;
+            font-weight: 600;
+            margin: 0;
+        }
+        .profile-details h3 {
+            font-size: 1rem;
+            color: #6B7280;
+            font-weight: 400;
+            margin: 0;
+        }
+        .profile-content p {
+            font-size: 0.9rem;
+            color: #4B5563;
+            line-height: 1.5;
+            margin-top: 0.5rem;
+        }
+        .profile-content p strong {
+            color: #1F2937;
+            font-weight: 500;
+            display: inline-block;
+            width: 100px;
+        }
+        .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: #2B6CB0;
+            color: #FFFFFF;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+        .close-btn:hover {
+            background: #1E4A80;
+            transform: rotate(90deg);
+        }
+        .message-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #FFFFFF;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 450px;
+            height: 65vh;
+            z-index: 1000;
+            border: 1px solid #F0F0F0;
+        }
+        .message-popup.active { display: flex; flex-direction: column; }
+        .message-popup h2 {
+            font-size: 1.5rem;
+            color: #1A1A1A;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-weight: 600;
+        }
+        .message-popup textarea {
+            width: 100%;
+            flex-grow: 1;
+            padding: 1rem;
+            border: 1px solid #E0E0E0;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            resize: none;
+            font-size: 1rem;
+            background: #FAFAFA;
+            color: #333;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+        .message-popup textarea:focus { border-color: #2B6CB0; }
+        .message-popup .send-btn {
+            padding: 0.75rem;
+            width: 100%;
+            background: #2B6CB0;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: background 0.3s ease;
+        }
+        .message-popup .send-btn:hover { background: #2C5282; }
+        .connection-request-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #FFFFFF;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 450px;
+            z-index: 1000;
+            border: 1px solid #F0F0F0;
+            text-align: center;
+        }
+        .connection-request-popup.active {
+            display: flex;
+            flex-direction: column;
+        }
+        .connection-request-popup h2 {
+            font-size: 1.5rem;
+            color: #1A1A1A;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        .connection-request-popup p {
+            font-size: 1rem;
+            color: #4B5563;
+            margin-bottom: 1.5rem;
+        }
+        .connection-request-popup .ok-btn {
+            padding: 0.75rem;
+            background: #2B6CB0;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: background 0.3s ease;
+        }
+        .connection-request-popup .ok-btn:hover {
+            background: #2C5282;
+        }
+        .connection-request-popup .manage-connections {
+            color: #2B6CB0;
+            font-weight: 500;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        .connection-request-popup .manage-connections:hover {
+            color: #1E4A80;
+        }
+        footer { background: #FFFFFF; padding: 1rem; text-align: center; position: fixed; bottom: 0; width: 100%; box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05); }
+        @media (max-width: 768px) {
+            .search-container { padding: 1rem; margin: 1.5rem 0; border-radius: 8px; }
+            .search-box { flex-direction: row; gap: 0.5rem; padding: 0.8rem; }
+            .search-icon { font-size: 1.2rem; margin-left: 0.5rem; }
+            .search-input { padding: 0.8rem 0.4rem; font-size: 0.95rem; }
+            .search-btn { padding: 0.8rem 1.5rem; border-radius: 50px; }
+            .btn-text { font-size: 0.95rem; }
+            .btn-icon { font-size: 0.9rem; }
+            .search-info { padding: 1.5rem; font-size: 0.9rem; }
+            .search-info h3 { font-size: 1.2rem; }
+            .search-info .ai-icon { font-size: 1.5rem; }
+            .navbar { padding: 0.8rem; }
+            .nav-menu { display: none; position: absolute; top: 60px; left: 0; width: 100%; background: #FFFFFF; flex-direction: column; padding: 1rem; }
+            .nav-menu.active { display: flex; }
+            .hamburger { display: block; }
+            .student-card {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 1rem;
+                max-width: 100%;
+            }
+            .student-card img.profile-pic {
+                width: 60px;
+                height: 60px;
+                margin-bottom: 0.5rem;
+            }
+            .student-card h3 { font-size: 1.25rem; }
+            .student-card h4 { font-size: 0.9rem; }
+            .student-card .year-badge { font-size: 0.8rem; }
+            .student-card p.description { font-size: 0.9rem; }
+            .student-actions { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+            .profile-popup {
+                width: 95%;
+                max-width: 400px;
+                max-height: 80vh;
+                padding: 1rem;
+                border-radius: 10px;
+            }
+            .profile-section {
+                grid-template-columns: 80px 1fr;
+                gap: 0.75rem;
+            }
+            .profile-section img.profile-pic { width: 80px; height: 80px; }
+            .profile-details h2 { font-size: 1.25rem; }
+            .profile-details h3 { font-size: 0.9rem; }
+            .profile-content p { font-size: 0.85rem; }
+            .profile-content p strong { width: 90px; }
+            .close-btn {
+                width: 36px;
+                height: 36px;
+                font-size: 1rem;
+            }
+            .message-popup { padding: 1.5rem; max-width: 90%; height: 65vh; }
+            .message-popup h2 { font-size: 1.25rem; margin-bottom: 1rem; }
+            .message-popup textarea { font-size: 0.9rem; }
+            .message-popup .send-btn { font-size: 0.9rem; }
+            .connection-request-popup {
+                padding: 1.5rem;
+                max-width: 90%;
+            }
+            .connection-request-popup h2 {
+                font-size: 1.25rem;
+            }
+            .connection-request-popup p {
+                font-size: 0.9rem;
+            }
+            .connection-request-popup .ok-btn {
+                font-size: 0.9rem;
+            }
+        }
+        @media (min-width: 768px) {
+            .students-list { align-items: center; }
+        }
+        .mobile-message {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #f4f5eb;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            z-index: 1002;
+            font-size: 1.2rem;
+            color: #374151;
+            padding: 1rem;
+        }
+        @media (max-width: 768px) {
+            .mobile-message {
+                display: flex;
+            }
+            .dashboard-content,
+            .navbar,
+            footer {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="mobile-message">
+        <p>Please use a desktop for a better experience.</p>
+    </div>
+    <nav class="navbar">
+        <a href="../index.html"><div class="logo">Taska Elite</div></a>
+        <ul class="nav-menu">
+            <li><a href="explore.html" class="active">Explore</a></li>
+            <li><a href="tasks.html">Tasks</a></li>
+            <li><a href="profile.html">Account</a></li>
+        </ul>
+        <div class="hamburger">☰</div>
+    </nav>
+    <main class="dashboard-content">
+        <section class="dashboard-section">
+            <br><br>
+            <h1>Explore Talents from Top Colleges in India</h1>
+            <p>Find and connect with top students using AI-powered search.</p>
+            <div class="search-box">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" id="ai-search-input" 
+                       placeholder="e.g., IIT Delhi B.Tech Applied Mechanics student with Python skill">
+                <button class="search-btn" onclick="performSearch()">
+                    <span class="btn-text">Search Talent</span>
+                    <i class="fas fa-arrow-right btn-icon"></i>
+                </button>
+            </div>
+            <br>
+            <br>
+            <div class="search-info" id="searchInfo">
+                <i class="fas fa-brain ai-icon"></i>
+                <h3>Discover Talent That Fits — Powered by Smart AI</h3>
+                <p>Our <span class="highlight">AI-powered search engine</span> understands your exact needs by analyzing keywords and context. It intelligently scans thousands of verified student profiles, evaluating their <span class="highlight">colleges, degrees, skills, and project experiences</span> to surface the most relevant candidates.</p>
+                <p>Whether you're looking for a <span class="highlight">Python developer from IIT Madras skilled in SQL</span> or a <span class="highlight">B.Tech student experienced in AI and Flutter</span>, just type your requirements in natural language — and let our AI do the magic.</p>
+                <p>The more specific your query, the better the results. Try searches like:</p>
+                <ul>
+                    "IIT Delhi CSE student with React and backend experience"<br>
+                    "Python + SQL developer from NIT with internship experience"<br>
+                    "Machine learning enthusiast with Kaggle profile and TensorFlow projects"
+                    <br>
+                </ul>
+                <p>Our smart algorithms <span class="highlight">understand your intent</span> and do a deep dive into every profile to ensure you connect with <span class="highlight">only the best-fit candidates</span>.</p>
+            </div>
+            <div class="loading-overlay" id="loadingOverlay">
+                <div class="loader"></div>
+            </div>
+            <div class="students-list" id="students-list"></div>
+            <div class="pagination" id="pagination"></div>
+        </section>
+    </main>
+    <footer>
+        <p>© 2025 Taska Elite. All rights reserved.</p>
+    </footer>
+    <div class="overlay" id="overlay"></div>
+    <div class="profile-popup" id="profilePopup">
+        <button class="close-btn" onclick="closeProfilePopup()"><i class="fas fa-times"></i></button>
+        <div class="profile-content" id="profileContent"></div>
+    </div>
+    <div class="message-popup" id="messagePopup">
+        <button class="close-btn" onclick="closeMessagePopup()">×</button>
+        <h2>Connect</h2>
+        <textarea id="introMessage" placeholder="Generating message..."></textarea>
+        <button class="send-btn" onclick="sendMessage()">Send via WhatsApp</button>
+    </div>
+    <div class="connection-request-popup" id="connectionRequestPopup">
+        <button class="close-btn" onclick="closeConnectionRequestPopup()">×</button>
+        <h2>Connection Request Sent</h2>
+        <p id="connectionRequestMessage"></p>
+        <button class="ok-btn" onclick="closeConnectionRequestPopup()">OK</button>
+    </div>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script>
+        // Initialize Firebase
+const firebaseConfig = {
+    apiKey: "AIzaSyDZIDlEtaNRxODoFhRw0xF2yYFBqqBexqo",
+    authDomain: "taska-45011.firebaseapp.com",
+    databaseURL: "https://taska-45011-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "taska-45011",
+    storageBucket: "taska-45011.appspot.com",
+    messagingSenderId: "205487498813",
+    appId: "1:205487498813:web:0de2c9eab567482781ec54",
+    measurementId: "G-G0G1F6GQ9B"
+};
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
+
+// Hamburger menu toggle
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelector('.hamburger').addEventListener('click', () => {
+        document.querySelector('.nav-menu').classList.toggle('active');
+    });
+    // Search on Enter key
+    document.getElementById('ai-search-input').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            performSearch();
+        }
+    });
+});
+
+const part1 = 'sk-proj-3F9d8rVuPthYn2jvKneznUYN-ZYaFSy0nKkKIJ5IOEVdjRQdGebYsRkkmJqn25YfZNDLUY12S6T3BlbkFJVBfH9b';
+const part2 = 'EfOVjVB3iRmikjAcyzHapDxOwLArvNo2eln91xFnjyR_D-Mo7XeXcjgcdjRiTueSh8MA';
+const apiKey = part1 + part2;
+
+let studentsData = [];
+let currentStudentId = null;
+let connectedStudents = new Set();
+const studentsList = document.getElementById('students-list');
+const profilePopup = document.getElementById('profilePopup');
+const profileContent = document.getElementById('profileContent');
+const overlay = document.getElementById('overlay');
+const loadingOverlay = document.getElementById('loadingOverlay');
+const messagePopup = document.getElementById('messagePopup');
+const introMessage = document.getElementById('introMessage');
+const searchInfo = document.getElementById('searchInfo');
+
+// Fetch student data and connected students
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        // Fetch student data from Firebase
+        const snapshot = await database.ref('studentslist').once('value');
+        const data = snapshot.val() || {};
+        studentsData = Object.keys(data).map(id => ({
+            id,
+            ...data[id],
+            personal: data[id].personal || {},
+            education: data[id].education || {},
+            skills: data[id].skills || '',
+            profiles: data[id].profiles || {},
+            portfolio: data[id].portfolio || []
+        }));
+
+        // Fetch connected students
+        const connections = await getConnectedStudents();
+        connectedStudents = new Set(connections);
+    } catch (error) {
+        console.error('Error loading data:', error);
+        studentsList.innerHTML = '<p>Error loading student data.</p>';
+    }
+});
+
+// Fetch connected students from Firebase
+async function getConnectedStudents() {
+    const user = firebase.auth().currentUser;
+    if (!user) return [];
+    try {
+        const snapshot = await database.ref(`users/${user.uid}/connections`).once('value');
+        const connections = snapshot.val() || {};
+        return Object.keys(connections).filter(id => ['pending', 'connected'].includes(connections[id].status));
+    } catch (error) {
+        console.error('Error fetching connections:', error);
+        return [];
+    }
+}
+
+// Map education year to label
+function getYearLabel(year) {
+    if (!year || year === 'Not set') return 'Student';
+    const yearMap = {
+        '1st': 'Freshman',
+        '2nd': 'Sophomore',
+        '3rd': 'Junior',
+        '4th': 'Senior',
+        '5th': 'Alumni'
+    };
+    return yearMap[year] || 'Alumni';
+}
+
+async function aiSearch(query = '') {
+    if (!query) {
+        studentsList.innerHTML = '<p>Please enter a search query</p>';
+        return;
+    }
+    loadingOverlay.style.display = 'flex';
+    searchInfo.classList.add('hidden');
+
+    const csvText = [
+        ['id', 'personal.name', 'education.college', 'education.degree', 'education.branch', 'education.year', 'skills', 'personal.about'].join(','),
+        ...studentsData.map(student => [
+            student.id,
+            student.personal?.name || 'Unnamed',
+            student.education?.college || 'Not set',
+            student.education?.degree || 'Not set',
+            student.education?.branch || 'Not set',
+            student.education?.year || 'Not set',
+            student.skills || 'Not set',
+            student.personal?.about || 'Not set'
+        ].join(','))
+    ].join('\n');
+
+    const prompt = `
+        You are an expert at analyzing student data for talent matching. Given the following CSV data of students:
+        ${csvText}
+        The user has provided this requirement: "${query}"
+        Your task is to:
+        1. Carefully analyze each student's data (name, college, degree, branch, year, skills, about).
+        2. Match students to the requirement based on relevance (e.g., specific college, skills, branch, or about section mentioned in the query).
+        3. Rank the students by how well they match the requirement.
+        4. Return EXACTLY 10 student IDs in order of relevance as a JSON array of strings.
+        5. If fewer than 10 students match exactly, fill the remaining slots with the most relevant students based on partial matches.
+        6. Do not simply return the first 10 students unless they genuinely match the query.
+        Examples:
+        - Query: "IIT Delhi B.Tech Applied Mechanics student with Python skill"
+          - Prioritize students from IIT Delhi, with B.Tech in Applied Mechanics, and Python in skills.
+        - Query: "IIT Bombay student with machine learning experience"
+          - Prioritize IIT Bombay students with "machine learning" in skills or about section.
+        Return the result STRICTLY as a JSON array of 10 student IDs, e.g.:
+        ["student_1", "student_2", "student_3", "student_4", "student_5", "student_6", "student_7", "student_8", "student_9", "student_10"]
+    `;
+
+    try {
+        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${apiKey}`
+            },
+            body: JSON.stringify({
+                model: 'gpt-4o',
+                messages: [{ role: 'user', content: prompt }],
+                max_tokens: 2000,
+                temperature: 0.3
+            })
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error?.message || 'API request failed');
+
+        let shortlistedIds;
+        try {
+            shortlistedIds = JSON.parse(data.choices[0].message.content);
+            if (!Array.isArray(shortlistedIds) || shortlistedIds.length !== 10 || !shortlistedIds.every(id => typeof id === 'string')) {
+                throw new Error('Invalid response format: Expected an array of 10 student IDs');
+            }
+            const validIds = shortlistedIds.filter(id => studentsData.some(student => student.id === id));
+            if (validIds.length < 10) {
+                console.warn('AI returned fewer valid IDs than expected:', validIds);
+                const remainingCount = 10 - validIds.length;
+                const additionalIds = studentsData
+                    .filter(student => !validIds.includes(student.id) && !connectedStudents.has(student.id))
+                    .slice(0, remainingCount)
+                    .map(student => student.id);
+                shortlistedIds = [...validIds, ...additionalIds];
+            }
+        } catch (parseError) {
+            console.error('JSON Parse Error:', parseError, 'Response:', data.choices[0].message.content);
+            shortlistedIds = basicKeywordMatch(query);
+        }
+
+        const filteredStudents = studentsData
+            .filter(student => shortlistedIds.includes(student.id) && !connectedStudents.has(student.id))
+            .sort((a, b) => shortlistedIds.indexOf(a.id) - shortlistedIds.indexOf(b.id));
+
+        studentsList.innerHTML = filteredStudents.length > 0
+            ? filteredStudents.map(student => {
+                const description = student.personal?.about || student.skills || 'No description available';
+                const isLong = description.length > 100;
+                const subheading = `${student.education?.college || 'Not set'} - ${student.education?.branch || 'Not set'}`;
+                const yearLabel = getYearLabel(student.education?.year);
+                const isConnected = connectedStudents.has(student.id);
+                return `
+                    <div class="student-card">
+                        <img src="${student.personal?.profilePic || '../assets/avatar/1.png'}" alt="Profile Picture" class="profile-pic">
+                        <div class="card-content">
+                            <h3>${student.personal?.name || 'Unnamed'}</h3>
+                            <h4>${subheading}<span class="year-badge">${yearLabel}</span></h4>
+                            <p class="description${isLong ? '' : ' expanded'}">${description}</p>
+                            ${isLong ? `<a class="read-more" onclick="toggleReadMore(this)">Read More</a>` : ''}
+                            <div class="student-actions">
+                                <button class="ai-intro-btn${isConnected ? ' connected' : ''}" 
+                                        onclick="${isConnected ? '' : `generateAIIntro('${student.id}')`}" 
+                                        ${isConnected ? 'disabled' : ''}>
+                                    ${isConnected ? 'Connected' : 'Connect'}
+                                </button>
+                                <span class="view-profile" onclick="showProfile('${student.id}')">View Profile</span>
+                                <div class="social-icons">
+                                    <i class="fab fa-linkedin social-icon linkedin" onclick="window.open('${student.personal?.linkedin || '#'}', '_blank')"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('')
+            : '<p>No matching students found.</p>';
+    } catch (error) {
+        console.error('AI Search Error:', error);
+        studentsList.innerHTML = `<p>Error performing search: ${error.message}</p>`;
+    }
+    loadingOverlay.style.display = 'none';
+}
+
+function basicKeywordMatch(query) {
+    const keywords = query.toLowerCase().split(' ');
+    const scoredStudents = studentsData
+        .filter(student => !connectedStudents.has(student.id))
+        .map(student => {
+            let score = 0;
+            const studentText = `${student.personal?.name || ''} ${student.education?.college || ''} ${student.education?.degree || ''} ${student.education?.branch || ''} ${student.skills || ''} ${student.personal?.about || ''}`.toLowerCase();
+            keywords.forEach(keyword => {
+                if (studentText.includes(keyword)) score += 1;
+            });
+            return { id: student.id, score };
+        });
+    return scoredStudents
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 10)
+        .map(student => student.id);
+}
+
+window.performSearch = () => {
+    const query = document.getElementById('ai-search-input').value.trim();
+    aiSearch(query);
+};
+
+window.toggleReadMore = (element) => {
+    const description = element.previousElementSibling;
+    description.classList.toggle('expanded');
+    element.textContent = description.classList.contains('expanded') ? 'Read Less' : 'Read More';
+};
+
+window.generateAIIntro = async (studentId) => {
+    currentStudentId = studentId;
+    loadingOverlay.style.display = 'flex';
+    const student = studentsData.find(s => s.id === studentId);
+    const user = firebase.auth().currentUser;
+    if (!user || !student) {
+        loadingOverlay.style.display = 'none';
+        alert('Error: User not authenticated or student not found.');
+        return;
+    }
+    try {
+        // Store connection request in Firebase
+        await storeConnectionRequest(studentId);
+        // Send notifications
+        await sendConnectionNotifications(studentId, student.personal?.name || 'Unnamed', student.personal?.email, student.personal?.whatsapp, user.email);
+        // Show popup
+        showConnectionRequestPopup(student.personal?.name || 'Unnamed');
+        // Update connected students set
+        connectedStudents.add(studentId);
+        // Refresh the student list to update button states
+        performSearch();
+    } catch (error) {
+        console.error('Error sending connection request:', error);
+        alert('Failed to send connection request.');
+    }
+    loadingOverlay.style.display = 'none';
+};
+
+async function storeConnectionRequest(studentId) {
+    const user = firebase.auth().currentUser;
+    const userId = user.uid;
+    const timestamp = new Date().toISOString();
+    // Store for professional
+    await database.ref(`users/${userId}/connections/${studentId}`).set({
+        timestamp: timestamp,
+        status: "pending"
+    });
+    // Store for student
+    await database.ref(`users/${studentId}/connections/${userId}`).set({
+        timestamp: timestamp,
+        status: "pending"
+    });
+}
+
+async function sendConnectionNotifications(studentId, studentName, studentEmail, studentWhatsApp, professionalEmail) {
+    const user = firebase.auth().currentUser;
+    const professionalName = user.displayName || 'Professional';
+    // Send email notifications
+    try {
+        const response = await fetch('https://your-server.com/send-connection-email', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                studentEmail,
+                studentName,
+                professionalEmail,
+                professionalName
+            })
+        });
+        if (!response.ok) throw new Error('Failed to send email notifications');
+    } catch (error) {
+        console.error('Error sending email notifications:', error);
+    }
+    // Send WhatsApp notification
+    await sendWhatsAppNotification(studentWhatsApp, studentName, professionalName);
+}
+
+async function sendWhatsAppNotification(studentWhatsApp, studentName, professionalName) {
+    if (!studentWhatsApp) return;
+    try {
+        const response = await fetch('https://your-server.com/send-whatsapp', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                to: studentWhatsApp,
+                studentName,
+                professionalName
+            })
+        });
+        if (!response.ok) throw new Error('Failed to send WhatsApp notification');
+    } catch (error) {
+        console.error('Error sending WhatsApp notification:', error);
+    }
+}
+
+function showConnectionRequestPopup(studentName) {
+    const popup = document.getElementById('connectionRequestPopup');
+    const message = document.getElementById('connectionRequestMessage');
+    message.innerHTML = `
+        We have sent a connection request to <strong>${studentName}</strong>. 
+        They have been notified via Email. 
+        When they accept, we will inform you through Email. 
+        You can <a href="tasks.html" class="manage-connections">manage your connections</a> here.
+    `;
+    popup.classList.add('active');
+    overlay.classList.add('active');
+}
+
+window.closeConnectionRequestPopup = () => {
+    const popup = document.getElementById('connectionRequestPopup');
+    popup.classList.remove('active');
+    overlay.classList.remove('active');
+    currentStudentId = null;
+};
+
+window.showProfile = (targetUserId) => {
+    const student = studentsData.find(s => s.id === targetUserId);
+    if (student) {
+        const fields = [
+            { label: 'Degree', value: student.education?.degree },
+            { label: 'Year', value: student.education?.year },
+            { label: 'Skills', value: student.skills },
+            { label: 'About', value: student.personal?.about },
+            { label: 'Email', value: student.personal?.email },
+            { label: 'LinkedIn', value: student.personal?.linkedin ? `<a href="${student.personal.linkedin}" target="_blank">View LinkedIn</a>` : null }
+        ].filter(field => field.value && field.value !== 'Not set');
+        profileContent.innerHTML = `
+            <div class="profile-section">
+                <img src="${student.personal?.profilePic || '../assets/avatar/1.png'}" alt="Profile Picture" class="profile-pic">
+                <div class="profile-details">
+                    <h2>${student.personal?.name || 'Unnamed'}</h2>
+                    <h3>${student.education?.college || 'Not set'} - ${student.education?.branch || 'Not set'}</h3>
+                    ${fields.map(field => `<p><strong>${field.label}:</strong> ${field.value}</p>`).join('')}
+                </div>
+            </div>
+        `;
+        profilePopup.classList.add('active');
+        overlay.classList.add('active');
+    } else {
+        profileContent.innerHTML = '<div class="profile-section"><h2>Profile Not Found</h2><p>No data available.</p></div>';
+        profilePopup.classList.add('active');
+        overlay.classList.add('active');
+    }
+};
+
+window.closeProfilePopup = () => {
+    profilePopup.classList.remove('active');
+    overlay.classList.remove('active');
+};
+
+window.closeMessagePopup = () => {
+    messagePopup.classList.remove('active');
+    overlay.classList.remove('active');
+    currentStudentId = null;
+};
+
+window.sendMessage = () => {
+    if (!currentStudentId) return;
+    const student = studentsData.find(s => s.id === currentStudentId);
+    const message = introMessage.value.trim();
+    if (!message) return;
+    const phone = student.personal?.whatsapp || '';
+    if (phone) {
+        storeConnection(currentStudentId);
+        const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+        window.open(whatsappUrl, '_blank');
+    }
+    closeMessagePopup();
+};
+
+async function storeConnection(studentId) {
+    const user = firebase.auth().currentUser;
+    if (user) {
+        const userId = user.uid;
+        const timestamp = new Date().toISOString();
+        database.ref(`users/${userId}/connections/${studentId}`).set({
+            timestamp: timestamp,
+            status: "pending"
+        }).then(() => {
+            console.log("Connection stored successfully");
+            connectedStudents.add(studentId);
+        }).catch((error) => {
+            console.error("Error storing connection:", error);
+        });
+        database.ref(`users/${studentId}/connections/${userId}`).set({
+            timestamp: timestamp,
+            status: "pending"
+        }).catch((error) => {
+            console.error("Error storing connection:", error);
+        });
+    } else {
+        console.log("User not authenticated, connection not stored");
+    }
+}
+
+overlay.addEventListener('click', () => {
+    closeProfilePopup();
+    closeMessagePopup();
+    closeConnectionRequestPopup();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taska Elite - Professional Connections</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body { 
+            background: #ffffff; 
+            min-height: 100vh; 
+            font-family: 'Poppins', sans-serif; 
+            margin: 0;
+            padding-top: 60px;
+        }
+        .top-navbar { 
+            background: #ffffff; 
+            padding: 1rem 2rem; 
+            position: fixed; 
+            top: 0; 
+            width: 100%; 
+            z-index: 1000; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            border-bottom: 1px solid #e0e0e0; 
+        }
+        .top-navbar .logo { 
+            font-size: 1.5rem; 
+            font-weight: 600; 
+            color: #000000; 
+        }
+        .top-navbar .nav-menu { 
+            display: flex; 
+            gap: 1.5rem; 
+            list-style: none; 
+        }
+        .top-navbar .nav-menu li a { 
+            color: #000000; 
+            text-decoration: none; 
+            font-size: 1rem; 
+        }
+        .top-navbar .nav-menu li a.active { 
+            font-weight: 600; 
+            color: #0000ff; 
+        }
+        .top-navbar .hamburger { 
+            display: none; 
+            font-size: 1.5rem; 
+            cursor: pointer; 
+            color: #000000; 
+        }
+        .sidebar { 
+            position: fixed; 
+            left: 0; 
+            top: 60px; 
+            width: 220px; 
+            height: calc(100% - 60px); 
+            background: #ffffff; 
+            border-right: 1px solid #e0e0e0; 
+            padding: 2rem 0; 
+            z-index: 999; 
+        }
+        .tab-list { 
+            list-style: none; 
+            padding: 0; 
+            margin: 0; 
+        }
+        .tab-list li { 
+            padding: 1.2rem 1.5rem; 
+            cursor: pointer; 
+            font-size: 1.0rem; 
+            color: #000000; 
+            border-bottom: 1px solid #e0e0e0; 
+            transition: all 0.3s ease; 
+            position: relative; 
+        }
+        .tab-list li:hover { 
+            padding-left: 2rem; 
+            background: #f8f8f8; 
+        }
+        .tab-list li.active { 
+            font-weight: 600; 
+            padding-left: 2rem; 
+            border-left: 4px solid #000000; 
+        }
+        .pending-badge { 
+            position: absolute; 
+            right: 1rem; 
+            top: 50%; 
+            transform: translateY(-50%); 
+            background: #e74c3c; 
+            color: #ffffff; 
+            font-size: 0.8rem; 
+            font-weight: 600; 
+            padding: 0.2rem 0.5rem; 
+            border-radius: 12px; 
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+            display: none; 
+        }
+        .pending-badge.active { 
+            display: inline-block; 
+            animation: pulse 1.5s infinite; 
+        }
+        @keyframes pulse {
+            0% { transform: translateY(-50%) scale(1); }
+            50% { transform: translateY(-50%) scale(1.1); }
+            100% { transform: translateY(-50%) scale(1); }
+        }
+        .dashboard-content { 
+            margin-left: 220px; 
+            padding: 2rem; 
+            min-height: calc(100vh - 120px); 
+        }
+        .tab-content { 
+            flex: 1; 
+        }
+        .tab-pane { 
+            display: none; 
+            opacity: 0; 
+            transition: opacity 0.3s ease; 
+        }
+        .tab-pane.active { 
+            display: block; 
+            opacity: 1; 
+            animation: slideIn 0.5s ease; 
+        }
+        .dashboard-section h1 { 
+            font-size: 2rem; 
+            color: #000000; 
+            margin-bottom: 1rem; 
+            text-align: left; 
+        }
+        .dashboard-section p { 
+            font-size: 1rem; 
+            color: #666666; 
+            margin-bottom: 2rem; 
+            text-align: left; 
+        }
+        .connections-grid { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 1rem; 
+        }
+        .connection-card { 
+            background: #ffffff; 
+            border: 1px solid #e0e0e0; 
+            border-radius: 10px; 
+            padding: 1.5rem; 
+            display: flex; 
+            align-items: center; 
+            gap: 1rem; 
+            width: 100%; 
+        }
+        .profile-pic { 
+            width: 50px; 
+            height: 50px; 
+            border-radius: 50%; 
+            background: #e0e0e0; 
+            color: #000000; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 1.5rem; 
+            font-weight: 600; 
+            flex-shrink: 0; 
+            text-transform: uppercase; 
+        }
+        .connection-info { 
+            flex: 1; 
+        }
+        .connection-info h3 { 
+            font-size: 1.2rem; 
+            color: #000000; 
+            margin: 0 0 0.5rem 0; 
+        }
+        .connection-info p { 
+            font-size: 1rem; 
+            color: #000000; 
+            margin: 0; 
+        }
+        .connection-info p strong { 
+            color: #000000; 
+        }
+        .cta-button { 
+            display: inline-block; 
+            padding: 0.6rem 1.2rem; 
+            background: #ffffff; 
+            color: #0000ff; 
+            text-decoration: none; 
+            border: 1px solid #0000ff; 
+            border-radius: 5px; 
+            font-size: 0.9rem; 
+            margin-top: 0.8rem; 
+            cursor: pointer; 
+        }
+        .action-btn { 
+            padding: 0.6rem 1.2rem; 
+            background: #ffffff; 
+            color: #e74c3c; 
+            border: 1px solid #e74c3c; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            margin-top: 0.8rem; 
+            margin-left: 0.5rem; 
+        }
+        .view-profile { 
+            color: #374151; 
+            cursor: pointer; 
+            font-weight: 500; 
+            text-decoration: underline; 
+            transition: opacity 0.3s ease; 
+            margin-top: 0.8rem; 
+            margin-left: 0.5rem; 
+            background: none; 
+            border: none; 
+            padding: 0; 
+            font-size: 0.9rem; 
+        }
+        .view-profile:hover { 
+            opacity: 0.7; 
+        }
+        .no-connections { 
+            font-size: 1rem; 
+            color: #666666; 
+            text-align: left; 
+            margin-top: 1rem; 
+        }
+        footer { 
+            background: #ffffff; 
+            padding: 1rem; 
+            text-align: center; 
+            border-top: 1px solid #e0e0e0; 
+            position: fixed; 
+            bottom: 0; 
+            width: 100%; 
+        }
+        footer a { 
+            color: #0000ff; 
+            text-decoration: none; 
+        }
+        .overlay { 
+            display: none; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(0, 0, 0, 0.3); 
+            z-index: 999; 
+        }
+        .overlay.active { 
+            display: block; 
+        }
+        .profile-popup { 
+            display: none; 
+            position: fixed; 
+            top: 50%; 
+            left: 50%; 
+            transform: translate(-50%, -50%) scale(0.95); 
+            background: #FFFFFF; 
+            padding: 2rem; 
+            border-radius: 15px; 
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); 
+            width: 90%; 
+            max-width: 1200px; 
+            max-height: 80vh; 
+            overflow-y: auto; 
+            z-index: 1000; 
+            transition: transform 0.3s ease; 
+        }
+        .profile-popup.active { 
+            display: block; 
+            transform: translate(-50%, -50%) scale(1); 
+        }
+        .profile-content { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 1.5rem; 
+        }
+        .profile-section { 
+            background: #FFFFFF; 
+            border-radius: 12px; 
+            padding: 1.5rem; 
+            border: 1px solid #E5E7EB; 
+            transition: box-shadow 0.3s ease; 
+        }
+        .profile-section:hover { 
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); 
+        }
+        .profile-section h2 { 
+            font-size: 1.5rem; 
+            color: #374151; 
+            margin-bottom: 1rem; 
+            font-weight: 600; 
+        }
+        .profile-section p { 
+            font-size: 1rem; 
+            color: #6B7280; 
+            margin-bottom: 0.8rem; 
+            display: flex; 
+            gap: 0.5rem; 
+        }
+        .profile-section p strong { 
+            color: #374151; 
+            font-weight: 600; 
+            min-width: 120px; 
+        }
+        .profile-section ul { 
+            list-style: none; 
+            padding: 0; 
+        }
+        .profile-section ul li { 
+            font-size: 0.95rem; 
+            color: #6B7280; 
+            margin-bottom: 0.5rem; 
+        }
+        .profile-section a { 
+            color: #374151; 
+            text-decoration: underline; 
+            transition: opacity 0.3s ease; 
+        }
+        .profile-section a:hover { 
+            opacity: 0.7; 
+        }
+        .profile-name { 
+            font-size: 2rem; 
+            color: #374151; 
+            font-weight: 600; 
+            grid-column: 1 / 3; 
+            text-align: center; 
+            margin-bottom: 1rem; 
+        }
+        .bottom-section { 
+            grid-column: 1 / 3; 
+            display: grid; 
+            grid-template-columns: repeat(4, 1fr); 
+            gap: 1.5rem; 
+        }
+        .profile-popup .close-btn { 
+            position: absolute; 
+            top: 0.5rem; 
+            right: 0.5rem; 
+            background: none; 
+            border: none; 
+            font-size: 1.5rem; 
+            cursor: pointer; 
+            color: #6B7280; 
+            transition: color 0.3s ease; 
+        }
+        .profile-popup .close-btn:hover { 
+            color: #374151; 
+        }
+        @media (max-width: 768px) {
+            .top-navbar .nav-menu {
+                display: none;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                right: 0;
+                background: #ffffff;
+                flex-direction: column;
+                padding: 1rem;
+                border-top: 1px solid #e0e0e0;
+            }
+            .top-navbar .nav-menu.active {
+                display: flex;
+            }
+            .top-navbar .hamburger {
+                display: block;
+            }
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+                top: 0;
+                border-right: none;
+                border-bottom: 1px solid #e0e0e0;
+            }
+            .dashboard-content {
+                margin-left: 0;
+            }
+            .tab-list li {
+                border-right: 1px solid #e0e0e0;
+            }
+            .profile-content { 
+                grid-template-columns: 1fr; 
+            }
+            .profile-name { 
+                grid-column: 1 / 2; 
+            }
+            .bottom-section { 
+                grid-template-columns: 1fr; 
+            }
+            .profile-section p { 
+                flex-direction: column; 
+            }
+            .profile-section p strong { 
+                min-width: auto; 
+            }
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+    </style>
+</head>
+<body>
+    <nav class="top-navbar">
+        <div class="logo">Taska Elite</div>
+        <ul class="nav-menu">
+            <li><a href="explore.html">Explore</a></li>
+            <li><a href="connections.html" class="active">Connections</a></li>
+            
+            <li><a href="tasks.html">Tasks</a></li>
+            <li><a href="profile.html">Profile</a></li>
+            <li><a href="../index.html">Logout</a></li>
+        </ul>
+        <div class="hamburger">☰</div>
+    </nav>
+
+    <div class="sidebar">
+        <ul class="tab-list">
+            <li class="active" data-tab="active-connections">Active Connections</li>
+            <li data-tab="sent-requests">Sent Requests</li>
+            <li data-tab="received-requests">Received Requests <span class="pending-badge" id="pending-count"></span></li>
+        </ul>
+    </div>
+
+    <main class="dashboard-content">
+        <div class="tab-content">
+            <section class="dashboard-section">
+                <h1>Your Connections</h1>
+                <p>Manage your connections with IIT prodigies.</p>
+
+                <div class="tab-pane active" id="active-connections">
+                    <div class="connections-grid" id="connections-grid"></div>
+                    <p class="no-connections" id="no-connections" style="display: none;">No active connections yet.</p>
+                </div>
+
+                <div class="tab-pane" id="sent-requests">
+                    <div class="connections-grid" id="sent-requests-grid"></div>
+                    <p class="no-connections" id="no-sent-requests" style="display: none;">No sent requests.</p>
+                </div>
+
+                <div class="tab-pane" id="received-requests">
+                    <div class="connections-grid" id="received-requests-grid"></div>
+                    <p class="no-connections" id="no-received-requests" style="display: none;">No received requests.</p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2025 Taska Elite. All rights reserved. | <a href="#" class="privacy-policy">Privacy Policy</a></p>
+    </footer>
+
+    <div class="overlay" id="overlay"></div>
+    <div class="profile-popup" id="profilePopup">
+        <button class="close-btn" onclick="closeProfilePopup()">×</button>
+        <div id="profileContent"></div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+        import { getDatabase, ref, onValue, get, remove, set } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
+    
+        const firebaseConfig = {
+            apiKey: "AIzaSyDZIDlEtaNRxODoFhRw0xF2yYFBqqBexqo",
+            authDomain: "taska-45011.firebaseapp.com",
+            databaseURL: "https://taska-45011-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "taska-45011",
+            storageBucket: "taska-45011.firebasestorage.app",
+            messagingSenderId: "205487498813",
+            appId: "1:205487498813:web:0de2c9eab567482781ec54"
+        };
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const userId = localStorage.getItem('userId');
+    
+        if (!userId) {
+            setTimeout(() => {
+                alert("Please log in or sign up first.");
+                window.location.href = '../login.html';
+            }, 1000);
+        } else {
+            console.log("User ID:", userId);
+            loadConnections();
+            loadSentRequests();
+            loadReceivedRequests();
+        }
+    
+        async function loadConnections() {
+            const connectionsGrid = document.getElementById('connections-grid');
+            const noConnections = document.getElementById('no-connections');
+            connectionsGrid.innerHTML = '';
+            onValue(ref(db, `professionalslist/${userId}/connections`), async (snapshot) => {
+                console.log("Connections snapshot:", snapshot.val());
+                if (snapshot.exists()) {
+                    noConnections.style.display = 'none';
+                    const connectionPromises = [];
+                    snapshot.forEach((childSnapshot) => {
+                        const studentId = childSnapshot.key;
+                        console.log("Fetching student:", studentId);
+                        const promise = get(ref(db, `studentslist/${studentId}`))
+                            .then((snap) => {
+                                if (snap.exists()) {
+                                    const student = snap.val();
+                                    const personal = student.personal || {};
+                                    const education = student.education || {};
+                                    console.log("Student data:", student);
+                                    return `
+                                        <div class="connection-card">
+                                            <div class="profile-pic">${personal.name ? personal.name.charAt(0) : '?'}</div>
+                                            <div class="connection-info">
+                                                <h3>${personal.name || 'Unknown'}</h3>
+                                                <p>${personal.name || 'Unknown'} is pursuing <strong>${education.degree || 'Not set'}</strong> at <strong>${education.college || 'Not set'}<strong> </strong>${education.year || 'Not set'} </strong> Year <strong></strong> Skilled in ${student.skills || 'various areas'}.</p>
+                                                <a href="overview.html" class="cta-button">Chat</a>
+                                                <button class="action-btn" onclick="disconnect('${studentId}')">Disconnect</button>
+                                                <span class="view-profile" onclick="showProfile('${studentId}')">View Profile</span>
+                                            </div>
+                                        </div>
+                                    `;
+                                } else {
+                                    console.log(`No data found for student ${studentId}`);
+                                    return '';
+                                }
+                            })
+                            .catch((error) => {
+                                console.error(`Error fetching student ${studentId}:`, error);
+                                return '';
+                            });
+                        connectionPromises.push(promise);
+                    });
+                    const cards = await Promise.all(connectionPromises);
+                    connectionsGrid.innerHTML = cards.join('');
+                } else {
+                    console.log("No connections found.");
+                    noConnections.style.display = 'block';
+                }
+            }, (error) => {
+                console.error("Error listening to connections:", error);
+                noConnections.style.display = 'block';
+            });
+        }
+    
+        async function loadSentRequests() {
+            const sentRequestsGrid = document.getElementById('sent-requests-grid');
+            const noSentRequests = document.getElementById('no-sent-requests');
+            sentRequestsGrid.innerHTML = '';
+            onValue(ref(db, 'connection_requests'), async (snapshot) => {
+                console.log("Sent requests snapshot:", snapshot.val());
+                let hasRequests = false;
+                const requestPromises = [];
+                snapshot.forEach((childSnapshot) => {
+                    const req = childSnapshot.val();
+                    const requestId = childSnapshot.key;
+                    if (req.from === userId && req.status === 'pending') {
+                        hasRequests = true;
+                        const promise = get(ref(db, `studentslist/${req.to}`))
+                            .then((snap) => {
+                                if (snap.exists()) {
+                                    const student = snap.val();
+                                    const personal = student.personal || {};
+                                    const education = student.education || {};
+                                    console.log("Sent request student data:", student);
+                                    return `
+                                        <div class="connection-card">
+                                            <div class="profile-pic">${personal.name ? personal.name.charAt(0) : '?'}</div>
+                                            <div class="connection-info">
+                                                <h3>${personal.name || 'Unknown'}</h3>
+                                                <p>${personal.name || 'Unknown'} is pursuing <strong>${education.degree || 'Not set'}</strong> at <strong>${education.college || 'Not set'}</strong> <strong>${education.year || 'Not set'}</strong></strong> Year <strong> Skilled in ${student.skills || 'various areas'}.</p>
+                                                <button class="action-btn" onclick="removeRequest('${requestId}')">Remove Request</button>
+                                                <span class="view-profile" onclick="showProfile('${req.to}')">View Profile</span>
+                                            </div>
+                                        </div>
+                                    `;
+                                } else {
+                                    console.log(`No data for student ${req.to}`);
+                                    return '';
+                                }
+                            })
+                            .catch((error) => {
+                                console.error(`Error fetching student ${req.to}:`, error);
+                                return '';
+                            });
+                        requestPromises.push(promise);
+                    }
+                });
+                const cards = await Promise.all(requestPromises);
+                sentRequestsGrid.innerHTML = cards.join('');
+                noSentRequests.style.display = hasRequests ? 'none' : 'block';
+            }, (error) => {
+                console.error("Error listening to sent requests:", error);
+                noSentRequests.style.display = 'block';
+            });
+        }
+    
+        async function loadReceivedRequests() {
+            const receivedRequestsGrid = document.getElementById('received-requests-grid');
+            const noReceivedRequests = document.getElementById('no-received-requests');
+            const pendingCountBadge = document.getElementById('pending-count');
+            receivedRequestsGrid.innerHTML = '';
+            onValue(ref(db, 'connection_requests'), async (snapshot) => {
+                console.log("Received requests snapshot:", snapshot.val());
+                let hasRequests = false;
+                let pendingCount = 0;
+                const requestPromises = [];
+                snapshot.forEach((childSnapshot) => {
+                    const req = childSnapshot.val();
+                    const requestId = childSnapshot.key;
+                    if (req.to === userId && req.status === 'pending') {
+                        hasRequests = true;
+                        pendingCount++;
+                        const promise = get(ref(db, `studentslist/${req.from}`))
+                            .then((snap) => {
+                                if (snap.exists()) {
+                                    const student = snap.val();
+                                    const personal = student.personal || {};
+                                    const education = student.education || {};
+                                    console.log("Received request student data:", student);
+                                    return `
+                                        <div class="connection-card">
+                                            <div class="profile-pic">${personal.name ? personal.name.charAt(0) : '?'}</div>
+                                            <div class="connection-info">
+                                                <h3>${personal.name || 'Unknown'}</h3>
+                                                <p>${personal.name || 'Unknown'} is pursuing <strong>${education.degree || 'Not set'}</strong> at <strong>${education.college || 'Not set'}</strong> <strong>${education.year || 'Not set'}</strong></strong> Year <strong> Skilled in ${student.skills || 'various areas'}.</p>
+                                                <button class="cta-button" onclick="acceptRequest('${requestId}', '${req.from}')">Accept Request</button>
+                                                <button class="action-btn" onclick="removeRequest('${requestId}')">Decline</button>
+                                                <span class="view-profile" onclick="showProfile('${req.from}')">View Profile</span>
+                                            </div>
+                                        </div>
+                                    `;
+                                } else {
+                                    console.log(`No data for student ${req.from}`);
+                                    return '';
+                                }
+                            })
+                            .catch((error) => {
+                                console.error(`Error fetching student ${req.from}:`, error);
+                                return '';
+                            });
+                        requestPromises.push(promise);
+                    }
+                });
+                const cards = await Promise.all(requestPromises);
+                receivedRequestsGrid.innerHTML = cards.join('');
+                noReceivedRequests.style.display = hasRequests ? 'none' : 'block';
+                if (pendingCount > 0) {
+                    pendingCountBadge.textContent = pendingCount;
+                    pendingCountBadge.classList.add('active');
+                } else {
+                    pendingCountBadge.classList.remove('active');
+                }
+            }, (error) => {
+                console.error("Error listening to received requests:", error);
+                noReceivedRequests.style.display = 'block';
+            });
+        }
+    
+        window.disconnect = async (studentId) => {
+            if (confirm('Are you sure you want to disconnect from this student?')) {
+                try {
+                    await Promise.all([
+                        remove(ref(db, `professionalslist/${userId}/connections/${studentId}`)),
+                        remove(ref(db, `studentslist/${studentId}/connections/${userId}`))
+                    ]);
+                    alert('Disconnected successfully!');
+                    await loadConnections();
+                } catch (error) {
+                    alert('Failed to disconnect: ' + error.message);
+                }
+            }
+        };
+    
+        window.removeRequest = async (requestId) => {
+            if (confirm('Are you sure you want to remove this request?')) {
+                try {
+                    await remove(ref(db, `connection_requests/${requestId}`));
+                    alert('Request removed successfully!');
+                } catch (error) {
+                    alert('Failed to remove request: ' + error.message);
+                }
+            }
+        };
+    
+        window.acceptRequest = async (requestId, studentId) => {
+            if (confirm('Are you sure you want to accept this request?')) {
+                try {
+                    await Promise.all([
+                        set(ref(db, `professionalslist/${userId}/connections/${studentId}`), true),
+                        set(ref(db, `studentslist/${studentId}/connections/${userId}`), true),
+                        remove(ref(db, `connection_requests/${requestId}`))
+                    ]);
+                    alert('Request accepted successfully!');
+                } catch (error) {
+                    alert('Failed to accept request: ' + error.message);
+                }
+            }
+        };
+    
+        window.showProfile = async (targetUserId) => {
+            try {
+                const studentRef = ref(db, `studentslist/${targetUserId}`);
+                const snapshot = await get(studentRef);
+                const profilePopup = document.getElementById('profilePopup');
+                const profileContent = document.getElementById('profileContent');
+                const overlay = document.getElementById('overlay');
+                if (snapshot.exists()) {
+                    const profileData = snapshot.val();
+                    profileContent.innerHTML = `
+                        <h2 class="profile-name">${profileData.personal.name || 'Unnamed'}</h2>
+                        <div class="profile-section">
+                            <h2>Personal Details</h2>
+                            <p><strong>Email:</strong> ${profileData.personal.email || 'Not set'}</p>
+                            <p><strong>Gender:</strong> ${profileData.personal.gender || 'Not set'}</p>
+                            <p><strong>Location:</strong> ${profileData.personal.location || 'Not set'}</p>
+                            <p><strong>LinkedIn:</strong> <a href="${profileData.personal.linkedin || '#'}" target="_blank">${profileData.personal.linkedin || 'Not set'}</a></p>
+                        </div>
+                        <div class="profile-section">
+                            <h2>Profiles</h2>
+                            <p><strong>GitHub:</strong> ${profileData.profiles?.github?.username ? `${profileData.profiles.github.username} (Repos: ${profileData.profiles.github.details?.repos || 0})` : 'Not set'}</p>
+                            <p><strong>Codeforces:</strong> ${profileData.profiles?.codeforces?.username ? `${profileData.profiles.codeforces.username} (Rating: ${profileData.profiles.codeforces.details?.rating || 'N/A'})` : 'Not set'}</p>
+                            <p><strong>LeetCode:</strong> ${profileData.profiles?.leetcode?.username ? `${profileData.profiles.leetcode.username} (Solved: ${profileData.profiles.leetcode.details?.totalSolved || 0})` : 'Not set'}</p>
+                        </div>
+                        <div class="profile-section">
+                            <h2>Educational Details</h2>
+                            <p><strong>College:</strong> ${profileData.education.college || 'Not set'}</p>
+                            <p><strong>Degree:</strong> ${profileData.education.degree || 'Not set'}</p>
+                            <p><strong>Branch:</strong> ${profileData.education.branch || 'Not set'}</p>
+                            <p><strong>Year:</strong> ${profileData.education.year || 'Not set'}</p>
+                        </div>
+                        <div class="profile-section">
+                            <h2>Skills & Experience</h2>
+                            <p><strong>Skills:</strong> ${profileData.skills || 'Not set'}</p>
+                            <p><strong>Experience:</strong> ${profileData.experience || 'Not set'}</p>
+                        </div>
+                        <div class="bottom-section">
+                            <div class="profile-section">
+                                <h2>Availability</h2>
+                                <p><strong>Hours/Week:</strong> ${profileData.availability?.hours || 'Not set'}</p>
+                                <p><strong>Work Time:</strong> ${profileData.availability?.worktime || 'Not set'}</p>
+                                <p><strong>Remote:</strong> ${profileData.availability?.remote || 'Not set'}</p>
+                                <p><strong>Duration:</strong> ${profileData.availability?.duration || 'Not set'}</p>
+                            </div>
+                            <div class="profile-section">
+                                <h2>Portfolio</h2>
+                                <ul>${
+                                    profileData.portfolio && profileData.portfolio.length > 0 
+                                    ? profileData.portfolio.map(url => `<li><a href="${url}" target="_blank">${url}</a></li>`).join('')
+                                    : '<li>Not set</li>'
+                                }</ul>
+                            </div>
+                            <div class="profile-section">
+                                <h2>Preferences</h2>
+                                <p><strong>Roles:</strong> ${profileData.preferences?.roles || 'Not set'}</p>
+                                <p><strong>Why:</strong> ${profileData.preferences?.why || 'Not set'}</p>
+                            </div>
+                            <div class="profile-section">
+                                <h2>Soft Skills</h2>
+                                <p><strong>Communication:</strong> ${profileData.softSkills?.communication || 'Not set'}</p>
+                                <p><strong>Deadlines:</strong> ${profileData.softSkills?.deadlines || 'Not set'}</p>
+                            </div>
+                        </div>
+                    `;
+                    profilePopup.classList.add('active');
+                    overlay.classList.add('active');
+                } else {
+                    profileContent.innerHTML = '<h2>Profile Not Found</h2><p>No data available.</p>';
+                    profilePopup.classList.add('active');
+                    overlay.classList.add('active');
+                }
+            } catch (error) {
+                const profilePopup = document.getElementById('profilePopup');
+                const profileContent = document.getElementById('profileContent');
+                const overlay = document.getElementById('overlay');
+                profileContent.innerHTML = `<h2>Error</h2><p>Failed to load profile: ${error.message}</p>`;
+                profilePopup.classList.add('active');
+                overlay.classList.add('active');
+            }
+        };
+    
+        window.closeProfilePopup = () => {
+            const profilePopup = document.getElementById('profilePopup');
+            const overlay = document.getElementById('overlay');
+            profilePopup.classList.remove('active');
+            overlay.classList.remove('active');
+        };
+    
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabs = document.querySelectorAll('.tab-list li');
+            const panes = document.querySelectorAll('.tab-pane');
+    
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    panes.forEach(p => p.classList.remove('active'));
+    
+                    tab.classList.add('active');
+                    const targetPane = document.getElementById(tab.getAttribute('data-tab'));
+                    targetPane.classList.add('active');
+                });
+            });
+    
+            const hamburger = document.querySelector('.top-navbar .hamburger');
+            const navMenu = document.querySelector('.top-navbar .nav-menu');
+            hamburger.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+            });
+    
+            const overlay = document.getElementById('overlay');
+            overlay.addEventListener('click', closeProfilePopup);
+        });
+    </script>
+    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9202a2d2990f12e1',t:'MTc0MTk0MzQwNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+</body>
+</html>

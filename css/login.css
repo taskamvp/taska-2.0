@@ -1,0 +1,201 @@
+/* css/login.css */
+.auth-container {
+    background: #fff; /* Matches overview.html main areas */
+    padding: 5rem 2rem;
+    max-width: 1000px;
+    margin: 90px auto 60px;
+    text-align: center;
+}
+
+.auth-container.dark-mode {
+    background: #1a1f2b; /* Matches overview.html dark mode */
+}
+
+.auth-container h1 {
+    color: #333; /* Matches overview.html primary text */
+    font-size: 2.8rem;
+    margin-bottom: 1.5rem;
+}
+
+.auth-container h1.dark-mode {
+    color: #fff; /* Matches overview.html dark mode text */
+}
+
+.intro-text {
+    color: #666; /* Matches overview.html secondary text */
+    font-size: 1.2rem;
+}
+
+.intro-text.dark-mode {
+    color: #ccc; /* Matches overview.html dark mode secondary text */
+}
+
+.role-card {
+    background: #fff; /* Matches overview.html sidebar/chat-area */
+    border: 1px solid #e0e0e0; /* Matches overview.html borders */
+    padding: 2.5rem;
+    border-radius: 20px;
+}
+
+.role-card.dark-mode {
+    background: #2a3550; /* Matches overview.html dark mode headers */
+    border-color: #444; /* Matches overview.html dark mode borders */
+}
+
+.role-card h2 {
+    color: #333; /* Matches overview.html contact headers */
+}
+
+.role-card h2.dark-mode {
+    color: #fff; /* Matches overview.html dark mode text */
+}
+
+.role-card p {
+    color: #666; /* Matches overview.html secondary text */
+}
+
+.role-card p.dark-mode {
+    color: #ccc; /* Matches overview.html dark mode secondary text */
+}
+
+.select-button {
+    background: #dcf8c6; /* Matches overview.html sent message color for a subtle accent */
+    color: #333; /* Matches overview.html text */
+    border: none;
+    padding: 0.7rem 2rem;
+    border-radius: 25px;
+}
+
+.select-button:hover {
+    background: #b7e0a3; /* Slightly darker shade for hover */
+}
+
+.select-button.dark-mode {
+    background: #3a4060; /* Matches overview.html dark mode received messages */
+    color: #fff; /* Matches overview.html dark mode text */
+}
+
+.select-button.dark-mode:hover {
+    background: #4a5a80; /* Slightly lighter shade for hover */
+}
+
+.auth-form {
+    background: #fff; /* Matches overview.html chat-area */
+    border: 1px solid #e0e0e0; /* Matches overview.html borders */
+    padding: 3rem;
+    border-radius: 20px;
+}
+
+.auth-form.dark-mode {
+    background: #2a3550; /* Matches overview.html dark mode chat-area */
+    border-color: #444; /* Matches overview.html dark mode borders */
+}
+
+.auth-form h2 {
+    color: #333; /* Matches overview.html contact headers */
+}
+
+.auth-form h2.dark-mode {
+    color: #fff; /* Matches overview.html dark mode text */
+}
+
+.auth-form p {
+    color: #666; /* Matches overview.html secondary text */
+}
+
+.auth-form p.dark-mode {
+    color: #ccc; /* Matches overview.html dark mode secondary text */
+}
+
+.auth-form input {
+    background: #f5f5f5; /* Matches overview.html chat-header/input background */
+    border: 1px solid #e0e0e0; /* Matches overview.html borders */
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    color: #333; /* Matches overview.html text */
+}
+
+.auth-form input.dark-mode {
+    background: #2a3550; /* Matches overview.html dark mode inputs */
+    border-color: #444; /* Matches overview.html dark mode borders */
+    color: #fff; /* Matches overview.html dark mode text */
+}
+
+.auth-form input:focus {
+    background: #fff; /* Matches overview.html light mode focus */
+    border-color: #333; /* Subtle accent */
+}
+
+.auth-form input.dark-mode:focus {
+    background: #3a4060; /* Matches overview.html dark mode received messages */
+    border-color: #fff; /* Subtle accent */
+}
+
+.form-buttons .cta-button {
+    background: #dcf8c6; /* Matches overview.html sent message color */
+    color: #333; /* Matches overview.html text */
+}
+
+.form-buttons .cta-button:hover {
+    background: #b7e0a3; /* Slightly darker shade */
+}
+
+.form-buttons .cta-button.dark-mode {
+    background: #3a4060; /* Matches overview.html dark mode received messages */
+    color: #fff; /* Matches overview.html dark mode text */
+}
+
+.form-buttons .cta-button.dark-mode:hover {
+    background: #4a5a80; /* Slightly lighter shade */
+}
+
+/* Navbar color tweaks to match overview.html */
+.navbar {
+    background: #f5f5f5; /* Matches overview.html chat-header */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.navbar.dark-mode {
+    background: #2a3550; /* Matches overview.html dark mode headers */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.nav-menu a {
+    color: #333; /* Matches overview.html text */
+}
+
+.nav-menu a:hover {
+    color: #666; /* Matches overview.html secondary text */
+}
+
+.nav-menu a.dark-mode {
+    color: #fff; /* Matches overview.html dark mode text */
+}
+
+.nav-menu a.dark-mode:hover {
+    color: #ccc; /* Matches overview.html dark mode secondary text */
+}
+
+.logo {
+    color: #333; /* Matches overview.html text */
+}
+
+.logo.dark-mode {
+    color: #fff; /* Matches overview.html dark mode text */
+}
+
+.hamburger {
+    color: #333; /* Matches overview.html text */
+}
+
+.hamburger.dark-mode {
+    color: #fff; /* Matches overview.html dark mode text */
+}
+
+.dark-mode-toggle {
+    color: #333; /* Matches overview.html text */
+}
+
+.dark-mode-toggle.dark-mode {
+    color: #fff; /* Matches overview.html dark mode text */
+}

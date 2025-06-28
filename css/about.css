@@ -1,0 +1,121 @@
+/* css/how-we-work.css */
+.how-we-work-section {
+    background: #fff;
+    padding: 5rem 2rem;
+    max-width: 1200px;
+    margin: 90px auto 60px;
+    text-align: center;
+}
+
+.how-we-work-section.dark-mode {
+    background: #1a1f2b;
+}
+
+.how-we-work-section h1 {
+    color: #333;
+    font-size: 2.8rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+}
+
+.how-we-work-section h1.dark-mode {
+    color: #fff;
+}
+
+.intro-text {
+    color: #666;
+    font-size: 1.2rem;
+    margin-bottom: 3rem;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.intro-text.dark-mode {
+    color: #ccc;
+}
+
+.process-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    justify-items: center;
+    text-align: left;
+}
+
+.grid-item {
+    padding: 1.5rem;
+    width: 100%;
+}
+
+.grid-item h3 {
+    color: #333;
+    font-size: 1.5rem;
+    margin-bottom: 0.8rem;
+    font-weight: 400;
+}
+
+.grid-item h3.dark-mode {
+    color: #fff;
+}
+
+.grid-item p {
+    color: #666;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.grid-item p.dark-mode {
+    color: #ccc;
+}
+
+/* Navbar styles (consistent with about.css) */
+.navbar {
+    background: #f5f5f5;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.navbar.dark-mode {
+    background: #2a3550;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.nav-menu a {
+    color: #333;
+}
+
+.nav-menu a:hover {
+    color: #666;
+}
+
+.nav-menu a.dark-mode {
+    color: #fff;
+}
+
+.nav-menu a.dark-mode:hover {
+    color: #ccc;
+}
+
+.logo {
+    color: #333;
+}
+
+.logo.dark-mode {
+    color: #fff;
+}
+
+.hamburger {
+    color: #333;
+}
+
+.hamburger.dark-mode {
+    color: #fff;
+}
+
+.dark-mode-toggle {
+    color: #333;
+}
+
+.dark-mode-toggle.dark-mode {
+    color: #fff;
+}

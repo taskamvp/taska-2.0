@@ -1,0 +1,16 @@
+{
+  "personal": { "name": "", "email": "", "whatsapp": "", "gender": "", "location": "", "linkedin": "" },
+  "education": { "college": "", "degree": "", "branch": "", "year": "" },
+  "availability": { "hours": "", "worktime": "", "remote": "", "duration": "" },
+  "skills": "",
+  "experience": "",
+  "profiles": {
+    "github": { "username": "", "details": { "repos": "", "languages": [], "projects": [] } },
+    "codeforces": { "username": "", "details": { "rating": "", "maxRating": "", "rank": "", "contribution": "" } },
+    "leetcode": { "username": "", "details": { "totalSolved": "", "easySolved": "", "mediumSolved": "", "hardSolved": "", "ranking": "" } }
+  },
+  "portfolio": ["url1", "url2", ...],
+  "preferences": { "roles": "", "why": "" },
+  "softSkills": { "communication": "", "deadlines": "" },
+  "isVisible": true
+}

@@ -1,0 +1,221 @@
+/* css/explore.css */
+.dashboard-section p {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 1.5rem;
+}
+
+.dashboard-section p.dark-mode {
+    color: #ccc;
+}
+
+.connect-prompt {
+    background: #f5f5f5;
+    padding: 1.5rem;
+    border-radius: 8px;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.connect-prompt.dark-mode {
+    background: #2a3550;
+}
+
+.connect-prompt h2 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.connect-prompt h2.dark-mode {
+    color: #fff;
+}
+
+.filter-options {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.filter-group {
+    flex: 1;
+    min-width: 200px;
+}
+
+.filter-group label {
+    font-size: 0.9rem;
+    color: #666;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.filter-group label.dark-mode {
+    color: #ccc;
+}
+
+.custom-dropdown {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    font-size: 1rem;
+    background: #fff;
+}
+
+.custom-dropdown.dark-mode {
+    background: #2a3550;
+    color: #fff;
+    border-color: #444;
+}
+
+.apply-filter-btn {
+    padding: 0.75rem 1.5rem;
+    background: #333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.apply-filter-btn:hover {
+    background: #555;
+}
+
+.apply-filter-btn.dark-mode {
+    background: #fff;
+    color: #333;
+}
+
+.apply-filter-btn.dark-mode:hover {
+    background: #ccc;
+}
+
+.professionals-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+}
+
+.professional-card {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
+}
+
+.professional-card.dark-mode {
+    background: #2a3550;
+    border-color: #444;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.professional-card:hover {
+    transform: translateY(-5px);
+}
+
+.professional-card h3 {
+    font-size: 1.2rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.professional-card h3.dark-mode {
+    color: #fff;
+}
+
+.professional-card p {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 0.25rem;
+}
+
+.professional-card p.dark-mode {
+    color: #ccc;
+}
+
+.professional-card .rating {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.professional-card .rating.dark-mode {
+    color: #ccc;
+}
+
+.connect-btn {
+    padding: 0.5rem 1rem;
+    background: #333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.connect-btn:hover {
+    background: #555;
+}
+
+.connect-btn.dark-mode {
+    background: #fff;
+    color: #333;
+}
+
+.connect-btn.dark-mode:hover {
+    background: #ccc;
+}
+
+/* Append to css/explore.css */
+.students-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+    padding: 2rem 0;
+}
+
+.student-card {
+    background: var(--background-light);
+    border: 1px solid var(--border-light);
+    padding: 1.5rem;
+    border-radius: 15px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.student-card.dark-mode {
+    background: var(--background-dark-alt);
+    border-color: var(--border-dark);
+}
+
+.student-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.student-card h3 {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.student-card h3.dark-mode {
+    color: var(--pure-white);
+}
+
+.student-card p {
+    font-size: 1rem;
+    color: var(--secondary-color);
+    margin: 0.5rem 0;
+}
+
+.student-card p.dark-mode {
+    color: var(--light-grey);
+}
+
+.student-card button {
+    margin-top: 1rem;
+}

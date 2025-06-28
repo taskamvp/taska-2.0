@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taska Elite - Your Profile</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
+    <style>
+        body { 
+            background: #ffffff; 
+            min-height: 100vh; 
+            overflow-x: hidden; 
+            font-family: 'Poppins', sans-serif; 
+        }
+        .navbar { 
+            background: #ffffff; 
+            border-bottom: 1px solid #e0e0e0; 
+            padding: 1rem; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+        .nav-menu { 
+            display: flex; 
+            gap: 1.5rem; 
+            list-style: none; 
+        }
+        .nav-menu a { 
+            text-decoration: none; 
+            color: #2c3e50; 
+            font-weight: 400; 
+        }
+        .nav-menu a.active { 
+            font-weight: 600; 
+            color: #0000ff; 
+        }
+        .dashboard-content { 
+            padding: 2rem; 
+            display: grid; 
+            place-items: center; 
+        }
+        .profile-container { 
+            background: #ffffff; 
+            border: 1px solid #e0e0e0; 
+            border-radius: 10px; 
+            width: 100%; 
+            max-width: 700px; 
+            padding: 2rem; 
+            display: grid; 
+            gap: 1.5rem; 
+        }
+        .profile-header { 
+            text-align: center; 
+        }
+        .profile-header h1 { 
+            font-size: 2rem; 
+            color: #2c3e50; 
+            margin: 0; 
+            text-transform: uppercase; 
+        }
+        .profile-avatar { 
+            width: 120px; 
+            height: 120px; 
+            border-radius: 50%; 
+            border: 3px solid #3498db; 
+            margin: 0 auto 1rem; 
+            overflow: hidden; 
+            cursor: pointer; 
+        }
+        .profile-avatar img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+        }
+        .details-grid { 
+            background: #f9f9f9; 
+            border: 1px solid #e0e0e0; 
+            border-radius: 10px; 
+            padding: 1.5rem; 
+            display: grid; 
+            gap: 0.8rem; 
+        }
+        .details-grid h2 { 
+            font-size: 1.5rem; 
+            color: #2c3e50; 
+            margin-bottom: 0.5rem; 
+        }
+        .details-grid p { 
+            margin: 0; 
+            font-size: 1rem; 
+            color: #34495e; 
+            display: grid; 
+            grid-template-columns: 150px 1fr; 
+        }
+        .details-grid strong { 
+            color: #2c3e50; 
+            font-weight: 600; 
+        }
+        .profile-actions { 
+            text-align: center; 
+        }
+        .edit-btn { 
+            display: inline-block; 
+            padding: 0.8rem 2rem; 
+            background: #3498db; 
+            color: #ffffff; 
+            text-decoration: none; 
+            border-radius: 10px; 
+            font-size: 1rem; 
+        }
+        .logout-btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background: #e74c3c;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            margin-left: 1rem;
+        }
+        .logout-btn:hover {
+            background: #c0392b;
+        }
+        footer { 
+            background: #ffffff; 
+            padding: 1rem; 
+            text-align: center; 
+            border-top: 1px solid #e0e0e0; 
+            position: fixed; 
+            bottom: 0; 
+            width: 100%; 
+        }
+        footer a { 
+            color: #3498db; 
+            text-decoration: none; 
+        }
+
+        /* Profile Image Upload */
+        .profile-image-section { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            gap: 1rem; 
+            margin-bottom: 1rem; 
+        }
+        .profile-upload-btn { 
+            padding: 0.5rem 1rem; 
+            background: #3498db; 
+            color: #ffffff; 
+            border: none; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            font-size: 0.9rem; 
+        }
+        .profile-upload-btn:hover { 
+            background: #2980b9; 
+        }
+
+        /* Cropper Modal */
+        .cropper-modal { 
+            display: none; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(0,0,0,0.85); 
+            z-index: 10000; 
+            align-items: center; 
+            justify-content: center; 
+            opacity: 1; 
+        }
+        .cropper-container { 
+            background: #ffffff; 
+            border-radius: 8px; 
+            padding: 1.5rem; 
+            width: 90%; 
+            max-width: 500px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 1rem; 
+        }
+        .cropper-image-wrapper { 
+            width: 100%; 
+            height: 400px; 
+            overflow: hidden; 
+            position: relative; 
+        }
+        .cropper-image-wrapper img { 
+            max-width: 100%; 
+            max-height: 100%; 
+            width: 100%; 
+            height: 100%; 
+            object-fit: contain; 
+            display: block; 
+        }
+        .cropper-controls { 
+            display: flex; 
+            gap: 0.5rem; 
+            justify-content: center; 
+            flex-wrap: wrap; 
+        }
+        .cropper-btn { 
+            padding: 0.5rem 1rem; 
+            border: none; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            font-size: 0.9rem; 
+            background: #f3f4f6; 
+            color: #2c3e50; 
+            transition: background 0.3s ease; 
+        }
+        .cropper-btn:hover { 
+            background: #e5e7eb; 
+        }
+        .cropper-btn.save { 
+            background: #3498db; 
+            color: #ffffff; 
+        }
+        .cropper-btn.save:hover { 
+            background: #2980b9; 
+        }
+        .cropper-btn.cancel { 
+            background: #e5e7eb; 
+            color: #2c3e50; 
+        }
+        .cropper-btn.cancel:hover { 
+            background: #d1d5db; 
+        }
+        .cropper-btn.zoom-in, .cropper-btn.zoom-out, .cropper-btn.rotate { 
+            padding: 0.5rem; 
+            background: #f3f4f6; 
+            color: #2c3e50; 
+        }
+        .cropper-btn.zoom-in:hover, .cropper-btn.zoom-out:hover, .cropper-btn.rotate:hover { 
+            background: #e5e7eb; 
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .navbar .nav-menu {
+                display: none;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                right: 0;
+                background: #ffffff;
+                flex-direction: column;
+                padding: 1rem;
+                border-top: 1px solid #e0e0e0;
+            }
+            .navbar .nav-menu.active {
+                display: flex;
+            }
+            .navbar .hamburger {
+                display: block;
+            }
+            .profile-container { padding: 1.5rem; }
+            .profile-header h1 { font-size: 1.5rem; }
+            .cropper-container { padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="../index.html">
+            <div class="logo">Taska Elite</div>
+        </a>
+        <ul class="nav-menu">
+            <li><a href="explore.html">Explore</a></li>
+            <li><a href="tasks.html">Tasks</a></li>
+            <li><a href="profile.html" class="active">Account</a></li>
+        </ul>
+        <div class="hamburger">☰</div>
+    </nav>
+
+    <main class="dashboard-content">
+        <div class="profile-container">
+            <div class="profile-header">
+                <h1>Your Profile</h1>
+                <div class="profile-image-section">
+                    <div class="profile-avatar" onclick="document.getElementById('profile-image').click()">
+                        <img id="profile-image-preview" src="../assets/avatar/1.png" alt="Profile Preview">
+                    </div>
+                    <input type="file" id="profile-image" accept="image/*" style="display: none;">
+                </div>
+            </div>
+
+            <div class="details-grid">
+                <h2>Personal Details</h2>
+                <p><strong>Name:</strong> <span id="name">Loading...</span></p>
+                <p><strong>Email:</strong> <span id="email">Loading...</span></p>
+                <p><strong>Phone:</strong> <span id="phone">Loading...</span></p>
+                <p><strong>Location:</strong> <span id="location">Loading...</span></p>
+                <p><strong>Bio:</strong> <span id="bio">Loading...</span></p>
+            </div>
+
+            <div class="details-grid">
+                <h2>Professional Details</h2>
+                <p><strong>Job Role:</strong> <span id="jobRole">Loading...</span></p>
+                <p><strong>Company:</strong> <span id="company">Loading...</span></p>
+                <p><strong>Experience:</strong> <span id="experience">Loading...</span></p>
+            </div>
+
+            <div class="details-grid">
+                <h2>Educational Details</h2>
+                <p><strong>College:</strong> <span id="college">Loading...</span></p>
+                <p><strong>Degree:</strong> <span id="degree">Loading...</span></p>
+                <p><strong>Area of Study:</strong> <span id="areaOfStudy">Loading...</span></p>
+            </div>
+
+            <div class="profile-actions">
+                <a href="update-profile.html" class="edit-btn">Edit Profile</a>
+                <a href="#" id="logout-btn" class="logout-btn">Logout</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Cropper Modal -->
+    <div class="cropper-modal" id="cropper-modal">
+        <div class="cropper-container">
+            <div class="cropper-image-wrapper">
+                <img id="cropper-image" src="" alt="Image to crop">
+            </div>
+            <div class="cropper-controls">
+                <button type="button" class="cropper-btn zoom-in"><i class="fas fa-search-plus"></i></button>
+                <button type="button" class="cropper-btn zoom-out"><i class="fas fa-search-minus"></i></button>
+                <button type="button" class="cropper-btn rotate"><i class="fas fa-redo"></i></button>
+                <button type="button" class="cropper-btn save">Save</button>
+                <button type="button" class="cropper-btn cancel">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 Taska Elite. All rights reserved. | <a href="#" class="privacy-policy">Privacy Policy</a></p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+        import { getDatabase, ref, get, set, push } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
+        import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDZIDlEtaNRxODoFhRw0xF2yYFBqqBexqo",
+            authDomain: "taska-45011.firebaseapp.com",
+            databaseURL: "https://taska-45011-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "taska-45011",
+            storageBucket: "taska-45011.firebasestorage.app",
+            messagingSenderId: "205487498813",
+            appId: "1:205487498813:web:0de2c9eab567482781ec54"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+        const storage = getStorage(app);
+        const userId = localStorage.getItem('userId');
+
+        if (!userId) {
+            alert("Please log in or sign up first.");
+            window.location.href = '../login.html';
+        } else {
+            loadProfileData();
+        }
+
+        let cropper;
+        const profileImageInput = document.getElementById('profile-image');
+        const profileImagePreview = document.getElementById('profile-image-preview');
+        const cropperModal = document.getElementById('cropper-modal');
+        const cropperImage = document.getElementById('cropper-image');
+        const zoomInBtn = document.querySelector('.cropper-btn.zoom-in');
+        const zoomOutBtn = document.querySelector('.cropper-btn.zoom-out');
+        const rotateBtn = document.querySelector('.cropper-btn.rotate');
+        const saveBtn = document.querySelector('.cropper-btn.save');
+        const cancelBtn = document.querySelector('.cropper-btn.cancel');
+
+        profileImageInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    cropperImage.src = event.target.result;
+                    cropperModal.style.display = 'flex';
+                    if (cropper) cropper.destroy();
+                    cropper = new Cropper(cropperImage, {
+                        aspectRatio: 1,
+                        viewMode: 1,
+                        autoCropArea: 0.8,
+                        responsive: true,
+                        background: false,
+                        modal: true,
+                        zIndex: 5200
+                    });
+                    document.body.style.overflow = 'hidden';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        zoomInBtn.addEventListener('click', () => cropper.zoom(0.1));
+        zoomOutBtn.addEventListener('click', () => cropper.zoom(-0.1));
+        rotateBtn.addEventListener('click', () => cropper.rotate(90));
+        cancelBtn.addEventListener('click', () => {
+            cropperModal.style.display = 'none';
+            if (cropper) cropper.destroy();
+            profileImageInput.value = '';
+            document.body.style.overflow = 'auto';
+        });
+
+        saveBtn.addEventListener('click', async () => {
+            if (!cropper) return;
+            const canvas = cropper.getCroppedCanvas({
+                width: 200,
+                height: 200,
+                imageSmoothingQuality: 'high'
+            });
+            canvas.toBlob(async (blob) => {
+                try {
+                    const webpBlob = await new Promise((resolve) => {
+                        const img = new Image();
+                        img.src = canvas.toDataURL('image/webp', 0.8);
+                        img.onload = () => {
+                            const tempCanvas = document.createElement('canvas');
+                            tempCanvas.width = img.width;
+                            tempCanvas.height = img.height;
+                            tempCanvas.getContext('2d').drawImage(img, 0, 0);
+                            tempCanvas.toBlob(resolve, 'image/webp', 0.8);
+                        };
+                    });
+
+                    const storagePath = `profile/${userId}.webp`;
+                    const imageRef = storageRef(storage, storagePath);
+                    await uploadBytes(imageRef, webpBlob);
+                    const downloadURL = await getDownloadURL(imageRef);
+
+                    profileImagePreview.src = downloadURL;
+
+                    const verificationRef = ref(database, `verification/${userId}`);
+                    await push(verificationRef, {
+                        field: 'personal.profilePic',
+                        value: downloadURL,
+                        timestamp: Date.now(),
+                        status: 'pending'
+                    });
+
+                    const userRef = ref(database, `professionalslist/${userId}`);
+                    const snapshot = await get(userRef);
+                    if (snapshot.exists()) {
+                        const data = snapshot.val();
+                        await set(userRef, {
+                            ...data,
+                            personal: {
+                                ...data.personal,
+                                profilePic: downloadURL
+                            }
+                        });
+                    }
+
+                    cropperModal.style.display = 'none';
+                    if (cropper) cropper.destroy();
+                    profileImageInput.value = '';
+                    document.body.style.overflow = 'auto';
+                } catch (error) {
+                    alert("Failed to upload image: " + error.message);
+                }
+            }, 'image/webp', 0.8);
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const hamburger = document.querySelector('.navbar .hamburger');
+            const navMenu = document.querySelector('.navbar .nav-menu');
+            hamburger.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+            });
+        });
+
+        async function loadProfileData() {
+            try {
+                const userRef = ref(database, `professionalslist/${userId}`);
+                const snapshot = await get(userRef);
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    document.getElementById('name').textContent = data.personal?.name || 'Not set';
+                    document.getElementById('email').textContent = data.personal?.email || 'Not set';
+                    document.getElementById('phone').textContent = data.personal?.phone || 'Not set';
+                    document.getElementById('location').textContent = data.personal?.location || 'Not set';
+                    document.getElementById('bio').textContent = data.personal?.bio || 'Not set';
+                    document.getElementById('jobRole').textContent = data.professional?.jobRole || 'Not set';
+                    document.getElementById('company').textContent = data.professional?.company || 'Not set';
+                    document.getElementById('experience').textContent = data.professional?.experience || 'Not set';
+                    document.getElementById('college').textContent = data.education?.college || 'Not set';
+                    document.getElementById('degree').textContent = data.education?.degree || 'Not set';
+                    document.getElementById('areaOfStudy').textContent = data.education?.areaOfStudy || 'Not set';
+                    profileImagePreview.src = data.personal?.profilePic || '../assets/avatar/1.png';
+                } else {
+                    alert("No profile data found. Please update your profile.");
+                }
+            } catch (error) {
+                alert(`Failed to load profile: ${error.message}`);
+            }
+        }
+
+        document.getElementById('logout-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            localStorage.clear();
+            window.location.href = '../index.html';
+        });
+    </script>
+</body>
+</html>

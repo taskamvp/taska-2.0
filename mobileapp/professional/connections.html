@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taska Elite - Connections</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="mobile.css">
+</head>
+<body class="bg-white">
+    <!-- Header -->
+    <header class="p-4 bg-white shadow">
+        <h1 class="text-2xl font-semibold text-gray-800">Connections</h1>
+    </header>
+
+    <!-- Main Content -->
+    <main class="p-4">
+        <div id="connections-list" class="space-y-4"></div>
+        <div id="student-interaction" class="hidden mt-4">
+            <!-- Student Header -->
+            <div id="student-header" class="flex items-center gap-4 mb-4 animate-fadeInUp">
+                <img id="student-pic" src="../assets/avatar/1.png" alt="Student" class="w-12 h-12 rounded-full">
+                <div>
+                    <h2 id="student-name" class="text-xl font-semibold text-gray-800">Unnamed</h2>
+                    <p id="student-title" class="text-sm text-gray-600"></p>
+                </div>
+            </div>
+            <!-- Tabs -->
+            <div class="flex border-b border-gray-200 mb-4">
+                <button id="chat-tab" class="tab-button active" onclick="switchTab('chat')">Chat</button>
+                <button id="tasks-tab" class="tab-button" onclick="switchTab('tasks')">Tasks</button>
+            </div>
+            <!-- Chat Content -->
+            <div id="chat-content" class="tab-content animate-fadeInUp">
+                <div class="chat-header flex items-center justify-between">
+                    <div class="menu">
+                        <i class="fas fa-ellipsis-v menu-icon"></i>
+                        <div class="menu-dropdown">
+                            <button data-action="deleteConnection">Delete Connection</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="chat-messages" class="space-y-2 overflow-y-auto" style="max-height: 50vh;"></div>
+                <div class="chat-input mt-4">
+                    <div class="input-container relative">
+                        <div class="upload-progress" id="upload-progress">
+                            <div class="upload-progress-bar" id="upload-progress-bar"></div>
+                        </div>
+                        <textarea id="chat-input" placeholder="Type a message..." rows="1" class="w-full p-2 border rounded-lg resize-none"></textarea>
+                        <i class="fas fa-at mention-icon absolute right-10 top-3 cursor-pointer" id="mention-icon"></i>
+                        <label for="file-input" class="file-input-label absolute right-2 top-3 cursor-pointer"><i class="fas fa-paperclip"></i></label>
+                        <input type="file" id="file-input" class="file-input hidden">
+                        <div class="task-dropdown absolute bottom-full right-0 bg-white shadow-lg rounded-lg max-h-40 overflow-y-auto" id="task-dropdown"></div>
+                    </div>
+                    <button onclick="sendMessage()" class="mt-2 bg-blue-600 text-white p-2 rounded-full"><i class="fas fa-paper-plane"></i></button>
+                </div>
+            </div>
+            <!-- Tasks Content -->
+            <div id="tasks-content" class="tab-content hidden animate-fadeInUp">
+                <div id="tasks-list" class="space-y-4"></div>
+                <div class="completed-tasks mt-4">
+                    <h4 onclick="toggleCompletedTasks()">Completed Tasks <i class="fas fa-chevron-down toggle-icon"></i></h4>
+                    <div class="completed-tasks-list" id="completed-tasks-list"></div>
+                </div>
+                <button class="add-task-btn mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg" onclick="openTaskPopup()">Add Task</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Task Popup -->
+    <div class="task-popup" id="task-popup">
+        <div class="task-popup-content animate-scaleIn">
+            <div class="header">
+                <h3 id="task-popup-title">Add Task</h3>
+                <button onclick="closeTaskPopup()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="form-group">
+                <label for="task-title">Task Title</label>
+                <input type="text" id="task-title" placeholder="Enter task title" class="w-full p-2 border rounded-lg">
+            </div>
+            <div class="form-group">
+                <label for="task-description">Description</label>
+                <textarea id="task-description" placeholder="Enter task description" class="w-full p-2 border rounded-lg"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="task-deadline">Deadline</label>
+                <input type="date" id="task-deadline" class="w-full p-2 border rounded-lg">
+            </div>
+            <div class="form-group">
+                <label for="task-files">Attach Files</label>
+                <input type="file" id="task-files" multiple class="w-full p-2 border rounded-lg">
+                <div id="task-files-list" class="space-y-2 mt-2"></div>
+            </div>
+            <div class="actions">
+                <button class="cancel-btn px-4 py-2 bg-gray-200 rounded-lg" onclick="closeTaskPopup()">Cancel</button>
+                <button class="submit-btn px-4 py-2 bg-blue-600 text-white rounded-lg" onclick="submitTask()">Submit</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Dialog -->
+    <div class="confirmation-dialog" id="confirmation-dialog">
+        <div class="dialog-box animate-scaleIn">
+            <h3 id="dialog-title"></h3>
+            <p id="dialog-message"></p>
+            <div class="dialog-actions">
+                <button class="cancel px-4 py-2 bg-gray-200 rounded-lg" onclick="closeConfirmation()">Cancel</button>
+                <button id="confirm-button" class="confirm px-4 py-2 bg-blue-600 text-white rounded-lg"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio -->
+    <audio id="message-ding" src="../assets/ding.mp3"></audio>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="tasks.html" class="nav-item"><i class="fas fa-tasks"></i></a>
+        <a href="chat.html" class="nav-item"><i class="fas fa-comment"></i></a>
+        <a href="connections.html" class="nav-item active"><i class="fas fa-users"></i></a>
+        <a href="profile.html" class="nav-item"><i class="fas fa-user"></i></a>
+    </nav>
+
+    <!-- Firebase Scripts -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+        import { getDatabase, ref, get, push, set, onValue, update, remove } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
+        import { getAuth } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+        import { getStorage, ref as storageRef, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-storage.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDZIDlEtaNRxODoFhRw0xF2yYFBqqBexqo",
+            authDomain: "taska-45011.firebaseapp.com",
+            databaseURL: "https://taska-45011-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "taska-45011",
+            storageBucket: "gs://taska-45011.firebasestorage.app",
+            messagingSenderId: "205487498813",
+            appId: "1:205487498813:web:0de2c9eab567482781ec54",
+            measurementId: "G-G0G1F6GQ9B"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const auth = getAuth(app);
+        const storage = getStorage(app);
+
+        let userId = null;
+        let selectedStudentId = null;
+        let studentData = null;
+        let currentUserProfile = null;
+        let uploadedTaskFiles = [];
+        let editingTaskId = null;
+
+        const elements = {
+            connectionsList: document.getElementById('connections-list'),
+            studentInteraction: document.getElementById('student-interaction'),
+            studentHeader: document.getElementById('student-header'),
+            studentPic: document.getElementById('student-pic'),
+            studentName: document.getElementById('student-name'),
+            studentTitle: document.getElementById('student-title'),
+            chatMessages: document.getElementById('chat-messages'),
+            chatInput: document.getElementById('chat-input'),
+            fileInput: document.getElementById('file-input'),
+            uploadProgress: document.getElementById('upload-progress'),
+            uploadProgressBar: document.getElementById('upload-progress-bar'),
+            mentionIcon: document.getElementById('mention-icon'),
+            taskDropdown: document.getElementById('task-dropdown'),
+            tasksList: document.getElementById('tasks-list'),
+            completedTasksList: document.getElementById('completed-tasks-list'),
+            taskPopup: document.getElementById('task-popup'),
+            taskPopupTitle: document.getElementById('task-popup-title'),
+            taskTitle: document.getElementById('task-title'),
+            taskDescription: document.getElementById('task-description'),
+            taskDeadline: document.getElementById('task-deadline'),
+            taskFiles: document.getElementById('task-files'),
+            taskFilesList: document.getElementById('task-files-list'),
+            confirmationDialog: document.getElementById('confirmation-dialog'),
+            dialogTitle: document.getElementById('dialog-title'),
+            dialogMessage: document.getElementById('dialog-message'),
+            confirmButton: document.getElementById('confirm-button'),
+            messageDing: document.getElementById('message-ding')
+        };
+
+        async function fetchStudentData() {
+            if (studentData) return studentData;
+            try {
+                const snapshot = await get(ref(db, 'studentslist'));
+                const data = snapshot.val() || {};
+                studentData = Object.keys(data).map(id => ({
+                    id,
+                    ...data[id],
+                    personal: data[id].personal || {},
+                    education: data[id].education || {},
+                    skills: data[id].skills || '',
+                    profiles: data[id].profiles || {},
+                    portfolio: data[id].portfolio || []
+                }));
+                return studentData;
+            } catch (error) {
+                console.error('Error fetching student data:', error);
+                return [];
+            }
+        }
+
+        async function fetchCurrentUserProfile() {
+            if (currentUserProfile) return currentUserProfile;
+            try {
+                const snapshot = await get(ref(db, `professionalslist/${userId}`));
+                const user = snapshot.val() || {};
+                currentUserProfile = {
+                    name: user.personal?.name || "Unnamed",
+                    profilePic: user.personal?.profilePic || "../assets/avatar/1.png"
+                };
+                return currentUserProfile;
+            } catch (error) {
+                console.error('Error fetching current user profile:', error);
+                return { name: "Unnamed", profilePic: "../assets/avatar/1.png" };
+            }
+        }
+
+        function confirmAction(action, title, message, actionParams = {}) {
+            elements.dialogTitle.textContent = title;
+            elements.dialogMessage.textContent = message;
+            elements.confirmationDialog.classList.add('active');
+            elements.confirmButton.textContent = title.includes('Delete') ? 'Delete' : 'Confirm';
+            elements.confirmButton.className = title.includes('Delete') ? 'delete px-4 py-2 bg-red-600 text-white rounded-lg' : 'confirm px-4 py-2 bg-blue-600 text-white rounded-lg';
+            elements.confirmButton.onclick = () => {
+                window[action](actionParams);
+                closeConfirmation();
+            };
+        }
+
+        function closeConfirmation() {
+            elements.confirmationDialog.classList.remove('active');
+        }
+
+        function getFileIconClass(type) {
+            if (type.includes('pdf')) return 'fas fa-file-pdf';
+            if (type.includes('image')) return 'fas fa-file-image';
+            if (type.includes('video')) return 'fas fa-file-video';
+            if (type.includes('excel') || type.includes('spreadsheet')) return 'fas fa-file-excel';
+            if (type.includes('word') || type.includes('doc')) return 'fas fa-file-word';
+            return 'fas fa-file';
+        }
+
+        function getFileIconColor(type) {
+            if (type.includes('pdf')) return '#FF5252';
+            if (type.includes('image')) return '#4CAF50';
+            if (type.includes('video')) return '#2196F3';
+            if (type.includes('excel') || type.includes('spreadsheet')) return '#2E7D32';
+            if (type.includes('word') || type.includes('doc')) return '#1976D2';
+            return '#6c757d';
+        }
+
+        async function init() {
+            document.addEventListener('DOMContentLoaded', async () => {
+                await fetchStudentData();
+                setupEventListeners();
+                auth.onAuthStateChanged(user => {
+                    if (user) {
+                        userId = user.uid;
+                        fetchCurrentUserProfile().then(() => {
+                            loadConnections();
+                        });
+                    } else {
+                        console.error("User not authenticated");
+                        window.location.href = "index.html";
+                    }
+                });
+            });
+        }
+
+        function setupEventListeners() {
+            document.addEventListener('click', async (e) => {
+                const target = e.target;
+                if (target.closest('.user-item')) {
+                    const studentId = target.closest('.user-item').dataset.studentId;
+                    selectStudent(studentId);
+                }
+                if (target.matches('.reaction-icon')) {
+                    const messageId = target.closest('.message').dataset.messageId;
+                    const reaction = target.dataset.reaction;
+                    toggleReaction(messageId, reaction);
+                }
+                if (target.matches('.message-menu-icon')) {
+                    const dropdown = target.closest('.message-menu').querySelector('.message-menu-dropdown');
+                    dropdown.classList.toggle('active');
+                }
+                if (target.matches('.message-menu-dropdown button')) {
+                    const action = target.dataset.action;
+                    const messageId = target.closest('.message').dataset.messageId;
+                    if (action === 'deleteMessage') {
+                        confirmAction('deleteMessage', 'Delete Message', 'Are you sure you want to delete this message?', { messageId });
+                    }
+                }
+                if (target.matches('.chat-header .menu-icon')) {
+                    const dropdown = target.closest('.menu').querySelector('.menu-dropdown');
+                    dropdown.classList.toggle('active');
+                }
+                if (target.matches('.chat-header .menu-dropdown button')) {
+                    const action = target.dataset.action;
+                    if (action === 'deleteConnection') {
+                        confirmAction('deleteConnection', 'Delete Connection', 'Are you sure you want to delete this connection?', { studentId: selectedStudentId });
+                    }
+                }
+                if (target.matches('.mention-icon')) {
+                    elements.taskDropdown.classList.toggle('active');
+                    if (elements.taskDropdown.classList.contains('active')) {
+                        await populateTaskDropdown();
+                    }
+                }
+                if (target.matches('.task-dropdown-item')) {
+                    const taskTitle = target.textContent;
+                    insertMention(taskTitle);
+                }
+                if (target.matches('.task-menu-icon')) {
+                    const dropdown = target.closest('.task-menu').querySelector('.task-menu-dropdown');
+                    dropdown.classList.toggle('active');
+                }
+                if (target.matches('.task-menu-dropdown button')) {
+                    const action = target.dataset.action;
+                    const taskId = target.closest('.workflow-item').dataset.taskId;
+                    if (action === 'editTask') {
+                        openTaskPopup(taskId);
+                    } else if (action === 'deleteTask') {
+                        confirmAction('deleteTask', 'Delete Task', 'Are you sure you want to delete this task?', { taskId });
+                    }
+                }
+                if (target.matches('.remove-file')) {
+                    const fileIndex = target.dataset.index;
+                    uploadedTaskFiles.splice(fileIndex, 1);
+                    updateTaskFilesList();
+                }
+            });
+
+            if (elements.tasksList) {
+                elements.tasksList.addEventListener('change', (e) => {
+                    if (e.target.matches('.status-select')) {
+                        const taskId = e.target.closest('.workflow-item').dataset.taskId;
+                        const newStatus = e.target.value;
+                        confirmAction('updateStatus', `Update Task Status`, `Are you sure you want to change the task status to "${newStatus}"?`, { taskId, status: newStatus });
+                    }
+                });
+            }
+
+            if (elements.chatInput) {
+                elements.chatInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        sendMessage();
+                    }
+                });
+                elements.chatInput.addEventListener('input', async () => {
+                    elements.chatInput.style.height = 'auto';
+                    elements.chatInput.style.height = `${Math.min(elements.chatInput.scrollHeight, 100)}px`;
+                    const value = elements.chatInput.value;
+                    if (value.endsWith('@') && !elements.taskDropdown.classList.contains('active')) {
+                        elements.taskDropdown.classList.add('active');
+                        await populateTaskDropdown();
+                    }
+                });
+                elements.chatInput.addEventListener('keydown', (e) => {
+                    if (elements.taskDropdown.classList.contains('active')) {
+                        const items = elements.taskDropdown.querySelectorAll('.task-dropdown-item');
+                        let selectedIndex = -1;
+                        items.forEach((item, index) => {
+                            if (item.classList.contains('selected')) selectedIndex = index;
+                        });
+                        if (e.key === 'ArrowDown') {
+                            e.preventDefault();
+                            selectedIndex = Math.min(selectedIndex + 1, items.length - 1);
+                            items.forEach(item => item.classList.remove('selected'));
+                            items[selectedIndex].classList.add('selected');
+                            items[selectedIndex].scrollIntoView({ block: 'nearest' });
+                        } else if (e.key === 'ArrowUp') {
+                            e.preventDefault();
+                            selectedIndex = Math.max(selectedIndex - 1, 0);
+                            items.forEach(item => item.classList.remove('selected'));
+                            items[selectedIndex].classList.add('selected');
+                            items[selectedIndex].scrollIntoView({ block: 'nearest' });
+                        } else if (e.key === 'Enter' && selectedIndex >= 0) {
+                            e.preventDefault();
+                            const taskTitle = items[selectedIndex].textContent;
+                            insertMention(taskTitle);
+                        } else if (e.key === 'Escape') {
+                            elements.taskDropdown.classList.remove('active');
+                        }
+                    }
+                });
+            }
+
+            if (elements.fileInput) {
+                elements.fileInput.addEventListener('change', async () => {
+                    if (elements.fileInput.files.length > 0) {
+                        await sendFileMessage(elements.fileInput.files[0]);
+                        elements.fileInput.value = '';
+                    }
+                });
+            }
+
+            if (elements.taskFiles) {
+                elements.taskFiles.addEventListener('change', () => {
+                    const files = Array.from(elements.taskFiles.files);
+                    uploadedTaskFiles.push(...files);
+                    updateTaskFilesList();
+                    elements.taskFiles.value = '';
+                });
+            }
+
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.task-menu')) {
+                    document.querySelectorAll('.task-menu-dropdown.active').forEach(dropdown => {
+                        dropdown.classList.remove('active');
+                    });
+                }
+                if (!e.target.closest('.message-menu')) {
+                    document.querySelectorAll('.message-menu-dropdown.active').forEach(dropdown => {
+                        dropdown.classList.remove('active');
+                    });
+                }
+                if (!e.target.closest('.chat-header .menu')) {
+                    document.querySelectorAll('.chat-header .menu-dropdown.active').forEach(dropdown => {
+                        dropdown.classList.remove('active');
+                    });
+                }
+                if (!e.target.closest('.input-container')) {
+                    elements.taskDropdown.classList.remove('active');
+                }
+            });
+        }
+
+        function updateTaskFilesList() {
+            elements.taskFilesList.innerHTML = '';
+            uploadedTaskFiles.forEach((file, index) => {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'task-file-item flex items-center gap-2';
+                fileItem.innerHTML = `
+                    <i class="${getFileIconClass(file.type)}"></i>
+                    <span>${file.name}</span>
+                    <i class="fas fa-times remove-file cursor-pointer" data-index="${index}"></i>
+                `;
+                elements.taskFilesList.appendChild(fileItem);
+            });
+        }
+
+        async function loadConnections() {
+            try {
+                const connectionsRef = ref(db, `users/${userId}/connections`);
+                const snapshot = await get(connectionsRef);
+                elements.connectionsList.innerHTML = '';
+                if (snapshot.exists()) {
+                    const connections = snapshot.val();
+                    let hasConnections = false;
+                    const students = await fetchStudentData();
+                    for (const studentId in connections) {
+                        if (connections[studentId].status === "connected") {
+                            hasConnections = true;
+                            const student = students.find(s => s.id === studentId) || {};
+                            const userName = student.personal?.name || "Unnamed";
+                            const profilePic = student.personal?.profilePic || "../assets/avatar/1.png";
+                            const userItem = document.createElement('div');
+                            userItem.className = 'user-item card flex items-center cursor-pointer';
+                            userItem.dataset.studentId = studentId;
+                            userItem.innerHTML = `
+                                <img src="${profilePic}" alt="${userName}" class="w-12 h-12 rounded-full mr-3">
+                                <div>
+                                    <h3 class="text-lg font-semibold">${userName}</h3>
+                                    <p class="text-sm text-gray-600">${student.education?.branch || 'Not set'}</p>
+                                </div>
+                            `;
+                            elements.connectionsList.appendChild(userItem);
+                        }
+                    }
+                    if (!hasConnections) {
+                        elements.connectionsList.innerHTML = '<p>No connected students found.</p>';
+                    }
+                } else {
+                    elements.connectionsList.innerHTML = '<p>No connected students found.</p>';
+                }
+            } catch (error) {
+                console.error("Error loading connections:", error);
+                elements.connectionsList.innerHTML = '<p>Error loading connections.</p>';
+            }
+        }
+
+        async function selectStudent(studentId) {
+            selectedStudentId = studentId;
+            const userItems = document.querySelectorAll('.user-item');
+            const selectedItem = document.querySelector(`.user-item[data-student-id="${studentId}"]`);
+            userItems.forEach(item => {
+                if (item !== selectedItem) {
+                    item.classList.add('animate-slideUp');
+                } else {
+                    item.classList.add('animate-scaleFadeOut');
+                }
+            });
+            setTimeout(async () => {
+                elements.connectionsList.innerHTML = '';
+                elements.studentInteraction.classList.remove('hidden');
+                const students = await fetchStudentData();
+                const student = students.find(s => s.id === studentId) || {};
+                elements.studentName.textContent = student.personal?.name || "Unnamed";
+                elements.studentTitle.textContent = student.education?.branch || "";
+                elements.studentPic.src = student.personal?.profilePic || "../assets/avatar/1.png";
+                switchTab('chat');
+            }, 300);
+        }
+
+        window.switchTab = (tab) => {
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
+            document.getElementById(`${tab}-tab`).classList.add('active');
+            document.getElementById(`${tab}-content`).classList.remove('hidden');
+            if (tab === 'chat') {
+                loadChat();
+            } else {
+                loadWorkflows();
+                loadCompletedTasks();
+            }
+        };
+
+        function formatMessageDate(timestamp) {
+            const now = new Date();
+            const messageDate = new Date(timestamp);
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const yesterday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
+            const messageDay = new Date(messageDate.getFullYear(), messageDate.getMonth(), messageDate.getDate());
+            if (messageDay.getTime() === today.getTime()) {
+                return 'Today';
+            } else if (messageDay.getTime() === yesterday.getTime()) {
+                return 'Yesterday';
+            } else {
+                return messageDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+            }
+        }
+
+        async function loadChat() {
+            if (!selectedStudentId) {
+                elements.chatMessages.innerHTML = '<div class="message">Select a student to start chatting.</div>';
+                return;
+            }
+            const chatId = [userId, selectedStudentId].sort().join("+");
+            const chatRef = ref(db, `chats/${chatId}/messages`);
+            const currentUser = await fetchCurrentUserProfile();
+            onValue(chatRef, async (snapshot) => {
+                elements.chatMessages.innerHTML = '';
+                if (snapshot.exists()) {
+                    const messages = Object.entries(snapshot.val())
+                        .map(([id, msg]) => ({ id, ...msg }))
+                        .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+                    const students = await fetchStudentData();
+                    const student = students.find(s => s.id === selectedStudentId) || {};
+                    const tasksRef = ref(db, `tasks`);
+                    const tasksSnapshot = await get(tasksRef);
+                    const tasks = tasksSnapshot.exists() ? tasksSnapshot.val() : {};
+                    let taskTitles = [];
+                    for (const taskId in tasks) {
+                        if (tasks[taskId].professionalId === userId && tasks[taskId].studentId === selectedStudentId) {
+                            taskTitles.push(tasks[taskId].title);
+                        }
+                    }
+                    let lastDate = null;
+                    messages.forEach(msg => {
+                        const isSent = msg.senderId === userId;
+                        const senderName = isSent ? currentUser.name : (student.personal?.name || "Unnamed");
+                        const profilePic = isSent 
+                            ? currentUser.profilePic
+                            : student.personal?.profilePic || "../assets/avatar/1.png";
+                        const time = new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                        const date = formatMessageDate(msg.timestamp);
+                        if (date !== lastDate) {
+                            const dateDivider = document.createElement('div');
+                            dateDivider.className = 'date-divider';
+                            dateDivider.innerHTML = `<span>${date}</span>`;
+                            elements.chatMessages.appendChild(dateDivider);
+                            lastDate = date;
+                        }
+                        const messageDiv = document.createElement('div');
+                        messageDiv.className = `message ${isSent ? 'sent' : 'received'} ${msg.file ? 'file-message' : ''}`;
+                        messageDiv.dataset.messageId = msg.id;
+                        let content = msg.content || '';
+                        taskTitles.forEach(title => {
+                            const regex = new RegExp(`@${title.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&')}`, 'g');
+                            content = content.replace(regex, `<span class="mention">@${title}</span>`);
+                        });
+                        let reactionsHTML = '';
+                        if (msg.reactions && msg.reactions[userId]) {
+                            reactionsHTML = `<span class="reaction">${msg.reactions[userId]}</span>`;
+                        }
+                        if (msg.file) {
+                            const fileSize = msg.file.size ? (msg.file.size / 1024).toFixed(2) + ' KB' : 'Unknown size';
+                            messageDiv.innerHTML = `
+                                <div class="message-header">
+                                    <img src="${profilePic}" alt="${senderName}" class="profile-pic w-8 h-8 rounded-full">
+                                    <div class="name">${senderName}</div>
+                                    <div class="time text-sm text-gray-500">${time}</div>
+                                </div>
+                                <a href="${msg.file.url}" download="${msg.file.name}" target="_blank">
+                                    <div class="file-info flex items-center gap-2">
+                                        <i class="${getFileIconClass(msg.file.type)} file-icon" style="color: ${getFileIconColor(msg.file.type)};"></i>
+                                        <div class="file-details">
+                                            <div class="file-name">${msg.file.name}</div>
+                                            <div class="file-size text-sm text-gray-500">${fileSize}</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <div class="read-status text-sm text-gray-500">${msg.read ? 'Seen' : 'Sent'}</div>
+                                <div class="reactions">${reactionsHTML}</div>
+                                <div class="reaction-bar flex gap-2">
+                                    <span class="reaction-icon cursor-pointer" data-reaction="🤝">🤝</span>
+                                    <span class="reaction-icon cursor-pointer" data-reaction="👍">👍</span>
+                                    <span class="reaction-icon cursor-pointer" data-reaction="❤️">❤️</span>
+                                    <div class="message-menu">
+                                        <i class="fas fa-ellipsis-h message-menu-icon cursor-pointer"></i>
+                                        <div class="message-menu-dropdown absolute bg-white shadow-lg rounded-lg">
+                                            <button data-action="deleteMessage" class="block px-4 py-2 text-red-600">Delete Message</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        } else {
+                            messageDiv.innerHTML = `
+                                <div class="message-header">
+                                    <img src="${profilePic}" alt="${senderName}" class="profile-pic w-8 h-8 rounded-full">
+                                    <div class="name">${senderName}</div>
+                                    <div class="time text-sm text-gray-500">${time}</div>
+                                </div>
+                                <div class="content">${content}</div>
+                                <div class="read-status text-sm text-gray-500">${msg.read ? 'Seen' : 'Sent'}</div>
+                                <div class="reactions">${reactionsHTML}</div>
+                                <div class="reaction-bar flex gap-2">
+                                    <span class="reaction-icon cursor-pointer" data-reaction="🤝">🤝</span>
+                                    <span class="reaction-icon cursor-pointer" data-reaction="👍">👍</span>
+                                    <span class="reaction-icon cursor-pointer" data-reaction="❤️">❤️</span>
+                                    <div class="message-menu">
+                                        <i class="fas fa-ellipsis-h message-menu-icon cursor-pointer"></i>
+                                        <div class="message-menu-dropdown absolute bg-white shadow-lg rounded-lg">
+                                            <button data-action="deleteMessage" class="block px-4 py-2 text-red-600">Delete Message</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        }
+                        elements.chatMessages.appendChild(messageDiv);
+                    });
+                    elements.chatMessages.scrollTop = elements.chatMessages.scrollHeight;
+                    messages.forEach(msg => {
+                        if (msg.senderId !== userId && !msg.read) {
+                            update(ref(db, `chats/${chatId}/messages/${msg.id}`), { read: true });
+                        }
+                    });
+                } else {
+                    elements.chatMessages.innerHTML = '<div class="message text-center text-gray-500">No messages yet</div>';
+                }
+            });
+        }
+
+        async function toggleReaction(messageId, reaction) {
+            try {
+                const chatId = [userId, selectedStudentId].sort().join("+");
+                const messageRef = ref(db, `chats/${chatId}/messages/${messageId}`);
+                const snapshot = await get(messageRef);
+                if (snapshot.exists()) {
+                    const message = snapshot.val();
+                    const reactions = message.reactions || {};
+                    if (reactions[userId] === reaction) {
+                        delete reactions[userId];
+                    } else {
+                        reactions[userId] = reaction;
+                    }
+                    await update(messageRef, { reactions });
+                }
+            } catch (error) {
+                console.error("Error toggling reaction:", error);
+                alert("Failed to toggle reaction.");
+            }
+        }
+
+        async function sendMessage() {
+            const content = elements.chatInput.value.trim();
+            if (!content || !selectedStudentId) return;
+            const chatId = [userId, selectedStudentId].sort().join("+");
+            const messageRef = ref(db, `chats/${chatId}/messages`);
+            try {
+                const currentUser = await fetchCurrentUserProfile();
+                const newMessage = {
+                    senderId: userId,
+                    senderName: currentUser.name,
+                    content,
+                    timestamp: new Date().toISOString(),
+                    read: false
+                };
+                await push(messageRef, newMessage);
+                elements.chatInput.value = '';
+                elements.chatInput.style.height = 'auto';
+                elements.taskDropdown.classList.remove('active');
+                if (elements.messageDing) {
+                    elements.messageDing.play().catch(error => console.error("Error playing ding sound:", error));
+                }
+            } catch (error) {
+                console.error("Error sending message:", error);
+                alert("Failed to send message.");
+            }
+        }
+
+        async function sendFileMessage(file) {
+            if (!selectedStudentId) return;
+            const chatId = [userId, selectedStudentId].sort().join("+");
+            const messageRef = ref(db, `chats/${chatId}/messages`);
+            try {
+                const storagePath = `chats/${chatId}/${Date.now()}_${file.name}`;
+                const fileRef = storageRef(storage, storagePath);
+                const uploadTask = uploadBytesResumable(fileRef, file);
+
+                elements.uploadProgress.classList.add('active');
+                elements.uploadProgressBar.style.width = '0%';
+
+                uploadTask.on('state_changed',
+                    (snapshot) => {
+                        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                        elements.uploadProgressBar.style.width = `${progress}%`;
+                    },
+                    (error) => {
+                        console.error('Error uploading file:', error);
+                        elements.uploadProgress.classList.remove('active');
+                        alert('Failed to upload file.');
+                    },
+                    async () => {
+                        const fileUrl = await getDownloadURL(fileRef);
+                        const currentUser = await fetchCurrentUserProfile();
+                        const newMessage = {
+                            senderId: userId,
+                            senderName: currentUser.name,
+                            file: {
+                                name: file.name,
+                                url: fileUrl,
+                                type: file.type,
+                                size: file.size
+                            },
+                            timestamp: new Date().toISOString(),
+                            read: false
+                        };
+                        await push(messageRef, newMessage);
+                        elements.uploadProgress.classList.remove('active');
+                        if (elements.messageDing) {
+                            elements.messageDing.play().catch(error => console.error("Error playing ding sound:", error));
+                        }
+                    }
+                );
+            } catch (error) {
+                console.error("Error initiating file upload:", error);
+                elements.uploadProgress.classList.remove('active');
+                alert("Failed to upload file.");
+            }
+        }
+
+        async function openTaskPopup(taskId = null) {
+            if (!selectedStudentId) {
+                alert('Please select a student to assign a task.');
+                return;
+            }
+            editingTaskId = taskId;
+            elements.taskPopupTitle.textContent = taskId ? 'Edit Task' : 'Add Task';
+            elements.taskTitle.value = '';
+            elements.taskDescription.value = '';
+            elements.taskDeadline.value = '';
+            uploadedTaskFiles = [];
+            elements.taskFilesList.innerHTML = '';
+
+            if (taskId) {
+                try {
+                    const taskRef = ref(db, `tasks/${taskId}`);
+                    const snapshot = await get(taskRef);
+                    if (snapshot.exists()) {
+                        const task = snapshot.val();
+                        elements.taskTitle.value = task.title || '';
+                        elements.taskDescription.value = task.description || '';
+                        elements.taskDeadline.value = task.deadline ? new Date(task.deadline).toISOString().split('T')[0] : '';
+                        if (task.files) {
+                            uploadedTaskFiles = Object.values(task.files).map(file => ({
+                                name: file.name,
+                                url: file.url,
+                                type: file.type,
+                                size: file.size
+                            }));
+                            updateTaskFilesList();
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error loading task data:', error);
+                    alert('Failed to load task data.');
+                }
+            }
+
+            elements.taskPopup.classList.add('active');
+        }
+
+        function closeTaskPopup() {
+            elements.taskPopup.classList.remove('active');
+            editingTaskId = null;
+            elements.taskTitle.value = '';
+            elements.taskDescription.value = '';
+            elements.taskDeadline.value = '';
+            uploadedTaskFiles = [];
+            elements.taskFilesList.innerHTML = '';
+        }
+
+        async function submitTask() {
+            const title = elements.taskTitle.value.trim();
+            const description = elements.taskDescription.value.trim();
+            const deadline = elements.taskDeadline.value;
+
+            if (!title || !deadline) {
+                alert('Please fill in the task title and deadline.');
+                return;
+            }
+
+            try {
+                let taskRef;
+                const taskData = {
+                    professionalId: userId,
+                    studentId: selectedStudentId,
+                    title,
+                    description,
+                    deadline,
+                    status: 'pending',
+                    createdAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString()
+                };
+
+                if (uploadedTaskFiles.length > 0) {
+                    taskData.files = {};
+                    for (let i = 0; i < uploadedTaskFiles.length; i++) {
+                        const file = uploadedTaskFiles[i];
+                        if (!file.url) {
+                            const storagePath = `tasks/${Date.now()}_${file.name}`;
+                            const fileRef = storageRef(storage, storagePath);
+                            const uploadTask = await uploadBytesResumable(fileRef, file);
+                            const fileUrl = await getDownloadURL(fileRef);
+                            taskData.files[i] = {
+                                name: file.name,
+                                url: fileUrl,
+                                type: file.type,
+                                size: file.size
+                            };
+                        } else {
+                            taskData.files[i] = {
+                                name: file.name,
+                                url: file.url,
+                                type: file.type,
+                                size: file.size
+                            };
+                        }
+                    }
+                }
+
+                if (editingTaskId) {
+                    taskRef = ref(db, `tasks/${editingTaskId}`);
+                    await update(taskRef, taskData);
+                } else {
+                    taskRef = ref(db, `tasks`);
+                    await push(taskRef, taskData);
+                }
+
+                closeTaskPopup();
+                loadWorkflows();
+                loadCompletedTasks();
+            } catch (error) {
+                console.error('Error submitting task:', error);
+                alert('Failed to submit task.');
+            }
+        }
+
+        async function populateTaskDropdown() {
+            try {
+                const tasksRef = ref(db, `tasks`);
+                const snapshot = await get(tasksRef);
+                elements.taskDropdown.innerHTML = '';
+                if (snapshot.exists()) {
+                    const tasks = snapshot.val();
+                    let taskFound = false;
+                    for (const id in tasks) {
+                        if (tasks[id].professionalId === userId && tasks[id].studentId === selectedStudentId) {
+                            taskFound = true;
+                            const taskItem = document.createElement('div');
+                            taskItem.className = 'task-dropdown-item px-4 py-2 hover:bg-gray-100 cursor-pointer';
+                            taskItem.textContent = tasks[id].title;
+                            elements.taskDropdown.appendChild(taskItem);
+                        }
+                    }
+                    if (!taskFound) {
+                        elements.taskDropdown.innerHTML = '<div class="task-dropdown-item px-4 py-2">No tasks available</div>';
+                    }
+                } else {
+                    elements.taskDropdown.innerHTML = '<div class="task-dropdown-item px-4 py-2">No tasks available</div>';
+                }
+            } catch (error) {
+                console.error("Error populating task dropdown:", error);
+                elements.taskDropdown.innerHTML = '<div class="task-dropdown-item px-4 py-2">Error loading tasks</div>';
+            }
+        }
+
+        function insertMention(taskTitle) {
+            const currentValue = elements.chatInput.value;
+            const cursorPos = elements.chatInput.selectionStart;
+            const textBefore = currentValue.substring(0, cursorPos);
+            const textAfter = currentValue.substring(cursorPos);
+            const lastAtIndex = textBefore.lastIndexOf('@');
+            let newValue;
+            if (lastAtIndex >= 0 && lastAtIndex === cursorPos - 1) {
+                newValue = textBefore + taskTitle + ' ' + textAfter;
+            } else {
+                newValue = textBefore + '@' + taskTitle + ' ' + textAfter;
+            }
+            elements.chatInput.value = newValue;
+            elements.chatInput.focus();
+            const newCursorPos = lastAtIndex >= 0 ? lastAtIndex + taskTitle.length + 2 : cursorPos + taskTitle.length + 2;
+            elements.chatInput.setSelectionRange(newCursorPos, newCursorPos);
+            elements.taskDropdown.classList.remove('active');
+            elements.chatInput.style.height = 'auto';
+            elements.chatInput.style.height = `${Math.min(elements.chatInput.scrollHeight, 100)}px`;
+        }
+
+        function loadWorkflows() {
+            if (!selectedStudentId) return;
+            const tasksRef = ref(db, `tasks`);
+            onValue(tasksRef, (snapshot) => {
+                elements.tasksList.innerHTML = '';
+                let hasTasks = false;
+                if (snapshot.exists()) {
+                    const tasks = snapshot.val();
+                    for (const taskId in tasks) {
+                        const task = tasks[taskId];
+                        if (task.professionalId === userId && task.studentId === selectedStudentId && task.status !== 'completed') {
+                            hasTasks = true;
+                            const workflowItem = document.createElement('div');
+                            workflowItem.className = 'workflow-item card';
+                            workflowItem.dataset.taskId = taskId;
+                            let fileIcons = '';
+                            if (task.files) {
+                                fileIcons = Object.values(task.files).map(file => `
+                                    <a href="${file.url}" download="${file.name}" class="file-icon-container" title="${file.name}">
+                                        <i class="${getFileIconClass(file.type)} file-icon" style="color: ${getFileIconColor(file.type)};"></i>
+                                    </a>
+                                `).join('');
+                            }
+                            workflowItem.innerHTML = `
+                                <div class="task-header flex justify-between items-center">
+                                    <h4 class="text-lg font-semibold">${task.title}</h4>
+                                    <div class="task-menu">
+                                        <i class="fas fa-ellipsis-v task-menu-icon cursor-pointer"></i>
+                                        <div class="task-menu-dropdown absolute bg-white shadow-lg rounded-lg">
+                                            <button data-action="editTask" class="block px-4 py-2">Edit Task</button>
+                                            <button data-action="deleteTask" class="block px-4 py-2 text-red-600">Delete Task</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="text-sm text-gray-600">${task.description}</p>
+                                <div class="deadline-container mt-2">
+                                    <div class="deadline-slider" style="width: ${calculateDeadlineProgress(task.deadline)}%; background: ${getDeadlineColor(task.deadline)};"></div>
+                                    <span class="days-left text-sm text-gray-500">${calculateDaysLeft(task.deadline)} days left</span>
+                                </div>
+                                <select class="status-select w-full p-2 border rounded-lg mt-2">
+                                    <option value="pending" ${task.status === "pending" ? "selected" : ""}>Pending</option>
+                                    <option value="in progress" ${task.status === "in progress" ? "selected" : ""}>In Progress</option>
+                                    <option value="completed" ${task.status === "completed" ? "selected" : ""}>Completed</option>
+                                </select>
+                                <div class="file-icons flex gap-2 mt-2">${fileIcons}</div>
+                            `;
+                            elements.tasksList.appendChild(workflowItem);
+                        }
+                    }
+                }
+                if (!hasTasks) {
+                    elements.tasksList.innerHTML = '<p class="text-center text-gray-500">No tasks found.</p>';
+                }
+            });
+        }
+
+        function loadCompletedTasks() {
+            if (!selectedStudentId) return;
+            const tasksRef = ref(db, `tasks`);
+            onValue(tasksRef, (snapshot) => {
+                elements.completedTasksList.innerHTML = '';
+                let hasCompletedTasks = false;
+                if (snapshot.exists()) {
+                    const tasks = snapshot.val();
+                    for (const taskId in tasks) {
+                        const task = tasks[taskId];
+                        if (task.professionalId === userId && task.studentId === selectedStudentId && task.status === 'completed') {
+                            hasCompletedTasks = true;
+                            const completedItem = document.createElement('div');
+                            completedItem.className = 'workflow-item card';
+                            completedItem.dataset.taskId = taskId;
+                            let fileIcons = '';
+                            if (task.files) {
+                                fileIcons = Object.values(task.files).map(file => `
+                                    <a href="${file.url}" download="${file.name}" class="file-icon-container" title="${file.name}">
+                                        <i class="${getFileIconClass(file.type)} file-icon" style="color: ${getFileIconColor(file.type)};"></i>
+                                    </a>
+                                `).join('');
+                            }
+                            completedItem.innerHTML = `
+                                <div class="task-header flex justify-between items-center">
+                                    <h4 class="text-lg font-semibold">${task.title}</h4>
+                                    <div class="task-menu">
+                                        <i class="fas fa-ellipsis-v task-menu-icon cursor-pointer"></i>
+                                        <div class="task-menu-dropdown absolute bg-white shadow-lg rounded-lg">
+                                            <button data-action="deleteTask" class="block px-4 py-2 text-red-600">Delete Task</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="status-label completed inline-block px-2 py-1 bg-green-100 text-green-800 rounded-lg text-sm">Completed</span>
+                                <p class="text-sm text-gray-600 mt-2">${task.description}</p>
+                                <div class="file-icons flex gap-2 mt-2">${fileIcons}</div>
+                            `;
+                            elements.completedTasksList.appendChild(completedItem);
+                        }
+                    }
+                }
+                if (!hasCompletedTasks) {
+                    elements.completedTasksList.innerHTML = '<p class="text-center text-gray-500">No completed tasks found.</p>';
+                }
+            });
+        }
+
+        function toggleCompletedTasks() {
+            if (elements.completedTasksList && document.querySelector('.completed-tasks .toggle-icon')) {
+                elements.completedTasksList.classList.toggle('active');
+                document.querySelector('.completed-tasks .toggle-icon').classList.toggle('active');
+            }
+        }
+
+        async function updateStatus({ taskId, status }) {
+            try {
+                const taskRef = ref(db, `tasks/${taskId}`);
+                await update(taskRef, { 
+                    status,
+                    updatedAt: new Date().toISOString()
+                });
+                loadWorkflows();
+                loadCompletedTasks();
+            } catch (error) {
+                console.error("Error updating task status:", error);
+                alert("Failed to update task status.");
+            }
+        }
+
+        async function deleteConnection({ studentId }) {
+            try {
+                const professionalConnectionRef = ref(db, `users/${userId}/connections/${studentId}`);
+                const studentConnectionRef = ref(db, `users/${studentId}/connections/${userId}`);
+                await remove(professionalConnectionRef);
+                await remove(studentConnectionRef);
+                elements.studentInteraction.classList.add('hidden');
+                selectedStudentId = null;
+                loadConnections();
+            } catch (error) {
+                console.error("Error deleting connection:", error);
+                alert("Failed to delete connection.");
+            }
+        }
+
+        async function deleteTask({ taskId }) {
+            try {
+                const taskRef = ref(db, `tasks/${taskId}`);
+                await remove(taskRef);
+                loadWorkflows();
+                loadCompletedTasks();
+            } catch (error) {
+                console.error("Error deleting task:", error);
+                alert("Failed to delete task.");
+            }
+        }
+
+        async function deleteMessage({ messageId }) {
+            try {
+                const chatId = [userId, selectedStudentId].sort().join("+");
+                const messageRef = ref(db, `chats/${chatId}/messages/${messageId}`);
+                await remove(messageRef);
+            } catch (error) {
+                console.error("Error deleting message:", error);
+                alert("Failed to delete message.");
+            }
+        }
+
+        function calculateDaysLeft(deadline) {
+            const now = new Date();
+            const deadlineDate = new Date(deadline);
+            const diffTime = deadlineDate - now;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            return diffDays > 0 ? diffDays : 0;
+        }
+
+        function calculateDeadlineProgress(deadline) {
+            const now = new Date();
+            const deadlineDate = new Date(deadline);
+            const diffTime = deadlineDate - now;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            if (diffDays <= 0) return 0;
+            if (diffDays >= 30) return 100;
+            return Math.round((diffDays / 30) * 100);
+        }
+
+        function getDeadlineColor(deadline) {
+            const daysLeft = calculateDaysLeft(deadline);
+            if (daysLeft <= 3) return '#FF5252';
+            if (daysLeft <= 7) return '#FFC107';
+            return '#4CAF50';
+        }
+
+        window.sendMessage = sendMessage;
+        window.sendFileMessage = sendFileMessage;
+        window.openTaskPopup = openTaskPopup;
+        window.closeTaskPopup = closeTaskPopup;
+        window.submitTask = submitTask;
+        window.toggleCompletedTasks = toggleCompletedTasks;
+        window.selectStudent = selectStudent;
+        window.updateStatus = updateStatus;
+        window.deleteConnection = deleteConnection;
+        window.deleteTask = deleteTask;
+        window.deleteMessage = deleteMessage;
+        window.confirmAction = confirmAction;
+        window.closeConfirmation = closeConfirmation;
+        window.toggleReaction = toggleReaction;
+
+        init();
+    </script>
+</body>
+</html>

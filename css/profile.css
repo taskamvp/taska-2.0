@@ -1,0 +1,409 @@
+/* css/profile.css */
+body {
+    background: #fff;
+    color: #000;
+    font-family: 'Poppins', sans-serif;
+}
+
+.profile-wrapper {
+    display: flex;
+    flex-direction: row;
+    width: 95vw;
+    margin: 0 auto;
+    padding: 0;
+    gap: 2rem;
+}
+
+/* Enhanced Profile Card */
+.profile-card {
+    width: 60%;
+    background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%); /* Subtle gradient */
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15), inset 0 0 10px rgba(255, 255, 255, 0.5); /* Depth and inner glow */
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-card:hover {
+    transform: translateY(-5px); /* Slight lift on hover */
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.profile-avatar {
+    position: relative;
+}
+
+.profile-avatar img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid #000;
+    object-fit: cover;
+    transition: border-color 0.3s ease;
+}
+
+.profile-card:hover .profile-avatar img {
+    border-color: #666; /* Subtle border change on hover */
+}
+
+.status-indicator {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    width: 15px;
+    height: 15px;
+    background: #00cc00; /* Green for online */
+    border-radius: 50%;
+    border: 2px solid #fff;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.profile-card h2 {
+    font-size: 1.8rem;
+    color: #000;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.profile-info {
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.8); /* Semi-transparent white layer */
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.profile-info p {
+    font-size: 1rem;
+    color: #333;
+    margin: 0.75rem 0;
+    display: flex;
+    align-items: center;
+    transition: color 0.3s ease;
+}
+
+.profile-info p:hover {
+    color: #000; /* Darken text on hover */
+}
+
+.profile-info i {
+    margin-right: 0.75rem;
+    color: #000;
+    font-size: 1.2rem;
+}
+
+.profile-info a {
+    color: #000;
+    text-decoration: underline;
+}
+
+.profile-info a:hover {
+    color: #666;
+}
+
+.hiring-toggle {
+    margin: 1.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.5rem 1rem;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 5px;
+}
+
+.hiring-toggle label {
+    font-size: 1rem;
+    color: #000;
+    font-weight: 500;
+}
+
+.hiring-toggle input[type="checkbox"] {
+    appearance: none;
+    width: 40px;
+    height: 20px;
+    background: #ccc;
+    border-radius: 20px;
+    position: relative;
+    cursor: pointer;
+    outline: none;
+    transition: background 0.3s ease;
+}
+
+.hiring-toggle input[type="checkbox"]:checked {
+    background: #000;
+}
+
+.hiring-toggle input[type="checkbox"]::before {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    background: #fff;
+    border-radius: 50%;
+    top: 2px;
+    left: 2px;
+    transition: transform 0.3s ease;
+}
+
+.hiring-toggle input[type="checkbox"]:checked::before {
+    transform: translateX(20px);
+}
+
+.profile-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.cta-button {
+    padding: 0.75rem 1.5rem;
+    background: #000;
+    color: #fff;
+    border: none;
+    border-radius: 25px; /* More rounded */
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.cta-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    transition: left 0.3s ease;
+}
+
+.cta-button:hover::before {
+    left: 0;
+}
+
+.cta-button:hover {
+    background: #333;
+    transform: scale(1.05); /* Slight scale on hover */
+}
+
+.edit-btn {
+    background: #666;
+}
+
+.edit-btn:hover {
+    background: #999;
+}
+
+/* Coin Balance Card */
+.coin-card {
+    width: 35%;
+    background: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 2rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.coin-card h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    color: #000;
+}
+
+.coin-info p {
+    font-size: 1.2rem;
+    color: #333;
+    margin: 0.75rem 0;
+}
+
+.coin-info span {
+    font-weight: 600;
+    color: #000;
+}
+
+/* Public Profile Section */
+.public-profile {
+    width: 95vw;
+    margin: 2rem auto;
+    background: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 2rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.public-profile h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    color: #000;
+}
+
+.public-profile-content {
+    display: flex;
+    gap: 2rem;
+}
+
+.profile-image img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 2px solid #000;
+    object-fit: cover;
+    display: block;
+}
+
+.profile-details h3 {
+    font-size: 1.5rem;
+    color: #000;
+    margin-bottom: 1rem;
+}
+
+.profile-details p {
+    font-size: 1rem;
+    color: #333;
+    margin: 0.5rem 0;
+}
+
+.profile-details a {
+    color: #000;
+    text-decoration: underline;
+}
+
+.profile-details a:hover {
+    color: #666;
+}
+
+/* Add Coins Popup */
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.popup-content {
+    background: #f5f5f5;
+    padding: 2rem;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.popup-content h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #000;
+}
+
+.close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.5rem;
+    color: #333;
+    cursor: pointer;
+    border: none;
+    background: none;
+}
+
+.close-btn:hover {
+    color: #000;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    font-size: 1rem;
+    color: #000;
+    margin-bottom: 0.5rem;
+}
+
+.custom-input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    background: #fff;
+    color: #000;
+}
+
+.custom-input:focus {
+    border-color: #000;
+    outline: none;
+}
+
+/* Toggle Popup */
+.toggle-popup {
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3000;
+}
+
+.toggle-popup-content {
+    background: #000;
+    color: #fff;
+    padding: 1rem 2rem;
+    border-radius: 5px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    font-size: 1rem;
+}
+
+/* Dashboard Content */
+.dashboard-content {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 100px);
+    padding: 2rem;
+    background: #fff;
+}
+
+.dashboard-section h1 {
+    color: #000;
+}
+
+.dashboard-section p {
+    color: #333;
+}
+
+footer {
+    background: #f5f5f5;
+    color: #333;
+    border-top: 1px solid #ccc;
+}
+
+.privacy-policy {
+    color: #000;
+}
+
+.privacy-policy:hover {
+    color: #666;
+}

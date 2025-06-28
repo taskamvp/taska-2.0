@@ -1,0 +1,177 @@
+/* css/contact.css */
+.contact-section {
+    background: #fff; /* Matches overview.html main areas */
+    padding: 5rem 2rem;
+    max-width: 1000px;
+    margin: 90px auto 60px;
+    text-align: center;
+}
+
+.contact-section.dark-mode {
+    background: #1a1f2b; /* Matches overview.html dark mode */
+}
+
+.contact-section h1 {
+    color: #333; /* Matches overview.html primary text */
+    font-size: 2.8rem;
+    margin-bottom: 1.5rem;
+}
+
+.contact-section h1.dark-mode {
+    color: #fff; /* Matches overview.html dark mode text */
+}
+
+.intro-text {
+    color: #666; /* Matches overview.html secondary text */
+    font-size: 1.2rem;
+}
+
+.intro-text.dark-mode {
+    color: #ccc; /* Matches overview.html dark mode secondary text */
+}
+
+.contact-container {
+    display: flex;
+    gap: 3rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.contact-info, .contact-form {
+    background: #fff; /* Matches overview.html sidebar/chat-area */
+    border: 1px solid #e0e0e0; /* Matches overview.html borders */
+    padding: 2.5rem;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 450px;
+}
+
+.contact-info.dark-mode, .contact-form.dark-mode {
+    background: #2a3550; /* Matches overview.html dark mode headers */
+    border-color: #444; /* Matches overview.html dark mode borders */
+}
+
+.contact-info h2, .contact-form h2 {
+    color: #333; /* Matches overview.html contact headers */
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+}
+
+.contact-info h2.dark-mode, .contact-form h2.dark-mode {
+    color: #fff; /* Matches overview.html dark mode text */
+}
+
+.contact-info p {
+    color: #666; /* Matches overview.html secondary text */
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+}
+
+.contact-info p.dark-mode {
+    color: #ccc; /* Matches overview.html dark mode secondary text */
+}
+
+.contact-info p strong {
+    color: #333; /* Matches overview.html primary text */
+}
+
+.contact-info p strong.dark-mode {
+    color: #fff; /* Matches overview.html dark mode text */
+}
+
+.contact-form input, .contact-form textarea {
+    background: #f5f5f5; /* Matches overview.html chat-header/input background */
+    border: 1px solid #e0e0e0; /* Matches overview.html borders */
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    color: #333; /* Matches overview.html text */
+    width: 100%;
+    margin-bottom: 1.5rem;
+}
+
+.contact-form input.dark-mode, .contact-form textarea.dark-mode {
+    background: #2a3550; /* Matches overview.html dark mode inputs */
+    border-color: #444; /* Matches overview.html dark mode borders */
+    color: #fff; /* Matches overview.html dark mode text */
+}
+
+.contact-form input:focus, .contact-form textarea:focus {
+    background: #fff; /* Matches overview.html light mode focus */
+    border-color: #333; /* Subtle accent */
+}
+
+.contact-form input.dark-mode:focus, .contact-form textarea.dark-mode:focus {
+    background: #3a4060; /* Matches overview.html dark mode received messages */
+    border-color: #fff; /* Subtle accent */
+}
+
+.contact-form .cta-button {
+    background: #dcf8c6; /* Matches overview.html sent message color */
+    color: #333; /* Matches overview.html text */
+    padding: 0.9rem 2.5rem;
+    font-size: 1.1rem;
+}
+
+.contact-form .cta-button:hover {
+    background: #b7e0a3; /* Slightly darker shade */
+}
+
+.contact-form .cta-button.dark-mode {
+    background: #3a4060; /* Matches overview.html dark mode received messages */
+    color: #fff; /* Matches overview.html dark mode text */
+}
+
+.contact-form .cta-button.dark-mode:hover {
+    background: #4a5a80; /* Slightly lighter shade */
+}
+
+/* Navbar color tweaks to match overview.html */
+.navbar {
+    background: #f5f5f5; /* Matches overview.html chat-header */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.navbar.dark-mode {
+    background: #2a3550; /* Matches overview.html dark mode headers */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.nav-menu a {
+    color: #333; /* Matches overview.html text */
+}
+
+.nav-menu a:hover {
+    color: #666; /* Matches overview.html secondary text */
+}
+
+.nav-menu a.dark-mode {
+    color: #fff; /* Matches overview.html dark mode text */
+}
+
+.nav-menu a.dark-mode:hover {
+    color: #ccc; /* Matches overview.html dark mode secondary text */
+}
+
+.logo {
+    color: #333; /* Matches overview.html text */
+}
+
+.logo.dark-mode {
+    color: #fff; /* Matches overview.html dark mode text */
+}
+
+.hamburger {
+    color: #333; /* Matches overview.html text */
+}
+
+.hamburger.dark-mode {
+    color: #fff; /* Matches overview.html dark mode text */
+}
+
+.dark-mode-toggle {
+    color: #333; /* Matches overview.html text */
+}
+
+.dark-mode-toggle.dark-mode {
+    color: #fff; /* Matches overview.html dark mode text */
+}

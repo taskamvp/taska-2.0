@@ -1,0 +1,228 @@
+/* css/earnings.css */
+.dashboard-section p {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 1.5rem;
+}
+
+.dashboard-section p.dark-mode {
+    color: #ccc;
+}
+
+.earnings-overview {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.earnings-overview .card {
+    flex: 1;
+    text-align: center;
+    padding: 1.5rem;
+}
+
+.earnings-overview .card h2 {
+    font-size: 1.2rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.earnings-overview .card h2.dark-mode {
+    color: #fff;
+}
+
+.earnings-overview .card .amount {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+}
+
+.earnings-overview .card .amount.dark-mode {
+    color: #fff;
+}
+
+.earnings-overview .card .subtext {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 0.5rem;
+}
+
+.earnings-overview .card .subtext.dark-mode {
+    color: #ccc;
+}
+
+.past-earnings {
+    margin-top: 2rem;
+}
+
+.past-earnings h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.past-earnings h2.dark-mode {
+    color: #fff;
+}
+
+.earnings-filter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.date-range {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.date-range input[type="date"] {
+    padding: 0.5rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.date-range input[type="date"].dark-mode {
+    background: #2a3550;
+    color: #fff;
+    border-color: #444;
+}
+
+.date-range span {
+    color: #666;
+}
+
+.date-range span.dark-mode {
+    color: #ccc;
+}
+
+.search-bar {
+    flex: 1;
+    margin: 0 1rem;
+}
+
+.download-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: #333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.download-btn:hover {
+    background: #555;
+}
+
+.download-btn.dark-mode {
+    background: #fff;
+    color: #333;
+}
+
+.download-btn.dark-mode:hover {
+    background: #ccc;
+}
+
+.important-info {
+    background: #f5f5f5;
+    padding: 1rem;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+}
+
+.important-info.dark-mode {
+    background: #2a3550;
+}
+
+.important-info h3 {
+    font-size: 1.2rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.important-info h3.dark-mode {
+    color: #fff;
+}
+
+.important-info ul {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+    color: #666;
+}
+
+.important-info ul.dark-mode {
+    color: #ccc;
+}
+
+.important-info li {
+    margin-bottom: 0.5rem;
+}
+
+.earnings-table {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.earnings-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.earnings-table th,
+.earnings-table td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.earnings-table th {
+    font-size: 0.9rem;
+    color: #666;
+    background: #f5f5f5;
+}
+
+.earnings-table th.dark-mode {
+    color: #ccc;
+    background: #2a3550;
+}
+
+.earnings-table td {
+    font-size: 0.9rem;
+    color: #333;
+}
+
+.earnings-table td.dark-mode {
+    color: #fff;
+}
+
+.earnings-table tr:hover {
+    background: #f9f9f9;
+}
+
+.earnings-table tr:hover.dark-mode {
+    background: #3a4060;
+}
+
+.earnings-table .need-help {
+    color: #333;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.earnings-table .need-help:hover {
+    text-decoration: underline;
+}
+
+.earnings-table .need-help.dark-mode {
+    color: #fff;
+}

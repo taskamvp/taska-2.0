@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taska Elite - Update Profile</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { 
+            background: #F8F9FA; 
+            min-height: 100vh; 
+            color: #1F2937; 
+            padding-top: 8px; 
+            padding-bottom: 80px; 
+        }
+        .navbar { 
+            background: #fff; 
+            padding: 1rem 2rem; 
+            position: fixed; 
+            top: 0; 
+            width: 100%; 
+            z-index: 1000; 
+            border-bottom: 1px solid #e0e0e0; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
+        }
+        .navbar .logo { 
+            font-size: 1.5rem; 
+            color: #1a1a1a; 
+        }
+        .navbar .nav-menu { 
+            display: flex; 
+            gap: 1.5rem; 
+            list-style: none; 
+        }
+        .navbar .nav-menu li a { 
+            color: #1a1a1a; 
+            text-decoration: none; 
+            font-size: 1rem; 
+            transition: color 0.3s; 
+        }
+        .navbar .nav-menu li a.active { 
+            color: #0000ff; 
+        }
+        .navbar .hamburger { 
+            display: none; 
+            font-size: 1.5rem; 
+            cursor: pointer; 
+            color: #1a1a1a; 
+        }
+        
+        .dashboard-content { padding: 2rem 1rem; }
+        .update-container { 
+            background: #FFFFFF; 
+            border-radius: 10px; 
+            padding: 2rem; 
+            max-width: 700px; 
+            margin: 0 auto; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
+        }
+        .update-header h1 { 
+            font-size: 1.8rem; 
+            font-weight: 600; 
+            text-align: center; 
+            color: #1e90ff; 
+            margin-bottom: 0.5rem; 
+        }
+        .update-header p { 
+            font-size: 0.9rem; 
+            color: #6B7280; 
+            text-align: center; 
+            margin-bottom: 1.5rem; 
+        }
+        .update-form { display: flex; flex-direction: column; gap: 1.5rem; }
+        .form-group { width: 100%; }
+        .form-group label { 
+            font-weight: 500; 
+            color: #1F2937; 
+            margin-bottom: 0.3rem; 
+            display: block; 
+            font-size: 0.9rem; 
+        }
+        .form-group label span.required { color: #EF4444; }
+        .custom-input, select.custom-input { 
+            width: 100%; 
+            padding: 0.8rem; 
+            border: 1px solid #D1D5DB; 
+            border-radius: 6px; 
+            background: #F9FAFB; 
+            color: #1F2937; 
+            font-size: 0.9rem; 
+            transition: border-color 0.3s ease; 
+        }
+        .custom-input:focus, select.custom-input:focus { 
+            border-color: #1e90ff; 
+            outline: none; 
+        }
+        .custom-input[readonly] { background: #E5E7EB; color: #6B7280; }
+        textarea.custom-input { min-height: 100px; resize: vertical; }
+        .input-with-btn { display: flex; gap: 0.5rem; align-items: center; }
+        .fetch-btn { 
+            padding: 0.5rem 1rem; 
+            background: #1e90ff; 
+            color: #FFFFFF; 
+            border: none; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            font-size: 0.8rem; 
+        }
+        .fetch-btn:hover { background: #1e3799; }
+        .summary-box { 
+            margin-top: 0.5rem; 
+            padding: 0.8rem; 
+            background: #F3F4F6; 
+            border-radius: 6px; 
+            font-size: 0.85rem; 
+            color: #1F2937; 
+            display: none; 
+            max-height: 150px; 
+            overflow-y: auto; 
+            border: 1px solid #D1D5DB; 
+        }
+        .summary-box ul { list-style: none; padding-left: 0; }
+        .summary-box li { margin-bottom: 0.5rem; }
+        .portfolio-list { list-style: none; padding: 0; }
+        .portfolio-list li { display: flex; gap: 0.5rem; margin-bottom: 0.5rem; align-items: center; }
+        .add-btn { 
+            padding: 0.5rem 1rem; 
+            background: #1e90ff; 
+            color: #FFFFFF; 
+            border: none; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            font-size: 0.9rem; 
+        }
+        .add-btn:hover { background: #1e3799; }
+        .form-actions { display: flex; justify-content: center; gap: 1rem; margin-top: 1.5rem; }
+        .cta-button { 
+            padding: 0.8rem 2rem; 
+            background: #1e90ff; 
+            color: #FFFFFF; 
+            border: none; 
+            border-radius: 6px; 
+            font-size: 0.9rem; 
+            cursor: pointer; 
+        }
+        .cta-button:hover { background: #1e3799; }
+        .cancel-btn { background: #E5E7EB; color: #1F2937; }
+        .cancel-btn:hover { background: #D1D5DB; }
+        footer { 
+            background: #FFFFFF; 
+            padding: 1rem; 
+            text-align: center; 
+            color: #6B7280; 
+            position: fixed; 
+            bottom: 0; 
+            left: 0; 
+            right: 0; 
+            box-shadow: 0 -2px 4px rgba(0,0,0,0.05); 
+        }
+        footer a { color: #1e90ff; text-decoration: none; }
+        footer a:hover { color: #1e3799; }
+
+        /* Profile Image Styles */
+    .profile-image-section { 
+        display: flex; 
+        flex-direction: column; 
+        align-items: center; 
+        gap: 1rem; 
+        margin-bottom: 1.5rem; 
+    }
+    .profile-preview { 
+        width: 100px; 
+        height: 100px; 
+        border-radius: 50%; 
+        overflow: hidden; 
+        cursor: pointer; 
+    }
+    .profile-preview img { 
+        width: 100%; 
+        height: 100%; 
+        object-fit: cover; 
+    }
+    .profile-upload-btn { 
+        padding: 0.5rem 1rem; 
+        background: #1e90ff; 
+        color: #FFFFFF; 
+        border: none; 
+        border-radius: 6px; 
+        cursor: pointer; 
+        font-size: 0.9rem; 
+    }
+    .profile-upload-btn:hover { background: #1e3799; }
+
+    /* Cropper Modal */
+    .cropper-modal { 
+        display: none; 
+        position: fixed; 
+        top: 0; 
+        left: 0; 
+        width: 100%; 
+        height: 100%; 
+        background: rgba(0,0,0,0.85); 
+        z-index: 10000; 
+        align-items: center; 
+        justify-content: center; 
+        opacity: 1; 
+    }
+    .cropper-container { 
+        background: #FFFFFF; 
+        border-radius: 8px; 
+        padding: 1.5rem; 
+        width: 90%; 
+        max-width: 500px; 
+        display: flex; 
+        flex-direction: column; 
+        gap: 1rem; 
+    }
+    .cropper-image-wrapper { 
+        width: 100%; 
+        height: 400px; 
+        overflow: hidden; 
+        position: relative; 
+    }
+    .cropper-image-wrapper img { 
+        max-width: 100%; 
+        max-height: 100%; 
+        width: 100%; 
+        height: 100%; 
+        object-fit: contain; 
+        display: block; 
+    }
+    .cropper-controls { 
+        display: flex; 
+        gap: 0.5rem; 
+        justify-content: center; 
+        flex-wrap: wrap; 
+    }
+    .cropper-btn { 
+        padding: 0.5rem 1rem; 
+        border: none; 
+        border-radius: 6px; 
+        cursor: pointer; 
+        font-size: 0.9rem; 
+        background: #F3F4F6; 
+        color: #1F2937; 
+        transition: background 0.3s ease; 
+    }
+    .cropper-btn:hover { background: #E5E7EB; }
+    .cropper-btn.save { background: #1e90ff; color: #FFFFFF; }
+    .cropper-btn.save:hover { background: #1e3799; }
+    .cropper-btn.cancel { background: #E5E7EB; color: #1F2937; }
+    .cropper-btn.cancel:hover { background: #D1D5DB; }
+    .cropper-btn.zoom-in, .cropper-btn.zoom-out, .cropper-btn.rotate { 
+        padding: 0.5rem; 
+        background: #F3F4F6; 
+        color: #1F2937; 
+    }
+    .cropper-btn.zoom-in:hover, .cropper-btn.zoom-out:hover, .cropper-btn.rotate:hover { 
+        background: #E5E7EB; 
+    }
+
+        @media (max-width: 768px) {
+            .nav-menu { 
+                display: none; 
+                position: absolute; 
+                top: 60px; 
+                right: 1rem; 
+                background: #FFFFFF; 
+                flex-direction: column; 
+                padding: 1rem; 
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+            }
+            .nav-menu.active { display: flex; }
+            .hamburger { display: block; }
+            .update-container { padding: 1.5rem; }
+            .update-header h1 { font-size: 1.5rem; }
+            .update-header p { font-size: 0.85rem; }
+            .custom-input, select.custom-input { padding: 1rem; font-size: 1rem; }
+            .form-actions { flex-direction: column; gap: 0.8rem; }
+            .input-with-btn { flex-direction: column; align-items: stretch; }
+            .fetch-btn { width: 100%; padding: 0.8rem; }
+            .cropper-container { padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">Taska Elite</div>
+        <ul class="nav-menu">
+            <li><a href="../index.html">Logout</a></li>
+        </ul>
+        <div class="hamburger"><i class="fas fa-bars"></i></div>
+    </nav>
+
+    <main class="dashboard-content">
+        <section class="update-container">
+            <div class="update-header">
+                <h1>Update Your Profile</h1>
+                <p>Keep it simple and boost your chances!</p>
+            </div>
+            <form id="update-profile-form" class="update-form">
+                <!-- Profile Image Upload -->
+                <!-- Profile Image Upload -->
+            <div class="form-group profile-image-section">
+                <label>Profile Image</label>
+                <div class="profile-preview" onclick="document.getElementById('profile-image').click()">
+                    <img id="profile-image-preview" src="../assets/avatar/1.png" alt="Profile Preview">
+                </div>
+                <input type="file" id="profile-image" accept="image/*" style="display: none;">
+                <button type="button" class="profile-upload-btn" onclick="document.getElementById('profile-image').click()">Choose Image</button>
+            </div>
+
+                <!-- Personal Information -->
+                <div class="form-group">
+                    <label for="name">Full Name <span class="required">*</span></label>
+                    <input type="text" id="name" class="custom-input" placeholder="Enter your full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email <span class="required">*</span></label>
+                    <input type="email" id="email" class="custom-input" placeholder="Enter Email" readonly required>
+                </div>
+                <div class="form-group">
+                    <label for="whatsapp">Enter your Whatsapp number <span class="required">*</span> <small>Companies will contact you through Whatsapp to collaborate</small></label>
+                    <input type="tel" id="whatsapp" class="custom-input" placeholder="Enter your Whatsapp Number" required>
+                </div>
+                <div class="form-group">
+                    <label for="location">City / Location <span class="required">*</span></label>
+                    <input type="text" id="location" class="custom-input" placeholder="e.g., Delhi" required>
+                </div>
+
+                <!-- Brief About Yourself -->
+                <div class="form-group">
+                    <label for="about">Brief About Yourself <span class="required">*</span> <small>- This is your spotlight. Add your achievements, projects, and skills, employers decide based on what they see here first -</small></label>
+                    <textarea id="about" class="custom-input" placeholder="Write in your own words, avoid using AI tools. Keeping it natural and personal helps you stand out and makes your profile more genuine to employers." required></textarea>
+                </div>
+
+                <!-- Education -->
+                <div class="form-group">
+                    <label for="college">College Name <span class="required">*</span></label>
+                    <input type="text" id="college" class="custom-input" placeholder="Enter your College name" required>
+                </div>
+                <div class="form-group">
+                    <label for="degree">Degree <span class="required">*</span></label>
+                    <select id="degree" class="custom-input" required>
+                        <option value="" disabled selected>Select Degree</option>
+                        <option value="B.Tech">B.Tech</option>
+                        <option value="M.Tech">M.Tech</option>
+                        <option value="PhD">PhD</option>
+                        <option value="Dual">Dual Degree</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="branch">Branch / Subject <span class="required">*</span></label>
+                    <input type="text" id="branch" class="custom-input" placeholder="Enter your area of study" required>
+                </div>
+                <div class="form-group">
+                    <label for="year">Year of Study <span class="required">*</span></label>
+                    <select id="year" class="custom-input" required>
+                        <option value="" disabled selected>Select Year</option>
+                        <option value="1st">1st</option>
+                        <option value="2nd">2nd</option>
+                        <option value="3rd">3rd</option>
+                        <option value="4th">4th</option>
+                        <option value="5th">5th</option>
+                    </select>
+                </div>
+
+                <!-- Skills & Profiles -->
+                <div class="form-group">
+                    <label for="skills">Skills (comma-separated)</label>
+                    <input type="text" id="skills" class="custom-input" placeholder="e.g., Python, Figma, SEO">
+                </div>
+                <div class="form-group">
+                    <label for="github">GitHub Username</label>
+                    <div class="input-with-btn">
+                        <input type="text" id="github" class="custom-input" placeholder="Enter Github username and fetch data">
+                        <button type="button" id="fetch-github" class="fetch-btn">Fetch</button>
+                    </div>
+                    <div id="github-summary" class="summary-box"></div>
+                </div>
+                <div class="form-group">
+                    <label for="codeforces">Codeforces Username</label>
+                    <div class="input-with-btn">
+                        <input type="text" id="codeforces" class="custom-input" placeholder="Enter Codeforces username and fetch data">
+                        <button type="button" id="fetch-codeforces" class="fetch-btn">Fetch</button>
+                    </div>
+                    <div id="codeforces-summary" class="summary-box"></div>
+                </div>
+                <div class="form-group">
+                    <label for="leetcode">LeetCode Username</label>
+                    <div class="input-with-btn">
+                        <input type="text" id="leetcode" class="custom-input" placeholder="Enter LeetCode username and fetch data">
+                        <button type="button" id="fetch-leetcode" class="fetch-btn">Fetch</button>
+                    </div>
+                    <div id="leetcode-summary" class="summary-box"></div>
+                </div>
+
+                <!-- Portfolio -->
+                <div class="form-group">
+                    <label>Portfolio / Work Samples</label>
+                    <ul id="portfolio-list" class="portfolio-list"></ul>
+                    <button type="button" id="add-portfolio" class="add-btn">Add Link</button>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="form-actions">
+                    <button type="submit" class="cta-button">Save Profile</button>
+                    <button type="button" class="cta-button cancel-btn" onclick="window.location.href='../index.html'">Cancel</button>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <!-- Cropper Modal -->
+    <div class="cropper-modal" id="cropper-modal">
+        <div class="cropper-container">
+            <div class="cropper-image-wrapper">
+                <img id="cropper-image" src="" alt="Image to crop">
+            </div>
+            <div class="cropper-controls">
+                <button type="button" class="cropper-btn zoom-in"><i class="fas fa-search-plus"></i></button>
+                <button type="button" class="cropper-btn zoom-out"><i class="fas fa-search-minus"></i></button>
+                <button type="button" class="cropper-btn rotate"><i class="fas fa-redo"></i></button>
+                <button type="button" class="cropper-btn save">Save</button>
+                <button type="button" class="cropper-btn cancel">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 Taska Elite. All rights reserved. | <a href="#">Privacy Policy</a></p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+        import { getDatabase, ref, get, set, push } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
+        import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDZIDlEtaNRxODoFhRw0xF2yYFBqqBexqo",
+            authDomain: "taska-45011.firebaseapp.com",
+            databaseURL: "https://taska-45011-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "taska-45011",
+            storageBucket: "taska-45011.firebasestorage.app",
+            messagingSenderId: "205487498813",
+            appId: "1:205487498813:web:0de2c9eab567482781ec54"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const storage = getStorage(app);
+        const userId = localStorage.getItem('userId');
+
+        if (!userId) {
+            alert("Please log in or sign up first.");
+            window.location.href = '../login.html';
+        } else {
+            loadProfileData();
+        }
+
+        let cropper;
+        const profilePicInput = document.getElementById('profile-image');
+        const profilePicPreview = document.getElementById('profile-image-preview');
+        const cropperModal = document.getElementById('cropper-modal');
+        const cropperImage = document.getElementById('cropper-image');
+        const zoomInBtn = document.querySelector('.cropper-btn.zoom-in');
+        const zoomOutBtn = document.querySelector('.cropper-btn.zoom-out');
+        const rotateBtn = document.querySelector('.cropper-btn.rotate');
+        const saveBtn = document.querySelector('.cropper-btn.save');
+        const cancelBtn = document.querySelector('.cropper-btn.cancel');
+
+        profilePicInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    cropperImage.src = event.target.result;
+                    cropperModal.style.display = 'flex';
+                    if (cropper) cropper.destroy();
+                    cropper = new Cropper(cropperImage, {
+                        aspectRatio: 1,
+                        viewMode: 1,
+                        autoCropArea: 0.8,
+                        responsive: true,
+                        background: false,
+                        modal: true,
+                        zIndex: 5200
+                    });
+                    document.body.style.overflow = 'hidden'; // Prevent scrolling
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        zoomInBtn.addEventListener('click', () => cropper.zoom(0.1));
+        zoomOutBtn.addEventListener('click', () => cropper.zoom(-0.1));
+        rotateBtn.addEventListener('click', () => cropper.rotate(90));
+        cancelBtn.addEventListener('click', () => {
+            cropperModal.style.display = 'none';
+            cropper.destroy();
+            profilePicInput.value = '';
+            document.body.style.overflow = 'auto';
+        });
+
+        saveBtn.addEventListener('click', async () => {
+            const canvas = cropper.getCroppedCanvas({
+                width: 200,
+                height: 200,
+                imageSmoothingQuality: 'high'
+            });
+            canvas.toBlob(async (blob) => {
+                try {
+                    // Convert to WebP
+                    const webpBlob = await new Promise((resolve) => {
+                        const img = new Image();
+                        img.src = canvas.toDataURL('image/webp', 0.8);
+                        img.onload = () => {
+                            const tempCanvas = document.createElement('canvas');
+                            tempCanvas.width = img.width;
+                            tempCanvas.height = img.height;
+                            tempCanvas.getContext('2d').drawImage(img, 0, 0);
+                            tempCanvas.toBlob(resolve, 'image/webp', 0.8);
+                        };
+                    });
+
+                    // Upload to Firebase Storage
+                    const storagePath = `profile/${userId}.webp`;
+                    const imageRef = storageRef(storage, storagePath);
+                    await uploadBytes(imageRef, webpBlob);
+                    const downloadURL = await getDownloadURL(imageRef);
+
+                    // Update preview
+                    profilePicPreview.src = downloadURL;
+
+                    // Store verification data
+                    const verificationRef = ref(db, `verification/${userId}`);
+                    await push(verificationRef, {
+                        field: 'profilePic',
+                        value: downloadURL,
+                        timestamp: Date.now(),
+                        status: 'pending'
+                    });
+
+                    cropperModal.style.display = 'none';
+                    cropper.destroy();
+                    profilePicInput.value = '';
+                    document.body.style.overflow = 'auto';
+                } catch (error) {
+                    alert("Failed to upload image: " + error.message);
+                }
+            }, 'image/webp', 0.8);
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const hamburger = document.querySelector('.hamburger');
+            const navMenu = document.querySelector('.nav-menu');
+            hamburger.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+            });
+        });
+
+        let originalData = {};
+        async function loadProfileData() {
+            const userRef = ref(db, `studentslist/${userId}`);
+            try {
+                const snapshot = await get(userRef);
+                const data = snapshot.val() || {};
+                originalData = data;
+                document.getElementById('name').value = data.personal?.name || '';
+                document.getElementById('email').value = data.personal?.email || '';
+                document.getElementById('whatsapp').value = data.personal?.whatsapp || '';
+                document.getElementById('location').value = data.personal?.location || '';
+                document.getElementById('about').value = data.personal?.about || '';
+                document.getElementById('college').value = data.education?.college || '';
+                document.getElementById('degree').value = data.education?.degree || '';
+                document.getElementById('branch').value = data.education?.branch || '';
+                document.getElementById('year').value = data.education?.year || '';
+                document.getElementById('skills').value = data.skills || '';
+                document.getElementById('github').value = data.profiles?.github?.username || '';
+                document.getElementById('codeforces').value = data.profiles?.codeforces?.username || '';
+                document.getElementById('leetcode').value = data.profiles?.leetcode?.username || '';
+                profilePicPreview.src = data.personal?.profilePic || '../assets/avatar/1.png';
+                loadPortfolio(data.portfolio || []);
+                if (data.profiles) {
+                    displaySummary('github', data.profiles.github?.details);
+                    displaySummary('codeforces', data.profiles.codeforces?.details);
+                    displaySummary('leetcode', data.profiles.leetcode?.details);
+                }
+            } catch (error) {
+                console.error("Failed to load profile data: ", error);
+            }
+        }
+
+        async function fetchGitHubSummary(username) {
+            try {
+                const userResponse = await fetch(`https://api.github.com/users/${username}`);
+                if (!userResponse.ok) throw new Error('GitHub profile not found');
+                const userData = await userResponse.json();
+
+                const reposResponse = await fetch(`https://api.github.com/users/${username}/repos?per_page=100`);
+                if (!reposResponse.ok) throw new Error('GitHub repos not found');
+                const reposData = await reposResponse.json();
+
+                const languages = {};
+                reposData.forEach(repo => {
+                    if (repo.language) languages[repo.language] = (languages[repo.language] || 0) + 1;
+                });
+
+                const projects = reposData
+                    .sort((a, b) => b.stargazers_count - a.stargazers_count)
+                    .slice(0, 3)
+                    .map(repo => ({
+                        name: repo.name,
+                        description: repo.description || 'No description',
+                        language: repo.language || 'N/A',
+                        stars: repo.stargazers_count
+                    }));
+
+                const summary = {
+                    repos: userData.public_repos,
+                    languages: Object.keys(languages).sort((a, b) => languages[b] - languages[a]).slice(0, 5),
+                    projects: projects
+                };
+                displaySummary('github', summary);
+                return summary;
+            } catch (error) {
+                throw error;
+            }
+        }
+
+        async function fetchLeetCodeSummary(username) {
+            try {
+                const response = await fetch(`https://leetcode-stats-api.herokuapp.com/${username}`);
+                if (!response.ok) throw new Error('LeetCode profile not found');
+                const data = await response.json();
+                const summary = {
+                    totalSolved: data.totalSolved || 0,
+                    easySolved: data.easySolved || 0,
+                    mediumSolved: data.mediumSolved || 0,
+                    hardSolved: data.hardSolved || 0,
+                    ranking: data.ranking || 'N/A'
+                };
+                displaySummary('leetcode', summary);
+                return summary;
+            } catch (error) {
+                throw error;
+            }
+        }
+
+        async function fetchCodeforcesSummary(username) {
+            try {
+                const response = await fetch(`https://codeforces.com/api/user.info?handles=${username}`);
+                if (!response.ok) throw new Error('Codeforces profile not found');
+                const data = await response.json();
+                if (data.status !== 'OK') throw new Error('Codeforces profile not found');
+                const user = data.result[0];
+                const summary = {
+                    rating: user.rating || 'N/A',
+                    maxRating: user.maxRating || 'N/A',
+                    rank: user.rank || 'N/A',
+                    contribution: user.contribution || 0
+                };
+                displaySummary('codeforces', summary);
+                return summary;
+            } catch (error) {
+                throw error;
+            }
+        }
+
+        function displaySummary(platform, summary) {
+            const summaryBox = document.getElementById(`${platform}-summary`);
+            if (summary) {
+                summaryBox.style.display = 'block';
+                if (platform === 'github') {
+                    let html = `Repos: ${summary.repos} | Languages: ${summary.languages.join(', ')}<br><strong>Top Projects:</strong><ul>`;
+                    summary.projects.forEach(project => {
+                        html += `<li>${project.name}: ${project.description} (Stars: ${project.stars})</li>`;
+                    });
+                    html += '</ul>';
+                    summaryBox.innerHTML = html;
+                } else if (platform === 'leetcode') {
+                    summaryBox.innerHTML = `Total Solved: ${summary.totalSolved}<br>Easy: ${summary.easySolved}<br>Medium: ${summary.mediumSolved}<br>Hard: ${summary.hardSolved}`;
+                } else if (platform === 'codeforces') {
+                    summaryBox.innerHTML = `Rating: ${summary.rating}<br>Rank: ${summary.rank}<br>Contribution: ${summary.contribution}`;
+                }
+            } else {
+                summaryBox.style.display = 'none';
+            }
+        }
+
+        function addPortfolioLink(url = '') {
+            const list = document.getElementById('portfolio-list');
+            const li = document.createElement('li');
+            const input = document.createElement('input');
+            input.type = 'url';
+            input.className = 'custom-input';
+            input.placeholder = 'e.g., drive.google.com/xyz';
+            input.value = url;
+            const removeBtn = document.createElement('button');
+            removeBtn.textContent = 'Remove';
+            removeBtn.className = 'add-btn';
+            removeBtn.style.background = '#EF4444';
+            removeBtn.onclick = () => li.remove();
+            li.appendChild(input);
+            li.appendChild(removeBtn);
+            list.appendChild(li);
+        }
+
+        function loadPortfolio(links) {
+            links.forEach(url => addPortfolioLink(url));
+        }
+
+        document.getElementById('fetch-github').addEventListener('click', async () => {
+            const username = document.getElementById('github').value.trim();
+            if (username) {
+                try {
+                    await fetchGitHubSummary(username);
+                } catch (error) {
+                    document.getElementById('github-summary').style.display = 'none';
+                    alert("Failed to fetch GitHub details: " + error.message);
+                }
+            }
+        });
+
+        document.getElementById('fetch-leetcode').addEventListener('click', async () => {
+            const username = document.getElementById('leetcode').value.trim();
+            if (username) {
+                try {
+                    await fetchLeetCodeSummary(username);
+                } catch (error) {
+                    document.getElementById('leetcode-summary').style.display = 'none';
+                    alert("Failed to fetch LeetCode details: " + error.message);
+                }
+            }
+        });
+
+        document.getElementById('fetch-codeforces').addEventListener('click', async () => {
+            const username = document.getElementById('codeforces').value.trim();
+            if (username) {
+                try {
+                    await fetchCodeforcesSummary(username);
+                } catch (error) {
+                    document.getElementById('codeforces-summary').style.display = 'none';
+                    alert("Failed to fetch Codeforces details: " + error.message);
+                }
+            }
+        });
+
+        document.getElementById('add-portfolio').addEventListener('click', () => addPortfolioLink());
+
+        document.getElementById('update-profile-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const githubUsername = document.getElementById('github').value.trim();
+            const codeforcesUsername = document.getElementById('codeforces').value.trim();
+            const leetcodeUsername = document.getElementById('leetcode').value.trim();
+
+            const profiles = {};
+            if (githubUsername) {
+                try {
+                    profiles.github = { username: githubUsername, details: await fetchGitHubSummary(githubUsername) };
+                } catch (error) {
+                    console.error("GitHub fetch failed:", error);
+                }
+            }
+            if (codeforcesUsername) {
+                try {
+                    profiles.codeforces = { username: codeforcesUsername, details: await fetchCodeforcesSummary(codeforcesUsername) };
+                } catch (error) {
+                    console.error("Codeforces fetch failed:", error);
+                }
+            }
+            if (leetcodeUsername) {
+                try {
+                    profiles.leetcode = { username: leetcodeUsername, details: await fetchLeetCodeSummary(leetcodeUsername) };
+                } catch (error) {
+                    console.error("LeetCode fetch failed:", error);
+                }
+            }
+
+            const portfolioLinks = Array.from(document.querySelectorAll('#portfolio-list input'))
+                .map(input => input.value.trim())
+                .filter(url => url);
+
+            const updatedData = {
+                personal: {
+                    name: document.getElementById('name').value.trim(),
+                    email: document.getElementById('email').value.trim(),
+                    whatsapp: document.getElementById('whatsapp').value.trim(),
+                    location: document.getElementById('location').value.trim(),
+                    about: document.getElementById('about').value.trim(),
+                    profilePic: profilePicPreview.src
+                },
+                education: {
+                    college: document.getElementById('college').value.trim(),
+                    degree: document.getElementById('degree').value,
+                    branch: document.getElementById('branch').value.trim(),
+                    year: document.getElementById('year').value
+                },
+                skills: document.getElementById('skills').value.trim() || '',
+                profiles: profiles,
+                portfolio: portfolioLinks.length > 0 ? portfolioLinks : []
+            };
+
+            // Detect changed fields
+            const changedFields = [];
+            if (updatedData.personal.name !== (originalData.personal?.name || '')) {
+                changedFields.push({ field: 'personal.name', value: updatedData.personal.name, timestamp: Date.now(), status: 'pending' });
+            }
+            if (updatedData.personal.whatsapp !== (originalData.personal?.whatsapp || '')) {
+                changedFields.push({ field: 'personal.whatsapp', value: updatedData.personal.whatsapp, timestamp: Date.now(), status: 'pending' });
+            }
+            if (updatedData.personal.location !== (originalData.personal?.location || '')) {
+                changedFields.push({ field: 'personal.location', value: updatedData.personal.location, timestamp: Date.now(), status: 'pending' });
+            }
+            if (updatedData.personal.about !== (originalData.personal?.about || '')) {
+                changedFields.push({ field: 'personal.about', value: updatedData.personal.about, timestamp: Date.now(), status: 'pending' });
+            }
+            if (updatedData.personal.profilePic !== (originalData.personal?.profilePic || '../assets/avatar/1.png')) {
+                changedFields.push({ field: 'personal.profilePic', value: updatedData.personal.profilePic, timestamp: Date.now(), status: 'pending' });
+            }
+            if (updatedData.education.college !== (originalData.education?.college || '')) {
+                changedFields.push({ field: 'education.college', value: updatedData.education.college, timestamp: Date.now(), status: 'pending' });
+            }
+            if (updatedData.education.degree !== (originalData.education?.degree || '')) {
+                changedFields.push({ field: 'education.degree', value: updatedData.education.degree, timestamp: Date.now(), status: 'pending' });
+            }
+            if (updatedData.education.branch !== (originalData.education?.branch || '')) {
+                changedFields.push({ field: 'education.branch', value: updatedData.education.branch, timestamp: Date.now(), status: 'pending' });
+            }
+            if (updatedData.education.year !== (originalData.education?.year || '')) {
+                changedFields.push({ field: 'education.year', value: updatedData.education.year, timestamp: Date.now(), status: 'pending' });
+            }
+            if (updatedData.skills !== (originalData.skills || '')) {
+                changedFields.push({ field: 'skills', value: updatedData.skills, timestamp: Date.now(), status: 'pending' });
+            }
+            if (JSON.stringify(profiles.github) !== JSON.stringify(originalData.profiles?.github)) {
+                changedFields.push({ field: 'profiles.github', value: profiles.github, timestamp: Date.now(), status: 'pending' });
+            }
+            if (JSON.stringify(profiles.codeforces) !== JSON.stringify(originalData.profiles?.codeforces)) {
+                changedFields.push({ field: 'profiles.codeforces', value: profiles.codeforces, timestamp: Date.now(), status: 'pending' });
+            }
+            if (JSON.stringify(profiles.leetcode) !== JSON.stringify(originalData.profiles?.leetcode)) {
+                changedFields.push({ field: 'profiles.leetcode', value: profiles.leetcode, timestamp: Date.now(), status: 'pending' });
+            }
+            if (JSON.stringify(portfolioLinks) !== JSON.stringify(originalData.portfolio || [])) {
+                changedFields.push({ field: 'portfolio', value: portfolioLinks, timestamp: Date.now(), status: 'pending' });
+            }
+
+            try {
+                // Store updated data
+                const userRef = ref(db, `studentslist/${userId}`);
+                await set(userRef, updatedData);
+
+                // Store only changed fields for verification
+                if (changedFields.length > 0) {
+                    const verificationRef = ref(db, `verification/${userId}`);
+                    for (const field of changedFields) {
+                        await push(verificationRef, field);
+                    }
+                }
+
+               
+                window.location.href = 'wait.html';
+            } catch (error) {
+                alert("Failed to update profile: " + error.message);
+            }
+        });
+    </script>
+</body>
+</html>

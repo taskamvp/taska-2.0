@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taska Elite - Update Profile</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { 
+            background: #F8F9FA; 
+            min-height: 100vh; 
+            color: #1F2937; 
+            padding-top: 8px; 
+            padding-bottom: 80px; 
+        }
+        .navbar { 
+            background: #fff; 
+            padding: 1rem 2rem; 
+            position: fixed; 
+            top: 0; 
+            width: 100%; 
+            z-index: 1000; 
+            border-bottom: 1px solid #e0e0e0; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
+        }
+        .navbar .logo { 
+            font-size: 1.5rem; 
+            color: #1a1a1a; 
+        }
+        .navbar .nav-menu { 
+            display: flex; 
+            gap: 1.5rem; 
+            list-style: none; 
+        }
+        .navbar .nav-menu li a { 
+            color: #1a1a1a; 
+            text-decoration: none; 
+            font-size: 1rem; 
+            transition: color 0.3s; 
+        }
+        .navbar .nav-menu li a.active { 
+            color: #0000ff; 
+        }
+        .navbar .hamburger { 
+            display: none; 
+            font-size: 1.5rem; 
+            cursor: pointer; 
+            color: #1a1a1a; 
+        }
+        .dashboard-content { padding: 2rem 1rem; }
+        .update-container { 
+            background: #FFFFFF; 
+            border-radius: 10px; 
+            padding: 2rem; 
+            max-width: 700px; 
+            margin: 0 auto; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
+        }
+        .update-header h1 { 
+            font-size: 1.8rem; 
+            font-weight: 600; 
+            text-align: center; 
+            color: #1e90ff; 
+            margin-bottom: 0.5rem; 
+        }
+        .update-header p { 
+            font-size: 0.9rem; 
+            color: #6B7280; 
+            text-align: center; 
+            margin-bottom: 1.5rem; 
+        }
+        .update-form { display: flex; flex-direction: column; gap: 1.5rem; }
+        .form-group { width: 100%; }
+        .form-group label { 
+            font-weight: 500; 
+            color: #1F2937; 
+            margin-bottom: 0.3rem; 
+            display: block; 
+            font-size: 0.9rem; 
+        }
+        .form-group label span.required { color: #EF4444; }
+        .custom-input, select.custom-input { 
+            width: 100%; 
+            padding: 0.8rem; 
+            border: 1px solid #D1D5DB; 
+            border-radius: 6px; 
+            background: #F9FAFB; 
+            color: #1F2937; 
+            font-size: 0.9rem; 
+            transition: border-color 0.3s ease; 
+        }
+        .custom-input:focus, select.custom-input:focus { 
+            border-color: #1e90ff; 
+            outline: none; 
+        }
+        .custom-input[readonly] { background: #E5E7EB; color: #6B7280; }
+        textarea.custom-input { min-height: 100px; resize: vertical; }
+        .form-actions { display: flex; justify-content: center; gap: 1rem; margin-top: 1.5rem; }
+        .cta-button { 
+            padding: 0.8rem 2rem; 
+            background: #1e90ff; 
+            color: #FFFFFF; 
+            border: none; 
+            border-radius: 6px; 
+            font-size: 0.9rem; 
+            cursor: pointer; 
+        }
+        .cta-button:hover { background: #1e3799; }
+        .cancel-btn { background: #E5E7EB; color: #1F2937; }
+        .cancel-btn:hover { background: #D1D5DB; }
+        footer { 
+            background: #FFFFFF; 
+            padding: 1rem; 
+            text-align: center; 
+            color: #6B7280; 
+            position: fixed; 
+            bottom: nø0; 
+            left: 0; 
+            right: 0; 
+            box-shadow: 0 -2px 4px rgba(0,0,0,0.05); 
+        }
+        footer a { color: #1e90ff; text-decoration: none; }
+        footer a:hover { color: #1e3799; }
+
+        /* Profile Image Styles */
+        .profile-image-section { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            gap: 1rem; 
+            margin-bottom: 1.5rem; 
+        }
+        .profile-preview { 
+            width: 100px; 
+            height: 100px; 
+            border-radius: 50%; 
+            overflow: hidden; 
+            cursor: pointer; 
+        }
+        .profile-preview img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+        }
+        .profile-upload-btn { 
+            padding: 0.5rem 1rem; 
+            background: #1e90ff; 
+            color: #FFFFFF; 
+            border: none; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            font-size: 0.9rem; 
+        }
+        .profile-upload-btn:hover { background: #1e3799; }
+
+        /* Cropper Modal */
+        .cropper-modal { 
+            display: none; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(0,0,0,0.85); 
+            z-index: 10000; 
+            align-items: center; 
+            justify-content: center; 
+            opacity: 1; 
+        }
+        .cropper-container { 
+            background: #FFFFFF; 
+            border-radius: 8px; 
+            padding: 1.5rem; 
+            width: 90%; 
+            max-width: 500px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 1rem; 
+        }
+        .cropper-image-wrapper { 
+            width: 100%; 
+            height: 400px; 
+            overflow: hidden; 
+            position: relative; 
+        }
+        .cropper-image-wrapper img { 
+            max-width: 100%; 
+            max-height: 100%; 
+            width: 100%; 
+            height: 100%; 
+            object-fit: contain; 
+            display: block; 
+        }
+        .cropper-controls { 
+            display: flex; 
+            gap: 0.5rem; 
+            justify-content: center; 
+            flex-wrap: wrap; 
+        }
+        .cropper-btn { 
+            padding: 0.5rem 1rem; 
+            border: none; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            font-size: 0.9rem; 
+            background: #F3F4F6; 
+            color: #1F2937; 
+            transition: background 0.3s ease; 
+        }
+        .cropper-btn:hover { background: #E5E7EB; }
+        .cropper-btn.save { background: #1e90ff; color: #FFFFFF; }
+        .cropper-btn.save:hover { background: #1e3799; }
+        .cropper-btn.cancel { background: #E5E7EB; color: #1F2937; }
+        .cropper-btn.cancel:hover { background: #D1D5DB; }
+        .cropper-btn.zoom-in, .cropper-btn.zoom-out, .cropper-btn.rotate { 
+            padding: 0.5rem; 
+            background: #F3F4F6; 
+            color: #1F2937; 
+        }
+        .cropper-btn.zoom-in:hover, .cropper-btn.zoom-out:hover, .cropper-btn.rotate:hover { 
+            background: #E5E7EB; 
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu { 
+                display: none; 
+                position: absolute; 
+                top: 60px; 
+                right: 1rem; 
+                background: #FFFFFF; 
+                flex-direction: column; 
+                padding: 1rem; 
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+            }
+            .nav-menu.active { display: flex; }
+            .hamburger { display: block; }
+            .update-container { padding: 1.5rem; }
+            .update-header h1 { font-size: 1.5rem; }
+            .update-header p { font-size: 0.85rem; }
+            .custom-input, select.custom-input { padding: 1rem; font-size: 1rem; }
+            .form-actions { flex-direction: column; gap: 0.8rem; }
+            .cropper-container { padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">Taska Elite</div>
+        <ul class="nav-menu">
+            <li><a href="profile.html">Profile</a></li>
+            <li><a href="../index.html">Logout</a></li>
+        </ul>
+        <div class="hamburger"><i class="fas fa-bars"></i></div>
+    </nav>
+
+    <main class="dashboard-content">
+        <section class="update-container">
+            <div class="update-header">
+                <h1>Update Your Profile</h1>
+                <p>Keep it simple and boost your chances!</p>
+            </div>
+            <form id="update-profile-form" class="update-form">
+                <!-- Profile Image Upload -->
+                <div class="form-group profile-image-section">
+                    <label for="profile-image">Profile Image <span class="required">*</span></label>
+                    <div class="profile-preview" onclick="document.getElementById('profile-image').click()">
+                        <img id="profile-image-preview" src="../assets/avatar/1.png" alt="Profile Preview">
+                    </div>
+                    <input type="file" id="profile-image" accept="image/*" style="display: none;" required>
+                    <button type="button" class="profile-upload-btn" onclick="document.getElementById('profile-image').click()">Choose Image</button>
+                </div>
+
+                <!-- Personal Information -->
+                <div class="form-group">
+                    <label for="name">Name <span class="required">*</span></label>
+                    <input type="text" id="name" class="custom-input" placeholder="Enter your full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email <span class="required">*</span></label>
+                    <input type="email" id="email" class="custom-input" placeholder="Enter Email" readonly required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone <span class="required">*</span></label>
+                    <input type="tel" id="phone" class="custom-input" placeholder="Enter your phone number" required>
+                </div>
+                <div class="form-group">
+                    <label for="location">Location <span class="required">*</span></label>
+                    <input type="text" id="location" class="custom-input" placeholder="e.g., Delhi" required>
+                </div>
+                <div class="form-group">
+                    <label for="bio">Bio <span class="required">*</span> <small>Tell us about yourself to boost your chances!</small></label>
+                    <textarea id="bio" class="custom-input" placeholder="Write in your own words, avoid using AI tools. Keeping it natural and personal helps you stand out." required></textarea>
+                </div>
+
+                <!-- Professional Information -->
+                <div class="form-group">
+                    <label for="company">Company</label>
+                    <input type="text" id="company" class="custom-input" placeholder="Enter your company name">
+                </div>
+                <div class="form-group">
+                    <label for="jobRole">Job Role <span class="required">*</span></label>
+                    <input type="text" id="jobRole" class="custom-input" placeholder="Enter your job role" required>
+                </div>
+                <div class="form-group">
+                    <label for="experience">Experience <span class="required">*</span></label>
+                    <select id="experience" class="custom-input" required>
+                        <option value="" disabled selected>Select Experience</option>
+                        <option value="Fresher">Fresher</option>
+                        <option value="Junior">Junior</option>
+                        <option value="Mid-Level">Mid-Level</option>
+                        <option value="Senior">Senior</option>
+                        <option value="Experienced">Experienced</option>
+                    </select>
+                </div>
+
+                <!-- Educational Information -->
+                <div class="form-group">
+                    <label for="college">College</label>
+                    <input type="text" id="college" class="custom-input" placeholder="Enter your college name">
+                </div>
+                <div class="form-group">
+                    <label for="degree">Degree</label>
+                    <input type="text" id="degree" class="custom-input" placeholder="Enter your degree">
+                </div>
+                <div class="form-group">
+                    <label for="areaOfStudy">Area of Study</label>
+                    <input type="text" id="areaOfStudy" class="custom-input" placeholder="Enter your area of study">
+                </div>
+
+                <!-- Form Actions -->
+                <div class="form-actions">
+                    <button type="submit" class="cta-button">Save Profile</button>
+                    <button type="button" class="cta-button cancel-btn" onclick="window.location.href='profile.html'">Cancel</button>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <!-- Cropper Modal -->
+    <div class="cropper-modal" id="cropper-modal">
+        <div class="cropper-container">
+            <div class="cropper-image-wrapper">
+                <img id="cropper-image" src="" alt="Image to crop">
+            </div>
+            <div class="cropper-controls">
+                <button type="button" class="cropper-btn zoom-in"><i class="fas fa-search-plus"></i></button>
+                <button type="button" class="cropper-btn zoom-out"><i class="fas fa-search-minus"></i></button>
+                <button type="button" class="cropper-btn rotate"><i class="fas fa-redo"></i></button>
+                <button type="button" class="cropper-btn save">Save</button>
+                <button type="button" class="cropper-btn cancel">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 Taska Elite. All rights reserved. | <a href="#">Privacy Policy</a></p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+    
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+        import { getDatabase, ref, get, set, push } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
+        import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js';
+    
+        const firebaseConfig = {
+            apiKey: "AIzaSyDZIDlEtaNRxODoFhRw0xF2yYFBqqBexqo",
+            authDomain: "taska-45011.firebaseapp.com",
+            databaseURL: "https://taska-45011-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "taska-45011",
+            storageBucket: "taska-45011.firebasestorage.app",
+            messagingSenderId: "205487498813",
+            appId: "1:205487498813:web:0de2c9eab567482781ec54"
+        };
+    
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const storage = getStorage(app);
+        const userId = localStorage.getItem('userId');
+    
+        console.log("Current userId:", userId);
+    
+        if (!userId) {
+            alert("Please log in or sign up first.");
+            window.location.href = '../login.html';
+        } else {
+            loadProfileData();
+        }
+    
+        let cropper;
+        let imageUploaded = false;
+        const profilePicInput = document.getElementById('profile-image');
+        const profilePicPreview = document.getElementById('profile-image-preview');
+        const cropperModal = document.getElementById('cropper-modal');
+        const cropperImage = document.getElementById('cropper-image');
+        const zoomInBtn = document.querySelector('.cropper-btn.zoom-in');
+        const zoomOutBtn = document.querySelector('.cropper-btn.zoom-out');
+        const rotateBtn = document.querySelector('.cropper-btn.rotate');
+        const saveBtn = document.querySelector('.cropper-btn.save');
+        const cancelBtn = document.querySelector('.cropper-btn.cancel');
+    
+        // Remove required attribute from file input since it's hidden
+        if (profilePicInput) {
+            profilePicInput.removeAttribute('required');
+        }
+    
+        profilePicInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    cropperImage.src = event.target.result;
+                    cropperModal.style.display = 'flex';
+                    if (cropper) cropper.destroy();
+                    cropper = new Cropper(cropperImage, {
+                        aspectRatio: 1,
+                        viewMode: 1,
+                        autoCropArea: 0.8,
+                        responsive: true,
+                        background: false,
+                        modal: true,
+                        zIndex: 5200
+                    });
+                    document.body.style.overflow = 'hidden';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    
+        zoomInBtn.addEventListener('click', () => cropper.zoom(0.1));
+        zoomOutBtn.addEventListener('click', () => cropper.zoom(-0.1));
+        rotateBtn.addEventListener('click', () => cropper.rotate(90));
+        cancelBtn.addEventListener('click', () => {
+            cropperModal.style.display = 'none';
+            if (cropper) cropper.destroy();
+            profilePicInput.value = '';
+            document.body.style.overflow = 'auto';
+        });
+    
+        saveBtn.addEventListener('click', async () => {
+            if (!cropper) {
+                console.error("Cropper instance not found");
+                return;
+            }
+            
+            const canvas = cropper.getCroppedCanvas({
+                width: 200,
+                height: 200,
+                imageSmoothingQuality: 'high'
+            });
+            
+            canvas.toBlob(async (blob) => {
+                try {
+                    const webpBlob = await new Promise((resolve) => {
+                        const img = new Image();
+                        img.src = canvas.toDataURL('image/webp', 0.8);
+                        img.onload = () => {
+                            const tempCanvas = document.createElement('canvas');
+                            tempCanvas.width = img.width;
+                            tempCanvas.height = img.height;
+                            tempCanvas.getContext('2d').drawImage(img, 0, 0);
+                            tempCanvas.toBlob(resolve, 'image/webp', 0.8);
+                        };
+                    });
+    
+                    const storagePath = `profile/${userId}.webp`;
+                    const imageRef = storageRef(storage, storagePath);
+                    await uploadBytes(imageRef, webpBlob);
+                    const downloadURL = await getDownloadURL(imageRef);
+                    console.log("Image uploaded successfully:", downloadURL);
+    
+                    profilePicPreview.src = downloadURL;
+                    imageUploaded = true;
+    
+                    const verificationRef = ref(db, `verification/${userId}`);
+                    await push(verificationRef, {
+                        field: 'personal.profilePic',
+                        value: downloadURL,
+                        timestamp: Date.now(),
+                        status: 'pending'
+                    });
+                    console.log("Profile pic verification entry added");
+    
+                    cropperModal.style.display = 'none';
+                    if (cropper) cropper.destroy();
+                    profilePicInput.value = '';
+                    document.body.style.overflow = 'auto';
+                } catch (error) {
+                    console.error("Failed to upload image:", error);
+                    alert("Failed to upload image: " + error.message);
+                }
+            }, 'image/webp', 0.8);
+        });
+    
+        // Handle mobile menu toggle
+        document.addEventListener('DOMContentLoaded', () => {
+            const hamburger = document.querySelector('.hamburger');
+            const navMenu = document.querySelector('.nav-menu');
+            hamburger.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+            });
+        });
+    
+        let originalData = {};
+        async function loadProfileData() {
+            console.log("Loading profile data for user:", userId);
+            const userRef = ref(db, `professionalslist/${userId}`);
+            try {
+                const snapshot = await get(userRef);
+                if (snapshot.exists()) {
+                    const data = snapshot.val() || {};
+                    console.log("Profile data loaded:", data);
+                    originalData = data;
+                    
+                    // Set field values with null checks
+                    document.getElementById('name').value = data.personal?.name || '';
+                    document.getElementById('email').value = data.personal?.email || localStorage.getItem('userEmail') || '';
+                    document.getElementById('phone').value = data.personal?.phone || '';
+                    document.getElementById('location').value = data.personal?.location || '';
+                    document.getElementById('bio').value = data.personal?.bio || '';
+                    document.getElementById('company').value = data.professional?.company || '';
+                    document.getElementById('jobRole').value = data.professional?.jobRole || '';
+                    
+                    // Set select element with validation
+                    const experienceSelect = document.getElementById('experience');
+                    const expValue = data.professional?.experience || '';
+                    if (expValue) {
+                        // Check if the option exists in the select
+                        let optionFound = false;
+                        for (let i = 0; i < experienceSelect.options.length; i++) {
+                            if (experienceSelect.options[i].value === expValue) {
+                                experienceSelect.selectedIndex = i;
+                                optionFound = true;
+                                break;
+                            }
+                        }
+    
+                        if (!optionFound) {
+                            console.warn(`Experience value "${expValue}" not found in options`);
+                        }
+                    }
+                    
+                    document.getElementById('college').value = data.education?.college || '';
+                    document.getElementById('degree').value = data.education?.degree || '';
+                    document.getElementById('areaOfStudy').value = data.education?.areaOfStudy || '';
+                    
+                    // Set profile pic with fallback
+                    if (data.personal?.profilePic) {
+                        profilePicPreview.src = data.personal.profilePic;
+                        console.log("Profile pic URL set:", data.personal.profilePic);
+                    } else {
+                        profilePicPreview.src = '../assets/avatar/1.png';
+                        console.log("Using default profile pic");
+                    }
+                } else {
+                    console.log("No profile data found, using defaults");
+                }
+            } catch (error) {
+                console.error("Failed to load profile data:", error);
+                alert("Failed to load profile data: " + error.message);
+            }
+        }
+    
+        // Form submission handler
+        const formElement = document.getElementById('update-profile-form');
+        formElement.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            console.log("Form submitted, processing...");
+            
+            // Manual validation check to ensure all required fields are filled
+            const requiredFields = formElement.querySelectorAll('[required]');
+            let isValid = true;
+            
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    isValid = false;
+                    field.focus();
+                    console.error(`Field ${field.id || field.name} is required but empty`);
+                }
+            });
+            
+            if (!isValid) {
+                alert("Please fill all required fields");
+                return;
+            }
+            
+            try {
+                // Create updated data object
+                const updatedData = {
+                    personal: {
+                        name: document.getElementById('name').value.trim(),
+                        email: document.getElementById('email').value.trim(),
+                        phone: document.getElementById('phone').value.trim(),
+                        location: document.getElementById('location').value.trim(),
+                        bio: document.getElementById('bio').value.trim(),
+                        profilePic: profilePicPreview.src
+                    },
+                    professional: {
+                        company: document.getElementById('company').value.trim(),
+                        jobRole: document.getElementById('jobRole').value.trim(),
+                        experience: document.getElementById('experience').value
+                    },
+                    education: {
+                        college: document.getElementById('college').value.trim(),
+                        degree: document.getElementById('degree').value.trim(),
+                        areaOfStudy: document.getElementById('areaOfStudy').value.trim()
+                    },
+                    isVisible: true
+                };
+                
+                console.log("Updated data prepared:", updatedData);
+    
+                // Track changed fields for verification
+                const changedFields = [];
+                if (updatedData.personal.name !== (originalData.personal?.name || '')) {
+                    changedFields.push({ field: 'personal.name', value: updatedData.personal.name, timestamp: Date.now(), status: 'pending' });
+                }
+                if (updatedData.personal.phone !== (originalData.personal?.phone || '')) {
+                    changedFields.push({ field: 'personal.phone', value: updatedData.personal.phone, timestamp: Date.now(), status: 'pending' });
+                }
+                if (updatedData.personal.location !== (originalData.personal?.location || '')) {
+                    changedFields.push({ field: 'personal.location', value: updatedData.personal.location, timestamp: Date.now(), status: 'pending' });
+                }
+                if (updatedData.personal.bio !== (originalData.personal?.bio || '')) {
+                    changedFields.push({ field: 'personal.bio', value: updatedData.personal.bio, timestamp: Date.now(), status: 'pending' });
+                }
+                if (updatedData.personal.profilePic !== (originalData.personal?.profilePic || '../assets/avatar/1.png')) {
+                    changedFields.push({ field: 'personal.profilePic', value: updatedData.personal.profilePic, timestamp: Date.now(), status: 'pending' });
+                }
+                if (updatedData.professional.company !== (originalData.professional?.company || '')) {
+                    changedFields.push({ field: 'professional.company', value: updatedData.professional.company, timestamp: Date.now(), status: 'pending' });
+                }
+                if (updatedData.professional.jobRole !== (originalData.professional?.jobRole || '')) {
+                    changedFields.push({ field: 'professional.jobRole', value: updatedData.professional.jobRole, timestamp: Date.now(), status: 'pending' });
+                }
+                if (updatedData.professional.experience !== (originalData.professional?.experience || '')) {
+                    changedFields.push({ field: 'professional.experience', value: updatedData.professional.experience, timestamp: Date.now(), status: 'pending' });
+                }
+                if (updatedData.education.college !== (originalData.education?.college || '')) {
+                    changedFields.push({ field: 'education.college', value: updatedData.education.college, timestamp: Date.now(), status: 'pending' });
+                }
+                if (updatedData.education.degree !== (originalData.education?.degree || '')) {
+                    changedFields.push({ field: 'education.degree', value: updatedData.education.degree, timestamp: Date.now(), status: 'pending' });
+                }
+                if (updatedData.education.areaOfStudy !== (originalData.education?.areaOfStudy || '')) {
+                    changedFields.push({ field: 'education.areaOfStudy', value: updatedData.education.areaOfStudy, timestamp: Date.now(), status: 'pending' });
+                }
+    
+                console.log("Changed fields:", changedFields);
+    
+                // Save main profile data
+                const userRef = ref(db, `professionalslist/${userId}`);
+                await set(userRef, updatedData);
+                console.log("Main profile data saved successfully");
+    
+                // Add verification entries for changed fields
+                if (changedFields.length > 0) {
+                    const verificationRef = ref(db, `verification/${userId}`);
+                    for (const field of changedFields) {
+                        await push(verificationRef, field);
+                        console.log(`Verification entry added for ${field.field}`);
+                    }
+                }
+    
+                // Success - redirect to profile page
+                console.log("All data saved, redirecting to profile page");
+                alert("Profile updated successfully!");
+                
+                // Direct redirect - no timeout to avoid any potential issues
+                window.location.href = 'profile.html';
+            } catch (error) {
+                console.error("Failed to update profile:", error);
+                alert("Failed to update profile: " + error.message);
+            }
+        });
+    </script>
+</body>
+</html>

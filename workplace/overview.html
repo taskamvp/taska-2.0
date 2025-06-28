@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taska Elite - Student Overview</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/overview.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body { 
+            background: #ffffff; 
+            min-height: 100vh; 
+            font-family: 'Poppins', sans-serif; 
+            margin: 0; 
+            padding-top: 70px; 
+        }
+        /* Navbar */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-menu a {
+            color: #2c3e50;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-menu a:hover, .nav-menu a.active {
+            color: #0000ff;
+        }
+
+        .hamburger {
+            display: none;
+        }
+
+        /* Dashboard Content */
+        .dashboard-content { padding: 2rem; }
+        .dashboard-section h1 { font-size: 2rem; color: #1a1a1a; margin-bottom: 0.5rem; font-weight: 600; }
+        .dashboard-section p { font-size: 1rem; color: #6c757d; margin-bottom: 2rem; }
+        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-bottom: 3rem; }
+        .dashboard-card { background: #ffffff; border-radius: 8px; padding: 1.8rem; border: 1px solid #e8ecef; }
+        .dashboard-card h2 { font-size: 1.2rem; color: #1a1a1a; margin-bottom: 0.8rem; }
+        .dashboard-card p { font-size: 1.8rem; color: #1a1a1a; margin: 0; font-weight: 500; }
+        .card-link { display: inline-block; margin-top: 1rem; color: #007bff; text-decoration: none; font-weight: 500; }
+        /* Chat Interface */
+        .chat-interface { 
+            display: flex; 
+            flex-direction: column; 
+            background: #ffffff; 
+            border-radius: 8px; 
+            padding: 1.5rem; 
+            border: 1px solid #e8ecef; 
+            gap: 2rem; 
+        }
+        .chat-heading { font-size: 1.5rem; color: #1a1a1a; margin-bottom: 1rem; font-weight: 600; }
+        .sidebar { width: 100%; max-width: 100%; }
+        .search-bar { margin-bottom: 1.5rem; }
+        .custom-input { 
+            width: 100%; 
+            padding: 0.9rem; 
+            border: 1px solid #e8ecef; 
+            border-radius: 6px; 
+            font-size: 1rem; 
+            color: #1a1a1a; 
+            background: #ffffff; 
+            transition: border-color 0.2s ease; 
+        }
+        .custom-input:focus { border-color: #007bff; outline: none; }
+        .contact-list { 
+            max-height: 65vh; 
+            overflow-y: auto; 
+            background: #ffffff; 
+            border-radius: 6px; 
+            border: 1px solid #e8ecef; 
+        }
+        .contact { 
+            padding: 1.2rem; 
+            border-bottom: 1px solid #e8ecef; 
+            cursor: pointer; 
+            color: #1a1a1a; 
+            transition: background 0.2s ease; 
+            position: relative; 
+            display: flex; 
+            align-items: center; 
+        }
+        .contact:hover { background: #f8f9fa; }
+        .contact.unread::after { 
+            content: ''; 
+            width: 10px; 
+            height: 10px; 
+            background: #dc3545; 
+            border-radius: 50%; 
+            position: absolute; 
+            right: 1.5rem; 
+        }
+        .contact p { margin: 0; font-size: 1rem; font-weight: 500; }
+        .contact-avatar { 
+            width: 40px; 
+            height: 40px; 
+            border-radius: 50%; 
+            background: #e8ecef; 
+            color: #1a1a1a; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 1.1rem; 
+            margin-right: 1.2rem; 
+        }
+        .chat-area { 
+            display: none; 
+            flex-direction: column; 
+            width: 100%; 
+            background: #ffffff; 
+            border-radius: 6px; 
+            padding: 1.5rem; 
+            border: 1px solid #e8ecef; 
+        }
+        .chat-area.active { display: flex; }
+        .chat-prompt { 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 1rem; 
+            color: #6c757d; 
+            padding: 2.5rem; 
+            text-align: center; 
+        }
+        .chat-header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding-bottom: 1.2rem; 
+            border-bottom: 1px solid #e8ecef; 
+        }
+        .contact-info h3 { font-size: 1.3rem; color: #1a1a1a; margin: 0; font-weight: 500; }
+        .contact-status { font-size: 0.9rem; color: #28a745; }
+        .chat-actions button { 
+            background: none; 
+            border: none; 
+            font-size: 1.3rem; 
+            color: #6c757d; 
+            cursor: pointer; 
+            margin-left: 0.8rem; 
+        }
+        .chat-messages { 
+            flex: 1; 
+            max-height: 55vh; 
+            overflow-y: auto; 
+            padding: 1.2rem 0; 
+            position: relative; 
+            background: #ffffff; 
+        }
+        .message { 
+            margin: 0.6rem 0; 
+            padding: 0.9rem 1.3rem; 
+            border-radius: 6px; 
+            max-width: 85%; 
+            background: #ffffff; 
+            color: #1a1a1a; 
+            border: 1px solid #333; 
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); 
+        }
+        .message.sent { 
+            margin-left: auto; 
+            background: #ffffff; 
+            border: 1px solid #333; 
+        }
+        .message.received { 
+            margin-right: auto; 
+            background: #ffffff; 
+            border: 1px solid #333; 
+        }
+        .message.pinned { 
+            background: #ffffff; 
+            border: 1px solid #007bff; 
+            position: sticky; 
+            top: 0; 
+            z-index: 10; 
+            max-width: 100%; 
+            padding: 0; 
+            border-radius: 8px; 
+            overflow: hidden; 
+        }
+        .message.pinned .card-header { 
+            background: linear-gradient(135deg, #007bff, #00d4ff); 
+            color: #ffffff; 
+            padding: 0.8rem 1.2rem; 
+            font-weight: 600; 
+            font-size: 1.1rem; 
+        }
+        .message.pinned .card-body { 
+            padding: 1rem 1.2rem; 
+            color: #1a1a1a; 
+        }
+        .message.pinned p { margin: 0.5rem 0; font-size: 0.95rem; }
+        .message.pinned .timestamp { color: #6c757d; }
+        .message p { margin: 0; font-size: 0.95rem; }
+        .message button { 
+            margin-top: 0.6rem; 
+            padding: 0.5rem 1rem; 
+            background: #ffffff; 
+            color: #007bff; 
+            border: 1px solid #007bff; 
+            border-radius: 5px; 
+            cursor: pointer; 
+        }
+        .timestamp { font-size: 0.75rem; color: #6c757d; margin-top: 0.4rem; display: block; }
+        .chat-input { 
+            display: flex; 
+            gap: 1rem; 
+            padding-top: 1.5rem; 
+            border-top: 1px solid #e8ecef; 
+        }
+        .collaborate-btn { 
+            background: linear-gradient(135deg, #007bff, #00d4ff); 
+            border: none; 
+            padding: 0.9rem 1.8rem; 
+            border-radius: 25px; 
+            color: #ffffff; 
+            cursor: pointer; 
+            font-size: 1rem; 
+            font-weight: 600; 
+            transition: transform 0.2s ease, opacity 0.2s ease; 
+        }
+        .collaborate-btn:hover { transform: scale(1.05); opacity: 0.9; }
+        .collaborate-btn.hidden { display: none; }
+        .send-btn { 
+            BACKGROUND: #007bff; 
+            border: none; 
+            padding: 0.8rem 1.2rem; 
+            border-radius: 6px; 
+            color: #ffffff; 
+            cursor: pointer; 
+        }
+        /* Custom Prompt Styles */
+        .custom-prompt { 
+            position: fixed; 
+            top: 50%; 
+            left: 50%; 
+            transform: translate(-50%, -50%); 
+            background: #ffffff; 
+            border-radius: 12px; 
+            padding: 2rem; 
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); 
+            z-index: 1000; 
+            max-width: 400px; 
+            width: 90%; 
+        }
+        .custom-prompt h3 { 
+            font-size: 1.3rem; 
+            color: #1a1a1a; 
+            margin-bottom: 1rem; 
+            font-weight: 600; 
+        }
+        .custom-prompt p { 
+            font-size: 0.95rem; 
+            color: #6c757d; 
+            margin-bottom: 1.5rem; 
+        }
+        .custom-prompt input { 
+            width: 100%; 
+            padding: 0.8rem; 
+            margin-bottom: 1rem; 
+            border: 1px solid #e8ecef; 
+            border-radius: 8px; 
+            font-size: 1rem; 
+            color: #1a1a1a; 
+            background: #f8f9fa; 
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05); 
+            transition: border-color 0.2s ease, box-shadow 0.2s ease; 
+        }
+        .custom-prompt input:focus { 
+            border-color: #007bff; 
+            box-shadow: 0 0 8px rgba(0, 123, 255, 0.3); 
+            outline: none; 
+        }
+        .custom-prompt .button-group { 
+            display: flex; 
+            gap: 1rem; 
+            justify-content: flex-end; 
+        }
+        .custom-prompt button { 
+            padding: 0.7rem 1.5rem; 
+            border-radius: 8px; 
+            font-size: 1rem; 
+            cursor: pointer; 
+            transition: background 0.2s ease; 
+        }
+        .custom-prompt .confirm-btn { 
+            background: linear-gradient(135deg, #007bff, #00d4ff); 
+            color: #ffffff; 
+            border: none; 
+        }
+        .custom-prompt .confirm-btn:hover { background: linear-gradient(135deg, #0056b3, #00b7d4); }
+        .custom-prompt .cancel-btn { 
+            background: #e8ecef; 
+            color: #1a1a1a; 
+            border: none; 
+        }
+        .custom-prompt .cancel-btn:hover { background: #d3d9df; }
+        .overlay { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(0, 0, 0, 0.5); 
+            z-index: 999; 
+        }
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+
+            .navbar .nav-menu {
+                display: none;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                right: 0;
+                background: #ffffff;
+                flex-direction: column;
+                padding: 1rem;
+                border-top: 1px solid #e0e0e0;
+            }
+            .navbar .nav-menu.active {
+                display: flex;
+            }
+            .navbar .hamburger {
+                display: block;
+            }
+
+  .dashboard-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1rem;
+  }
+
+  .dashboard-card {
+    border-radius: 16px;
+    padding: 1.5rem;
+    background: linear-gradient(145deg, #f0f4ff, #ffffff);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
+  }
+
+  .dashboard-card:hover {
+    transform: translateY(-4px);
+  }
+
+  .chat-interface {
+    background: #fafbff;
+    padding: 1rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  .chat-heading {
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+
+  .message {
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+  }
+
+  .message.sent {
+    background: #e7f0ff;
+  }
+
+  .message.received {
+    background: #f8f9fa;
+  }
+
+  .contact-avatar {
+    font-size: 1.2rem;
+    background: #dfe6f1;
+    font-weight: 600;
+  }
+
+  .send-btn, .collaborate-btn {
+    transition: all 0.2s ease;
+  }
+
+  .send-btn:hover, .collaborate-btn:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
+}
+
+@media (min-width: 769px) {
+            .chat-interface { flex-direction: row; padding: 2rem; }
+            .sidebar { flex: 1; max-width: 350px; }
+            .chat-area { flex: 2; }
+        }
+    </style>
+</head>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const hamburger = document.querySelector('.navbar .hamburger');
+        const navMenu = document.querySelector('.navbar .nav-menu');
+        hamburger.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+    });
+</script>
+
+<body>
+    <nav class="navbar">
+        <div class="logo">Taska Elite</div>
+        <ul class="nav-menu">
+            <li><a href="overview.html" class="active">Overview</a></li>
+            <li><a href="connections.html">Connections</a></li>
+            <li><a href="explore.html">Explore</a></li>
+            <li><a href="tasks.html">Tasks</a></li>
+            <li><a href="profile.html">Profile</a></li>
+            <li><a href="../index.html">Logout</a></li>
+        </ul>
+        <div class="hamburger">☰</div>
+    </nav>
+
+    <main class="dashboard-content">
+        <section class="dashboard-section">
+            <h1>Your Dashboard</h1>
+            <p>Connect with professionals and collaborate effectively.</p>
+            <div class="dashboard-grid">
+                <div class="dashboard-card">
+                    <h2>Active Tasks</h2>
+                    <p id="active-tasks">0</p>
+                    <a href="tasks.html" class="card-link">View Tasks</a>
+                </div>
+                <div class="dashboard-card">
+                    <h2>Connected Professionals</h2>
+                    <p id="hired-students">0</p>
+                    <a href="explore.html" class="card-link">Explore More</a>
+                </div>
+                <div class="dashboard-card">
+                    <h2>Tasks Completed</h2>
+                    <p id="hours-saved">0</p>
+                    <a href="" class="card-link">View Analytics</a>
+                </div>
+            </div>
+        </section>
+        <div class="chat-heading">Interact with Connected Professionals</div>
+        <section class="chat-interface">
+            <div class="sidebar active" id="sidebar">
+                <div class="sidebar-header">
+                    
+                    </button>
+                   
+                </div>
+                <div class="contact-list" id="contact-list"></div>
+            </div>
+            <div class="chat-prompt" id="chat-prompt">Please select a chat to start interacting</div>
+            <div class="chat-area" id="chat-area">
+                
+                <div class="chat-header" id="chat-header">
+                    <div class="contact-info">
+                        <h3 id="contact-name">Select a contact</h3>
+                        <span id="contact-status"></span>
+                    </div>
+                    <div class="chat-actions">
+                        
+                    </div>
+                </div>
+                <div class="chat-messages" id="chat-messages"></div>
+                <div class="chat-input">
+                    <button class="collaborate-btn" id="collaborate-btn" onclick="showCollaborationPrompt()">Ready to Collaborate</button>
+                    <input type="text" id="message-input" placeholder="Type a message..." class="custom-input">
+                    <button class="send-btn" onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2025 Taska Elite. All rights reserved. | <a href="#" class="privacy-policy">Privacy Policy</a></p>
+    </footer>
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+        import { getDatabase, ref, onValue, push, set, get } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
+        import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDZIDlEtaNRxODoFhRw0xF2yYFBqqBexqo",
+            authDomain: "taska-45011.firebaseapp.com",
+            databaseURL: "https://taska-45011-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "taska-45011",
+            storageBucket: "taska-45011.firebasestorage.app",
+            messagingSenderId: "205487498813",
+            appId: "1:205487498813:web:0de2c9eab567482781ec54"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const storage = getStorage(app);
+        const userId = localStorage.getItem('userId');
+        let selectedConnectionId = null;
+
+        if (!userId) {
+            setTimeout(() => {
+                alert("Please log in or sign up first.");
+                window.location.href = '../login.html';
+            }, 1000);
+        } else {
+            loadDashboardData();
+            loadConnections();
+        }
+
+        function loadDashboardData() {
+            onValue(ref(db, `studentslist/${userId}/tasks`), (snapshot) => {
+                let activeTasks = 0;
+                if (snapshot.exists()) {
+                    snapshot.forEach((childSnapshot) => {
+                        const task = childSnapshot.val();
+                        if (task.status === 'pending') activeTasks++;
+                    });
+                }
+                document.getElementById('active-tasks').textContent = activeTasks;
+            });
+
+            onValue(ref(db, `studentslist/${userId}/tasks`), (snapshot) => {
+                let completedTasks = 0;
+                if (snapshot.exists()) {
+                    snapshot.forEach((childSnapshot) => {
+                        const task = childSnapshot.val();
+                        if (task.status === 'completed') completedTasks++;
+                    });
+                }
+                document.getElementById('hours-saved').textContent = completedTasks;
+            });
+        }
+
+        function loadConnections() {
+            onValue(ref(db, `studentslist/${userId}/connections`), (snapshot) => {
+                const contactList = document.getElementById('contact-list');
+                contactList.innerHTML = '';
+                const numConnections = snapshot.exists() ? snapshot.size : 0;
+                document.getElementById('hired-students').textContent = numConnections;
+                if (snapshot.exists()) {
+                    snapshot.forEach((childSnapshot) => {
+                        const proId = childSnapshot.key;
+                        get(ref(db, `professionalslist/${proId}`)).then((snap) => {
+                            const pro = snap.val();
+                            const initial = pro.name.charAt(0).toUpperCase();
+                            const hasUnread = Math.random() > 0.5; // Simulate unread status
+                            contactList.innerHTML += `
+                                <div class="contact ${hasUnread ? 'unread' : ''}" data-conn-id="${proId}_${userId}" onclick="loadChat('${proId}_${userId}', '${pro.name}')">
+                                    <div class="contact-avatar">${initial}</div>
+                                    <p>${pro.name}</p>
+                                </div>
+                            `;
+                        });
+                    });
+                } else {
+                    contactList.innerHTML = '<p>No connections yet.</p>';
+                }
+            });
+        }
+
+        window.loadChat = (connId, contactName) => {
+            selectedConnectionId = connId;
+            document.getElementById('contact-name').textContent = contactName;
+            document.getElementById('contact-status').textContent = '';
+            const chatMessages = document.getElementById('chat-messages');
+            chatMessages.innerHTML = '<p>Loading messages...</p>';
+
+            document.getElementById('chat-area').classList.add('active');
+            document.getElementById('chat-prompt').style.display = 'none';
+
+            // Mark chat as read
+            const contact = document.querySelector(`.contact[data-conn-id="${connId}"]`);
+            if (contact) contact.classList.remove('unread');
+
+            const messagesRef = ref(db, `chats/${connId}/messages`);
+            onValue(messagesRef, (snapshot) => {
+                chatMessages.innerHTML = '';
+                let pinnedMessage = '';
+                let regularMessages = '';
+                let hasCollaboration = false;
+                if (snapshot.exists()) {
+                    snapshot.forEach((childSnapshot) => {
+                        const msg = childSnapshot.val();
+                        const isSent = msg.sender === userId;
+                        let messageHtml = '';
+                        if (msg.type === 'file') {
+                            messageHtml = `
+                                <div class="message ${isSent ? 'sent' : 'received'}">
+                                    <p>${msg.fileName}</p>
+                                    <button onclick="downloadFile('${msg.content}')">Download</button>
+                                    <span class="timestamp">${new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                                </div>
+                            `;
+                        } else if (msg.type === 'collaboration') {
+                            hasCollaboration = true;
+                            if (isSent) {
+                                pinnedMessage = `
+                                    <div class="message pinned">
+                                        <div class="card-header">Ready to Work Together!</div>
+                                        <div class="card-body">
+                                            <p>Contact me to collaborate:</p>
+                                            <p><strong>WhatsApp:</strong> ${msg.whatsapp}</p>
+                                            <p><strong>Email:</strong> ${msg.email}</p>
+                                            <span class="timestamp">${new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                                        </div>
+                                    </div>
+                                `;
+                            } else {
+                                pinnedMessage = `
+                                    <div class="message pinned">
+                                        <div class="card-header">${contactName} is Ready to Collaborate!</div>
+                                        <div class="card-body">
+                                            <p>Contact them to start working:</p>
+                                            <p><strong>WhatsApp:</strong> ${msg.whatsapp}</p>
+                                            <p><strong>Email:</strong> ${msg.email}</p>
+                                            <span class="timestamp">${new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                                        </div>
+                                    </div>
+                                `;
+                            }
+                        } else {
+                            messageHtml = `
+                                <div class="message ${isSent ? 'sent' : 'received'}">
+                                    <p>${msg.content}</p>
+                                    <span class="timestamp">${new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                                </div>
+                            `;
+                        }
+                        regularMessages += messageHtml;
+                    });
+                } else {
+                    regularMessages = '<p>No messages yet.</p>';
+                }
+                chatMessages.innerHTML = pinnedMessage + regularMessages;
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                // Hide collaborate button if collaboration exists
+                const collaborateBtn = document.getElementById('collaborate-btn');
+                collaborateBtn.classList.toggle('hidden', hasCollaboration);
+            }, { onlyOnce: false });
+        };
+
+        window.sendMessage = () => {
+            const input = document.getElementById('message-input');
+            const content = input.value.trim();
+            if (content && selectedConnectionId) {
+                const messageData = {
+                    sender: userId,
+                    content: content,
+                    timestamp: new Date().toISOString(),
+                    type: 'text'
+                };
+                push(ref(db, `chats/${selectedConnectionId}/messages`), messageData);
+                input.value = '';
+            }
+        };
+
+        window.showCollaborationPrompt = () => {
+            if (!selectedConnectionId) return;
+
+            const overlay = document.createElement('div');
+            overlay.className = 'overlay';
+            document.body.appendChild(overlay);
+
+            const prompt = document.createElement('div');
+            prompt.className = 'custom-prompt';
+            prompt.innerHTML = `
+                <h3>Ready to Collaborate?</h3>
+                <p>Are you ready to work together? We will share your WhatsApp number and email with them.</p>
+                <input type="tel" id="whatsapp-input" placeholder="Enter WhatsApp Number" required>
+                <input type="email" id="email-input" placeholder="Enter Email" required>
+                <div class="button-group">
+                    <button class="cancel-btn" onclick="this.closest('.custom-prompt').remove(); document.querySelector('.overlay').remove();">Cancel</button>
+                    <button class="confirm-btn" onclick="sendCollaborationRequestFromPrompt()">Confirm</button>
+                </div>
+            `;
+            document.body.appendChild(prompt);
+        };
+
+        window.sendCollaborationRequestFromPrompt = () => {
+            const whatsapp = document.getElementById('whatsapp-input').value.trim();
+            const email = document.getElementById('email-input').value.trim();
+
+            if (!whatsapp || !email) {
+                alert('Please enter both WhatsApp number and email.');
+                return;
+            }
+
+            const messageData = {
+                sender: userId,
+                content: 'Ready to Work Together!',
+                whatsapp: whatsapp,
+                email: email,
+                timestamp: new Date().toISOString(),
+                type: 'collaboration'
+            };
+            push(ref(db, `chats/${selectedConnectionId}/messages`), messageData);
+
+            document.querySelector('.custom-prompt').remove();
+            document.querySelector('.overlay').remove();
+        };
+
+        window.downloadFile = async (fileId) => {
+            const fileRef = ref(db, `files/${fileId}`);
+            const snapshot = await get(fileRef);
+            if (snapshot.exists()) {
+                const fileData = snapshot.val();
+                const storageFileRef = storageRef(storage, `files/${fileId}`);
+                const url = await getDownloadURL(storageFileRef);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = fileData.name;
+                link.click();
+            } else {
+                alert('File not found.');
+            }
+        };
+
+        window.goBackToDashboard = () => {
+    // Assuming you want to go back to a dashboard or previous page
+    window.location.href = 'overview.html'; // Adjust this URL as needed
+};
+    </script>
+    <script src="../js/main.js"></script>
+</body>
+</html>

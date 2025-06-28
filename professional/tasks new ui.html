@@ -1,0 +1,973 @@
+<DOCUMENT filename="tasks.html">
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Taska Elite - Professional Tasks</title>
+        <link rel="stylesheet" href="../css/reset.css">
+        <link rel="stylesheet" href="../css/global.css">
+        <link rel="stylesheet" href="../css/dashboard.css">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <style>
+            body { 
+                background: #f8f9fa; 
+                font-family: 'Poppins', sans-serif; 
+                margin: 0; 
+                padding: 0; 
+                height: 100vh; 
+                overflow: hidden; 
+                display: flex; 
+                flex-direction: column; 
+            }
+            .navbar { 
+                background: #fff; 
+                padding: 1rem 2rem; 
+                position: fixed; 
+                top: 0; 
+                width: 100%; 
+                z-index: 1000; 
+                border-bottom: 1px solid #e0e0e0; 
+                display: flex; 
+                justify-content: space-between; 
+                align-items: center; 
+                box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
+            }
+            .navbar .logo { 
+                font-size: 1.5rem; 
+                color: #1a1a1a; 
+            }
+            .navbar .nav-menu { 
+                display: flex; 
+                gap: 1.5rem; 
+                list-style: none; 
+            }
+            .navbar .nav-menu li a { 
+                color: #1a1a1a; 
+                text-decoration: none; 
+                font-size: 1rem; 
+                transition: color 0.3s; 
+            }
+            .navbar .nav-menu li a.active { 
+                color: #6c757d; 
+            }
+            .navbar .hamburger { 
+                display: none; 
+                font-size: 1.5rem; 
+                cursor: pointer; 
+                color: #1a1a1a; 
+            }
+            .dashboard-content { 
+                display: flex; 
+                flex: 1; 
+                margin-top: 3rem; 
+                height: calc(100vh - 60px); 
+            }
+            .sidebar-left { 
+                width: 30%; 
+                background: #fff; 
+                border-right: 1px solid #e0e0e0; 
+                overflow-y: auto; 
+                min-width: 200px; 
+                max-width: 400px; 
+            }
+            .sidebar-left h3 { 
+                font-size: 1.2rem; 
+                color: #1a1a1a; 
+                padding: 1rem; 
+                margin: 0; 
+                border-bottom: 1px solid #e0e0e0; 
+            }
+            .user-item { 
+                display: flex; 
+                align-items: center; 
+                padding: 0.75rem 1rem; 
+                margin: 0.25rem 0; 
+                cursor: pointer; 
+                transition: background 0.3s; 
+            }
+            .user-item:hover { 
+                background: #f1f3f5; 
+            }
+            .user-item .profile-pic { 
+                width: 40px; 
+                height: 40px; 
+                border-radius: 50%; 
+                margin-right: 0.75rem; 
+                object-fit: cover; 
+            }
+            .user-item .user-info { 
+                color: #1a1a1a; 
+            }
+            .user-item .user-info .name { 
+                font-size: 0.95rem; 
+                margin-bottom: 0.1rem; 
+            }
+            .user-item .user-info .last-message { 
+                font-size: 0.85rem; 
+                color: #6c757d; 
+            }
+            .user-item.active { 
+                background: #f1f3f5; 
+            }
+            .user-item.active .user-info .name,
+            .user-item.active .user-info .last-message { 
+                color: #1a1a1a; 
+            }
+            .chat-area { 
+                width: 42%; 
+                background: #fff; 
+                border-right: 1px solid #e0e0e0; 
+                overflow-y: auto; 
+                min-width: 200px; 
+                max-width: 600px; 
+                display: none; 
+                position: relative; 
+            }
+            .chat-header { 
+                padding: 1rem; 
+                border-bottom: 1px solid #e0e0e0; 
+                background: #fff; 
+                position: sticky; 
+                top: 0; 
+                z-index: 10; 
+            }
+            .chat-header .name { 
+                font-size: 1rem; 
+                font-weight: 600; 
+                color: #1a1a1a; 
+            }
+            .chat-header .title { 
+                font-size: 0.85rem; 
+                color: #6c757d; 
+            }
+            .messages { 
+                height: calc(100% - 120px); 
+                padding: 1rem; 
+                overflow-y: auto; 
+            }
+            .message { 
+                padding: 0.5rem 1rem; 
+                margin-bottom: 1rem; 
+                background: #f8f9fa; 
+                border-radius: 12px; 
+                max-width: 80%; 
+                color: #1a1a1a; 
+                font-size: 0.9rem; 
+                box-shadow: 0 1px 3px rgba(0,0,0,0.05); 
+            }
+            .message.sent { 
+                margin-left: auto; 
+                background: #fff; 
+                border: 1px solid #e0e0e0; 
+            }
+            .message.received { 
+                background: #f8f9fa; 
+            }
+            .message .message-header { 
+                display: flex; 
+                align-items: center; 
+                margin-bottom: 0.5rem; 
+            }
+            .message .message-header .profile-pic { 
+                width: 30px; 
+                height: 30px; 
+                border-radius: 50%; 
+                margin-right: 0.5rem; 
+                object-fit: cover; 
+            }
+            .message .message-header .name { 
+                font-size: 0.85rem; 
+                font-weight: 500; 
+                color: #1a1a1a; 
+            }
+            .message .message-header .time { 
+                font-size: 0.75rem; 
+                color: #6c757d; 
+                margin-left: auto; 
+            }
+            .chat-input { 
+                width: 100%;
+                background: #fff;
+                padding: 0.75rem;
+                border-top: 1px solid #e0e0e0;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                box-shadow: 0 -2px 5px rgba(0,0,0,0.05);
+                position: sticky; 
+                bottom: 0;
+            }
+            .chat-input input { 
+                flex: 1;
+                padding: 0.75rem 1.25rem;
+                border: 1px solid #e0e0e0;
+                border-radius: 25px;
+                color: #1a1a1a;
+                outline: none;
+                font-size: 1rem;
+                transition: border-color 0.3s;
+            }
+            .chat-input input:focus { 
+                border-color: #6c757d; 
+            }
+            .chat-input button { 
+                background: none; 
+                border: none; 
+                cursor: pointer; 
+                font-size: 1.2rem; 
+                color: #6c757d; 
+                transition: color 0.3s; 
+            }
+            .chat-input button:hover { 
+                color: #1a1a1a; 
+            }
+            .sidebar-right { 
+                width: 30%; 
+                background: #fff; 
+                overflow-y: auto; 
+                min-width: 200px; 
+                max-width: 400px; 
+                display: none; 
+                position: relative;
+            }
+            .sidebar-right h3 { 
+                font-size: 1.2rem; 
+                color: #1a1a1a; 
+                padding: 1rem; 
+                margin: 0; 
+                border-bottom: 1px solid #e0e0e0; 
+            }
+            .sidebar-right .add-task-btn { 
+                display: block; 
+                width: 80%; 
+                margin: 1rem auto; 
+                padding: 0.5rem 1rem; 
+                background: #fff; 
+                color: #1a1a1a; 
+                border: 1px solid #1a1a1a; 
+                border-radius: 25px; 
+                cursor: pointer; 
+                font-size: 0.9rem; 
+                font-weight: 500; 
+                transition: all 0.3s; 
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+            }
+            .sidebar-right .add-task-btn:hover { 
+                background: #1a1a1a; 
+                color: #fff; 
+            }
+            .workflow-item { 
+                background: #fff; 
+                border: 1px solid #e0e0e0; 
+                border-radius: 12px; 
+                padding: 1rem; 
+                margin: 0.5rem 1rem; 
+                box-shadow: 0 2px 8px rgba(0,0,0,0.05); 
+                transition: transform 0.2s; 
+                position: relative; 
+            }
+            .workflow-item:hover { 
+                transform: translateY(-2px); 
+            }
+            .workflow-item h4 { 
+                color: #1a1a1a; 
+                font-size: 1rem; 
+                margin-bottom: 0.5rem; 
+            }
+            .workflow-item p { 
+                color: #6c757d; 
+                font-size: 0.85rem; 
+                margin: 0.25rem 0; 
+            }
+            .workflow-item .status-label {
+                position: absolute;
+                top: 0.5rem;
+                right: 0.5rem;
+                padding: 0.25rem 0.5rem;
+                border-radius: 5px;
+                font-size: 0.75rem;
+            }
+            .workflow-item .status-label.completed {
+                background: #4CAF50;
+                color: white;
+            }
+            .workflow-item .deadline-container {
+                display: flex;
+                align-items: center;
+                margin: 0.5rem 0;
+            }
+            .workflow-item .deadline-slider {
+                height: 5px;
+                background: #4CAF50;
+                border-radius: 5px;
+                transition: width 0.3s;
+            }
+            .workflow-item .days-left {
+                margin-left: 0.5rem;
+                font-size: 0.85rem;
+                color: #6c757d;
+            }
+            .workflow-item .status-select { 
+                padding: 0.25rem; 
+                border: 1px solid #e0e0e0; 
+                border-radius: 5px; 
+                color: #1a1a1a; 
+                font-size: 0.85rem; 
+                background: #f8f9fa; 
+                margin-top: 0.5rem; 
+            }
+            .workflow-item .file-icon { 
+                font-size: 1rem; 
+                color: #6c757d; 
+                margin-top: 0.5rem; 
+                cursor: pointer; 
+            }
+            .workflow-item .edit-icon { 
+                position: absolute; 
+                top: 0.5rem; 
+                right: 0.5rem; 
+                font-size: 0.9rem; 
+                color: #6c757d; 
+                cursor: pointer; 
+                transition: color 0.3s; 
+            }
+            .workflow-item .edit-icon:hover { 
+                color: #1a1a1a; 
+            }
+            .completed-tasks { 
+                margin: 1rem; 
+                padding: 0.5rem; 
+                border-top: 1px solid #e0e0e0; 
+            }
+            .completed-tasks h4 { 
+                color: #1a1a1a; 
+                font-size: 1rem; 
+                cursor: pointer; 
+                display: flex; 
+                justify-content: space-between; 
+                align-items: center; 
+            }
+            .completed-tasks .toggle-icon { 
+                transition: transform 0.3s; 
+            }
+            .completed-tasks .toggle-icon.active { 
+                transform: rotate(180deg); 
+            }
+            .completed-tasks-list { 
+                display: none; 
+                margin-top: 0.5rem; 
+            }
+            .completed-tasks-list.active { 
+                display: block; 
+            }
+            .task-popup {
+                position: fixed;
+                top: 0;
+                right: -30%;
+                width: 30%;
+                height: 100%;
+                background: #ffffff;
+                z-index: 1001;
+                padding: 2rem;
+                box-shadow: -2px 0 10px rgba(0,0,0,0.2);
+                transition: right 0.3s ease-in-out;
+                overflow-y: auto;
+                display: flex;
+                flex-direction: column;
+            }
+            .task-popup.active {
+                right: 0;
+            }
+            .task-popup .header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 1.5rem;
+            }
+            .task-popup .header h3 {
+                font-size: 1.5rem;
+                color: #1a1a1a;
+                font-weight: 600;
+            }
+            .task-popup .header button {
+                background: none;
+                border: none;
+                font-size: 1.2rem;
+                color: #6c757d;
+                cursor: pointer;
+                transition: color 0.3s;
+            }
+            .task-popup .header button:hover {
+                color: #1a1a1a;
+            }
+            .task-popup .form-group {
+                margin-bottom: 1rem;
+            }
+            .task-popup .form-group label {
+                display: block;
+                font-size: 0.9rem;
+                color: #1a1a1a;
+                margin-bottom: 0.5rem;
+                font-weight: 500;
+            }
+            .task-popup .form-group input,
+            .task-popup .form-group textarea,
+            .task-popup .form-group input[type="number"] {
+                width: 100%;
+                padding: 0.75rem;
+                border: 1px solid #e0e0e0;
+                border-radius: 8px;
+                font-size: 0.9rem;
+                background: #fafafa;
+                transition: border-color 0.3s;
+            }
+            .task-popup .form-group input:focus,
+            .task-popup .form-group textarea:focus,
+            .task-popup .form-group input[type="number"]:focus {
+                border-color: #4CAF50;
+                outline: none;
+            }
+            .task-popup .form-group input[type="date"] {
+                padding: 0.75rem;
+                cursor: pointer;
+                background: #fafafa url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="%236c757d"><path d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 14V2a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1zm5.5-7h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5zm0 3h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5zm-2.5 0h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1 0-1zm0-3h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1 0-1z"/></svg>') no-repeat right 0.75rem center;
+                background-size: 16px;
+            }
+            .task-popup .form-group input[type="file"] {
+                padding: 0.5rem;
+                border: none;
+                background: #fafafa;
+            }
+            .task-popup .form-group input[type="file"]::file-selector-button {
+                padding: 0.5rem 1rem;
+                background: #4CAF50;
+                color: #fff;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background 0.3s;
+            }
+            .task-popup .form-group input[type="file"]::file-selector-button:hover {
+                background: #45a049;
+            }
+            .task-popup .actions {
+                margin-top: auto;
+                display: flex;
+                justify-content: flex-end;
+                gap: 1rem;
+            }
+            .task-popup .actions button {
+                padding: 0.75rem 1.5rem;
+                border: none;
+                border-radius: 8px;
+                font-size: 0.9rem;
+                font-weight: 500;
+                cursor: pointer;
+                transition: background 0.3s;
+            }
+            .task-popup .actions .cancel-btn {
+                background: #e0e0e0;
+                color: #1a1a1a;
+            }
+            .task-popup .actions .cancel-btn:hover {
+                background: #d3d3d3;
+            }
+            .task-popup .actions .submit-btn {
+                background: #4CAF50;
+                color: #fff;
+            }
+            .task-popup .actions .submit-btn:hover {
+                background: #45a049;
+            }
+            @media (max-width: 768px) {
+                .dashboard-content { 
+                    flex-direction: column; 
+                    height: auto; 
+                }
+                .sidebar-left, .chat-area, .sidebar-right { 
+                    width: 100%; 
+                    min-width: 0; 
+                    max-width: none; 
+                    border: none; 
+                    border-bottom: 1px solid #e0e0e0; 
+                }
+                .chat-input { 
+                    width: 100%; 
+                    position: relative; 
+                    bottom: auto; 
+                }
+                .navbar .nav-menu { 
+                    display: none; 
+                    position: absolute; 
+                    top: 60px; 
+                    left: 0; 
+                    right: 0; 
+                    background: #fff; 
+                    flex-direction: column; 
+                    padding: 1rem; 
+                    border-top: 1px solid #e0e0e0; 
+                }
+                .navbar .nav-menu.active { 
+                    display: flex; 
+                }
+                .navbar .hamburger { 
+                    display: block; 
+                }
+                .task-popup {
+                    width: 100%;
+                    right: -100%;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <nav class="navbar">
+            <div class="logo">Taska Elite</div>
+            <ul class="nav-menu">
+                <li><a href="explore.html">Explore</a></li>
+                <li><a href="connections.html">Connections</a></li>
+                <li><a href="tasks.html" class="active">Tasks</a></li>
+                <li><a href="profile.html">Profile</a></li>
+                <li><a href="../index.html">Logout</a></li>
+            </ul>
+            <div class="hamburger">☰</div>
+        </nav>
+    
+        <div class="dashboard-content">
+            <div class="sidebar-left">
+                <h3>Connected Professionals</h3>
+                <div id="connections-list"></div>
+            </div>
+            <div class="chat-area" id="chat-area">
+                <div class="chat-header" id="chat-header"></div>
+                <div class="messages" id="chat-messages"></div>
+                <div class="chat-input">
+                    <input type="text" id="chat-input" placeholder="Type a message...">
+                    <button onclick="uploadImage()"><i class="fas fa-camera"></i></button>
+                    <button onclick="uploadFile()"><i class="fas fa-link"></i></button>
+                    <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+                </div>
+            </div>
+            <div class="sidebar-right" id="workflow-area">
+                <h3>Tasks</h3>
+                <button class="add-task-btn" onclick="openTaskPopup()">Add New Task</button>
+                <div id="workflow-list"></div>
+                <div class="completed-tasks">
+                    <h4 onclick="toggleCompletedTasks()">Completed Tasks <i class="fas fa-chevron-down toggle-icon"></i></h4>
+                    <div class="completed-tasks-list" id="completed-tasks-list"></div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="task-popup" id="task-popup">
+            <div class="header">
+                <h3 id="popup-title">Add New Task</h3>
+                <button onclick="closeTaskPopup()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="form-group">
+                <label for="task-title">Task Name</label>
+                <input type="text" id="task-title" placeholder="Enter task name">
+            </div>
+            <div class="form-group">
+                <label for="task-description">Description</label>
+                <textarea id="task-description" placeholder="Enter description" rows="4"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="task-deadline">Deadline</label>
+                <input type="date" id="task-deadline">
+            </div>
+            <div class="form-group">
+                <label for="task-file">Attach Files</label>
+                <input type="file" id="task-file" multiple>
+            </div>
+            <div class="form-group">
+                <label for="task-payment">Cash Payment (USD)</label>
+                <input type="number" id="task-payment" placeholder="Enter amount" min="0">
+            </div>
+            <div class="actions">
+                <button class="cancel-btn" onclick="closeTaskPopup()">Cancel</button>
+                <button class="submit-btn" onclick="submitTask()">Add Task</button>
+            </div>
+        </div>
+    
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const hamburger = document.querySelector('.navbar .hamburger');
+                const navMenu = document.querySelector('.navbar .nav-menu');
+                hamburger.addEventListener('click', () => {
+                    navMenu.classList.toggle('active');
+                });
+            });
+    
+            const fakeUsers = {
+                pro123: { name: "Dr Alice Smith", role: "professional", title: "Software Engineer at Google" },
+                stu456: { name: "John Doe", role: "student", title: "CS Student at MIT" },
+                stu789: { name: "Jane Roe", role: "student", title: "UX Designer Intern" },
+                stu101: { name: "Emma Wilson", role: "student", title: "Data Science Student" },
+                stu102: { name: "Liam Brown", role: "student", title: "Software Engineering Intern" },
+                stu103: { name: "Olivia Davis", role: "student", title: "AI Research Assistant" },
+                stu104: { name: "Noah Martinez", role: "student", title: "Backend Developer Intern" },
+                stu105: { name: "Sophia Garcia", role: "student", title: "Frontend Developer Student" },
+                stu106: { name: "James Lee", role: "student", title: "ML Engineer Intern" },
+                stu107: { name: "Ava Thompson", role: "student", title: "Product Design Student" }
+            };
+    
+            const fakeConnections = {
+                pro123: { 
+                    connections: { 
+                        stu456: true, 
+                        stu789: true, 
+                        stu101: true, 
+                        stu102: true, 
+                        stu103: true, 
+                        stu104: true, 
+                        stu105: true, 
+                        stu106: true, 
+                        stu107: true 
+                    } 
+                }
+            };
+    
+            let fakeChats = {
+                "pro123_stu456": {
+                    messages: [
+                        { senderId: "pro123", content: "How’s the project going?", timestamp: "2025-04-14T10:00:00Z" },
+                        { senderId: "stu456", content: "Working on the UI now!", timestamp: "2025-04-14T10:05:00Z" },
+                        { senderId: "pro123", content: "Great, can you share a prototype?", timestamp: "2025-04-14T10:10:00Z" },
+                        { senderId: "stu456", content: "Sure, I’ll upload it soon.", timestamp: "2025-04-14T10:15:00Z" }
+                    ]
+                },
+                "pro123_stu789": {
+                    messages: [
+                        { senderId: "pro123", content: "Need help with the design?", timestamp: "2025-04-14T09:00:00Z" },
+                        { senderId: "stu789", content: "Yes, some feedback would be great!", timestamp: "2025-04-14T09:05:00Z" }
+                    ]
+                }
+            };
+    
+            let fakeWorkflows = {
+                workflow123: { 
+                    taskId: "task789", 
+                    professionalId: "pro123", 
+                    studentId: "stu456", 
+                    title: "Develop a Web App", 
+                    description: "Create a responsive web application", 
+                    deadline: "2025-04-20", 
+                    status: "pending", 
+                    document: "prototype.zip", 
+                    payment: 100 
+                },
+                workflow124: { 
+                    taskId: "task790", 
+                    professionalId: "pro123", 
+                    studentId: "stu789", 
+                    title: "Design UI Mockups", 
+                    description: "Create UI mockups for mobile app", 
+                    deadline: "2025-04-22", 
+                    status: "in progress", 
+                    document: "mockups.pdf", 
+                    payment: 50 
+                },
+                workflow125: { 
+                    taskId: "task791", 
+                    professionalId: "pro123", 
+                    studentId: "stu101", 
+                    title: "Analyze Dataset", 
+                    description: "Perform data analysis on customer data", 
+                    deadline: "2025-04-25", 
+                    status: "pending", 
+                    document: "data.csv", 
+                    payment: 75 
+                }
+            };
+    
+            let fakeCompletedWorkflows = {
+                workflow126: { 
+                    taskId: "task792", 
+                    professionalId: "pro123", 
+                    studentId: "stu456", 
+                    title: "Build API", 
+                    description: "Create RESTful API endpoints", 
+                    deadline: "2025-03-30", 
+                    status: "completed", 
+                    document: "api-docs.pdf", 
+                    payment: 120 
+                },
+                workflow127: { 
+                    taskId: "task793", 
+                    professionalId: "pro123", 
+                    studentId: "stu789", 
+                    title: "Test Application", 
+                    description: "Perform unit and integration tests", 
+                    deadline: "2025-03-25", 
+                    status: "completed", 
+                    document: "test-report.pdf", 
+                    payment: 80 
+                }
+            };
+    
+            const userId = "pro123";
+            let selectedStudentId = null;
+            let editingWorkflowId = null;
+    
+            function loadConnections() {
+                const connectionsList = document.getElementById('connections-list');
+                connectionsList.innerHTML = '';
+                const connections = fakeConnections[userId]?.connections || {};
+                for (const studentId in connections) {
+                    const user = fakeUsers[studentId];
+                    const avatarNum = (studentId.charCodeAt(0) % 10) + 1;
+                    const chatId = `${userId}_${studentId}`;
+                    const lastMessage = fakeChats[chatId]?.messages.slice(-1)[0]?.content || "No messages yet";
+                    connectionsList.innerHTML += `
+                        <div class="user-item" data-student-id="${studentId}" onclick="selectStudent('${studentId}')">
+                            <img src="../assets/avatar/1.jpeg" alt="${user.name}" class="profile-pic">
+                            <div class="user-info">
+                                <div class="name">${user.name}</div>
+                                <div class="last-message">${lastMessage}</div>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+    
+            function selectStudent(studentId) {
+                selectedStudentId = studentId;
+                document.querySelectorAll('.user-item').forEach(item => {
+                    item.classList.toggle('active', item.dataset.studentId === studentId);
+                });
+                document.getElementById('chat-area').style.display = 'block';
+                document.getElementById('workflow-area').style.display = 'block';
+                loadChat();
+                loadWorkflows();
+                loadChatHeader();
+            }
+    
+            function loadChatHeader() {
+                const chatHeader = document.getElementById('chat-header');
+                const user = fakeUsers[selectedStudentId];
+                chatHeader.innerHTML = `
+                    <div class="name">${user.name}</div>
+                    <div class="title">${user.title}</div>
+                `;
+            }
+    
+            function loadChat() {
+                const chatMessages = document.getElementById('chat-messages');
+                chatMessages.innerHTML = '';
+                if (selectedStudentId) {
+                    const chatId = `${userId}_${selectedStudentId}`;
+                    const chat = fakeChats[chatId] || { messages: [] };
+                    chat.messages.forEach(msg => {
+                        const isSent = msg.senderId === userId;
+                        const sender = fakeUsers[msg.senderId];
+                        const avatarNum = (sender.name.charCodeAt(0) % 10) + 1;
+                        const time = new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                        const date = new Date(msg.timestamp).toLocaleDateString();
+                        chatMessages.innerHTML += `
+                            <div class="message ${isSent ? 'sent' : 'received'}">
+                                <div class="message-header">
+                                    <img src="../assets/avatar/1.jpeg" alt="${sender.name}" class="profile-pic">
+                                    <div class="name">${sender.name}</div>
+                                    <div class="time">${date} ${time}</div>
+                                </div>
+                                ${msg.content}
+                            </div>
+                        `;
+                    });
+                }
+            }
+    
+            function sendMessage() {
+                const input = document.getElementById('chat-input');
+                const content = input.value.trim();
+                if (content && selectedStudentId) {
+                    const chatId = `${userId}_${selectedStudentId}`;
+                    if (!fakeChats[chatId]) fakeChats[chatId] = { messages: [] };
+                    fakeChats[chatId].messages.push({
+                        senderId: userId,
+                        content,
+                        timestamp: new Date().toISOString()
+                    });
+                    input.value = '';
+                    loadChat();
+                }
+            }
+    
+            function uploadFile() { alert("Upload file functionality to be implemented."); }
+            function uploadImage() { alert("Upload image functionality to be implemented."); }
+    
+            function openTaskPopup(workflowId = null) {
+                const popup = document.getElementById('task-popup');
+                const titleInput = document.getElementById('task-title');
+                const descInput = document.getElementById('task-description');
+                const deadlineInput = document.getElementById('task-deadline');
+                const fileInput = document.getElementById('task-file');
+                const paymentInput = document.getElementById('task-payment');
+                const popupTitle = document.getElementById('popup-title');
+    
+                if (workflowId) {
+                    editingWorkflowId = workflowId;
+                    popupTitle.textContent = 'Edit Task';
+                    const workflow = fakeWorkflows[workflowId] || fakeCompletedWorkflows[workflowId];
+                    titleInput.value = workflow.title;
+                    descInput.value = workflow.description;
+                    deadlineInput.value = workflow.deadline;
+                    paymentInput.value = workflow.payment || 0;
+                    fileInput.value = ''; // Reset file input
+                } else {
+                    editingWorkflowId = null;
+                    popupTitle.textContent = 'Add New Task';
+                    titleInput.value = '';
+                    descInput.value = '';
+                    deadlineInput.value = '';
+                    paymentInput.value = '';
+                    fileInput.value = '';
+                }
+    
+                popup.classList.add('active');
+            }
+    
+            function closeTaskPopup() {
+                const popup = document.getElementById('task-popup');
+                popup.classList.remove('active');
+            }
+    
+            function submitTask() {
+                const title = document.getElementById('task-title').value.trim();
+                const description = document.getElementById('task-description').value.trim();
+                const deadline = document.getElementById('task-deadline').value;
+                const file = document.getElementById('task-file').files[0] ? document.getElementById('task-file').files[0].name : null;
+                const payment = parseInt(document.getElementById('task-payment').value) || 0;
+    
+                if (title && description && deadline && selectedStudentId) {
+                    const newWorkflowId = 'workflow' + Date.now();
+                    const newTask = {
+                        taskId: 'task' + Date.now(),
+                        professionalId: userId,
+                        studentId: selectedStudentId,
+                        title,
+                        description,
+                        deadline,
+                        status: 'pending',
+                        document: file,
+                        payment
+                    };
+    
+                    if (editingWorkflowId) {
+                        fakeWorkflows[editingWorkflowId] = { ...fakeWorkflows[editingWorkflowId], ...newTask };
+                        if (fakeWorkflows[editingWorkflowId].status === 'completed') {
+                            fakeCompletedWorkflows[editingWorkflowId] = { ...fakeCompletedWorkflows[editingWorkflowId], ...newTask };
+                        }
+                    } else {
+                        fakeWorkflows[newWorkflowId] = newTask;
+                    }
+    
+                    loadWorkflows();
+                    closeTaskPopup();
+                } else {
+                    alert('Please fill all required fields (Task Name, Description, and Deadline).');
+                }
+            }
+    
+            function editTask(workflowId) {
+                openTaskPopup(workflowId);
+            }
+    
+            function addNewTask() {
+                openTaskPopup();
+            }
+    
+            function loadWorkflows() {
+                const workflowList = document.getElementById('workflow-list');
+                workflowList.innerHTML = '';
+                for (const workflowId in fakeWorkflows) {
+                    const workflow = fakeWorkflows[workflowId];
+                    if (workflow.professionalId === userId && workflow.studentId === selectedStudentId) {
+                        workflowList.innerHTML += `
+                            <div class="workflow-item">
+                                <i class="fas fa-edit edit-icon" onclick="editTask('${workflowId}')"></i>
+                                ${workflow.status === "completed" ? '<span class="status-label completed">Completed</span>' : ''}
+                                <h4>${workflow.title}</h4>
+                                <p>${workflow.description}</p>
+                                <div class="deadline-container">
+                                    <div class="deadline-slider" style="width: ${calculateDeadlineProgress(workflow.deadline)}%; background: #4CAF50;"></div>
+                                    <span class="days-left">${calculateDaysLeft(workflow.deadline)} days left</span>
+                                </div>
+                                <select class="status-select" onchange="updateStatus('${workflowId}', this.value)">
+                                    <option value="pending" ${workflow.status === "pending" ? "selected" : ""}>Pending</option>
+                                    <option value="in progress" ${workflow.status === "in progress" ? "selected" : ""}>In Progress</option>
+                                    <option value="completed" ${workflow.status === "completed" ? "selected" : ""}>Completed</option>
+                                </select>
+                                <i class="fas fa-file-alt file-icon" title="${workflow.document}"></i>
+                            </div>
+                        `;
+                    }
+                }
+            }
+    
+            function loadCompletedTasks() {
+                const completedTasksList = document.getElementById('completed-tasks-list');
+                completedTasksList.innerHTML = '';
+                for (const workflowId in fakeCompletedWorkflows) {
+                    const workflow = fakeCompletedWorkflows[workflowId];
+                    if (workflow.professionalId === userId && workflow.studentId === selectedStudentId) {
+                        completedTasksList.innerHTML += `
+                            <div class="workflow-item">
+                                <span class="status-label completed">Completed</span>
+                                <h4>${workflow.title}</h4>
+                                <p>${workflow.description}</p>
+                                <div class="deadline-container">
+                                    <div class="deadline-slider" style="width: 0%; background: #4CAF50;"></div>
+                                    <span class="days-left">0 days left</span>
+                                </div>
+                                <i class="fas fa-file-alt file-icon" title="${workflow.document}"></i>
+                            </div>
+                        `;
+                    }
+                }
+            }
+    
+            function toggleCompletedTasks() {
+                const completedTasksList = document.getElementById('completed-tasks-list');
+                const toggleIcon = document.querySelector('.completed-tasks .toggle-icon');
+                completedTasksList.classList.toggle('active');
+                toggleIcon.classList.toggle('active');
+            }
+    
+            function updateStatus(workflowId, status) {
+                if (status === "completed") {
+                    fakeCompletedWorkflows[workflowId] = { ...fakeWorkflows[workflowId], status: "completed" };
+                    delete fakeWorkflows[workflowId];
+                } else {
+                    fakeWorkflows[workflowId].status = status;
+                }
+                loadWorkflows();
+                loadCompletedTasks();
+            }
+    
+            function calculateDaysLeft(deadline) {
+                const now = new Date();
+                const deadlineDate = new Date(deadline);
+                const diffTime = deadlineDate - now;
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                return diffDays > 0 ? diffDays : 0;
+            }
+    
+            function calculateDeadlineProgress(deadline) {
+                const now = new Date();
+                const deadlineDate = new Date(deadline);
+                const totalTime = deadlineDate - new Date(deadline.split('-')[0], 0, 1);
+                const remainingTime = deadlineDate - now;
+                const progress = (remainingTime / totalTime) * 100;
+                return Math.max(0, Math.min(100, progress));
+            }
+    
+            loadConnections();
+            loadCompletedTasks();
+        </script>
+    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93024a97381f6757',t:'MTc0NDYyNDE0Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93026ae7aa61bfb8',t:'MTc0NDYyNTQ3MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+    </html>
+    </DOCUMENT>

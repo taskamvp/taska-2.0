@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Hire talented remote assistants to streamline your company's tasks. For unmatched creativity and precision, opt for our premium service powered by elite students from IITs, NITs, and IIITs.">
+    <title>Taska | Hire Remote Assistants for Your Company</title>
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            background: #fafaf5;
+            color: #37474F;
+            line-height: 1.8;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 6%;
+            background: #ffffff;
+            border-bottom: 1px solid #B0BEC5;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .logo {
+            font-size: 1.7rem;
+            font-weight: 400;
+            color: #0c2720;
+            letter-spacing: 0px;
+        }
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            gap: 2.5rem;
+        }
+        .nav-menu li a {
+            text-decoration: none;
+            color: #01090d;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        .nav-menu li a:hover {
+            color: #26A69A;
+        }
+        .hero {
+            background: linear-gradient(135deg, #ffffff, #f9f8f0);
+            color: #37474F;
+            text-align: center;
+            padding: 6rem 6%;
+            border-bottom: 1px solid #B0BEC5;
+        }
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            line-height: 1.3;
+            color: #135a56;
+        }
+        .hero p {
+            font-size: 1.3rem;
+            font-weight: 400;
+            margin-bottom: 2.5rem;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            color: #104a47;
+        }
+        .cta-buttons {
+            display: flex;
+            gap: 1.8rem;
+            justify-content: center;
+        }
+        .cta-button {
+            padding: 1rem 2.5rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .cta-button.explore {
+            background: #26A69A;
+            color: #ffffff;
+            border: none;
+        }
+        .cta-button.join {
+            background: transparent;
+            color: #26A69A;
+            border: 2px solid #26A69A;
+        }
+        .cta-button.explore:hover {
+            background: #1d8379;
+            transform: scale(1.05);
+        }
+        .cta-button.join:hover {
+            background: #26A69A;
+            color: #ffffff;
+            transform: scale(1.05);
+        }
+        .exclusive {
+    background: #ffffff; /* Already white, kept for clarity */
+    padding: 4rem 6%;
+    text-align: center;
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto 4rem;
+    border: 2px solid #e0e0e0; /* Lighter, subtle border */
+    border-radius: 15px;
+
+}
+
+.exclusive::before {
+    content: 'Connect with Premium Talent';
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #ffffff; /* Light gray-white for contrast */
+    color: #140720; /* Keep the brand color */
+    font-size: 1.2rem;
+    font-weight: 600;
+    padding: 0.3rem 1rem;
+    border-radius: 20px;
+    letter-spacing: 1px;
+    border: 1px solid #e0e0e0; /* Subtle border */
+}
+
+.exclusive h2 {
+    font-size: 2.5rem;
+    font-weight: 400;
+    margin-bottom: 1.5rem;
+    color: #333333; /* Darker gray for readability */
+}
+
+.exclusive p {
+    font-size: 1.2rem;
+    max-width: 900px;
+    margin: 0 auto 2rem;
+    color: #666666; /* Softer gray for text */
+}
+
+.exclusive .cta-button {
+    background: #26A69A; /* Keep brand color */
+    color: #ffffff;
+    padding: 1rem 2.5rem;
+    font-size: 1.2rem;
+    position: relative;
+    overflow: hidden;
+    border: none; /* Clean look */
+}
+
+.exclusive .cta-button:hover {
+    background: #1d8379;
+    transform: scale(1.05);
+}
+        .section {
+            padding: 4rem 6%;
+            text-align: center;
+            background: #ffffff;
+        }
+        .section h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: #26A69A;
+        }
+        .comparison-section {
+            padding: 4rem 6%;
+            background: #f5f7fa;
+        }
+        .comparison-grid {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 2rem auto;
+        }
+        .comparison-card {
+            background: #ffffff;
+            padding: 2rem;
+            border-radius: 15px;
+            width: 45%;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #B0BEC5;
+        }
+        .comparison-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+        .comparison-card h3 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #26A69A;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #26A69A, #4DB6AC);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .comparison-card ul {
+            list-style: none;
+            text-align: left;
+            color: #78909C;
+        }
+        .comparison-card ul li {
+            margin-bottom: 1rem;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+        .comparison-card ul li:before {
+            content: '\f058';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            color: #26A69A;
+            position: absolute;
+            left: 0;
+        }
+        .how-it-works .timeline {
+            max-width: 1000px;
+            margin: 2rem auto;
+            position: relative;
+        }
+        .how-it-works .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #26A69A;
+            transform: translateX(-50%);
+        }
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+        .timeline-content {
+            background: #ffffff;
+            padding: 1.5rem;
+            border-radius: 10px;
+            border: 1px solid #B0BEC5;
+            width: 45%;
+            text-align: left;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        .timeline-content h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #26A69A;
+            margin-bottom: 0.5rem;
+        }
+        .timeline-content p {
+            font-size: 1rem;
+            color: #78909C;
+        }
+        .timeline-icon {
+            width: 40px;
+            height: 40px;
+            background: #26A69A;
+            color: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        .why-taska {
+            background: #f7faf5;
+            padding: 4rem 6%;
+        }
+        .why-taska h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: #26A69A;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        .why-taska h2::after {
+            content: '';
+            width: 60px;
+            height: 3px;
+            background: #26A69A;
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .why-taska .content-grid {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .why-taska .content-card {
+            background: #ffffff;
+            padding: 2.5rem;
+            border-radius: 15px;
+            border: 1px solid #B0BEC5;
+            width: 45%;
+            text-align: left;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+        .why-taska .content-card::before {
+            content: '';
+            width: 8px;
+            height: 100%;
+            background: #26A69A;
+            position: absolute;
+            left: 0;
+            top: 0;
+            border-radius: 15px 0 0 15px;
+        }
+        .why-taska .content-card h3 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #485a63;
+            margin-bottom: 1rem;
+        }
+        .why-taska .content-card p {
+            font-size: 1.1rem;
+            color: #313f48;
+        }
+        footer {
+            background: #ffffff;
+            color: #78909C;
+            text-align: center;
+            padding: 2rem 6%;
+            border-top: 1px solid #B0BEC5;
+        }
+        .footer-links {
+            margin-top: 0.5rem;
+        }
+        .footer-links a {
+            color: #78909C;
+            margin: 0 1rem;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: color 0.3s ease;
+        }
+        .footer-links a:hover {
+            color: #26A69A;
+        }
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .hero p {
+                font-size: 1.1rem;
+            }
+            .cta-buttons {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+            .exclusive {
+                margin: 0 6% 4rem;
+            }
+            
+
+            .exclusive h2 {
+                font-size: 1.5rem;
+                opacity: 0;
+            }
+            .comparison-grid {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+            .comparison-card {
+                width: 100%;
+            }
+            .how-it-works .timeline::before {
+                left: 20px;
+            }
+            .timeline-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .timeline-item:nth-child(even) {
+                flex-direction: column;
+            }
+            .timeline-content {
+                width: 100%;
+                margin-left: 40px;
+            }
+            .timeline-icon {
+                left: 0;
+                transform: none;
+            }
+            .why-taska .content-grid {
+                flex-direction: column;
+                gap: 2rem;
+            }
+            .why-taska .content-card {
+                width: 100%;
+            }
+        }
+        .whatsapp-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #25D366;
+            color: #ffffff;
+            padding: 1rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        .whatsapp-button:hover {
+            background: #20b956;
+            transform: scale(1.05);
+        }
+        .whatsapp-button i {
+            font-size: 1.5rem;
+        }
+
+        .premier-talent {
+        padding: 4rem 6%;
+        background: #f9faf5; /* Light background to distinguish from other sections */
+        text-align: center;
+        position: relative;
+    }
+    .premier-header h2 {
+        font-size: 2.8rem;
+        font-weight: 700;
+        color: #26A69A;
+        background: linear-gradient(135deg, #26A69A, #4DB6AC); /* Gradient text */
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 1rem;
+        position: relative;
+        letter-spacing: 0.5px;
+    }
+    .premier-header p {
+        font-size: 1.7rem;
+        color: #091921;
+        font-weight: 300;
+        max-width: 600px;
+        margin: 0 auto 2.5rem;
+        line-height: 1.7;
+    }
+    .premier-logos {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap; /* Allows wrapping on smaller screens */
+        gap: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    .logo-circle {
+        width: 150px;
+        height: 150px;
+        background: #ffffff;
+        border-radius: 50%; /* Circular shape */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid #bcd0ce; /* Subtle border */
+        box-shadow: 0 4px 12px rgba(38, 166, 154, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        overflow: hidden; /* Ensures image stays within circle */
+    }
+    .logo-circle:hover {
+        transform: scale(1.15); /* Slight zoom on hover */
+        box-shadow: 0 6px 20px rgba(38, 166, 154, 0.25);
+        border-color: #4DB6AC; /* Slightly lighter border on hover */
+    }
+    .logo-circle img {
+        width: 80%; /* Ensures logos fit well within the circle */
+        height: 80%;
+        object-fit: contain; /* Maintains aspect ratio */
+        filter: grayscale(30%); /* Subtle desaturation for modern look */
+        transition: filter 0.3s ease;
+    }
+    .logo-circle:hover img {
+        filter: grayscale(0%); /* Full color on hover */
+    }
+
+    @media (max-width: 768px) {
+        .premier-header h2 {
+            font-size: 2.2rem;
+        }
+        .premier-header p {
+            font-size: 1.1rem;
+        }
+        .premier-logos {
+            gap: 1.5rem;
+        }
+        .logo-circle {
+            width: 120px;
+            height: 120px;
+        }
+    }
+    @media (max-width: 480px) {
+        .premier-logos {
+            gap: 1rem;
+        }
+        .logo-circle {
+            width: 80px;
+            height: 80px;
+        }
+    }
+
+    .modern-questions {
+    padding: 4rem 6%;
+    background: #fafaf5; /* Whitish background matching body */
+    text-align: center;
+}
+
+.questions-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.questions-text {
+    flex: 1;
+    text-align: left;
+}
+
+.questions-text h2 {
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: #031311;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+    letter-spacing: 0px;
+}
+
+.modern-list {
+    list-style: none;
+    color: #37474F;
+    font-size: 1.2rem;
+    line-height: 2;
+}
+
+.modern-list li {
+    position: relative;
+    padding-left: 2rem;
+    margin-bottom: 1rem;
+    font-weight: 400;
+}
+
+.modern-list li:before {
+    content: ' '; 
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #0a1615;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.questions-visual {
+    flex: 1;
+    max-width: 400px;
+}
+
+.questions-visual img {
+    width: 100%;
+    height: auto;
+    
+}
+
+@media (max-width: 768px) {
+    .questions-wrapper {
+        flex-direction: column-reverse; /* Image below text on mobile */
+        gap: 2rem;
+    }
+    .questions-text h2 {
+        font-size: 2.1rem;
+    }
+    .modern-list {
+        font-size: 1.1rem;
+    }
+    .questions-visual {
+        max-width: 300px;
+    }
+}
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">Taska Elite</div>
+        <ul class="nav-menu">
+            <li><a href="#" id="auth-link">Login</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <h1>Hire College students for Remote tasks</h1>
+            <p>Get things done faster with smart remote talent.
+                Work with top students from IITs, NITs, and IIITs for high quality, creative, and reliable results.
+                </p>
+            <div class="cta-buttons">
+                <button class="cta-button explore" id="hire-assistants-btn">Hire Assistants</button>
+                <a href="login.html" class="cta-button join">Join as a Student</a>
+            </div>
+        </section>
+        <br>
+
+        <section class="premier-talent">
+            <div class="premier-header">
+                <p>Network of Students from premier colleges</p>
+            </div>
+            <div class="premier-logos">
+                <div class="logo-circle">
+                    <img src="assets/iit1.webp" alt="IIT 1 Logo">
+                </div>
+                <div class="logo-circle">
+                    <img src="assets/iit2.webp" alt="IIT 2 Logo">
+                </div>
+                <div class="logo-circle">
+                    <img src="assets/iit3.webp" alt="IIT 3 Logo">
+                </div>
+                <div class="logo-circle">
+                    <img src="assets/iit4.webp" alt="IIT 4 Logo">
+                </div>
+                <div class="logo-circle">
+                    <img src="assets/iit5.webp" alt="IIT 5 Logo">
+                </div>
+                <div class="logo-circle">
+                    <img src="assets/iit6.webp" alt="IIT 6 Logo">
+                </div>
+            </div>
+        </section>
+        <br>
+        <section class="exclusive">
+            <h2>Outsource non-challenging Tasks</h2>
+            <p>Are there many non challenging but essential tasks piling up in your business ? Tasks that don’t require high expertise but still need someone reliable to get them done ? Outsource them to our remote college assistants, Talented students from IITs, NITs, and IIITs who are eager to work with you. Free up your time while tapping into exceptional skills and fresh energy for both routine and ambitious projects.</p>
+            
+        </section>
+
+        <section class="modern-questions">
+            <div class="questions-wrapper">
+                <div class="questions-text">
+                    <h2>Drowning in AI Tools, But Missing the Human Touch ?</h2>
+                    <br>
+
+                    <ul class="modern-list">
+                        <p>Are you a founder trying to build your dream , But everything feels robotic ?</p>
+                        <br>
+                        <li>Auto replies, AI emails yet no real connection ?</li>
+                        <li>Content feels generic, not crafted with care ?</li>
+                        <li>Marketing runs, but no story behind your brand ?</li>
+                        <li>Tools everywhere, but no team to trust ?</li>
+                        <p>You don’t just need automation.
+                            You need real people who understand your vision.</p>
+                        
+                    </ul>
+                </div>
+                <div class="questions-visual">
+                    <img src="assets/guy-removebg-preview.webp" alt="Guy asking questions">
+                </div>
+            </div>
+        </section>
+
+        
+
+        
+
+        <section class="why-taska">
+            <h2>Why Taska?</h2>
+            <br>
+            <div class="content-grid">
+                <div class="content-card">
+                    <h3>Boosting Business Efficiency</h3>
+                    <p>Taska delivers talented remote professionals to handle your important tasks and optimize workflows. For complex challenges, our premium service connects you with exceptional students from IITs, NITs, and IIITs who bring fresh perspectives and advanced technical skills to help your company thrive.</p>
+                </div>
+                <div class="content-card">
+                    <h3>Empowering Elite Students</h3>
+                    <p>We provide valuable opportunities for talented students from top institutions by connecting them with real world business projects. These students gain professional experience, earn income while studying, and contribute innovative solutions, creating a win-win bridge between academia and industry.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2025 Taska. All rights reserved.</p>
+        <div class="footer-links" style="display: none;">
+            <a href="" >Privacy Policy</a>
+            <a href="">Terms & Conditions</a>
+            <a href="">Contact Us</a>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Button -->
+    <a href="https://wa.me/919266124039?text=Hello%20Taska,%20I%20would%20like%20to%20know%20more%20about%20your%20services!" class="whatsapp-button" target="_blank">
+        <i class="fab fa-whatsapp"></i> Message Us
+    </a>
+
+    <!-- Scripts -->
+    <script type="module">
+        // Check user role on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            const userRole = localStorage.getItem('userRole');
+            const authLink = document.getElementById('auth-link');
+            const hireAssistantsBtn = document.getElementById('hire-assistants-btn');
+
+            if (userRole === 'professional') {
+                // Change Login to Profile
+                authLink.textContent = 'Go to Account';
+                authLink.href = 'professional/explore.html';
+
+                // Update Hire Assistants button behavior
+                hireAssistantsBtn.onclick = () => {
+                    window.location.href = 'professional/explore.html';
+                };
+            } else {
+                // Default behavior
+                authLink.textContent = 'Login';
+                authLink.href = 'login.html';
+                hireAssistantsBtn.onclick = () => {
+                    window.location.href = 'login.html';
+                };
+            }
+        });
+    </script>
+    <script type="module" src="js/auth.js"></script>
+    <script>
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+
+        hamburger.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

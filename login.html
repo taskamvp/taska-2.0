@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Login or sign up to Taska Elite to hire elite talent from IITs, NITs, and IIITs or showcase your skills as a student.">
+    <title>Taska Elite | Login or Sign Up</title>
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            background: #ffffff;
+            color: #1f2937;
+            line-height: 1.8;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 6%;
+            background: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #494d53;
+            letter-spacing: -0.5px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        .logo:hover {
+            color: #3b82f6;
+        }
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            gap: 2.5rem;
+        }
+        .nav-menu li a {
+            text-decoration: none;
+            color: #4b5563;
+            font-weight: 400;
+            transition: color 0.3s ease;
+        }
+        .nav-menu li a:hover {
+            color: #60a5fa;
+        }
+        .hamburger {
+            display: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #4b5563;
+        }
+        .auth-container {
+            padding: 6rem 6%;
+            text-align: center;
+            background: #f9fafb;
+            min-height: calc(100vh - 200px);
+        }
+        .auth-container h1 {
+            font-size: 3.2rem;
+            font-weight: 400;
+            color: #60a5fa;
+            margin-bottom: 1.5rem;
+        }
+        .auth-container .intro-text {
+            font-size: 1.2rem;
+            font-weight: 300;
+            color: #42464d;
+            max-width: 800px;
+            margin: 0 auto 4rem;
+        }
+        .role-selection {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            flex-wrap: wrap;
+            margin-bottom: 4rem;
+        }
+        .role-card {
+            background: #ffffff;
+            padding: 2.5rem;
+            border-radius: 15px;
+            width: 400px;
+            text-align: center;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            border: 1px solid #e5e7eb;
+        }
+        .role-card:hover {
+            transform: scale(1.05) translateY(-10px);
+            box-shadow: 0 20px 40px rgba(96, 165, 250, 0.2);
+            border-color: #60a5fa;
+        }
+        .role-card h2 {
+            font-size: 2rem;
+            font-weight: 300;
+            color: #1f2937;
+            margin-bottom: 1rem;
+            transition: color 0.3s ease;
+        }
+        .role-card:hover h2 {
+            color: #60a5fa;
+        }
+        .role-card p {
+            font-size: 1rem;
+            font-weight: 200;
+            color: #6b7280;
+            margin-bottom: 2rem;
+        }
+        .role-card .join-button {
+            padding: 0.9rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 400;
+            border-radius: 50px;
+            background: #60a5fa;
+            color: #ffffff;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.3s ease;
+            display: inline-block;
+        }
+        .role-card .join-button:hover {
+            background: #3b82f6;
+            transform: scale(1.1);
+        }
+        .auth-form {
+            background: #ffffff;
+            padding: 2.5rem;
+            border-radius: 15px;
+            border: 2px solid #60a5fa;
+            max-width: 500px;
+            margin: 0 auto;
+            display: none;
+        }
+        .auth-form h2 {
+            font-size: 1.8rem;
+            font-weight: 400;
+            color: #60a5fa;
+            margin-bottom: 1rem;
+        }
+        .auth-form p {
+            font-size: 1rem;
+            font-weight: 200;
+            color: #6b7280;
+            margin-bottom: 2rem;
+        }
+        .form-container input {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            color: #1f2937;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+        .form-container input:focus {
+            border-color: #60a5fa;
+        }
+        .form-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+        }
+        .cta-button {
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            font-weight: 400;
+            border-radius: 50px;
+            text-decoration: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .cta-button.login-btn {
+            background: #60a5fa;
+            color: #ffffff;
+            border: none;
+        }
+        .cta-button.signup-btn {
+            background: transparent;
+            color: #60a5fa;
+            border: 2px solid #60a5fa;
+        }
+        .cta-button.login-btn:hover {
+            background: #3b82f6;
+        }
+        .cta-button.signup-btn:hover {
+            background: #60a5fa;
+            color: #ffffff;
+        }
+        .cta-button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.4s ease, height 0.4s ease;
+        }
+        .cta-button:hover::after {
+            width: 200px;
+            height: 200px;
+        }
+        footer {
+            background: #ffffff;
+            color: #6b7280;
+            text-align: center;
+            padding: 2rem 6%;
+            border-top: 1px solid #e5e7eb;
+        }
+        /* Warning Notice Styles */
+        .warning-notice {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            gap: 1rem;
+            animation: slideIn 0.3s ease-out;
+        }
+        .warning-notice i {
+            font-size: 1.2rem;
+        }
+        .warning-notice span {
+            font-size: 1rem;
+            font-weight: 300;
+        }
+        @keyframes slideIn {
+            from {
+                transform: translateX(-50%) translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+            }
+        }
+        /* Modern Please Wait Overlay Styles */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1f2937, #4b5563);
+            animation: pulseBackground 1.5s infinite ease-in-out;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1500;
+        }
+        .loading-dots {
+            display: flex;
+            gap: 10px;
+        }
+        .dot {
+            width: 16px;
+            height: 8px;
+            background: #00d4ff; /* Cyan starting color */
+            border-radius: 50px;
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.8);
+            animation: wave 2s infinite ease-in-out, scale 2s infinite ease-in-out, colorShift 3s infinite ease-in-out;
+        }
+        .dot:nth-child(2) {
+            animation-delay: 0.2s;
+            background: #ff00ff; /* Magenta starting color */
+            box-shadow: 0 0 10px rgba(255, 0, 255, 0.8);
+        }
+        .dot:nth-child(3) {
+            animation-delay: 0.4s;
+            background: #00ff7f; /* Lime green starting color */
+            box-shadow: 0 0 10px rgba(0, 255, 127, 0.8);
+        }
+        .loading-text {
+            color: #ffffff;
+            font-size: 1.2rem;
+            margin-top: 1.5rem;
+            font-weight: 300;
+            animation: fadeText 4s infinite ease-in-out;
+        }
+        @keyframes pulseBackground {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 0.8; }
+        }
+        @keyframes wave {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        @keyframes scale {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        @keyframes colorShift {
+            0% { background: #00d4ff; }
+            33% { background: #ff00ff; }
+            66% { background: #00ff7f; }
+            100% { background: #00d4ff; }
+        }
+        @keyframes fadeText {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+        @media (max-width: 768px) {
+            .auth-container h1 {
+                font-size: 2.2rem;
+            }
+            .auth-container .intro-text {
+                font-size: 1rem;
+            }
+            .role-selection {
+                flex-direction: column;
+                align-items: center;
+                gap: 2rem;
+            }
+            .role-card {
+                width: 100%;
+                max-width: 350px;
+            }
+            .role-card h2 {
+                font-size: 1.6rem;
+            }
+            .role-card p {
+                font-size: 0.9rem;
+            }
+            .form-buttons {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo" onclick="window.location.href='index.html'">Taska Elite</div>
+        <ul class="nav-menu">
+            <li><a href="index.html">Home</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section class="auth-container">
+            <h1>Join Taska Elite</h1>
+            <p class="intro-text">Unlock elite talent from IITs, NITs, and IIITs or dive into real world opportunities as a student. Pick your role.</p>
+            <div class="role-selection" id="role-selection">
+                <div class="role-card" onclick="showForm('professional')">
+                    <h2>Professional</h2>
+                    <p>Connect with talented college students to empower your business </p>
+                    <button class="join-button">Join as Professional</button>
+                </div>
+                <div class="role-card" onclick="showForm('student')">
+                    <h2>Student</h2>
+                    <p>Showcase your skills, earn, and grow with real world tasks</p>
+                    <button class="join-button">Join as Student</button>
+                </div>
+            </div>
+            <div class="auth-form" id="professional-form" style="display: none;">
+                <h2>Professional Access</h2>
+                <p>Login or sign up to hire elite talent for your projects.</p>
+                <div class="form-container">
+                    <input type="email" id="prof-email" placeholder="Enter your email" required>
+                    <input type="password" id="prof-password" placeholder="Enter your password" required>
+                    <div class="form-buttons">
+                        <button class="cta-button signup-btn" onclick="signup('professional')">Create Account</button>
+                        <button class="cta-button login-btn" onclick="login('professional')">Login</button>
+                    </div>
+                </div>
+            </div>
+            <div class="auth-form" id="student-form" style="display: none;">
+                <h2>Student Access</h2>
+                <p>Start your journey , create an account and work on meaningful projects.</p>
+                <div class="form-container">
+                    <input type="email" id="stud-email" placeholder="Enter your email" required>
+                    <input type="password" id="stud-password" placeholder="Enter your password" required>
+                    <div class="form-buttons">
+                        <button class="cta-button login-btn" onclick="login('student')" style="display: none;">Login</button>                        
+                        <button class="cta-button signup-btn" onclick="signup('student')">Create Account</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Warning Notice -->
+    <div class="warning-notice" id="warning-notice">
+        <i class="fas fa-exclamation-triangle"></i>
+        <span id="warning-message"></span>
+    </div>
+
+    <!-- Modern Loading Overlay -->
+    <div class="loading-overlay" id="loading-overlay">
+        <div>
+            <div class="loading-dots">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+            <div class="loading-text">Please Wait...</div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 Taska Elite. All rights reserved.</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script type="module">
+        import { showForm, login, signup, signOut } from './js/auth.js';
+        window.showForm = showForm;
+        window.login = login;
+        window.signup = signup;
+        window.signOut = signOut;
+
+        document.querySelectorAll('.role-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                const role = e.target.closest('.role-card').getAttribute('onclick').match(/'([^']+)'/)[1];
+                console.log(`Role card clicked for: ${role}`);
+                window.showForm(role);
+            });
+        });
+
+        
+    </script>
+    <script type="module" src="js/firebase-config.js"></script>
+    <script type="module" src="js/auth.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+        hamburger.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9278424a29b3ed32',t:'MTc0MzE3Njc3Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

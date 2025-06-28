@@ -1,0 +1,1645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taska - Student Profile</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: #f8f9fa;
+            min-height: 100vh;
+            color: #202124;
+            overflow-x: hidden;
+        }
+
+        .navbar { 
+            background: #fff; 
+            padding: 1rem 2rem; 
+            position: fixed; 
+            top: 0; 
+            width: 100%; 
+            z-index: 1000; 
+            border-bottom: 1px solid #dadce0; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            box-shadow: 0 1px 2px rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15); 
+        }
+        .navbar .logo { 
+            font-size: 1.5rem; 
+            color: #000000; 
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            align-items: center;
+        }
+        .navbar .nav-menu { 
+            display: flex; 
+            gap: 1.5rem; 
+            list-style: none; 
+        }
+        .navbar .nav-menu li a { 
+            color: #5f6368; 
+            text-decoration: none; 
+            font-size: 0.875rem; 
+            transition: color 0.3s; 
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+        }
+        .navbar .nav-menu li a:hover { 
+            color: #1a73e8; 
+            background: #f1f3f4;
+        }
+        .navbar .nav-menu li a.active { 
+            color: #1a73e8; 
+            background: #e8f0fe;
+        }
+        .navbar .hamburger { 
+            display: none; 
+            font-size: 1.5rem; 
+            cursor: pointer; 
+            color: #5f6368; 
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 5rem auto 2rem;
+            padding: 0 2rem;
+        }
+
+        .form-header {
+            background: #fff;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 2px rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+            text-align: center;
+        }
+
+        .form-title {
+            font-size: 1.75rem;
+            font-weight: 400;
+            color: #202124;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-subtitle {
+            color: #5f6368;
+            font-size: 0.875rem;
+        }
+
+        .form-container {
+            background: #fff;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 1px 2px rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .form-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1rem;
+            font-weight: 500;
+            color: #202124;
+            margin-bottom: 0.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #dadce0;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #5f6368;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-input {
+            padding: 0.75rem 1rem;
+            border: 1px solid #dadce0;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            color: #202124;
+            background: #fff;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #1a73e8;
+            box-shadow: 0 0 0 2px rgba(26,115,232,0.2);
+        }
+
+        .form-input:disabled {
+            background: #f8f9fa;
+            color: #5f6368;
+            cursor: not-allowed;
+        }
+
+        .form-select {
+            padding: 0.75rem 1rem;
+            border: 1px solid #dadce0;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            color: #202124;
+            background: #fff;
+            cursor: pointer;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .form-select:focus {
+            outline: none;
+            border-color: #1a73e8;
+            box-shadow: 0 0 0 2px rgba(26,115,232,0.2);
+        }
+
+        .form-textarea {
+            padding: 0.75rem 1rem;
+            border: 1px solid #dadce0;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            color: #202124;
+            background: #fff;
+            resize: vertical;
+            min-height: 80px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .form-textarea:focus {
+            outline: none;
+            border-color: #1a73e8;
+            box-shadow: 0 0 0 2px rgba(26,115,232,0.2);
+        }
+
+        .profile-pic-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .profile-pic {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #dadce0;
+        }
+
+        .profile-pic-upload {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .upload-btn {
+            padding: 0.5rem 1rem;
+            background: #1a73e8;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .upload-btn:hover {
+            background: #1557b0;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #dadce0;
+        }
+
+        .btn {
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: #1a73e8;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #1557b0;
+            box-shadow: 0 1px 2px rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+        }
+
+        .btn-secondary {
+            background: #fff;
+            color: #5f6368;
+            border: 1px solid #dadce0;
+        }
+
+        .btn-secondary:hover {
+            background: #f8f9fa;
+            border-color: #5f6368;
+        }
+
+        .btn-danger {
+            background: #ea4335;
+            color: #fff;
+        }
+
+        .btn-danger:hover {
+            background: #d93025;
+        }
+
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+
+        .status-complete {
+            background: #e6f4ea;
+            color: #137333;
+        }
+
+        .status-incomplete {
+            background: #fce8e6;
+            color: #c5221f;
+        }
+
+        .status-loading {
+            background: #e8f0fe;
+            color: #1a73e8;
+        }
+
+        footer {
+            background: #fff;
+            padding: 1rem;
+            text-align: center;
+            border-top: 1px solid #dadce0;
+            color: #5f6368;
+            font-size: 0.75rem;
+            margin-top: 2rem;
+        }
+
+        footer a {
+            color: #1a73e8;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 1024px) {
+            .form-grid {
+                grid-template-columns: repeat(2, 1fr);
+        }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+            }
+
+            .nav-menu {
+                display: none;
+                position: absolute;
+                top: 56px;
+                left: 0;
+                right: 0;
+                background: #fff;
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: 0 1px 2px rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+                z-index: 999;
+            }
+
+            .nav-menu.active {
+                display: flex;
+            }
+
+            .hamburger {
+                display: block;
+            }
+
+            .main-container {
+                padding: 0 1rem;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .form-container {
+                padding: 1.5rem;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .post-content {
+                flex-direction: column;
+                min-height: auto;
+            }
+
+            .post-media-section {
+                flex: none;
+                height: 300px;
+            }
+
+            .post-media-section img,
+            .post-media-section video {
+                height: 300px;
+            }
+
+            .post-details-section {
+                min-height: auto;
+            }
+
+            .post-actions {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: stretch;
+            }
+
+            .media-buttons {
+                justify-content: center;
+            }
+            
+            .create-post-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-container {
+                padding: 0 0.75rem;
+            }
+
+            .form-header {
+                padding: 1.5rem;
+            }
+
+            .form-container {
+                padding: 1rem;
+            }
+
+            .form-title {
+                font-size: 1.5rem;
+            }
+            }
+
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #dadce0;
+            }
+        .tab-btn {
+            background: none;
+            border: none;
+                font-size: 1rem;
+            font-weight: 500;
+            color: #5f6368;
+            padding: 1rem 2rem 0.75rem 2rem;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: color 0.2s, border-bottom 0.2s;
+        }
+        .tab-btn.active {
+            color: #1a73e8;
+            border-bottom: 3px solid #1a73e8;
+            background: #f8f9fa;
+        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* Portfolio Styles */
+        .portfolio-header {
+            background: #fff;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 2px rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+            text-align: center;
+        }
+
+        .portfolio-header h2 {
+            font-size: 1.75rem;
+            font-weight: 400;
+            color: #202124;
+            margin-bottom: 0.5rem;
+        }
+
+        .portfolio-header p {
+            color: #5f6368;
+            font-size: 0.875rem;
+            }
+
+        .create-post-section {
+            margin-bottom: 2rem;
+        }
+
+        .create-post-card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 1px 2px rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+        }
+
+        .post-input-area {
+            margin-bottom: 1rem;
+        }
+
+        #post-content {
+            width: 100%;
+            border: 1px solid #dadce0;
+            border-radius: 8px;
+            padding: 1rem;
+            font-size: 0.875rem;
+            resize: vertical;
+            min-height: 80px;
+            font-family: inherit;
+        }
+
+        #post-content:focus {
+            outline: none;
+            border-color: #1a73e8;
+            box-shadow: 0 0 0 2px rgba(26,115,232,0.2);
+        }
+
+        .post-media-preview {
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        .post-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .media-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .media-btn {
+            padding: 0.5rem 1rem;
+            background: #f8f9fa;
+            border: 1px solid #dadce0;
+            border-radius: 6px;
+            color: #5f6368;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .media-btn:hover {
+            background: #e8f0fe;
+            border-color: #1a73e8;
+            color: #1a73e8;
+        }
+
+        .create-post-btn {
+            padding: 0.75rem 1.5rem;
+            background: #1a73e8;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .create-post-btn:hover {
+            background: #1557b0;
+        }
+
+        .create-post-btn:disabled {
+            background: #dadce0;
+            cursor: not-allowed;
+        }
+
+        .portfolio-feed {
+            display: flex;
+                flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .post-card {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 1px 2px rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .post-content {
+            display: flex;
+            min-height: 400px;
+        }
+
+        .post-media-section {
+            flex: 0 0 400px;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .post-media-section img,
+        .post-media-section video {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+        }
+
+        .post-details-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 400px;
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #f1f3f4;
+        }
+
+        .post-author-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 0.75rem;
+        }
+
+        .post-author-info {
+            flex: 1;
+        }
+
+        .post-author-name {
+            font-weight: 600;
+            color: #202124;
+            font-size: 0.875rem;
+        }
+
+        .post-timestamp {
+            color: #5f6368;
+            font-size: 0.75rem;
+        }
+
+        .post-actions-menu {
+            position: relative;
+        }
+
+        .post-menu-btn {
+            background: none;
+            border: none;
+            color: #5f6368;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: background 0.2s;
+        }
+
+        .post-menu-btn:hover {
+            background: #f1f3f4;
+        }
+
+        .post-caption-section {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+        }
+
+        .post-text {
+            color: #202124;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .post-stats {
+            font-size: 0.75rem;
+            color: #5f6368;
+            margin-bottom: 1rem;
+        }
+
+        .post-actions-bar {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            border-top: 1px solid #f1f3f4;
+        }
+
+        .post-action-btn {
+            background: none;
+            border: none;
+            color: #5f6368;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .post-action-btn:hover {
+            background: #f1f3f4;
+            color: #1a73e8;
+        }
+
+        .post-action-btn.endorsed {
+            color: #1a73e8;
+            font-weight: 500;
+        }
+
+        .post-action-btn.endorsed i {
+            color: #ea4335;
+        }
+
+        .post-endorsements {
+            padding: 1rem;
+            border-top: 1px solid #f1f3f4;
+            background: #f8f9fa;
+        }
+
+        .endorsements-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #5f6368;
+            margin-bottom: 0.5rem;
+        }
+
+        .endorsements-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .endorsement-item {
+            background: #e8f0fe;
+            color: #1a73e8;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .post-actions {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: stretch;
+            }
+            
+            .media-buttons {
+                justify-content: center;
+            }
+            
+            .create-post-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        #loading-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .loading-backdrop {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.3);
+            z-index: 1;
+        }
+        .loading-content {
+            position: relative;
+            z-index: 2;
+            background: #fff;
+            border-radius: 12px;
+            padding: 2rem 2.5rem;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 220px;
+        }
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #1a73e8;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .loading-bar-container {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            margin-top: 1rem;
+            overflow: hidden;
+        }
+        .loading-bar {
+            height: 100%;
+            width: 0%;
+            background: #1a73e8;
+            border-radius: 4px;
+            transition: width 0.2s;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">Taska</div>
+        <ul class="nav-menu">
+            <li><a href="tasks.html">Tasks</a></li>
+            <li><a href="profile.html" class="active">Profile</a></li>
+        </ul>
+        <div class="hamburger">☰</div>
+    </nav>
+
+    <main class="main-container">
+        <div class="tabs">
+            <button class="tab-btn active" id="profile-tab-btn">Profile Details</button>
+            <button class="tab-btn" id="portfolio-tab-btn">Portfolio</button>
+        </div>
+        <div id="profile-tab" class="tab-content active">
+            <div class="form-header">
+                <h1 class="form-title">Student Profile Database</h1>
+                <p class="form-subtitle">Complete your profile information to get matched with the best opportunities</p>
+            </div>
+
+            <div class="form-container">
+                <form id="profile-form">
+                    <div class="form-grid">
+                        <!-- Personal Information Column -->
+                        <div class="form-section">
+                            <h2 class="section-title">Personal Information</h2>
+                            
+                            <div class="profile-pic-container">
+            <img id="profile-pic" class="profile-pic" src="../assets/avatar/1.png" alt="Profile Picture">
+                                <div class="profile-pic-upload">
+                                    <button type="button" class="upload-btn" onclick="document.getElementById('profile-upload').click()">
+                                        <i class="fas fa-camera"></i> Upload Photo
+                                    </button>
+                                    <input type="file" id="profile-upload" accept="image/*" style="display: none;">
+                                </div>
+        </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Full Name</label>
+                                <input type="text" id="name" class="form-input" placeholder="Enter your full name">
+            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Email Address</label>
+                                <input type="email" id="email" class="form-input" placeholder="your.email@example.com">
+        </div>
+
+                            <div class="form-group">
+                                <label class="form-label">WhatsApp Number</label>
+                                <input type="tel" id="whatsapp" class="form-input" placeholder="+1234567890">
+            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Gender</label>
+                                <select id="gender" class="form-select">
+                                    <option value="">Select gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                </select>
+        </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Location</label>
+                                <input type="text" id="location" class="form-input" placeholder="City, Country">
+            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">LinkedIn Profile</label>
+                                <input type="url" id="linkedin" class="form-input" placeholder="https://linkedin.com/in/username">
+        </div>
+
+                            <div class="form-group">
+                                <label class="form-label">About Me</label>
+                                <textarea id="about" class="form-textarea" placeholder="Tell us about yourself, your interests, and career goals..."></textarea>
+            </div>
+        </div>
+
+                        <!-- Educational Information Column -->
+                        <div class="form-section">
+                            <h2 class="section-title">Educational Information</h2>
+
+                            <div class="form-group">
+                                <label class="form-label">College/University</label>
+                                <input type="text" id="college" class="form-input" placeholder="Your college name">
+            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Degree</label>
+                                <select id="degree" class="form-select">
+                                    <option value="">Select degree</option>
+                                    <option value="bachelor">Bachelor's</option>
+                                    <option value="master">Master's</option>
+                                    <option value="phd">PhD</option>
+                                    <option value="diploma">Diploma</option>
+                                    <option value="other">Other</option>
+                                </select>
+        </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Branch/Field</label>
+                                <input type="text" id="branch" class="form-input" placeholder="Computer Science, Engineering, etc.">
+            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Year of Study</label>
+                                <select id="year" class="form-select">
+                                    <option value="">Select year</option>
+                                    <option value="1">1st Year</option>
+                                    <option value="2">2nd Year</option>
+                                    <option value="3">3rd Year</option>
+                                    <option value="4">4th Year</option>
+                                    <option value="5">5th Year</option>
+                                    <option value="graduated">Graduated</option>
+                                </select>
+        </div>
+
+                            <div class="form-group">
+                                <label class="form-label">CGPA</label>
+                                <input type="number" id="cgpa" class="form-input" placeholder="8.5" step="0.01" min="0" max="10">
+            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Expected Graduation</label>
+                                <input type="month" id="graduation" class="form-input">
+        </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Academic Achievements</label>
+                                <textarea id="achievements" class="form-textarea" placeholder="List your academic achievements, awards, scholarships..."></textarea>
+            </div>
+        </div>
+
+                        <!-- Professional Information Column -->
+                        <div class="form-section">
+                            <h2 class="section-title">Professional Information</h2>
+
+                            <div class="form-group">
+                                <label class="form-label">Skills</label>
+                                <textarea id="skills" class="form-textarea" placeholder="List your technical skills (e.g., Python, React, AWS)..."></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Experience Level</label>
+                                <select id="experience" class="form-select">
+                                    <option value="">Select experience</option>
+                                    <option value="beginner">Beginner (0-1 years)</option>
+                                    <option value="intermediate">Intermediate (1-3 years)</option>
+                                    <option value="advanced">Advanced (3-5 years)</option>
+                                    <option value="expert">Expert (5+ years)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">GitHub Username</label>
+                                <input type="text" id="github" class="form-input" placeholder="github-username">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Codeforces Username</label>
+                                <input type="text" id="codeforces" class="form-input" placeholder="codeforces-username">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">LeetCode Username</label>
+                                <input type="text" id="leetcode" class="form-input" placeholder="leetcode-username">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Portfolio Links</label>
+                                <textarea id="portfolio" class="form-textarea" placeholder="Add your portfolio, project links, or personal website URLs..."></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Preferred Roles</label>
+                                <textarea id="roles" class="form-textarea" placeholder="What roles are you interested in? (e.g., Frontend Developer, Data Scientist)..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" id="save-profile-btn" class="btn btn-primary">
+                            <i class="fas fa-save"></i>
+                            Save Profile
+                        </button>
+                        <button type="button" id="logout-btn" class="btn btn-danger">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Logout
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div id="portfolio-tab" class="tab-content" style="display:none;">
+            <div class="portfolio-header">
+                <h2>Portfolio</h2>
+                <p>Share your work, achievements, and get endorsements from the community!</p>
+            </div>
+            
+            <!-- Create Post Section -->
+            <div class="create-post-section">
+                <div class="create-post-card">
+                    <div class="post-input-area">
+                        <textarea id="post-content" placeholder="What's on your mind? Share your work, achievements, or thoughts..." rows="3"></textarea>
+                        <div class="post-media-preview" id="post-media-preview" style="display: none;">
+                            <img id="preview-image" style="display: none; max-width: 200px; max-height: 200px; border-radius: 8px;">
+                            <video id="preview-video" style="display: none; max-width: 200px; max-height: 200px; border-radius: 8px;" controls></video>
+                        </div>
+                    </div>
+                    <div class="post-actions">
+                        <div class="media-buttons">
+                            <button type="button" class="media-btn" onclick="document.getElementById('image-upload').click()">
+                                <i class="fas fa-image"></i> Image
+                            </button>
+                            <button type="button" class="media-btn" onclick="document.getElementById('video-upload').click()">
+                                <i class="fas fa-video"></i> Video
+                            </button>
+                        </div>
+                        <button type="button" id="create-post-btn" class="create-post-btn">
+                            <i class="fas fa-paper-plane"></i> Post
+                        </button>
+                    </div>
+                    <input type="file" id="image-upload" accept="image/*" style="display: none;">
+                    <input type="file" id="video-upload" accept="video/*" style="display: none;">
+                </div>
+            </div>
+
+            <!-- Portfolio Feed -->
+            <div id="portfolio-feed" class="portfolio-feed">
+                <!-- Posts will be dynamically loaded here -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" style="display:none;">
+        <div class="loading-backdrop"></div>
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <div id="loading-text">Uploading...</div>
+            <div class="loading-bar-container">
+                <div id="loading-bar" class="loading-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 Taska. All rights reserved. | <a href="#">Privacy Policy</a></p>
+    </footer>
+
+       <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getDatabase, ref, get, set, push } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyDZIDlEtaNRxODoFhRw0xF2yYFBqqBexqo",
+    authDomain: "taska-45011.firebaseapp.com",
+    databaseURL: "https://taska-45011-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "taska-45011",
+    storageBucket: "taska-45011.firebasestorage.app",
+    messagingSenderId: "205487498813",
+    appId: "1:205487498813:web:0de2c9eab567482781ec54"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+const auth = getAuth(app);
+const storage = getStorage(app);
+
+let currentUserId = null;
+let selectedFile = null;
+let selectedFileType = null;
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Hamburger menu toggle
+    const hamburger = document.querySelector('.hamburger');
+    const navMenu = document.querySelector('.nav-menu');
+    hamburger.addEventListener('click', () => {
+        navMenu.classList.toggle('active');
+    });
+
+    // Tab switching functionality
+    const profileTabBtn = document.getElementById('profile-tab-btn');
+    const portfolioTabBtn = document.getElementById('portfolio-tab-btn');
+    const profileTab = document.getElementById('profile-tab');
+    const portfolioTab = document.getElementById('portfolio-tab');
+
+    profileTabBtn.addEventListener('click', () => {
+        profileTabBtn.classList.add('active');
+        portfolioTabBtn.classList.remove('active');
+        profileTab.style.display = 'block';
+        portfolioTab.style.display = 'none';
+    });
+
+    portfolioTabBtn.addEventListener('click', () => {
+        portfolioTabBtn.classList.add('active');
+        profileTabBtn.classList.remove('active');
+        portfolioTab.style.display = 'block';
+        profileTab.style.display = 'none';
+        loadPortfolioFeed(); // Load feed when switching to portfolio tab
+    });
+
+    // Check authentication state
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            currentUserId = user.uid;
+            loadProfileData(user.uid);
+        } else {
+            setTimeout(() => {
+                alert("Please log in or sign up first.");
+                window.location.href = '../login.html';
+            }, 1000);
+        }
+    });
+
+    // Logout button handler
+    document.getElementById('logout-btn').addEventListener('click', async (e) => {
+        e.preventDefault();
+        try {
+            await signOut(auth);
+            window.location.href = '../index.html';
+        } catch (error) {
+            console.error("Error signing out:", error);
+            alert("Failed to log out. Please try again.");
+        }
+    });
+
+    // Save profile button handler
+    document.getElementById('save-profile-btn').addEventListener('click', async () => {
+        showLoadingOverlay('Saving profile...', 0);
+        try {
+            const profileData = {
+                personal: {
+                    name: document.getElementById('name').value,
+                    email: document.getElementById('email').value,
+                    whatsapp: document.getElementById('whatsapp').value,
+                    gender: document.getElementById('gender').value,
+                    location: document.getElementById('location').value,
+                    linkedin: document.getElementById('linkedin').value,
+                    about: document.getElementById('about').value
+                },
+                education: {
+                    college: document.getElementById('college').value,
+                    degree: document.getElementById('degree').value,
+                    branch: document.getElementById('branch').value,
+                    year: document.getElementById('year').value,
+                    cgpa: document.getElementById('cgpa').value,
+                    graduation: document.getElementById('graduation').value,
+                    achievements: document.getElementById('achievements').value
+                },
+                skills: document.getElementById('skills').value,
+                experience: document.getElementById('experience').value,
+                profiles: {
+                    github: { username: document.getElementById('github').value },
+                    codeforces: { username: document.getElementById('codeforces').value },
+                    leetcode: { username: document.getElementById('leetcode').value }
+                },
+                portfolio: document.getElementById('portfolio').value.split('\n').filter(url => url.trim()),
+                roles: document.getElementById('roles').value
+            };
+
+            setLoadingBar(50);
+            await set(ref(db, `studentslist/${currentUserId}`), profileData);
+            setLoadingBar(100);
+            alert('Profile saved successfully!');
+        } catch (error) {
+            alert('Failed to save profile: ' + error.message);
+        }
+        hideLoadingOverlay();
+    });
+
+    // Profile picture upload handler
+    document.getElementById('profile-upload').addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            showLoadingOverlay('Processing image...', 0);
+            try {
+                // Convert to WebP with resizing
+                setLoadingBar(10);
+                showLoadingOverlay('Resizing and converting to WebP...', 10);
+                const webpFile = await convertToWebP(file);
+                setLoadingBar(30);
+                
+                // Upload with user ID as filename
+                showLoadingOverlay('Uploading to Firebase Storage...', 30);
+                const fileName = `${currentUserId}.webp`;
+                const fileRef = storageRef(storage, `profile/${fileName}`);
+                
+                const uploadTask = uploadBytes(fileRef, webpFile);
+                setLoadingBar(60);
+                await uploadTask;
+                
+                const url = await getDownloadURL(fileRef);
+                document.getElementById('profile-pic').src = url;
+                setLoadingBar(100);
+                showLoadingOverlay('Profile photo updated successfully!', 100);
+                
+                // Hide overlay after a brief success message
+                setTimeout(() => {
+                    hideLoadingOverlay();
+                }, 1000);
+                
+            } catch (err) {
+                hideLoadingOverlay();
+                alert('Failed to upload profile photo: ' + err.message);
+            }
+        }
+    });
+
+    // Function to convert image to WebP format with resizing
+    async function convertToWebP(file) {
+        return new Promise((resolve, reject) => {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const img = new Image();
+            
+            img.onload = () => {
+                // Set canvas size to standard profile picture dimensions
+                const maxSize = 200; // Standard profile picture size
+                let { width, height } = img;
+                
+                // Calculate new dimensions maintaining aspect ratio
+                if (width > height) {
+                    if (width > maxSize) {
+                        height = (height * maxSize) / width;
+                        width = maxSize;
+                    }
+        } else {
+                    if (height > maxSize) {
+                        width = (width * maxSize) / height;
+                        height = maxSize;
+                    }
+                }
+                
+                // Set canvas size
+                canvas.width = width;
+                canvas.height = height;
+                
+                // Enable image smoothing for better quality
+                ctx.imageSmoothingEnabled = true;
+                ctx.imageSmoothingQuality = 'high';
+                
+                // Draw resized image on canvas
+                ctx.drawImage(img, 0, 0, width, height);
+                
+                // Convert to WebP with optimized quality (0.8 = 80%)
+                canvas.toBlob((blob) => {
+                    if (blob) {
+                        // Create a new file with WebP extension
+                        const webpFile = new File([blob], `${currentUserId}.webp`, {
+                            type: 'image/webp',
+                            lastModified: Date.now()
+                        });
+                        resolve(webpFile);
+                    } else {
+                        reject(new Error('Failed to convert image to WebP'));
+                    }
+                }, 'image/webp', 0.8);
+            };
+            
+            img.onerror = () => {
+                reject(new Error('Failed to load image'));
+            };
+            
+            // Load image from file
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+
+    // File upload handlers for portfolio posts
+    document.getElementById('image-upload').addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            selectedFile = file;
+            selectedFileType = 'image';
+            showMediaPreview(file, 'image');
+        }
+    });
+
+    document.getElementById('video-upload').addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            selectedFile = file;
+            selectedFileType = 'video';
+            showMediaPreview(file, 'video');
+        }
+    });
+
+    // Create post handler
+    document.getElementById('create-post-btn').addEventListener('click', async () => {
+        const content = document.getElementById('post-content').value.trim();
+        if (!content && !selectedFile) {
+            alert('Please add some content or media to your post.');
+            return;
+        }
+        
+        try {
+            let mediaUrl = null;
+            if (selectedFile) {
+                showLoadingOverlay('Uploading media...', 0);
+                const fileRef = storageRef(storage, `portfolio/${currentUserId}_${Date.now()}_${selectedFile.name}`);
+                const uploadTask = uploadBytes(fileRef, selectedFile);
+                setLoadingBar(50);
+                await uploadTask;
+                mediaUrl = await getDownloadURL(fileRef);
+                setLoadingBar(100);
+                hideLoadingOverlay();
+            }
+            
+            const postData = {
+                authorId: currentUserId,
+                content: content,
+                mediaUrl: mediaUrl,
+                mediaType: selectedFileType,
+                timestamp: Date.now(),
+                endorsements: [],
+                authorName: document.getElementById('name').value || 'Anonymous'
+            };
+            
+            await createPost(postData);
+            
+            // Clear form
+            document.getElementById('post-content').value = '';
+            document.getElementById('post-media-preview').style.display = 'none';
+            selectedFile = null;
+            selectedFileType = null;
+            
+            // Reload feed
+            loadPortfolioFeed();
+            
+    } catch (error) {
+            hideLoadingOverlay();
+            alert('Failed to create post: ' + error.message);
+        }
+    });
+});
+
+// Portfolio Functions
+function showMediaPreview(file, type) {
+    const preview = document.getElementById('post-media-preview');
+    const previewImage = document.getElementById('preview-image');
+    const previewVideo = document.getElementById('preview-video');
+    
+    preview.style.display = 'block';
+    
+    if (type === 'image') {
+        previewImage.style.display = 'block';
+        previewVideo.style.display = 'none';
+        previewImage.src = URL.createObjectURL(file);
+    } else {
+        previewVideo.style.display = 'block';
+        previewImage.style.display = 'none';
+        previewVideo.src = URL.createObjectURL(file);
+    }
+}
+
+async function uploadFile(file) {
+    const fileRef = storageRef(storage, `portfolio/${currentUserId}/${Date.now()}_${file.name}`);
+    await uploadBytes(fileRef, file);
+    return await getDownloadURL(fileRef);
+}
+
+async function createPost(postData) {
+    const postsRef = ref(db, 'portfolio_posts');
+    await push(postsRef, postData);
+}
+
+async function loadPortfolioFeed() {
+    const feedContainer = document.getElementById('portfolio-feed');
+    const postsRef = ref(db, 'portfolio_posts');
+    
+    try {
+        const snapshot = await get(postsRef);
+        const posts = [];
+        
+        if (snapshot.exists()) {
+            snapshot.forEach((childSnapshot) => {
+                posts.push({
+                    id: childSnapshot.key,
+                    ...childSnapshot.val()
+                });
+            });
+        }
+        
+        // Sort by timestamp (newest first)
+        posts.sort((a, b) => b.timestamp - a.timestamp);
+        
+        // Render posts
+        feedContainer.innerHTML = posts.map(post => renderPost(post)).join('');
+        
+        // Add event listeners to endorsement buttons
+        posts.forEach(post => {
+            const endorseBtn = document.getElementById(`endorse-${post.id}`);
+            if (endorseBtn) {
+                endorseBtn.addEventListener('click', () => toggleEndorsement(post.id));
+            }
+        });
+        
+    } catch (error) {
+        console.error('Error loading portfolio feed:', error);
+    }
+}
+
+function renderPost(post) {
+    const isEndorsed = post.endorsements && post.endorsements.includes(currentUserId);
+    const endorsementCount = post.endorsements ? post.endorsements.length : 0;
+    
+    return `
+        <div class="post-card">
+            <div class="post-content">
+                ${post.mediaUrl ? `
+                    <div class="post-media-section">
+                        ${post.mediaType === 'image' 
+                            ? `<img src="${post.mediaUrl}" alt="Post media">`
+                            : `<video src="${post.mediaUrl}" controls></video>`
+                        }
+                    </div>
+                ` : ''}
+                <div class="post-details-section">
+                    <div class="post-header">
+                        <img src="../assets/avatar/1.png" 
+                             alt="Avatar" class="post-author-avatar" 
+                             id="post-avatar-${post.id}"
+                             onload="loadPostAvatar('${post.authorId}', '${post.id}')">
+                        <div class="post-author-info">
+                            <div class="post-author-name">${post.authorName}</div>
+                            <div class="post-timestamp">${formatTimestamp(post.timestamp)}</div>
+                        </div>
+                        ${post.authorId === currentUserId ? `
+                            <div class="post-actions-menu">
+                                <button class="post-menu-btn" onclick="deletePost('${post.id}')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        ` : ''}
+                    </div>
+                    
+                    <div class="post-caption-section">
+                        ${post.content ? `<div class="post-text">${post.content}</div>` : ''}
+                        <div class="post-stats">
+                            <span>${endorsementCount} endorsement${endorsementCount !== 1 ? 's' : ''}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="post-actions-bar">
+                        <button class="post-action-btn ${isEndorsed ? 'endorsed' : ''}" id="endorse-${post.id}">
+                            <i class="fas fa-heart"></i>
+                            ${isEndorsed ? 'Endorsed' : 'Endorse'}
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            ${endorsementCount > 0 ? `
+                <div class="post-endorsements">
+                    <div class="endorsements-title">Endorsed by:</div>
+                    <div class="endorsements-list">
+                        ${post.endorsements.map(userId => `
+                            <div class="endorsement-item">User ${userId.slice(0, 8)}...</div>
+                        `).join('')}
+                    </div>
+                </div>
+            ` : ''}
+        </div>
+    `;
+}
+
+// Function to load profile photo for posts
+async function loadPostAvatar(authorId, postId) {
+    try {
+        const profilePhotoRef = storageRef(storage, `profile/${authorId}.webp`);
+        const profilePhotoUrl = await getDownloadURL(profilePhotoRef);
+        const avatarImg = document.getElementById(`post-avatar-${postId}`);
+        if (avatarImg) {
+            avatarImg.src = profilePhotoUrl;
+        }
+    } catch (error) {
+        // If profile photo doesn't exist, keep the default avatar
+        console.log(`No profile photo found for user ${authorId}`);
+    }
+}
+
+function formatTimestamp(timestamp) {
+    const now = Date.now();
+    const diff = now - timestamp;
+    const minutes = Math.floor(diff / 60000);
+    const hours = Math.floor(diff / 3600000);
+    const days = Math.floor(diff / 86400000);
+    
+    if (minutes < 1) return 'Just now';
+    if (minutes < 60) return `${minutes}m ago`;
+    if (hours < 24) return `${hours}h ago`;
+    if (days < 7) return `${days}d ago`;
+    
+    return new Date(timestamp).toLocaleDateString();
+}
+
+async function toggleEndorsement(postId) {
+    const postsRef = ref(db, `portfolio_posts/${postId}`);
+    
+    try {
+        const snapshot = await get(postsRef);
+        const post = snapshot.val();
+        let endorsements = post.endorsements || [];
+        
+        const userIndex = endorsements.indexOf(currentUserId);
+        if (userIndex > -1) {
+            endorsements.splice(userIndex, 1);
+        } else {
+            endorsements.push(currentUserId);
+        }
+        
+        await set(ref(db, `portfolio_posts/${postId}/endorsements`), endorsements);
+        loadPortfolioFeed(); // Reload to update UI
+        
+    } catch (error) {
+        console.error('Error toggling endorsement:', error);
+    }
+}
+
+async function deletePost(postId) {
+    if (confirm('Are you sure you want to delete this post?')) {
+        try {
+            await set(ref(db, `portfolio_posts/${postId}`), null);
+            loadPortfolioFeed();
+        } catch (error) {
+            alert('Failed to delete post: ' + error.message);
+        }
+    }
+}
+
+// Profile loading function
+async function loadProfileData(userId) {
+    try {
+        // First, try to load profile photo from Firebase Storage
+        try {
+            const profilePhotoRef = storageRef(storage, `profile/${userId}.webp`);
+            const profilePhotoUrl = await getDownloadURL(profilePhotoRef);
+            document.getElementById('profile-pic').src = profilePhotoUrl;
+        } catch (storageError) {
+            // If profile photo doesn't exist in storage, use default avatar
+            console.log('No profile photo found in storage, using default avatar');
+        document.getElementById('profile-pic').src = '../assets/avatar/1.png';
+        }
+
+        const snapshot = await get(ref(db, `studentslist/${userId}`));
+        const data = snapshot.val();
+
+        if (data) {
+            // Personal Information
+            document.getElementById('name').value = data.personal?.name || '';
+            document.getElementById('email').value = data.personal?.email || '';
+            document.getElementById('whatsapp').value = data.personal?.whatsapp || '';
+            document.getElementById('gender').value = data.personal?.gender || '';
+            document.getElementById('location').value = data.personal?.location || '';
+            document.getElementById('linkedin').value = data.personal?.linkedin || '';
+            document.getElementById('about').value = data.personal?.about || '';
+
+            // Educational Information
+            document.getElementById('college').value = data.education?.college || '';
+            document.getElementById('degree').value = data.education?.degree || '';
+            document.getElementById('branch').value = data.education?.branch || '';
+            document.getElementById('year').value = data.education?.year || '';
+            document.getElementById('cgpa').value = data.education?.cgpa || '';
+            document.getElementById('graduation').value = data.education?.graduation || '';
+            document.getElementById('achievements').value = data.education?.achievements || '';
+
+            // Professional Information
+            document.getElementById('skills').value = data.skills || '';
+            document.getElementById('experience').value = data.experience || '';
+            document.getElementById('github').value = data.profiles?.github?.username || '';
+            document.getElementById('codeforces').value = data.profiles?.codeforces?.username || '';
+            document.getElementById('leetcode').value = data.profiles?.leetcode?.username || '';
+            document.getElementById('portfolio').value = Array.isArray(data.portfolio) ? data.portfolio.join('\n') : '';
+            document.getElementById('roles').value = data.roles || '';
+
+        } else {
+            // Set default values for empty profile
+            ['name', 'email', 'whatsapp', 'location', 'linkedin', 'about', 'college', 
+             'branch', 'cgpa', 'graduation', 'achievements', 'skills', 'github', 
+             'codeforces', 'leetcode', 'portfolio', 'roles'].forEach(id => {
+                document.getElementById(id).value = '';
+            });
+            ['gender', 'degree', 'year', 'experience'].forEach(id => {
+                document.getElementById(id).value = '';
+            });
+        }
+    } catch (error) {
+        console.error("Error loading profile:", error);
+        alert(`Failed to load profile: ${error.message}`);
+    }
+}
+
+// Make functions globally available for onclick handlers
+window.deletePost = deletePost;
+window.toggleEndorsement = toggleEndorsement;
+window.loadPostAvatar = loadPostAvatar;
+
+function showLoadingOverlay(text = 'Uploading...', progress = 0) {
+    document.getElementById('loading-overlay').style.display = 'flex';
+    document.getElementById('loading-text').textContent = text;
+    setLoadingBar(progress);
+}
+
+function hideLoadingOverlay() {
+    document.getElementById('loading-overlay').style.display = 'none';
+}
+
+function setLoadingBar(progress) {
+    document.getElementById('loading-bar').style.width = `${progress}%`;
+    }
+    </script>
+</body>
+</html>

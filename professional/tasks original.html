@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taska Elite - Professional Tasks</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body { 
+            background: #FFFFFF; 
+            min-height: 100vh; 
+            font-family: 'Poppins', sans-serif; 
+            margin: 0; 
+            padding-top: 60px; 
+        }
+        /* Dashboard Content */
+        .dashboard-content { 
+            padding: 2rem; 
+            max-width: 1200px; 
+            margin: 0 auto; 
+        }
+        .dashboard-section h1 { 
+            font-size: 2.5rem; 
+            font-weight: 600; 
+            margin-bottom: 0.75rem; 
+        }
+        .dashboard-section p { 
+            font-size: 1.1rem; 
+            font-weight: 300; 
+            margin-bottom: 2rem; 
+            line-height: 1.5; 
+        }
+        .tasks-section h2, .new-task-section h2 { 
+            font-size: 1.75rem; 
+            font-weight: 600; 
+            margin-bottom: 1.5rem; 
+        }
+        .tasks-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+            gap: 1.5rem; 
+        }
+        .task-card { 
+            background: #F9F9F9; 
+            border-radius: 10px; 
+            padding: 1.5rem; 
+            transition: background 0.3s ease; 
+        }
+        .task-card:hover { 
+            background: #F0F0F0; 
+        }
+        .task-card h3 { 
+            font-size: 1.4rem; 
+            font-weight: 600; 
+            margin-bottom: 0.75rem; 
+        }
+        .task-card p { 
+            font-size: 0.95rem; 
+            font-weight: 400; 
+            margin: 0.5rem 0; 
+            line-height: 1.4; 
+        }
+        .task-card p strong { 
+            font-weight: 600; 
+        }
+        .no-tasks { 
+            font-size: 1.1rem; 
+            font-weight: 300; 
+            text-align: center; 
+            margin-top: 2rem; 
+        }
+        .cta-button { 
+            display: inline-block; 
+            padding: 0.75rem 1.5rem; 
+            background: #000000; 
+            color: #FFFFFF; 
+            text-decoration: none; 
+            border-radius: 8px; 
+            font-size: 1rem; 
+            font-weight: 500; 
+            transition: opacity 0.3s ease; 
+            cursor: pointer; 
+            border: none; 
+        }
+        .cta-button:hover { 
+            opacity: 0.85; 
+        }
+        .action-btn { 
+            padding: 0.5rem 1rem; 
+            background: #000000; 
+            color: #FFFFFF; 
+            border: none; 
+            border-radius: 5px; 
+            font-size: 0.9rem; 
+            font-weight: 500; 
+            cursor: pointer; 
+            margin-top: 1rem; 
+            transition: opacity 0.3s ease; 
+        }
+        .action-btn:hover { 
+            opacity: 0.85; 
+        }
+        /* Popup Styles */
+        .popup { 
+            display: none; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(0, 0, 0, 0.4); 
+            justify-content: center; 
+            align-items: center; 
+            z-index: 2000; 
+        }
+        .popup-content { 
+            background: #FFFFFF; 
+            border-radius: 10px; 
+            padding: 2rem; 
+            width: 100%; 
+            max-width: 600px; 
+            position: relative; 
+        }
+        .close-btn { 
+            position: absolute; 
+            top: 1rem; 
+            right: 1rem; 
+            font-size: 1.5rem; 
+            color: #000000; 
+            cursor: pointer; 
+            background: none; 
+            border: none; 
+        }
+        .close-btn:hover { 
+            opacity: 0.7; 
+        }
+        .popup-content h2 { 
+            font-size: 1.75rem; 
+            font-weight: 600; 
+            margin-bottom: 1.5rem; 
+        }
+        .form-group { 
+            margin-bottom: 1.25rem; 
+        }
+        .form-group label { 
+            display: block; 
+            font-weight: 500; 
+            margin-bottom: 0.5rem; 
+        }
+        .custom-input, .custom-dropdown, .custom-textarea { 
+            width: 100%; 
+            padding: 0.75rem; 
+            border: 1px solid #E0E0E0; 
+            border-radius: 6px; 
+            font-size: 1rem; 
+            font-weight: 400; 
+            transition: border-color 0.3s ease; 
+        }
+        .custom-input:focus, .custom-dropdown:focus, .custom-textarea:focus { 
+            border-color: #000000; 
+            outline: none; 
+        }
+        .custom-textarea { 
+            min-height: 100px; 
+            resize: vertical; 
+        }
+        /* Custom style for the date input */
+        .custom-date-input {
+            width: 100%;
+            padding: 0.75rem 2.5rem 0.75rem 0.75rem; /* Extra padding on the right for the icon */
+            border: 1px solid #4A90E2; /* Blue border to make it stand out */
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 400;
+            transition: border-color 0.3s ease;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar" viewBox="0 0 16 16"><path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/><path d="M4 7a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 7z"/></svg>') no-repeat right 0.75rem center; /* Calendar icon */
+            background-size: 16px 16px;
+            color: #333;
+        }
+        .custom-date-input:focus {
+            border-color: #1E62D0; /* Darker blue on focus */
+            outline: none;
+        }
+        /* Remove default browser date picker styling for consistency */
+        .custom-date-input::-webkit-calendar-picker-indicator {
+            opacity: 0; /* Hide the default arrow, since we have a custom icon */
+        }
+        /* Footer */
+        footer { 
+            background: #FFFFFF; 
+            padding: 1rem; 
+            text-align: center; 
+            position: fixed; 
+            bottom: 0; 
+            width: 100%; 
+        }
+        footer a { 
+            color: #000000; 
+            text-decoration: underline; 
+            transition: opacity 0.3s ease; 
+        }
+        footer a:hover { 
+            opacity: 0.7; 
+        }
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .tasks-grid { 
+                grid-template-columns: 1fr; 
+            }
+            .popup-content { 
+                width: 90%; 
+                padding: 1.5rem; 
+            }
+            .dashboard-section h1 { 
+                font-size: 2rem; 
+            }
+            .tasks-section h2, .new-task-section h2 { 
+                font-size: 1.5rem; 
+            }
+        }
+        /* Top Navbar */
+        .navbar { 
+            background: #ffffff; 
+            padding: 1rem 2rem; 
+            position: fixed; 
+            top: 0; 
+            width: 100%; 
+            z-index: 1000; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            border-bottom: 1px solid #e0e0e0; 
+        }
+        .navbar .logo { 
+            font-size: 1.5rem; 
+            font-weight: 600; 
+            color: #000000; 
+        }
+        .navbar .nav-menu { 
+            display: flex; 
+            gap: 1.5rem; 
+            list-style: none; 
+        }
+        .navbar .nav-menu li a { 
+            color: #000000; 
+            text-decoration: none; 
+            font-size: 1rem; 
+        }
+        .navbar .nav-menu li a.active { 
+            font-weight: 600; 
+            color: #0000ff; 
+        }
+        .navbar .hamburger { 
+            display: none; 
+            font-size: 1.5rem; 
+            cursor: pointer; 
+            color: #000000; 
+        }
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .navbar .nav-menu {
+                display: none;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                right: 0;
+                background: #ffffff;
+                flex-direction: column;
+                padding: 1rem;
+                border-top: 1px solid #e0e0e0;
+            }
+            .navbar .nav-menu.active {
+                display: flex;
+            }
+            .navbar .hamburger {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const hamburger = document.querySelector('.navbar .hamburger');
+            const navMenu = document.querySelector('.navbar .nav-menu');
+            hamburger.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+            });
+        });
+    </script>
+
+    <nav class="navbar">
+        <div class="logo">Taska Elite</div>
+        <ul class="nav-menu">
+            <li><a href="explore.html">Explore</a></li>
+            <li><a href="connections.html">Connections</a></li>
+            
+            <li><a href="tasks.html" class="active">Tasks</a></li>
+            <li><a href="profile.html">Profile</a></li>
+            <li><a href="../index.html">Logout</a></li>
+        </ul>
+        <div class="hamburger">☰</div>
+    </nav>
+
+    <main class="dashboard-content">
+        <section class="dashboard-section">
+            <h1>Task Management</h1>
+            <p>Assign sample tasks to connected IITians to evaluate their skills and streamline your hiring process.</p>
+
+            <div class="tasks-section">
+                <h2>Assigned Tasks</h2>
+                <div class="tasks-grid" id="tasks-grid"></div>
+                <p class="no-tasks" id="no-tasks" style="display: none;">No tasks assigned yet.</p>
+            </div>
+
+            <div class="new-task-section">
+                <h2>Add New Task</h2>
+                <button class="cta-button" id="add-task-btn">Add Task</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2025 Taska Elite. All rights reserved. | <a href="#" class="privacy-policy">Privacy Policy</a></p>
+    </footer>
+
+    <div class="popup" id="task-popup">
+        <div class="popup-content">
+            <button class="close-btn" id="close-task-btn">×</button>
+            <h2>Assign New Task</h2>
+            <form id="task-form">
+                <div class="form-group">
+                    <label for="task-student">Assign to Student</label>
+                    <select id="task-student" class="custom-dropdown" required>
+                        <option value="">Select a Connected Student</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="task-title">Task Title</label>
+                    <input type="text" id="task-title" class="custom-input" placeholder="e.g., Develop a Simple Web App" required>
+                </div>
+                <div class="form-group">
+                    <label for="task-description">Description</label>
+                    <textarea id="task-description" class="custom-textarea" placeholder="Provide detailed instructions..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="task-category">Category</label>
+                    <select id="task-category" class="custom-dropdown" required>
+                        <option value="">Select a Category</option>
+                        <option value="Programming">Programming</option>
+                        <option value="Design">Design</option>
+                        <option value="Research">Research</option>
+                        <option value="Writing">Writing</option>
+                        <option value="Data Analysis">Data Analysis</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="task-skills">Required Skills</label>
+                    <input type="text" id="task-skills" class="custom-input" placeholder="e.g., Python, UI/UX, Statistics" required>
+                </div>
+                <div class="form-group">
+                    <label for="task-deadline">Deadline</label>
+                    <input type="date" id="task-deadline" class="custom-date-input" required>
+                </div>
+                <button type="submit" class="cta-button">Assign Task</button>
+            </form>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+        import { getDatabase, ref, onValue, push, get, set, remove } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDZIDlEtaNRxODoFhRw0xF2yYFBqqBexqo",
+            authDomain: "taska-45011.firebaseapp.com",
+            databaseURL: "https://taska-45011-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "taska-45011",
+            storageBucket: "taska-45011.firebasestorage.app",
+            messagingSenderId: "205487498813",
+            appId: "1:205487498813:web:0de2c9eab567482781ec54"
+        };
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const userId = localStorage.getItem('userId');
+
+        if (!userId) {
+            setTimeout(() => {
+                alert("Please log in or sign up first.");
+                window.location.href = '../login.html';
+            }, 1000);
+        } else {
+            loadConnectedStudents();
+            loadTasks();
+        }
+
+        document.getElementById('add-task-btn').addEventListener('click', openTaskPopup);
+
+        function openTaskPopup() {
+            const popup = document.getElementById('task-popup');
+            popup.style.display = 'flex';
+            document.getElementById('task-form').reset();
+        }
+
+        function closeTaskPopup() {
+            const popup = document.getElementById('task-popup');
+            popup.style.display = 'none';
+        }
+
+        // Attach event listener to the close button
+        document.getElementById('close-task-btn').addEventListener('click', closeTaskPopup);
+
+        // Close popup when clicking outside the popup content
+        window.onclick = (event) => {
+            const popup = document.getElementById('task-popup');
+            if (event.target === popup) {
+                closeTaskPopup();
+            }
+        };
+
+        function loadConnectedStudents() {
+            const studentSelect = document.getElementById('task-student');
+            onValue(ref(db, `professionalslist/${userId}/connections`), (snapshot) => {
+                studentSelect.innerHTML = '<option value="">Select a Connected Student</option>';
+                if (snapshot.exists()) {
+                    snapshot.forEach((childSnapshot) => {
+                        const studentId = childSnapshot.key;
+                        get(ref(db, `studentslist/${studentId}`)).then((snap) => {
+                            if (snap.exists()) {
+                                const student = snap.val();
+                                studentSelect.innerHTML += `<option value="${studentId}">${student.personal.name}</option>`;
+                            }
+                        });
+                    });
+                } else {
+                    studentSelect.innerHTML += '<option value="">No connected students</option>';
+                }
+            });
+        }
+
+        document.getElementById('task-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const taskTitle = document.getElementById('task-title').value;
+            const taskDescription = document.getElementById('task-description').value;
+            const taskCategory = document.getElementById('task-category').value;
+            const taskSkills = document.getElementById('task-skills').value;
+            const taskDeadline = document.getElementById('task-deadline').value;
+            const taskStudent = document.getElementById('task-student').value;
+
+            if (taskTitle && taskDescription && taskCategory && taskSkills && taskDeadline && taskStudent) {
+                const taskData = {
+                    title: taskTitle,
+                    description: taskDescription,
+                    category: taskCategory,
+                    skills: taskSkills,
+                    deadline: taskDeadline,
+                    studentId: taskStudent,
+                    proId: userId,
+                    status: 'pending',
+                    assignedAt: new Date().toISOString()
+                };
+                try {
+                    const taskRef = await push(ref(db, 'tasks'));
+                    await Promise.all([
+                        set(ref(db, `professionalslist/${userId}/tasks/${taskRef.key}`), taskData),
+                        set(ref(db, `studentslist/${taskStudent}/tasks/${taskRef.key}`), taskData)
+                    ]);
+                    alert('Task assigned successfully!');
+                    closeTaskPopup();
+                } catch (error) {
+                    alert('Failed to assign task: ' + error.message);
+                }
+            } else {
+                alert('Please fill all fields before submitting.');
+            }
+        });
+
+        function loadTasks() {
+            const tasksGrid = document.getElementById('tasks-grid');
+            const noTasks = document.getElementById('no-tasks');
+            onValue(ref(db, `professionalslist/${userId}/tasks`), (snapshot) => {
+                tasksGrid.innerHTML = '';
+                if (snapshot.exists()) {
+                    noTasks.style.display = 'none';
+                    snapshot.forEach((childSnapshot) => {
+                        const task = childSnapshot.val();
+                        const taskId = childSnapshot.key;
+                        get(ref(db, `studentslist/${task.studentId}`)).then((snap) => {
+                            if (snap.exists()) {
+                                const student = snap.val();
+                                tasksGrid.innerHTML += `
+                                    <div class="task-card">
+                                        <h3>${task.title}</h3>
+                                        <p><strong>Category:</strong> ${task.category}</p>
+                                        <p><strong>Skills:</strong> ${task.skills}</p>
+                                        <p><strong>Deadline:</strong> ${new Date(task.deadline).toLocaleDateString()}</p>
+                                        <p><strong>Assigned to:</strong> ${student.personal.name}</p>
+                                        <p><strong>Status:</strong> ${task.status}</p>
+                                        <button class="action-btn" onclick="deleteTask('${taskId}', '${task.studentId}')">Delete Task</button>
+                                    </div>
+                                `;
+                            }
+                        });
+                    });
+                } else {
+                    noTasks.style.display = 'block';
+                }
+            });
+        }
+
+        window.deleteTask = async (taskId, studentId) => {
+            if (confirm('Are you sure you want to delete this task?')) {
+                try {
+                    await Promise.all([
+                        remove(ref(db, `professionalslist/${userId}/tasks/${taskId}`)),
+                        remove(ref(db, `studentslist/${studentId}/tasks/${taskId}`))
+                    ]);
+                    alert('Task deleted successfully!');
+                } catch (error) {
+                    alert('Failed to delete task: ' + error.message);
+                }
+            }
+        };
+    </script>
+    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9202c2e21ed5bfb3',t:'MTc0MTk0NDcxOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9202dc811c98ed80',t:'MTc0MTk0NTc2OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+</body>
+</html>

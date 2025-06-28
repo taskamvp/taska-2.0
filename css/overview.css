@@ -1,0 +1,260 @@
+/* css/overview.css */
+.chat-interface {
+    display: flex;
+    height: 800px; /* Takes full height of parent (dashboard-content) */
+    width: 95vw; /* 95% of viewport width */
+    margin: 0 auto; /* Center the section */
+    padding: 0; /* Remove padding to eliminate white space */
+}
+
+.chat-interface .sidebar {
+    width: 30%; /* 30% of chat-interface width */
+    background: #fff;
+    border-right: 1px solid #e0e0e0;
+    overflow-y: auto;
+    position: relative;
+}
+
+.chat-interface .sidebar.dark-mode {
+    background: #1a1f2b;
+    border-right-color: #444;
+}
+
+.search-bar {
+    padding: 1rem;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.search-bar.dark-mode {
+    border-bottom-color: #444;
+}
+
+.custom-input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    font-size: 1rem;
+    background: #fff;
+}
+
+.custom-input.dark-mode {
+    background: #2a3550;
+    color: #fff;
+    border-color: #444;
+}
+
+.contact-list {
+    padding: 0.5rem;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+    cursor: pointer;
+    border-bottom: 1px solid #e0e0e0;
+    transition: background 0.3s ease;
+}
+
+.contact-item:hover {
+    background: #f5f5f5;
+}
+
+.contact-item.dark-mode {
+    border-bottom-color: #444;
+}
+
+.contact-item.dark-mode:hover {
+    background: #2a3550;
+}
+
+.contact-item .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 1rem;
+    border: 2px solid #333;
+}
+
+.contact-item .avatar.dark-mode {
+    border-color: #fff;
+}
+
+.contact-item .contact-details h4 {
+    font-size: 1rem;
+    margin: 0;
+    color: #333;
+}
+
+.contact-item .contact-details h4.dark-mode {
+    color: #fff;
+}
+
+.contact-item .contact-details p {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 0.25rem 0;
+}
+
+.contact-item .contact-details p.dark-mode {
+    color: #ccc;
+}
+
+.contact-item .timestamp {
+    font-size: 0.8rem;
+    color: #999;
+    margin-left: auto;
+}
+
+.contact-item .timestamp.dark-mode {
+    color: #b0b0b0;
+}
+
+.chat-area {
+    width: 70%; /* Adjusted from 75% for better fit */
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    height: 100%; /* Full height of chat-interface */
+}
+
+.chat-area.dark-mode {
+    background: #1a1f2b;
+}
+
+.chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid #e0e0e0;
+    background: #f5f5f5;
+}
+
+.chat-header.dark-mode {
+    border-bottom-color: #444;
+    background: #2a3550;
+}
+
+.contact-info .avatar {
+    margin-right: 1rem;
+}
+
+.contact-info h3 {
+    font-size: 1.2rem;
+    margin: 0;
+    color: #333;
+}
+
+.contact-info h3.dark-mode {
+    color: #fff;
+}
+
+.contact-info span {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.contact-info span.dark-mode {
+    color: #ccc;
+}
+
+.chat-actions .chat-action-btn {
+    background: none;
+    border: none;
+    color: #333;
+    font-size: 1.2rem;
+    margin-left: 1rem;
+    cursor: pointer;
+}
+
+.chat-actions .chat-action-btn.dark-mode {
+    color: #fff;
+}
+
+.chat-messages {
+    flex: 1; /* Takes remaining space between header and input */
+    padding: 1rem;
+    overflow-y: auto; /* Scrollable messages */
+    background: #e5ddd5;
+}
+
+.chat-messages.dark-mode {
+    background: #2a3550;
+}
+
+.message {
+    max-width: 60%;
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    border-radius: 8px;
+    clear: both;
+}
+
+.message.sent {
+    background: #dcf8c6;
+    margin-left: auto;
+}
+
+.message.received {
+    background: #fff;
+}
+
+.message.dark-mode.sent {
+    background: #2a3550;
+}
+
+.message.dark-mode.received {
+    background: #3a4060;
+}
+
+.message p {
+    margin: 0;
+    color: #333;
+}
+
+.message p.dark-mode {
+    color: #fff;
+}
+
+.chat-input {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border-top: 1px solid #e0e0e0;
+    background: #f5f5f5;
+    position: sticky; /* Pins input at bottom */
+    bottom: 0; /* Aligns to bottom of chat-area */
+}
+
+.chat-input.dark-mode {
+    border-top-color: #444;
+    background: #2a3550;
+}
+
+.attachment-btn, .send-btn {
+    background: none;
+    border: none;
+    color: #333;
+    font-size: 1.2rem;
+    margin: 0 0.5rem;
+    cursor: pointer;
+}
+
+.attachment-btn.dark-mode, .send-btn.dark-mode {
+    color: #fff;
+}
+
+#message-input {
+    flex: 1;
+    margin: 0 0.5rem;
+}
+
+/* Ensure dashboard-content supports full height */
+.dashboard-content {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 100px); /* Adjust for navbar and footer */
+    padding: 2rem;
+}

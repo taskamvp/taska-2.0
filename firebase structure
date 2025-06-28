@@ -1,0 +1,30 @@
+{
+  "users": {
+    "pro123": { "name": "Dr Alice Smith", "role": "professional", "title": "Software Engineer at Google" },
+    "stu456": { "name": "John Doe", "role": "student", "title": "CS Student at MIT" },
+    ...
+  },
+  "chat": {
+    "pro123_stu456": {
+      "messages": [
+        { "senderId": "pro123", "content": "How’s the project going?", "timestamp": "2025-04-14T10:00:00Z" },
+        ...
+      ]
+    },
+    ...
+  },
+  "tasks": {
+    "workflow123": {
+      "taskId": "task789",
+      "professionalId": "pro123",
+      "studentId": "stu456",
+      "title": "Develop a Web App",
+      "description": "Create a responsive web application",
+      "deadline": "2025-04-20",
+      "status": "pending",
+      "document": "prototype.zip",
+      "payment": 100
+    },
+    ...
+  }
+}
