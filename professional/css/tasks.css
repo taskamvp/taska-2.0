@@ -332,6 +332,25 @@ body {
     background: #f1f3f5;
 }
 
+.chat-header .hide-chat-btn {
+    background: none;
+    border: none;
+    color: #6c757d;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: background 0.3s, color 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+
+.chat-header .hide-chat-btn:hover {
+    background: #e9ecef;
+    color: #1a1a1a;
+}
+
 .messages { 
     height: calc(100% - 120px); 
     padding: 1rem; 
@@ -707,11 +726,11 @@ body {
 }
 
 .sidebar-right { 
-    width: 30%; 
+    width: 70%; 
     background: #fff; 
     overflow-y: auto; 
-    min-width: 200px; 
-    max-width: 400px; 
+    min-width: 300px; 
+    max-width: none; 
     display: none; 
     position: relative;
 }
@@ -724,16 +743,35 @@ body {
     border-bottom: 1px solid #e0e0e0; 
 }
 
+.tasks-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.tasks-header h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #1a1a1a;
+    font-weight: 600;
+}
+
 .add-task-btn {
-    margin: 1rem;
-    padding: 0.75rem 1rem;
     background: #4CAF50;
     color: #fff;
     border: none;
+    padding: 0.75rem 1.5rem;
     border-radius: 8px;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     cursor: pointer;
     transition: background 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
 }
 
 .add-task-btn:hover {
@@ -763,20 +801,62 @@ body {
 .workflow-item .task-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.5rem;
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+    gap: 1rem;
+}
+
+.workflow-item .task-info {
+    flex: 1;
 }
 
 .workflow-item h4 { 
     color: #1a1a1a; 
     font-size: 1rem; 
-    margin: 0; 
+    margin: 0 0 0.25rem 0; 
+    font-weight: 600;
 }
 
-.workflow-item p { 
+.workflow-item .task-description {
     color: #6c757d; 
     font-size: 0.85rem; 
-    margin: 0.25rem 0; 
+    margin: 0; 
+    line-height: 1.4;
+}
+
+.workflow-item .task-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+    padding: 0.5rem 0;
+    border-top: 1px solid #f0f0f0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.workflow-item .files-count {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    background: #f8f9fa;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s, border-color 0.3s;
+    font-size: 0.85rem;
+    color: #1a1a1a;
+}
+
+.workflow-item .files-count:hover {
+    background: #e9ecef;
+    border-color: #4CAF50;
+}
+
+.workflow-item .files-count i {
+    color: #6c757d;
+    font-size: 0.9rem;
 }
 
 .workflow-item .task-menu {
@@ -833,270 +913,968 @@ body {
 
 .workflow-item .deadline-container {
     position: relative;
-    margin: 0.5rem 0;
-}
-
-.workflow-item .deadline-slider {
-    height: 4px;
-    border-radius: 2px;
-    transition: width 0.3s ease;
-}
-
-.workflow-item .days-left {
-    font-size: 0.8rem;
-    color: #6c757d;
-    margin-top: 0.25rem;
-}
-
-.workflow-item .status-select {
-    margin-top: 0.5rem;
-    padding: 0.5rem;
-    border: 1px solid #e0e0e0;
-    border-radius: 5px;
-    background: #f8f9fa;
-    font-size: 0.9rem;
-    width: 100%;
-    cursor: pointer;
-}
-
-.workflow-item .status-select:focus {
-    outline: none;
-    border-color: #4CAF50;
-}
-
-.workflow-item .file-icons {
-    display: flex;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
-}
-
-.workflow-item .file-icon-container {
-    position: relative;
-}
-
-.workflow-item .file-icon {
-    font-size: 1.5rem;
-}
-
-.workflow-item .file-icon:hover {
-    opacity: 0.8;
-}
-
-.workflow-item .status-label {
-    position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
-    padding: 0.25rem 0.5rem;
-    border-radius: 12px;
-    font-size: 0.8rem;
-}
-
-.workflow-item .status-label.completed {
-    background: #4CAF50;
-    color: #fff;
-}
-
-.completed-tasks {
-    margin: 1rem;
-    padding: 0.5rem;
-}
-
-.completed-tasks h4 {
-    font-size: 1rem;
-    color: #1a1a1a;
-    cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    justify-content: center;
 }
 
-.completed-tasks .toggle-icon {
-    transition: transform 0.3s;
+.circular-progress {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.completed-tasks .toggle-icon.active {
-    transform: rotate(180deg);
+.circular-progress-ring {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.completed-tasks-list {
-    display: none;
+.progress-ring {
+    transform: rotate(-90deg);
 }
 
-.completed-tasks-list.active {
-    display: block;
+.progress-ring-circle-bg {
+    fill: none;
+    stroke: #e0e0e0;
 }
 
-.task-popup {
-    position: fixed;
-    top: 0;
-    right: -30%; /* Matches sidebar-right width when hidden */
-    width: 30%; /* Matches sidebar-right width */
-    min-width: 200px; /* Matches sidebar-right min-width */
-    max-width: 500px; /* Matches sidebar-right max-width */
-    height: 100%;
-    background: #fff;
-    box-shadow: -2px 0 8px rgba(0,0,0,0.1);
-    z-index: 1000;
-    transition: right 0.3s ease;
+.progress-ring-circle {
+    fill: none;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.3s ease;
 }
 
-.task-popup.active {
-    right: 0;
-}
-
-.task-popup-content {
-    padding: 1.5rem;
+.progress-text {
+    position: absolute;
     display: flex;
     flex-direction: column;
-    height: 100%;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
-.task-popup-content .header {
+.days-number {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    line-height: 1;
+}
+
+.days-label {
+    font-size: 0.7rem;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+}
+
+/* Task Timeline Styles */
+.task-timeline {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+}
+
+.timeline-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.5rem;
-}
-
-.task-popup-content .header h3 {
-    margin: 0;
-    font-size: 1.2rem;
-    color: #1a1a1a;
-}
-
-.task-popup-content .header button {
-    background: none;
-    border: none;
-    font-size: 1.2rem;
-    color: #6c757d;
-    cursor: pointer;
-    transition: color 0.3s;
-}
-
-.task-popup-content .header button:hover {
-    color: #1a1a1a;
-}
-
-.task-popup-content .form-group {
     margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #e0e0e0;
 }
 
-.task-popup-content .form-group label {
-    display: block;
-    font-size: 0.9rem;
+.timeline-header h5 {
+    margin: 0;
+    font-size: 0.95rem;
     color: #1a1a1a;
-    margin-bottom: 0.5rem;
+    font-weight: 600;
 }
 
-.task-popup-content .form-group input,
-.task-popup-content .form-group textarea {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    color: #1a1a1a;
-    font-family: 'Poppins', sans-serif;
-    outline: none;
-    transition: border-color 0.3s;
+.timeline-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
 }
 
-.task-popup-content .form-group input:focus,
-.task-popup-content .form-group textarea:focus {
-    border-color: #4CAF50;
-}
-
-.task-popup-content .form-group textarea {
-    resize: vertical;
-    min-height: 100px;
-    max-height: 200px;
-}
-
-.task-popup-content .form-group input[type="file"] {
-    padding: 0.5rem 0;
+.add-comment-btn {
+    background: #2196F3;
+    color: #fff;
     border: none;
-}
-
-.task-popup-content .form-group input[type="file"]::file-selector-button {
     padding: 0.5rem 1rem;
-    background: #f8f9fa;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
+    border-radius: 6px;
+    font-size: 0.8rem;
     cursor: pointer;
     transition: background 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
-.task-popup-content .form-group input[type="file"]::file-selector-button:hover {
+.add-comment-btn:hover {
+    background: #1976D2;
+}
+
+.timeline-content {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.timeline-empty {
+    text-align: center;
+    color: #6c757d;
+    font-size: 0.9rem;
+    padding: 2rem 0;
+    font-style: italic;
+}
+
+.timeline-item {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+.timeline-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 40px;
+    bottom: -1rem;
+    width: 2px;
     background: #e0e0e0;
 }
 
-.task-popup-content .task-file-item {
+.timeline-marker {
+    width: 32px;
+    height: 32px;
+    background: #4CAF50;
+    border-radius: 50%;
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    padding: 0.5rem;
-    background: #f8f9fa;
+    justify-content: center;
+    flex-shrink: 0;
+    z-index: 1;
+}
+
+.timeline-marker i {
+    color: #fff;
+    font-size: 0.8rem;
+}
+
+.timeline-marker.comment-marker {
+    background: #2196F3;
+}
+
+.timeline-item-content {
+    flex: 1;
+    background: #fff;
     border-radius: 8px;
-    margin-top: 0.5rem;
+    padding: 0.75rem;
+    border: 1px solid #e0e0e0;
+}
+
+.timeline-item-content .timeline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.submission-author,
+.comment-author {
     font-size: 0.85rem;
+    font-weight: 600;
     color: #1a1a1a;
 }
 
-.task-popup-content .task-file-item i {
+.submission-date,
+.comment-date {
+    font-size: 0.75rem;
+    color: #6c757d;
+}
+
+.submission-comment,
+.comment-content {
+    font-size: 0.9rem;
+    color: #1a1a1a;
+    margin-bottom: 0.75rem;
+    line-height: 1.4;
+}
+
+.comment-content {
+    margin-bottom: 0;
+}
+
+.submission-files {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.submission-file {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    background: #f8f9fa;
+    border-radius: 6px;
+    text-decoration: none;
+    color: #1a1a1a;
+    transition: background 0.3s;
+    border: 1px solid #e0e0e0;
+}
+
+.submission-file:hover {
+    background: #e9ecef;
+}
+
+.submission-file i {
+    font-size: 1.2rem;
+    color: #6c757d;
+}
+
+.submission-file span {
+    font-size: 0.85rem;
+    flex: 1;
+}
+
+.submission-actions {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid #f0f0f0;
+}
+
+.approve-submission-btn {
+    background: #4CAF50;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: background 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+}
+
+.approve-submission-btn:hover {
+    background: #45a049;
+}
+
+.approve-submission-btn:disabled {
+    background: #6c757d;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.approve-submission-btn.approved {
+    background: #28a745;
+    cursor: default;
+}
+
+.approve-submission-btn.approved:hover {
+    background: #28a745;
+}
+
+.submission-ratings {
+    margin-top: 0.75rem;
+    padding: 0.75rem;
+    background: #f8f9fa;
+    border-radius: 6px;
+    border: 1px solid #e0e0e0;
+}
+
+.rating-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.rating-item {
+    font-size: 0.85rem;
+    color: #1a1a1a;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.rating-item strong {
+    min-width: 80px;
+    color: #6c757d;
+}
+
+.submission-feedback {
+    padding-top: 0.75rem;
+    border-top: 1px solid #e0e0e0;
+    font-size: 0.85rem;
+    color: #1a1a1a;
+    line-height: 1.4;
+}
+
+.submission-feedback strong {
+    color: #6c757d;
+}
+
+/* Files Popup Styles */
+.files-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    display: none;
+    z-index: 1500;
+    pointer-events: none;
+}
+
+.files-popup.active {
+    display: block;
+}
+
+.files-popup .popup-content {
+    position: absolute;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    width: 450px;
+    max-height: 80vh;
+    overflow: hidden;
+    pointer-events: auto;
+}
+
+.files-popup .popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #e0e0e0;
+    background: #f8f9fa;
+}
+
+.files-popup .popup-header h4 {
+    margin: 0;
+    color: #1a1a1a;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.files-popup .close-popup {
+    background: #e81123;
+    border: none;
+    font-size: 0.9rem;
+    color: #fff;
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+    font-weight: bold;
+}
+
+.files-popup .close-popup:hover {
+    background: #c50e1f;
+}
+
+.files-popup .popup-body {
+    padding: 1rem;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.popup-file-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    transition: background 0.3s;
+}
+
+.popup-file-item:hover {
+    background: #f8f9fa;
+}
+
+.popup-file-item .file-thumbnail-container {
+    width: 60px;
+    height: 60px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+}
+
+.popup-file-item .file-thumbnail-container .file-thumbnail {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.popup-file-item .file-thumbnail-container .file-thumbnail:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.popup-file-item .file-thumbnail-container .file-thumbnail img,
+.popup-file-item .file-thumbnail-container .file-thumbnail video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.popup-file-item .file-thumbnail-container .file-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s;
+    border-radius: 8px;
+}
+
+.popup-file-item .file-thumbnail-container .file-thumbnail:hover .file-overlay {
+    opacity: 1;
+}
+
+.popup-file-item .file-thumbnail-container .file-overlay i {
+    color: #fff;
     font-size: 1.2rem;
 }
 
-.task-popup-content .task-file-item span {
+.popup-file-item .file-thumbnail-container .file-icon-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+}
+
+.popup-file-item .file-thumbnail-container .file-icon {
+    font-size: 1.5rem;
+}
+
+.popup-file-item .file-info {
     flex: 1;
+    min-width: 0;
+}
+
+.popup-file-item .file-name {
+    font-size: 0.9rem;
+    color: #1a1a1a;
+    font-weight: 500;
+    margin-bottom: 0.25rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.task-popup-content .task-file-item .remove-file {
+.popup-file-item .file-size {
+    font-size: 0.8rem;
+    color: #6c757d;
+}
+
+.popup-file-item .file-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-shrink: 0;
+}
+
+.popup-file-item .download-btn,
+.popup-file-item .view-btn {
+    background: #4CAF50;
+    color: #fff;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    transition: background 0.3s;
+    text-decoration: none;
+}
+
+.popup-file-item .download-btn:hover,
+.popup-file-item .view-btn:hover {
+    background: #45a049;
+}
+
+.popup-file-item .view-btn {
+    background: #2196F3;
+}
+
+.popup-file-item .view-btn:hover {
+    background: #1976D2;
+}
+
+.no-files {
+    text-align: center;
+    color: #6c757d;
+    font-size: 0.9rem;
+    padding: 2rem;
+    font-style: italic;
+}
+
+/* File Viewer Modal */
+.file-viewer-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.9);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+.file-viewer-modal.active {
+    display: flex;
+}
+
+.file-viewer-modal .modal-content {
+    position: relative;
+    max-width: 90%;
+    max-height: 90%;
+    background: transparent;
+}
+
+.file-viewer-modal .close-modal {
+    position: absolute;
+    top: -40px;
+    right: 0;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: background 0.3s;
+}
+
+.file-viewer-modal .close-modal:hover {
+    background: rgba(255,255,255,0.2);
+}
+
+.file-viewer-modal .file-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.file-viewer-modal .file-content img,
+.file-viewer-modal .file-content video {
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+/* Chat Toggle Button */
+.chat-toggle-btn {
+    position: fixed;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #4CAF50;
+    color: #fff;
+    padding: 1rem 0.75rem;
+    border-radius: 8px 0 0 8px;
+    cursor: pointer;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: -2px 0 8px rgba(0,0,0,0.1);
+    z-index: 1001;
+    transition: background 0.3s;
+}
+
+.chat-toggle-btn:hover {
+    background: #45a049;
+}
+
+.chat-toggle-btn i {
+    font-size: 1.2rem;
+}
+
+.chat-toggle-btn span {
+    font-size: 0.8rem;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+}
+
+/* Chat Area Updates */
+.chat-area { 
+    position: fixed;
+    top: 60px;
+    right: 0;
+    width: 400px;
+    height: calc(100vh - 60px);
+    background: #fff; 
+    border-left: 1px solid #e0e0e0; 
+    overflow: hidden; 
+    display: none; 
+    z-index: 1000;
+    transition: transform 0.3s ease;
+    box-shadow: -2px 0 8px rgba(0,0,0,0.1);
+}
+
+.chat-area.chat-hidden {
+    transform: translateX(100%);
+}
+
+.chat-area.active {
+    display: block;
+}
+
+/* Task Popup Styles */
+.task-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+.task-popup.active {
+    display: flex;
+}
+
+.task-popup-content {
+    background: #fff;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.task-popup .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 1px solid #e0e0e0;
+    background: #f8f9fa;
+}
+
+.task-popup .header h3 {
+    margin: 0;
+    color: #1a1a1a;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.task-popup .header button {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: #6c757d;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: background 0.3s;
+}
+
+.task-popup .header button:hover {
+    background: #e9ecef;
+}
+
+.task-popup .form-group {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.task-popup .form-group:last-of-type {
+    border-bottom: none;
+}
+
+.task-popup .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #1a1a1a;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.task-popup .form-group input,
+.task-popup .form-group textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-family: 'Poppins', sans-serif;
+    transition: border-color 0.3s;
+    box-sizing: border-box;
+}
+
+.task-popup .form-group input:focus,
+.task-popup .form-group textarea:focus {
+    outline: none;
+    border-color: #4CAF50;
+}
+
+.task-popup .form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.task-popup .form-group input[type="file"] {
+    padding: 0.5rem;
+    border: 2px dashed #e0e0e0;
+    background: #f8f9fa;
+    cursor: pointer;
+    transition: border-color 0.3s, background 0.3s;
+}
+
+.task-popup .form-group input[type="file"]:hover {
+    border-color: #4CAF50;
+    background: #f1f3f5;
+}
+
+.task-popup .task-files-list {
+    margin-top: 0.5rem;
+}
+
+.task-file-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    background: #f8f9fa;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    margin-bottom: 0.25rem;
+    font-size: 0.85rem;
+}
+
+.task-file-item i:first-child {
+    color: #6c757d;
+}
+
+.task-file-item span {
+    flex: 1;
+    color: #1a1a1a;
+}
+
+.task-file-item .remove-file {
     color: #FF5252;
-    transition: color 0.3s;
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 50%;
+    transition: background 0.3s;
 }
 
-.task-popup-content .task-file-item .remove-file:hover {
-    color: #e04848;
+.task-file-item .remove-file:hover {
+    background: #ffe6e6;
 }
 
-.task-popup-content .actions {
-    margin-top: auto;
+.task-popup .actions {
     display: flex;
     gap: 1rem;
-    justify-content: flex-end;
+    padding: 1.5rem;
+    border-top: 1px solid #e0e0e0;
+    background: #f8f9fa;
 }
 
-.task-popup-content .actions button {
+.task-popup .actions button {
+    flex: 1;
     padding: 0.75rem 1.5rem;
     border: none;
     border-radius: 8px;
     font-size: 0.9rem;
     cursor: pointer;
     transition: background 0.3s;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
 }
 
-.task-popup-content .actions .cancel-btn {
-    background: #e0e0e0;
-    color: #1a1a1a;
+.task-popup .actions .cancel-btn {
+    background: #6c757d;
+    color: #fff;
 }
 
-.task-popup-content .actions .cancel-btn:hover {
-    background: #d0d0d0;
+.task-popup .actions .cancel-btn:hover {
+    background: #5a6268;
 }
 
-.task-popup-content .actions .submit-btn {
+.task-popup .actions .submit-btn {
     background: #4CAF50;
     color: #fff;
 }
 
-.task-popup-content .actions .submit-btn:hover {
+.task-popup .actions .submit-btn:hover {
     background: #45a049;
 }
 
+/* Comment Modal Styles */
+.comment-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+.comment-modal.active {
+    display: flex;
+}
+
+.comment-modal-content {
+    background: #fff;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.comment-modal .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 1px solid #e0e0e0;
+    background: #f8f9fa;
+}
+
+.comment-modal .header h3 {
+    margin: 0;
+    color: #1a1a1a;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.comment-modal .header button {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: #6c757d;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: background 0.3s;
+}
+
+.comment-modal .header button:hover {
+    background: #e9ecef;
+}
+
+.comment-modal .form-group {
+    padding: 1rem 1.5rem;
+}
+
+.comment-modal .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #1a1a1a;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.comment-modal .form-group textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-family: 'Poppins', sans-serif;
+    transition: border-color 0.3s;
+    box-sizing: border-box;
+    resize: vertical;
+    min-height: 120px;
+}
+
+.comment-modal .form-group textarea:focus {
+    outline: none;
+    border-color: #2196F3;
+}
+
+.comment-modal .actions {
+    display: flex;
+    gap: 1rem;
+    padding: 1.5rem;
+    border-top: 1px solid #e0e0e0;
+    background: #f8f9fa;
+}
+
+.comment-modal .actions button {
+    flex: 1;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.3s;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+}
+
+.comment-modal .actions .cancel-btn {
+    background: #6c757d;
+    color: #fff;
+}
+
+.comment-modal .actions .cancel-btn:hover {
+    background: #5a6268;
+}
+
+.comment-modal .actions .submit-btn {
+    background: #2196F3;
+    color: #fff;
+}
+
+.comment-modal .actions .submit-btn:hover {
+    background: #1976D2;
+}
+
+/* Confirmation Dialog Styles */
 .confirmation-dialog {
     position: fixed;
     top: 0;
@@ -1107,7 +1885,7 @@ body {
     display: none;
     align-items: center;
     justify-content: center;
-    z-index: 1000;
+    z-index: 2000;
 }
 
 .confirmation-dialog.active {
@@ -1116,45 +1894,51 @@ body {
 
 .confirmation-dialog .dialog-box {
     background: #fff;
-    padding: 1.5rem;
     border-radius: 12px;
     width: 90%;
     max-width: 400px;
-    text-align: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    padding: 2rem;
 }
 
-.confirmation-dialog .dialog-box h3 {
-    margin: 0 0 1rem;
+.confirmation-dialog h3 {
+    margin: 0 0 1rem 0;
     color: #1a1a1a;
+    font-size: 1.2rem;
+    font-weight: 600;
 }
 
-.confirmation-dialog .dialog-box p {
-    margin: 0 0 1.5rem;
+.confirmation-dialog p {
+    margin: 0 0 2rem 0;
     color: #6c757d;
+    font-size: 0.95rem;
+    line-height: 1.5;
 }
 
 .confirmation-dialog .dialog-actions {
     display: flex;
     gap: 1rem;
-    justify-content: center;
+    justify-content: flex-end;
 }
 
 .confirmation-dialog .dialog-actions button {
-    padding: 0.5rem 1rem;
+    padding: 0.75rem 1.5rem;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     font-size: 0.9rem;
     cursor: pointer;
     transition: background 0.3s;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
 }
 
 .confirmation-dialog .dialog-actions .cancel {
-    background: #e0e0e0;
-    color: #1a1a1a;
+    background: #6c757d;
+    color: #fff;
 }
 
 .confirmation-dialog .dialog-actions .cancel:hover {
-    background: #d0d0d0;
+    background: #5a6268;
 }
 
 .confirmation-dialog .dialog-actions .confirm {
@@ -1175,28 +1959,13 @@ body {
     background: #e04848;
 }
 
-/* Skeleton Loader Styles */
+/* Skeleton Loading Styles */
 .skeleton-loading {
     position: relative;
     overflow: hidden;
 }
 
-.skeleton-user-item,
-.skeleton-header,
-.skeleton-message,
-.skeleton-task-item {
-    background: #e0e0e0;
-    border-radius: 8px;
-    margin: 0.5rem 1rem;
-    height: 60px;
-    position: relative;
-    overflow: hidden;
-}
-
-.skeleton-user-item::after,
-.skeleton-header::after,
-.skeleton-message::after,
-.skeleton-task-item::after {
+.skeleton-loading::before {
     content: '';
     position: absolute;
     top: 0;
@@ -1204,27 +1973,46 @@ body {
     width: 100%;
     height: 100%;
     background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-    animation: shimmer 1.5s infinite;
+    animation: loading 1.5s infinite;
 }
 
-.skeleton-header {
-    height: 40px;
+@keyframes loading {
+    0% {
+        left: -100%;
+    }
+    100% {
+        left: 100%;
+    }
 }
 
-.skeleton-message {
-    height: 80px;
-    max-width: 70%;
+.skeleton-user-item {
+    height: 60px;
+    background: #f0f0f0;
+    margin: 0.25rem 1rem;
+    border-radius: 8px;
 }
 
 .skeleton-task-item {
     height: 120px;
+    background: #f0f0f0;
+    margin: 0.5rem 1rem;
+    border-radius: 12px;
 }
 
-@keyframes shimmer {
-    0% { left: -100%; }
-    100% { left: 100%; }
+.skeleton-header {
+    height: 60px;
+    background: #f0f0f0;
+    border-radius: 8px;
 }
 
+.skeleton-message {
+    height: 80px;
+    background: #f0f0f0;
+    margin-bottom: 1rem;
+    border-radius: 12px;
+}
+
+/* Responsive adjustments for AI apps panel */
 @media (max-width: 768px) {
     .navbar .nav-menu {
         display: none;
@@ -1274,6 +2062,235 @@ body {
 
     .task-popup {
         width: 100%;
+    }
+}
+
+/* Approval Modal Styles */
+.approval-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+.approval-modal.active {
+    display: flex;
+}
+
+.approval-modal-content {
+    background: #fff;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.approval-modal .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 1px solid #e0e0e0;
+    background: #f8f9fa;
+}
+
+.approval-modal .header h3 {
+    margin: 0;
+    color: #1a1a1a;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.approval-modal .header button {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: #6c757d;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: background 0.3s;
+}
+
+.approval-modal .header button:hover {
+    background: #e9ecef;
+}
+
+.approval-body {
+    padding: 1.5rem;
+}
+
+.approval-message {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: #e8f5e8;
+    border: 1px solid #4CAF50;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+}
+
+.approval-message i {
+    color: #4CAF50;
+    font-size: 1.5rem;
+}
+
+.approval-message p {
+    margin: 0;
+    color: #1a1a1a;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+.rating-section {
+    margin-bottom: 1.5rem;
+}
+
+.rating-section h4 {
+    margin: 0 0 1rem 0;
+    color: #1a1a1a;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.rating-categories {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.rating-category {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.rating-category label {
+    font-size: 0.9rem;
+    color: #1a1a1a;
+    font-weight: 500;
+}
+
+.star-rating {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.star-rating i {
+    font-size: 1.2rem;
+    color: #e0e0e0;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.star-rating i:hover,
+.star-rating i.active {
+    color: #FFD700;
+}
+
+.star-rating i.filled {
+    color: #FFD700;
+}
+
+.feedback-section {
+    margin-bottom: 1rem;
+}
+
+.feedback-section h4 {
+    margin: 0 0 0.75rem 0;
+    color: #1a1a1a;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.feedback-section textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-family: 'Poppins', sans-serif;
+    transition: border-color 0.3s;
+    box-sizing: border-box;
+    resize: vertical;
+    min-height: 100px;
+}
+
+.feedback-section textarea:focus {
+    outline: none;
+    border-color: #4CAF50;
+}
+
+.approval-modal .actions {
+    display: flex;
+    gap: 1rem;
+    padding: 1.5rem;
+    border-top: 1px solid #e0e0e0;
+    background: #f8f9fa;
+}
+
+.approval-modal .actions button {
+    flex: 1;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.3s;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.approval-modal .actions .cancel-btn {
+    background: #6c757d;
+    color: #fff;
+}
+
+.approval-modal .actions .cancel-btn:hover {
+    background: #5a6268;
+}
+
+.approval-modal .actions .approve-btn {
+    background: #4CAF50;
+    color: #fff;
+}
+
+.approval-modal .actions .approve-btn:hover {
+    background: #45a049;
+}
+
+.approval-modal .actions .approve-btn:disabled {
+    background: #6c757d;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Responsive adjustments for approval modal */
+@media (max-width: 768px) {
+    .approval-modal-content {
+        width: 95%;
+        margin: 1rem;
+    }
+    
+    .rating-categories {
+        grid-template-columns: 1fr;
+    }
+    
+    .approval-modal .actions {
+        flex-direction: column;
     }
 }
 

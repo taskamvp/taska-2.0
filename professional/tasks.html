@@ -40,9 +40,24 @@
                 <div id="pending-requests-list"></div>
             </div>
         </div>
+        <div class="sidebar-right" id="workflow-area">
+            <div class="tasks-header">
+                <h3>Tasks</h3>
+                <button class="add-task-btn" onclick="openTaskPopup()">
+                    <i class="fas fa-plus"></i> Add Task
+                </button>
+            </div>
+            <div id="workflow-list" class="skeleton-loading">
+                <div class="skeleton-task-item"></div>
+                <div class="skeleton-task-item"></div>
+            </div>
+        </div>
         <div class="chat-area" id="chat-area">
             <div class="chat-header skeleton-loading" id="chat-header">
                 <div class="skeleton-header"></div>
+                <button class="hide-chat-btn" onclick="hideChat()">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
             </div>
             <div class="messages skeleton-loading" id="chat-messages">
                 <div class="skeleton-message"></div>
@@ -62,20 +77,36 @@
                 <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
             </div>
         </div>
-        <div class="sidebar-right" id="workflow-area">
-            <h3>Tasks</h3>
-            <button class="add-task-btn" onclick="openTaskPopup()">Add Task</button>
-            <div id="workflow-list" class="skeleton-loading">
-                <div class="skeleton-task-item"></div>
-                <div class="skeleton-task-item"></div>
+        
+        <!-- Chat Toggle Button (appears when chat is hidden) -->
+        <div class="chat-toggle-btn" id="chat-toggle-btn" onclick="showChat()">
+            <i class="fas fa-comments"></i>
+            <span>Chat</span>
             </div>
-            <div class="completed-tasks">
-                <h4 onclick="toggleCompletedTasks()">Completed Tasks <i class="fas fa-chevron-down toggle-icon"></i></h4>
-                <div class="completed-tasks-list" id="completed-tasks-list"></div>
+    </div>
+
+    <div class="confirmation-dialog" id="confirmation-dialog">
+        <div class="dialog-box">
+            <h3 id="dialog-title"></h3>
+            <p id="dialog-message"></p>
+            <div class="dialog-actions">
+                <button class="cancel" onclick="closeConfirmation()">Cancel</button>
+                <button id="confirm-button" class="confirm"></button>
             </div>
         </div>
     </div>
 
+    <!-- File Viewer Modal -->
+    <div class="file-viewer-modal" id="file-viewer-modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeFileViewer()">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="file-content" id="file-content"></div>
+        </div>
+    </div>
+
+    <!-- Task Popup -->
     <div class="task-popup" id="task-popup">
         <div class="task-popup-content">
             <div class="header">
@@ -106,18 +137,117 @@
         </div>
     </div>
 
-    <div class="confirmation-dialog" id="confirmation-dialog">
-        <div class="dialog-box">
-            <h3 id="dialog-title"></h3>
-            <p id="dialog-message"></p>
-            <div class="dialog-actions">
-                <button class="cancel" onclick="closeConfirmation()">Cancel</button>
-                <button id="confirm-button" class="confirm"></button>
+    <!-- Files Popup -->
+    <div class="files-popup" id="files-popup">
+        <div class="popup-content">
+            <div class="popup-header">
+                <h4>Attached Files</h4>
+                <button class="close-popup" onclick="closeFilesPopup()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="popup-body" id="files-popup-body">
+                <!-- Files will be populated here -->
             </div>
         </div>
     </div>
 
-    <audio id="message-ding" src="../assets/ding.mp3"></audio>
+    <!-- Comment Modal -->
+    <div class="comment-modal" id="comment-modal">
+        <div class="comment-modal-content">
+            <div class="header">
+                <h3>Add Comment</h3>
+                <button onclick="closeCommentModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="form-group">
+                <label for="comment-content">Comment</label>
+                <textarea id="comment-content" placeholder="Enter your comment..."></textarea>
+            </div>
+            <div class="actions">
+                <button class="cancel-btn" onclick="closeCommentModal()">Cancel</button>
+                <button class="submit-btn" onclick="submitComment()">Submit</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Approval Modal -->
+    <div class="approval-modal" id="approval-modal">
+        <div class="approval-modal-content">
+            <div class="header">
+                <h3>Approve Submission</h3>
+                <button onclick="closeApprovalModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="approval-body">
+                <div class="approval-message">
+                    <i class="fas fa-check-circle"></i>
+                    <p>Please rate the student's performance and provide feedback before approving this submission.</p>
+                </div>
+                
+                <div class="rating-section">
+                    <h4>Rate the Student</h4>
+                    <div class="rating-categories">
+                        <div class="rating-category">
+                            <label>Communication</label>
+                            <div class="star-rating" data-category="communication">
+                                <i class="fas fa-star" data-rating="1"></i>
+                                <i class="fas fa-star" data-rating="2"></i>
+                                <i class="fas fa-star" data-rating="3"></i>
+                                <i class="fas fa-star" data-rating="4"></i>
+                                <i class="fas fa-star" data-rating="5"></i>
+                            </div>
+                        </div>
+                        <div class="rating-category">
+                            <label>Speed</label>
+                            <div class="star-rating" data-category="speed">
+                                <i class="fas fa-star" data-rating="1"></i>
+                                <i class="fas fa-star" data-rating="2"></i>
+                                <i class="fas fa-star" data-rating="3"></i>
+                                <i class="fas fa-star" data-rating="4"></i>
+                                <i class="fas fa-star" data-rating="5"></i>
+                            </div>
+                        </div>
+                        <div class="rating-category">
+                            <label>Clarity</label>
+                            <div class="star-rating" data-category="clarity">
+                                <i class="fas fa-star" data-rating="1"></i>
+                                <i class="fas fa-star" data-rating="2"></i>
+                                <i class="fas fa-star" data-rating="3"></i>
+                                <i class="fas fa-star" data-rating="4"></i>
+                                <i class="fas fa-star" data-rating="5"></i>
+                            </div>
+                        </div>
+                        <div class="rating-category">
+                            <label>Quality</label>
+                            <div class="star-rating" data-category="quality">
+                                <i class="fas fa-star" data-rating="1"></i>
+                                <i class="fas fa-star" data-rating="2"></i>
+                                <i class="fas fa-star" data-rating="3"></i>
+                                <i class="fas fa-star" data-rating="4"></i>
+                                <i class="fas fa-star" data-rating="5"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="feedback-section">
+                    <h4>Feedback (Optional)</h4>
+                    <textarea id="approval-feedback" placeholder="Provide additional feedback for the student..."></textarea>
+                </div>
+            </div>
+            <div class="actions">
+                <button class="cancel-btn" onclick="closeApprovalModal()">Cancel</button>
+                <button class="approve-btn" onclick="confirmApproval()">
+                    <i class="fas fa-check"></i> Approve Submission
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <audio id="message-ding" src="../assets/dingg.mp3"></audio>
 
     <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
@@ -175,7 +305,9 @@ const elements = {
     taskDescription: document.getElementById('task-description'),
     taskDeadline: document.getElementById('task-deadline'),
     taskFiles: document.getElementById('task-files'),
-    taskFilesList: document.getElementById('task-files-list')
+    taskFilesList: document.getElementById('task-files-list'),
+    commentModal: document.getElementById('comment-modal'),
+    commentContent: document.getElementById('comment-content')
 };
 
 async function fetchStudentData() {
@@ -214,8 +346,6 @@ async function fetchCurrentUserProfile() {
         return { name: "Unnamed", profilePic: "../assets/avatar/1.png" };
     }
 }
-
-
 
 function confirmAction(action, title, message, actionParams = {}) {
     elements.dialogTitle.textContent = title;
@@ -607,6 +737,13 @@ async function deleteConnection({ studentId }) {
         loadPendingRequests();
         elements.chatArea.style.display = 'none';
         elements.workflowArea.style.display = 'none';
+        
+        // Hide chat toggle button when no student is selected
+        const chatToggleBtn = document.getElementById('chat-toggle-btn');
+        if (chatToggleBtn) {
+            chatToggleBtn.style.display = 'none';
+        }
+        
         selectedStudentId = null;
     } catch (error) {
         console.error("Error deleting connection:", error);
@@ -649,8 +786,22 @@ async function selectStudent(studentId) {
             if (unreadDot) unreadDot.remove();
         }
     });
-    if (elements.chatArea) elements.chatArea.style.display = 'block';
+    
+    // Show only workflow area, keep chat hidden by default
     if (elements.workflowArea) elements.workflowArea.style.display = 'block';
+    
+    // Keep chat area hidden initially
+    if (elements.chatArea) {
+        elements.chatArea.style.display = 'none';
+        elements.chatArea.classList.remove('chat-hidden');
+    }
+    
+    // Show chat toggle button when student is selected
+    const chatToggleBtn = document.getElementById('chat-toggle-btn');
+    if (chatToggleBtn) {
+        chatToggleBtn.style.display = 'flex';
+    }
+    
     loadChatHeader();
     loadChat();
     loadWorkflows();
@@ -673,11 +824,16 @@ async function loadChatHeader() {
                     <div class="title">${userTitle}</div>
                 </div>
             </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
             <div class="menu">
                 <i class="fas fa-ellipsis-v menu-icon"></i>
                 <div class="menu-dropdown">
                     <button data-action="deleteConnection">Delete Connection</button>
                 </div>
+                </div>
+                <button class="hide-chat-btn" onclick="hideChat()">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
             </div>
         `;
     } catch (error) {
@@ -690,11 +846,16 @@ async function loadChatHeader() {
                     <div class="title"></div>
                 </div>
             </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
             <div class="menu">
                 <i class="fas fa-ellipsis-v menu-icon"></i>
                 <div class="menu-dropdown">
                     <button data-action="deleteConnection">Delete Connection</button>
                 </div>
+                </div>
+                <button class="hide-chat-btn" onclick="hideChat()">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
             </div>
         `;
     }
@@ -1124,17 +1285,12 @@ function loadWorkflows() {
                         const workflowItem = document.createElement('div');
                         workflowItem.className = 'workflow-item';
                         workflowItem.dataset.taskId = taskId;
-                        let fileIcons = '';
-                        if (task.files) {
-                            fileIcons = Object.values(task.files).map(file => `
-                                <a href="${file.url}" download="${file.name}" class="file-icon-container" title="${file.name}">
-                                    <i class="${getFileIconClass(file.type)} file-icon" style="color: ${getFileIconColor(file.type)};"></i>
-                                </a>
-                            `).join('');
-                        }
                         workflowItem.innerHTML = `
                             <div class="task-header">
+                                <div class="task-info">
                                 <h4>${task.title}</h4>
+                                    <p class="task-description">${task.description}</p>
+                                </div>
                                 <div class="task-menu">
                                     <i class="fas fa-ellipsis-v task-menu-icon"></i>
                                     <div class="task-menu-dropdown">
@@ -1143,17 +1299,44 @@ function loadWorkflows() {
                                     </div>
                                 </div>
                             </div>
-                            <p>${task.description}</p>
+                            <div class="task-meta">
                             <div class="deadline-container">
-                                <div class="deadline-slider" style="width: ${calculateDeadlineProgress(task.deadline)}%; background: ${getDeadlineColor(task.deadline)};"></div>
-                                <span class="days-left">${calculateDaysLeft(task.deadline)} days left</span>
+                                    <div class="circular-progress">
+                                        <div class="circular-progress-ring">
+                                            <svg class="progress-ring" width="60" height="60">
+                                                <circle class="progress-ring-circle-bg" cx="30" cy="30" r="24" stroke-width="4"></circle>
+                                                <circle class="progress-ring-circle" cx="30" cy="30" r="24" stroke-width="4" 
+                                                    stroke-dasharray="${2 * Math.PI * 24}" 
+                                                    stroke-dashoffset="${2 * Math.PI * 24 * (1 - calculateDeadlineProgress(task.deadline) / 100)}"
+                                                    style="stroke: ${getDeadlineColor(task.deadline)};"></circle>
+                                            </svg>
+                                            <div class="progress-text">
+                                                <span class="days-number">${calculateDaysLeft(task.deadline)}</span>
+                                                <span class="days-label">days</span>
                             </div>
-                            <select class="status-select">
-                                <option value="pending" ${task.status === "pending" ? "selected" : ""}>Pending</option>
-                                <option value="in progress" ${task.status === "in progress" ? "selected" : ""}>In Progress</option>
-                                <option value="completed" ${task.status === "completed" ? "selected" : ""}>Completed</option>
-                            </select>
-                            <div class="file-icons">${fileIcons}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                ${task.files && Object.keys(task.files).length > 0 ? `
+                                    <div class="files-count" onclick="toggleFilesPopup('${taskId}', event)">
+                                        <i class="fas fa-paperclip"></i>
+                                        <span>${Object.keys(task.files).length} ${getFileTypeLabel(task.files)}</span>
+                                    </div>
+                                ` : ''}
+                            </div>
+                            <div class="task-timeline">
+                                <div class="timeline-header">
+                                    <h5>Submission Timeline</h5>
+                                    <div class="timeline-actions">
+                                        <button class="add-comment-btn" onclick="openCommentModal('${taskId}')">
+                                            <i class="fas fa-comment"></i> Add Comment
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="timeline-content" id="timeline-${taskId}">
+                                    ${generateTimelineHTML(task.submissions || {}, task.comments || {})}
+                                </div>
+                            </div>
                         `;
                         elements.workflowList.appendChild(workflowItem);
                     }
@@ -1168,60 +1351,379 @@ function loadWorkflows() {
     }
 }
 
-function loadCompletedTasks() {
-    if (!elements.completedTasksList) return;
-    elements.completedTasksList.innerHTML = '';
-    if (selectedStudentId) {
-        const tasksRef = ref(db, `tasks`);
-        onValue(tasksRef, (snapshot) => {
-            elements.completedTasksList.innerHTML = '';
-            let hasCompletedTasks = false;
-            if (snapshot.exists()) {
-                const tasks = snapshot.val();
-                for (const taskId in tasks) {
-                    const task = tasks[taskId];
-                    if (task.professionalId === userId && task.studentId === selectedStudentId && task.status === 'completed') {
-                        hasCompletedTasks = true;
-                        const completedItem = document.createElement('div');
-                        completedItem.className = 'workflow-item completed';
-                        completedItem.dataset.taskId = taskId;
-                        let fileIcons = '';
-                        if (task.files) {
-                            fileIcons = Object.values(task.files).map(file => `
-                                <a href="${file.url}" download="${file.name}" class="file-icon-container" title="${file.name}">
-                                    <i class="${getFileIconClass(file.type)} file-icon" style="color: ${getFileIconColor(file.type)};"></i>
-                                </a>
-                            `).join('');
-                        }
-                        completedItem.innerHTML = `
-                            <div class="task-header">
-                                <h4>${task.title}</h4>
-                                <div class="task-menu">
-                                    <i class="fas fa-ellipsis-v task-menu-icon"></i>
-                                    <div class="task-menu-dropdown">
-                                        <button data-action="deleteTask" class="delete-task-btn">Delete Task</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <span class="status-label completed">Completed</span>
-                            <p>${task.description}</p>
-                            <div class="file-icons">${fileIcons}</div>
-                        `;
-                        elements.completedTasksList.appendChild(completedItem);
-                    }
-                }
-            }
-            if (!hasCompletedTasks) {
-                elements.completedTasksList.innerHTML = '<p>No completed tasks found.</p>';
-            }
+function generateTimelineHTML(submissions, comments) {
+    const allItems = [];
+    
+    // Add submissions
+    if (submissions && Object.keys(submissions).length > 0) {
+        Object.entries(submissions).forEach(([id, submission]) => {
+            allItems.push({
+                id,
+                type: 'submission',
+                ...submission
+            });
         });
+    }
+    
+    // Add comments
+    if (comments && Object.keys(comments).length > 0) {
+        Object.entries(comments).forEach(([id, comment]) => {
+            allItems.push({
+                id,
+                type: 'comment',
+                ...comment
+            });
+        });
+    }
+    
+    if (allItems.length === 0) {
+        return '<div class="timeline-empty">No submissions or comments yet</div>';
+    }
+    
+    // Sort all items by timestamp (newest first)
+    const sortedItems = allItems.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+    
+    return sortedItems.map(item => {
+        if (item.type === 'submission') {
+            return `
+                <div class="timeline-item">
+                    <div class="timeline-marker">
+                        <i class="fas fa-upload"></i>
+                    </div>
+                    <div class="timeline-item-content">
+                        <div class="timeline-header">
+                            <span class="submission-author">${item.authorName}</span>
+                            <span class="submission-date">${formatSubmissionDate(item.timestamp)}</span>
+                        </div>
+                        ${item.comment ? `<div class="submission-comment">${item.comment}</div>` : ''}
+                        ${item.files ? `
+                            <div class="submission-files">
+                                ${Object.values(item.files).map(file => `
+                                    <a href="${file.url}" download="${file.name}" class="submission-file">
+                                        <i class="${getFileIconClass(file.type)}"></i>
+                                        <span>${file.name}</span>
+                                    </a>
+                                `).join('')}
+                            </div>
+                        ` : ''}
+                        <div class="submission-actions">
+                            ${item.status === 'approved' ? `
+                                <button class="approve-submission-btn approved" disabled>
+                                    <i class="fas fa-check-circle"></i> Approved
+                                </button>
+                                ${item.ratings ? `
+                                    <div class="submission-ratings">
+                                        <div class="rating-summary">
+                                            ${Object.entries(item.ratings).map(([category, rating]) => `
+                                                <span class="rating-item">
+                                                    <strong>${category.charAt(0).toUpperCase() + category.slice(1)}:</strong> 
+                                                    ${'★'.repeat(rating)}${'☆'.repeat(5-rating)}
+                                                </span>
+                                            `).join('')}
+                                        </div>
+                                        ${item.feedback ? `
+                                            <div class="submission-feedback">
+                                                <strong>Feedback:</strong> ${item.feedback}
+                                            </div>
+                                        ` : ''}
+                                    </div>
+                                ` : ''}
+                            ` : `
+                                <button class="approve-submission-btn" onclick="approveSubmission('${item.id}')">
+                                    <i class="fas fa-check"></i> Approve
+                                </button>
+                            `}
+                        </div>
+                    </div>
+                </div>
+            `;
+        } else {
+            return `
+                <div class="timeline-item">
+                    <div class="timeline-marker comment-marker">
+                        <i class="fas fa-comment"></i>
+                    </div>
+                    <div class="timeline-item-content">
+                        <div class="timeline-header">
+                            <span class="comment-author">${item.authorName}</span>
+                            <span class="comment-date">${formatSubmissionDate(item.timestamp)}</span>
+                        </div>
+                        <div class="comment-content">${item.content}</div>
+                    </div>
+                </div>
+            `;
+        }
+    }).join('');
+}
+
+function formatSubmissionDate(timestamp) {
+    const date = new Date(timestamp);
+    const now = new Date();
+    const diffTime = now - date;
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    
+    if (diffDays === 0) {
+        return 'Today at ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    } else if (diffDays === 1) {
+        return 'Yesterday at ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    } else if (diffDays < 7) {
+        return diffDays + ' days ago';
+    } else {
+        return date.toLocaleDateString();
     }
 }
 
-function toggleCompletedTasks() {
-    if (elements.completedTasksList && document.querySelector('.completed-tasks .toggle-icon')) {
-        elements.completedTasksList.classList.toggle('active');
-        document.querySelector('.completed-tasks .toggle-icon').classList.toggle('active');
+function getFileTypeLabel(files) {
+    const fileArray = Object.values(files);
+    if (fileArray.length === 0) return 'files';
+    
+    const imageCount = fileArray.filter(file => isImageFile(file.type)).length;
+    const videoCount = fileArray.filter(file => isVideoFile(file.type)).length;
+    const pdfCount = fileArray.filter(file => file.type.includes('pdf')).length;
+    const documentCount = fileArray.filter(file => 
+        file.type.includes('word') || 
+        file.type.includes('doc') || 
+        file.type.includes('excel') || 
+        file.type.includes('spreadsheet')
+    ).length;
+    
+    if (imageCount === fileArray.length) {
+        return imageCount === 1 ? 'image' : 'images';
+    } else if (videoCount === fileArray.length) {
+        return videoCount === 1 ? 'video' : 'videos';
+    } else if (pdfCount === fileArray.length) {
+        return pdfCount === 1 ? 'PDF' : 'PDFs';
+    } else if (documentCount === fileArray.length) {
+        return documentCount === 1 ? 'document' : 'documents';
+    } else {
+        return fileArray.length === 1 ? 'file' : 'files';
+    }
+}
+
+function isImageFile(type) {
+    return type.startsWith('image/');
+}
+
+function isVideoFile(type) {
+    return type.startsWith('video/');
+}
+
+function toggleFilesPopup(taskId, event) {
+    event.stopPropagation();
+    const popup = document.getElementById('files-popup');
+    const popupBody = document.getElementById('files-popup-body');
+    
+    if (popup.classList.contains('active')) {
+        closeFilesPopup();
+        return;
+    }
+    
+    // Get task files
+    const taskRef = ref(db, `tasks/${taskId}`);
+    get(taskRef).then((snapshot) => {
+            if (snapshot.exists()) {
+            const task = snapshot.val();
+                        if (task.files) {
+                const filesHTML = Object.values(task.files).map(file => `
+                    <div class="popup-file-item">
+                        <div class="file-thumbnail-container">
+                            ${generateFileThumbnail(file)}
+                        </div>
+                        <div class="file-info">
+                            <div class="file-name">${file.name}</div>
+                            <div class="file-size">${file.size ? (file.size / 1024).toFixed(2) + ' KB' : 'Unknown size'}</div>
+                        </div>
+                        <div class="file-actions">
+                            <a href="${file.url}" download="${file.name}" class="download-btn" title="Download">
+                                <i class="fas fa-download"></i>
+                            </a>
+                            ${isImageFile(file.type) || isVideoFile(file.type) ? `
+                                <button class="view-btn" onclick="openFileViewer('${file.url}', '${file.type}', '${file.name}')" title="View">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            ` : ''}
+                        </div>
+                    </div>
+                            `).join('');
+                
+                popupBody.innerHTML = filesHTML;
+            } else {
+                popupBody.innerHTML = '<div class="no-files">No files attached</div>';
+            }
+        }
+    });
+    
+    // Position popup to the left of the clicked element
+    const rect = event.target.getBoundingClientRect();
+    const popupWidth = 450;
+    const screenWidth = window.innerWidth;
+    
+    // Force popup to the left of the cursor
+    let leftPosition = rect.left - popupWidth - 20; // 20px gap from cursor
+    
+    // Only if popup would go off-screen to the left, then position it to the right
+    if (leftPosition < 20) {
+        leftPosition = rect.right + 20;
+    }
+    
+    // Ensure popup doesn't go off-screen to the right
+    if (leftPosition + popupWidth > screenWidth - 20) {
+        leftPosition = screenWidth - popupWidth - 20;
+    }
+    
+    // Final safety check
+    leftPosition = Math.max(20, leftPosition);
+    
+    popup.style.top = rect.top + 'px';
+    popup.style.left = leftPosition + 'px';
+    
+    popup.classList.add('active');
+}
+
+function closeFilesPopup() {
+    const popup = document.getElementById('files-popup');
+    popup.classList.remove('active');
+}
+
+function generateFileThumbnail(file) {
+    if (isImageFile(file.type)) {
+        return `
+            <div class="file-thumbnail image-thumbnail">
+                <img src="${file.url}" alt="${file.name}" loading="lazy">
+                <div class="file-overlay">
+                    <i class="fas fa-eye"></i>
+                                    </div>
+                                </div>
+        `;
+    } else if (isVideoFile(file.type)) {
+        return `
+            <div class="file-thumbnail video-thumbnail">
+                <video src="${file.url}" preload="metadata"></video>
+                <div class="file-overlay">
+                    <i class="fas fa-play"></i>
+                            </div>
+            </div>
+        `;
+    } else {
+        return `
+            <a href="${file.url}" download="${file.name}" class="file-icon-container" title="${file.name}">
+                <i class="${getFileIconClass(file.type)} file-icon" style="color: ${getFileIconColor(file.type)};"></i>
+            </a>
+        `;
+    }
+}
+
+function openFileViewer(fileUrl, fileType, fileName) {
+    const fileViewerModal = document.getElementById('file-viewer-modal');
+    const fileContent = document.getElementById('file-content');
+    
+    if (fileViewerModal && fileContent) {
+        let content = '';
+        if (isImageFile(fileType)) {
+            content = `<img src="${fileUrl}" alt="${fileName}" style="max-width: 100%; max-height: 80vh; object-fit: contain;">`;
+        } else if (isVideoFile(fileType)) {
+            content = `<video src="${fileUrl}" controls style="max-width: 100%; max-height: 80vh;"></video>`;
+        }
+        fileContent.innerHTML = content;
+        fileViewerModal.classList.add('active');
+    }
+}
+
+function closeFileViewer() {
+    const fileViewerModal = document.getElementById('file-viewer-modal');
+    if (fileViewerModal) {
+        fileViewerModal.classList.remove('active');
+        const fileContent = document.getElementById('file-content');
+        if (fileContent) {
+            fileContent.innerHTML = '';
+        }
+    }
+}
+
+function hideChat() {
+    const chatArea = document.getElementById('chat-area');
+    const chatToggleBtn = document.getElementById('chat-toggle-btn');
+    
+    if (chatArea) {
+        chatArea.classList.add('chat-hidden');
+        setTimeout(() => {
+            chatArea.style.display = 'none';
+        }, 300);
+    }
+    if (chatToggleBtn) {
+        chatToggleBtn.style.display = 'flex';
+    }
+}
+
+function showChat() {
+    const chatArea = document.getElementById('chat-area');
+    const chatToggleBtn = document.getElementById('chat-toggle-btn');
+    
+    if (chatArea) {
+        chatArea.style.display = 'block';
+        chatArea.classList.remove('chat-hidden');
+    }
+    if (chatToggleBtn) {
+        chatToggleBtn.style.display = 'none';
+    }
+}
+
+// Comment Modal Functions
+let currentCommentTaskId = null;
+
+function openCommentModal(taskId) {
+    currentCommentTaskId = taskId;
+    elements.commentContent.value = '';
+    elements.commentModal.classList.add('active');
+}
+
+function closeCommentModal() {
+    elements.commentModal.classList.remove('active');
+    currentCommentTaskId = null;
+    elements.commentContent.value = '';
+}
+
+async function submitComment() {
+    const content = elements.commentContent.value.trim();
+    
+    if (!content) {
+        alert('Please enter a comment.');
+        return;
+    }
+    
+    if (!currentCommentTaskId) {
+        alert('No task selected for comment.');
+        return;
+    }
+    
+    try {
+        const currentUser = await fetchCurrentUserProfile();
+        const commentData = {
+            content: content,
+            authorId: userId,
+            authorName: currentUser.name,
+            timestamp: new Date().toISOString()
+        };
+        
+        const taskRef = ref(db, `tasks/${currentCommentTaskId}`);
+        const taskSnapshot = await get(taskRef);
+        
+        if (taskSnapshot.exists()) {
+            const task = taskSnapshot.val();
+            const comments = task.comments || {};
+            const commentId = Date.now().toString();
+            comments[commentId] = commentData;
+            
+            await update(taskRef, { comments: comments });
+            
+            closeCommentModal();
+            loadWorkflows(); // Refresh the timeline
+        } else {
+            alert('Task not found.');
+        }
+    } catch (error) {
+        console.error('Error submitting comment:', error);
+        alert('Failed to submit comment.');
     }
 }
 
@@ -1229,7 +1731,7 @@ async function updateStatus({ taskId, status }) {
     try {
         const taskRef = ref(db, `tasks/${taskId}`);
         await update(taskRef, { 
-            status,
+            status: status,
             updatedAt: new Date().toISOString()
         });
         loadWorkflows();
@@ -1265,12 +1767,152 @@ function getDeadlineColor(deadline) {
     return '#4CAF50';
 }
 
+// Approval Modal Functions
+let currentApprovalSubmissionId = null;
+let ratings = {
+    communication: 0,
+    speed: 0,
+    clarity: 0,
+    quality: 0
+};
+
+function openApprovalModal(submissionId) {
+    currentApprovalSubmissionId = submissionId;
+    ratings = {
+        communication: 0,
+        speed: 0,
+        clarity: 0,
+        quality: 0
+    };
+    
+    // Reset all stars
+    document.querySelectorAll('.star-rating i').forEach(star => {
+        star.classList.remove('filled', 'active');
+    });
+    
+    // Reset feedback
+    document.getElementById('approval-feedback').value = '';
+    
+    // Show modal
+    document.getElementById('approval-modal').classList.add('active');
+    
+    // Add event listeners for star ratings
+    setupStarRatingListeners();
+}
+
+function closeApprovalModal() {
+    document.getElementById('approval-modal').classList.remove('active');
+    currentApprovalSubmissionId = null;
+    ratings = {
+        communication: 0,
+        speed: 0,
+        clarity: 0,
+        quality: 0
+    };
+}
+
+function setupStarRatingListeners() {
+    document.querySelectorAll('.star-rating').forEach(ratingContainer => {
+        const category = ratingContainer.dataset.category;
+        const stars = ratingContainer.querySelectorAll('i');
+        
+        stars.forEach((star, index) => {
+            star.addEventListener('click', () => {
+                const rating = index + 1;
+                ratings[category] = rating;
+                
+                // Update visual state
+                stars.forEach((s, i) => {
+                    if (i < rating) {
+                        s.classList.add('filled');
+                        s.classList.remove('active');
+                    } else {
+                        s.classList.remove('filled', 'active');
+                    }
+                });
+            });
+            
+            star.addEventListener('mouseenter', () => {
+                const rating = index + 1;
+                stars.forEach((s, i) => {
+                    if (i < rating) {
+                        s.classList.add('active');
+                    } else {
+                        s.classList.remove('active');
+                    }
+                });
+            });
+            
+            star.addEventListener('mouseleave', () => {
+                stars.forEach(s => {
+                    s.classList.remove('active');
+                });
+            });
+        });
+    });
+}
+
+async function confirmApproval() {
+    const feedback = document.getElementById('approval-feedback').value.trim();
+    
+    // Check if all ratings are provided
+    const totalRating = Object.values(ratings).reduce((sum, rating) => sum + rating, 0);
+    if (totalRating === 0) {
+        alert('Please provide ratings for all categories before approving.');
+        return;
+    }
+    
+    try {
+        // Find the task that contains this submission
+        const tasksRef = ref(db, `tasks`);
+        const tasksSnapshot = await get(tasksRef);
+        
+        if (tasksSnapshot.exists()) {
+            const tasks = tasksSnapshot.val();
+            let taskFound = false;
+            
+            for (const taskId in tasks) {
+                const task = tasks[taskId];
+                if (task.professionalId === userId && task.studentId === selectedStudentId && task.submissions && task.submissions[currentApprovalSubmissionId]) {
+                    // Update the submission with approval data
+                    const submissionRef = ref(db, `tasks/${taskId}/submissions/${currentApprovalSubmissionId}`);
+                    await update(submissionRef, { 
+                        status: 'approved',
+                        approvedAt: new Date().toISOString(),
+                        approvedBy: userId,
+                        ratings: ratings,
+                        feedback: feedback || null
+                    });
+                    
+                    taskFound = true;
+                    break;
+                }
+            }
+            
+            if (taskFound) {
+                closeApprovalModal();
+                loadWorkflows(); // Refresh the timeline
+                alert('Submission approved successfully!');
+            } else {
+                alert('Submission not found.');
+            }
+        }
+    } catch (error) {
+        console.error('Error approving submission:', error);
+        alert('Failed to approve submission.');
+    }
+}
+
+async function approveSubmission(submissionId) {
+    // Open the approval modal instead of directly approving
+    openApprovalModal(submissionId);
+}
+
 window.sendMessage = sendMessage;
 window.sendFileMessage = sendFileMessage;
 window.openTaskPopup = openTaskPopup;
 window.closeTaskPopup = closeTaskPopup;
 window.submitTask = submitTask;
-window.toggleCompletedTasks = toggleCompletedTasks;
 window.selectStudent = selectStudent;
 window.updateStatus = updateStatus;
 window.acceptRequest = acceptRequest;
@@ -1281,6 +1923,19 @@ window.deleteMessage = deleteMessage;
 window.confirmAction = confirmAction;
 window.closeConfirmation = closeConfirmation;
 window.toggleReaction = toggleReaction;
+window.hideChat = hideChat;
+window.showChat = showChat;
+window.openFileViewer = openFileViewer;
+window.closeFileViewer = closeFileViewer;
+window.toggleFilesPopup = toggleFilesPopup;
+window.closeFilesPopup = closeFilesPopup;
+window.openCommentModal = openCommentModal;
+window.closeCommentModal = closeCommentModal;
+window.submitComment = submitComment;
+window.approveSubmission = approveSubmission;
+window.openApprovalModal = openApprovalModal;
+window.closeApprovalModal = closeApprovalModal;
+window.confirmApproval = confirmApproval;
 
 init();
     </script>

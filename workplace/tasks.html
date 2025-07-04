@@ -17,7 +17,7 @@
     </div>
     <nav class="navbar">
         <a href="../index.html">
-            <div class="logo">Taska Elite</div>
+            <div class="logo">Taska</div>
           </a>
         <ul class="nav-menu">
             <li><a href="tasks.html" class="active">Tasks</a></li>
@@ -37,6 +37,13 @@
             <div class="pending-requests" style="display: none;">
                 <h3>Pending Requests</h3>
                 <div id="pending-requests-list"></div>
+            </div>
+        </div>
+        <div class="sidebar-right" id="workflow-area">
+            <h3>Tasks</h3>
+            <div id="workflow-list" class="skeleton-loading">
+                <div class="skeleton-task-item"></div>
+                <div class="skeleton-task-item"></div>
             </div>
         </div>
         <div class="chat-area" id="chat-area">
@@ -61,16 +68,11 @@
                 <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
             </div>
         </div>
-        <div class="sidebar-right" id="workflow-area">
-            <h3>Tasks</h3>
-            <div id="workflow-list" class="skeleton-loading">
-                <div class="skeleton-task-item"></div>
-                <div class="skeleton-task-item"></div>
-            </div>
-            <div class="completed-tasks">
-                <h4 onclick="toggleCompletedTasks()">Completed Tasks <i class="fas fa-chevron-down toggle-icon"></i></h4>
-                <div class="completed-tasks-list" id="completed-tasks-list"></div>
-            </div>
+        
+        <!-- Chat Toggle Button (appears when chat is hidden) -->
+        <div class="chat-toggle-btn" id="chat-toggle-btn">
+            <i class="fas fa-comments"></i>
+            <span>Chat</span>
         </div>
     </div>
 
@@ -83,6 +85,162 @@
                 <button id="confirm-button" class="confirm"></button>
             </div>
         </div>
+    </div>
+
+    <!-- File Viewer Modal -->
+    <div class="file-viewer-modal" id="file-viewer-modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeFileViewer()">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="file-content" id="file-content"></div>
+        </div>
+    </div>
+
+    <!-- Submission Modal -->
+    <div class="submission-modal" id="submission-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add Submission</h3>
+                <button class="close-modal" onclick="closeSubmissionModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="submission-comment">Comment (Optional)</label>
+                    <textarea id="submission-comment" placeholder="Add a comment about this submission..." rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="submission-files">Upload Files</label>
+                    <div class="file-upload-area" id="file-upload-area">
+                        <input type="file" id="submission-files" multiple accept="*/*">
+                        <div class="upload-placeholder">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Drag & drop files here or click to browse</p>
+                        </div>
+                    </div>
+                    <div class="uploaded-files" id="uploaded-files"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeSubmissionModal()">Cancel</button>
+                <button class="btn-primary" onclick="submitWork()">Submit Work</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Comment Modal -->
+    <div class="comment-modal" id="comment-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add Comment</h3>
+                <button class="close-modal" onclick="closeCommentModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="comment-text">Comment</label>
+                    <textarea id="comment-text" placeholder="Add your comment..." rows="5"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeCommentModal()">Cancel</button>
+                <button class="btn-primary" onclick="submitComment()">Add Comment</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Files Popup -->
+    <div class="files-popup" id="files-popup">
+        <div class="popup-content">
+            <div class="popup-header">
+                <h4>Attached Files</h4>
+                <button class="close-popup" onclick="closeFilesPopup()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="popup-body" id="files-popup-body">
+                <!-- Files will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Apps Panel -->
+    <div class="ai-apps-panel" id="ai-apps-panel">
+        <div class="panel-content">
+            <div class="panel-header">
+                <h4>AI Tools</h4>
+                <button class="close-panel" onclick="closeAIAppsPanel()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="panel-body">
+                <div class="ai-apps-grid">
+                    <div class="ai-app-item" onclick="openAIApp('image-generator')">
+                        <div class="app-icon">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <div class="app-info">
+                            <h5>Image Generator</h5>
+                            <p>Create stunning images with AI</p>
+                        </div>
+                    </div>
+                    <div class="ai-app-item" onclick="openAIApp('video-generator')">
+                        <div class="app-icon">
+                            <i class="fas fa-video"></i>
+                        </div>
+                        <div class="app-info">
+                            <h5>Video Generator</h5>
+                            <p>Generate videos from text prompts</p>
+                        </div>
+                    </div>
+                    <div class="ai-app-item" onclick="openAIApp('code-assistant')">
+                        <div class="app-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <div class="app-info">
+                            <h5>Code Assistant</h5>
+                            <p>AI-powered coding help</p>
+                        </div>
+                    </div>
+                    <div class="ai-app-item" onclick="openAIApp('data-analyzer')">
+                        <div class="app-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="app-info">
+                            <h5>Data Analyzer</h5>
+                            <p>Analyze and visualize data</p>
+                        </div>
+                    </div>
+                    <div class="ai-app-item" onclick="openAIApp('text-writer')">
+                        <div class="app-icon">
+                            <i class="fas fa-pen-fancy"></i>
+                        </div>
+                        <div class="app-info">
+                            <h5>Text Writer</h5>
+                            <p>AI content writing assistant</p>
+                        </div>
+                    </div>
+                    <div class="ai-app-item" onclick="openAIApp('translator')">
+                        <div class="app-icon">
+                            <i class="fas fa-language"></i>
+                        </div>
+                        <div class="app-info">
+                            <h5>Translator</h5>
+                            <p>Multi-language translation</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Apps Floating Button -->
+    <div class="ai-apps-button" id="ai-apps-button" onclick="toggleAIAppsPanel()">
+        <i class="fas fa-robot"></i>
+        <span>AI Tools</span>
     </div>
 
     <audio id="message-ding" src="../assets/ding.mp3"></audio>
@@ -115,6 +273,8 @@ let professionalData = null;
 let currentUserProfile = null;
 let uploadedTaskFiles = [];
 let isDataLoaded = { connections: false, chats: false, tasks: false };
+let currentTaskId = null;
+let submissionFiles = [];
 
 const elements = {
     connectionsList: document.getElementById('connections-list'),
@@ -135,7 +295,12 @@ const elements = {
     uploadProgress: document.getElementById('upload-progress'),
     uploadProgressBar: document.getElementById('upload-progress-bar'),
     mentionIcon: document.getElementById('mention-icon'),
-    taskDropdown: document.getElementById('task-dropdown')
+    taskDropdown: document.getElementById('task-dropdown'),
+    chatToggleBtn: document.getElementById('chat-toggle-btn'),
+    fileViewerModal: document.getElementById('file-viewer-modal'),
+    fileContent: document.getElementById('file-content'),
+    submissionModal: document.getElementById('submission-modal'),
+    commentModal: document.getElementById('comment-modal')
 };
 
 async function fetchProfessionalData() {
@@ -209,6 +374,42 @@ function getFileIconColor(type) {
     return '#6c757d';
 }
 
+function isImageFile(type) {
+    return type.startsWith('image/');
+}
+
+function isVideoFile(type) {
+    return type.startsWith('video/');
+}
+
+function generateFileThumbnail(file) {
+    if (isImageFile(file.type)) {
+        return `
+            <div class="file-thumbnail image-thumbnail">
+                <img src="${file.url}" alt="${file.name}" loading="lazy">
+                <div class="file-overlay">
+                    <i class="fas fa-eye"></i>
+                </div>
+            </div>
+        `;
+    } else if (isVideoFile(file.type)) {
+        return `
+            <div class="file-thumbnail video-thumbnail">
+                <video src="${file.url}" preload="metadata"></video>
+                <div class="file-overlay">
+                    <i class="fas fa-play"></i>
+                </div>
+            </div>
+        `;
+    } else {
+        return `
+            <a href="${file.url}" download="${file.name}" class="file-icon-container" title="${file.name}">
+                <i class="${getFileIconClass(file.type)} file-icon" style="color: ${getFileIconColor(file.type)};"></i>
+            </a>
+        `;
+    }
+}
+
 function checkAllDataLoaded() {
     if (isDataLoaded.connections && isDataLoaded.chats && isDataLoaded.tasks) {
         elements.connectionsList.classList.remove('skeleton-loading');
@@ -229,7 +430,6 @@ async function init() {
                 fetchCurrentUserProfile().then(() => {
                     loadConnections();
                     loadPendingRequests();
-                    loadCompletedTasks();
                 });
             } else {
                 console.error("User not authenticated");
@@ -307,6 +507,19 @@ function setupEventListeners() {
             const taskTitle = target.textContent;
             insertMention(taskTitle);
         }
+        if (target.matches('.chat-toggle-btn') || target.closest('.chat-toggle-btn')) {
+            showChat();
+        }
+        if (target.closest('.file-thumbnail')) {
+            const thumbnail = target.closest('.file-thumbnail');
+            const img = thumbnail.querySelector('img');
+            const video = thumbnail.querySelector('video');
+            if (img) {
+                openFileViewer(img.src, 'image/jpeg', img.alt);
+            } else if (video) {
+                openFileViewer(video.src, 'video/mp4', 'Video');
+            }
+        }
     });
 
     if (elements.workflowList) {
@@ -374,6 +587,42 @@ function setupEventListeners() {
         });
     }
 
+    // Submission file upload listeners
+    const submissionFilesInput = document.getElementById('submission-files');
+    if (submissionFilesInput) {
+        submissionFilesInput.addEventListener('change', (e) => {
+            const files = Array.from(e.target.files);
+            submissionFiles.push(...files);
+            updateUploadedFiles();
+            e.target.value = '';
+        });
+    }
+
+    const fileUploadArea = document.getElementById('file-upload-area');
+    if (fileUploadArea) {
+        fileUploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            fileUploadArea.classList.add('dragover');
+        });
+
+        fileUploadArea.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            fileUploadArea.classList.remove('dragover');
+        });
+
+        fileUploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            fileUploadArea.classList.remove('dragover');
+            const files = Array.from(e.dataTransfer.files);
+            submissionFiles.push(...files);
+            updateUploadedFiles();
+        });
+
+        fileUploadArea.addEventListener('click', () => {
+            submissionFilesInput.click();
+        });
+    }
+
     document.addEventListener('click', (e) => {
         if (!e.target.closest('.task-menu')) {
             document.querySelectorAll('.task-menu-dropdown.active').forEach(dropdown => {
@@ -392,6 +641,11 @@ function setupEventListeners() {
         }
         if (!e.target.closest('.input-container')) {
             elements.taskDropdown.classList.remove('active');
+        }
+        // Hide chat when clicking outside
+        if (elements.chatArea && elements.chatArea.style.display === 'block' && 
+            !e.target.closest('.chat-area') && !e.target.closest('.chat-toggle-btn')) {
+            hideChat();
         }
     });
 }
@@ -550,7 +804,6 @@ async function deleteTask({ taskId }) {
         const taskRef = ref(db, `tasks/${taskId}`);
         await remove(taskRef);
         loadWorkflows();
-        loadCompletedTasks();
     } catch (error) {
         console.error("Error deleting task:", error);
         alert("Failed to delete task.");
@@ -580,12 +833,11 @@ async function selectProfessional(professionalId) {
             if (unreadDot) unreadDot.remove();
         }
     });
-    if (elements.chatArea) elements.chatArea.style.display = 'block';
     if (elements.workflowArea) elements.workflowArea.style.display = 'block';
+    if (elements.chatToggleBtn) elements.chatToggleBtn.style.display = 'flex';
     loadChatHeader();
     loadChat();
     loadWorkflows();
-    loadCompletedTasks();
 }
 
 async function loadChatHeader() {
@@ -604,10 +856,12 @@ async function loadChatHeader() {
                     <div class="title">${userTitle}</div>
                 </div>
             </div>
+            <div class="chat-actions">
             <div class="menu">
                 <i class="fas fa-ellipsis-v menu-icon"></i>
                 <div class="menu-dropdown">
                     <button data-action="deleteConnection">Delete Connection</button>
+                    </div>
                 </div>
             </div>
         `;
@@ -621,10 +875,12 @@ async function loadChatHeader() {
                     <div class="title"></div>
                 </div>
             </div>
+            <div class="chat-actions">
             <div class="menu">
                 <i class="fas fa-ellipsis-v menu-icon"></i>
                 <div class="menu-dropdown">
                     <button data-action="deleteConnection">Delete Connection</button>
+                    </div>
                 </div>
             </div>
         `;
@@ -938,22 +1194,17 @@ function loadWorkflows() {
                 const tasks = snapshot.val();
                 for (const taskId in tasks) {
                     const task = tasks[taskId];
-                    if (task.studentId === userId && task.professionalId === selectedProfessionalId && task.status !== 'completed') {
+                    if (task.studentId === userId && task.professionalId === selectedProfessionalId) {
                         hasTasks = true;
                         const workflowItem = document.createElement('div');
                         workflowItem.className = 'workflow-item';
                         workflowItem.dataset.taskId = taskId;
-                        let fileIcons = '';
-                        if (task.files) {
-                            fileIcons = Object.values(task.files).map(file => `
-                                <a href="${file.url}" download="${file.name}" class="file-icon-container" title="${file.name}">
-                                    <i class="${getFileIconClass(file.type)} file-icon" style="color: ${getFileIconColor(file.type)};"></i>
-                                </a>
-                            `).join('');
-                        }
                         workflowItem.innerHTML = `
                             <div class="task-header">
+                                <div class="task-info">
                                 <h4>${task.title}</h4>
+                                    <p class="task-description">${task.description}</p>
+                                </div>
                                 <div class="task-menu">
                                     <i class="fas fa-ellipsis-v task-menu-icon"></i>
                                     <div class="task-menu-dropdown">
@@ -961,17 +1212,47 @@ function loadWorkflows() {
                                     </div>
                                 </div>
                             </div>
-                            <p>${task.description}</p>
+                            <div class="task-meta">
                             <div class="deadline-container">
-                                <div class="deadline-slider" style="width: ${calculateDeadlineProgress(task.deadline)}%; background: ${getDeadlineColor(task.deadline)};"></div>
-                                <span class="days-left">${calculateDaysLeft(task.deadline)} days left</span>
+                                    <div class="circular-progress">
+                                        <div class="circular-progress-ring">
+                                            <svg class="progress-ring" width="60" height="60">
+                                                <circle class="progress-ring-circle-bg" cx="30" cy="30" r="24" stroke-width="4"></circle>
+                                                <circle class="progress-ring-circle" cx="30" cy="30" r="24" stroke-width="4" 
+                                                    stroke-dasharray="${2 * Math.PI * 24}" 
+                                                    stroke-dashoffset="${2 * Math.PI * 24 * (1 - calculateDeadlineProgress(task.deadline) / 100)}"
+                                                    style="stroke: ${getDeadlineColor(task.deadline)};"></circle>
+                                            </svg>
+                                            <div class="progress-text">
+                                                <span class="days-number">${calculateDaysLeft(task.deadline)}</span>
+                                                <span class="days-label">days</span>
                             </div>
-                            <select class="status-select">
-                                <option value="pending" ${task.status === "pending" ? "selected" : ""}>Pending</option>
-                                <option value="in progress" ${task.status === "in progress" ? "selected" : ""}>In Progress</option>
-                                <option value="completed" ${task.status === "completed" ? "selected" : ""}>Completed</option>
-                            </select>
-                            <div class="file-icons">${fileIcons}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                ${task.files && Object.keys(task.files).length > 0 ? `
+                                    <div class="files-count" onclick="toggleFilesPopup('${taskId}', event)">
+                                        <i class="fas fa-paperclip"></i>
+                                        <span>${Object.keys(task.files).length} ${getFileTypeLabel(task.files)}</span>
+                                    </div>
+                                ` : ''}
+                            </div>
+                            <div class="task-timeline">
+                                <div class="timeline-header">
+                                    <h5>Submission Timeline</h5>
+                                    <div class="timeline-actions">
+                                        <button class="add-comment-btn" onclick="openCommentModal('${taskId}')">
+                                            <i class="fas fa-comment"></i> Add Comment
+                                        </button>
+                                        <button class="add-submission-btn" onclick="openSubmissionModal('${taskId}')">
+                                            <i class="fas fa-plus"></i> Add Submission
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="timeline-content" id="timeline-${taskId}">
+                                    ${generateTimelineHTML(task.submissions || {}, task.comments || {})}
+                                </div>
+                            </div>
                         `;
                         elements.workflowList.appendChild(workflowItem);
                     }
@@ -986,76 +1267,352 @@ function loadWorkflows() {
     }
 }
 
-function loadCompletedTasks() {
-    if (!elements.completedTasksList) return;
-    elements.completedTasksList.innerHTML = '';
-    if (selectedProfessionalId) {
-        const tasksRef = ref(db, `tasks`);
-        onValue(tasksRef, (snapshot) => {
-            elements.completedTasksList.innerHTML = '';
-            let hasCompletedTasks = false;
-            if (snapshot.exists()) {
-                const tasks = snapshot.val();
-                for (const taskId in tasks) {
-                    const task = tasks[taskId];
-                    if (task.studentId === userId && task.professionalId === selectedProfessionalId && task.status === 'completed') {
-                        hasCompletedTasks = true;
-                        const completedItem = document.createElement('div');
-                        completedItem.className = 'workflow-item completed';
-                        completedItem.dataset.taskId = taskId;
-                        let fileIcons = '';
-                        if (task.files) {
-                            fileIcons = Object.values(task.files).map(file => `
-                                <a href="${file.url}" download="${file.name}" class="file-icon-container" title="${file.name}">
-                                    <i class="${getFileIconClass(file.type)} file-icon" style="color: ${getFileIconColor(file.type)};"></i>
-                                </a>
-                            `).join('');
-                        }
-                        completedItem.innerHTML = `
-                            <div class="task-header">
-                                <h4>${task.title}</h4>
-                                <div class="task-menu">
-                                    <i class="fas fa-ellipsis-v task-menu-icon"></i>
-                                    <div class="task-menu-dropdown">
-                                        <button data-action="deleteTask" class="delete-task-btn">Delete Task</button>
+function hideChat() {
+    if (elements.chatArea) {
+        elements.chatArea.classList.add('chat-hidden');
+        setTimeout(() => {
+            elements.chatArea.style.display = 'none';
+        }, 300);
+    }
+    if (elements.chatToggleBtn) {
+        elements.chatToggleBtn.style.display = 'flex';
+    }
+}
+
+function showChat() {
+    if (elements.chatArea) {
+        elements.chatArea.style.display = 'block';
+        elements.chatArea.classList.remove('chat-hidden');
+    }
+    if (elements.chatToggleBtn) {
+        elements.chatToggleBtn.style.display = 'none';
+    }
+}
+
+function openFileViewer(fileUrl, fileType, fileName) {
+    if (elements.fileViewerModal && elements.fileContent) {
+        let content = '';
+        if (isImageFile(fileType)) {
+            content = `<img src="${fileUrl}" alt="${fileName}" style="max-width: 100%; max-height: 80vh; object-fit: contain;">`;
+        } else if (isVideoFile(fileType)) {
+            content = `<video src="${fileUrl}" controls style="max-width: 100%; max-height: 80vh;"></video>`;
+        }
+        elements.fileContent.innerHTML = content;
+        elements.fileViewerModal.classList.add('active');
+    }
+}
+
+function closeFileViewer() {
+    if (elements.fileViewerModal) {
+        elements.fileViewerModal.classList.remove('active');
+        if (elements.fileContent) {
+            elements.fileContent.innerHTML = '';
+        }
+    }
+}
+
+function generateTimelineHTML(submissions, comments) {
+    const allItems = [];
+    
+    // Add submissions
+    if (submissions && Object.keys(submissions).length > 0) {
+        Object.entries(submissions).forEach(([id, submission]) => {
+            allItems.push({
+                id,
+                type: 'submission',
+                ...submission
+            });
+        });
+    }
+    
+    // Add comments
+    if (comments && Object.keys(comments).length > 0) {
+        Object.entries(comments).forEach(([id, comment]) => {
+            allItems.push({
+                id,
+                type: 'comment',
+                ...comment
+            });
+        });
+    }
+    
+    if (allItems.length === 0) {
+        return '<div class="timeline-empty">No submissions or comments yet</div>';
+    }
+    
+    // Sort all items by timestamp (newest first)
+    const sortedItems = allItems.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+    
+    return sortedItems.map(item => {
+        if (item.type === 'submission') {
+            return `
+                <div class="timeline-item">
+                    <div class="timeline-marker">
+                        <i class="fas fa-upload"></i>
                                     </div>
+                    <div class="timeline-item-content">
+                        <div class="timeline-header">
+                            <span class="submission-author">${item.authorName}</span>
+                            <span class="submission-date">${formatSubmissionDate(item.timestamp)}</span>
                                 </div>
+                        ${item.comment ? `<div class="submission-comment">${item.comment}</div>` : ''}
+                        ${item.files ? `
+                            <div class="submission-files">
+                                ${Object.values(item.files).map(file => `
+                                    <a href="${file.url}" download="${file.name}" class="submission-file">
+                                        <i class="${getFileIconClass(file.type)}"></i>
+                                        <span>${file.name}</span>
+                                    </a>
+                                `).join('')}
                             </div>
-                            <span class="status-label completed">Completed</span>
-                            <p>${task.description}</p>
-                            <div class="file-icons">${fileIcons}</div>
-                        `;
-                        elements.completedTasksList.appendChild(completedItem);
-                    }
-                }
-            }
-            if (!hasCompletedTasks) {
-                elements.completedTasksList.innerHTML = '<p>No completed tasks found.</p>';
-            }
-        });
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+        } else {
+            return `
+                <div class="timeline-item">
+                    <div class="timeline-marker comment-marker">
+                        <i class="fas fa-comment"></i>
+                    </div>
+                    <div class="timeline-item-content">
+                        <div class="timeline-header">
+                            <span class="comment-author">${item.authorName}</span>
+                            <span class="comment-date">${formatSubmissionDate(item.timestamp)}</span>
+                        </div>
+                        <div class="comment-content">${item.content}</div>
+                    </div>
+                </div>
+            `;
+        }
+    }).join('');
+}
+
+function formatSubmissionDate(timestamp) {
+    const date = new Date(timestamp);
+    const now = new Date();
+    const diffTime = now - date;
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    
+    if (diffDays === 0) {
+        return 'Today at ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    } else if (diffDays === 1) {
+        return 'Yesterday at ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    } else if (diffDays < 7) {
+        return diffDays + ' days ago';
+    } else {
+        return date.toLocaleDateString();
     }
 }
 
-function toggleCompletedTasks() {
-    if (elements.completedTasksList && document.querySelector('.completed-tasks .toggle-icon')) {
-        elements.completedTasksList.classList.toggle('active');
-        document.querySelector('.completed-tasks .toggle-icon').classList.toggle('active');
+function openSubmissionModal(taskId) {
+    currentTaskId = taskId;
+    if (elements.submissionModal) {
+        elements.submissionModal.classList.add('active');
+        submissionFiles = [];
+        updateUploadedFiles();
     }
 }
 
-async function updateStatus({ taskId, status }) {
+function closeSubmissionModal() {
+    if (elements.submissionModal) {
+        elements.submissionModal.classList.remove('active');
+        currentTaskId = null;
+        submissionFiles = [];
+        document.getElementById('submission-comment').value = '';
+        updateUploadedFiles();
+    }
+}
+
+function updateUploadedFiles() {
+    const uploadedFilesDiv = document.getElementById('uploaded-files');
+    if (uploadedFilesDiv) {
+        uploadedFilesDiv.innerHTML = submissionFiles.map((file, index) => `
+            <div class="uploaded-file">
+                <i class="${getFileIconClass(file.type)}"></i>
+                <span>${file.name}</span>
+                <button onclick="removeSubmissionFile(${index})" class="remove-file">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        `).join('');
+    }
+}
+
+function removeSubmissionFile(index) {
+    submissionFiles.splice(index, 1);
+    updateUploadedFiles();
+}
+
+async function submitWork() {
+    if (!currentTaskId || submissionFiles.length === 0) {
+        alert('Please upload at least one file');
+        return;
+    }
+    
     try {
-        const taskRef = ref(db, `tasks/${taskId}`);
-        await update(taskRef, { 
-            status,
-            updatedAt: new Date().toISOString()
-        });
+        const comment = document.getElementById('submission-comment').value.trim();
+        const taskRef = ref(db, `tasks/${currentTaskId}`);
+        const submissionsRef = ref(db, `tasks/${currentTaskId}/submissions`);
+        
+        // Upload files
+        const uploadedFiles = {};
+        for (let i = 0; i < submissionFiles.length; i++) {
+            const file = submissionFiles[i];
+            const storagePath = `tasks/${currentTaskId}/submissions/${Date.now()}_${i}_${file.name}`;
+            const fileRef = storageRef(storage, storagePath);
+            const uploadTask = uploadBytesResumable(fileRef, file);
+            
+            await new Promise((resolve, reject) => {
+                uploadTask.on('state_changed',
+                    () => {},
+                    reject,
+                    async () => {
+                        const fileUrl = await getDownloadURL(fileRef);
+                        uploadedFiles[`file_${i}`] = {
+                            name: file.name,
+                            url: fileUrl,
+                            type: file.type,
+                            size: file.size
+                        };
+                        resolve();
+                    }
+                );
+            });
+        }
+        
+        // Create submission
+        const currentUser = await fetchCurrentUserProfile();
+        const submission = {
+            authorId: userId,
+            authorName: currentUser.name,
+            comment: comment,
+            files: uploadedFiles,
+            timestamp: new Date().toISOString()
+        };
+        
+        await push(submissionsRef, submission);
+        closeSubmissionModal();
+        
+        // Refresh the timeline
         loadWorkflows();
-        loadCompletedTasks();
+        
     } catch (error) {
-        console.error("Error updating task status:", error);
-        alert("Failed to update task status.");
+        console.error('Error submitting work:', error);
+        alert('Failed to submit work. Please try again.');
     }
+}
+
+function getFileTypeLabel(files) {
+    const fileArray = Object.values(files);
+    if (fileArray.length === 0) return 'files';
+    
+    const imageCount = fileArray.filter(file => isImageFile(file.type)).length;
+    const videoCount = fileArray.filter(file => isVideoFile(file.type)).length;
+    const pdfCount = fileArray.filter(file => file.type.includes('pdf')).length;
+    const documentCount = fileArray.filter(file => 
+        file.type.includes('word') || 
+        file.type.includes('doc') || 
+        file.type.includes('excel') || 
+        file.type.includes('spreadsheet')
+    ).length;
+    
+    if (imageCount === fileArray.length) {
+        return imageCount === 1 ? 'image' : 'images';
+    } else if (videoCount === fileArray.length) {
+        return videoCount === 1 ? 'video' : 'videos';
+    } else if (pdfCount === fileArray.length) {
+        return pdfCount === 1 ? 'PDF' : 'PDFs';
+    } else if (documentCount === fileArray.length) {
+        return documentCount === 1 ? 'document' : 'documents';
+    } else {
+        return fileArray.length === 1 ? 'file' : 'files';
+    }
+}
+
+function toggleFilesPopup(taskId, event) {
+    event.stopPropagation();
+    const popup = document.getElementById('files-popup');
+    const popupBody = document.getElementById('files-popup-body');
+    
+    if (popup.classList.contains('active')) {
+        closeFilesPopup();
+        return;
+    }
+    
+    // Get task files
+    const taskRef = ref(db, `tasks/${taskId}`);
+    get(taskRef).then((snapshot) => {
+        if (snapshot.exists()) {
+            const task = snapshot.val();
+            if (task.files) {
+                const filesHTML = Object.values(task.files).map(file => `
+                    <div class="popup-file-item">
+                        <div class="file-thumbnail-container">
+                            ${generateFileThumbnail(file)}
+                        </div>
+                        <div class="file-info">
+                            <div class="file-name">${file.name}</div>
+                            <div class="file-size">${file.size ? (file.size / 1024).toFixed(2) + ' KB' : 'Unknown size'}</div>
+                        </div>
+                        <div class="file-actions">
+                            <a href="${file.url}" download="${file.name}" class="download-btn" title="Download">
+                                <i class="fas fa-download"></i>
+                            </a>
+                            ${isImageFile(file.type) || isVideoFile(file.type) ? `
+                                <button class="view-btn" onclick="openFileViewer('${file.url}', '${file.type}', '${file.name}')" title="View">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            ` : ''}
+                        </div>
+                    </div>
+                `).join('');
+                
+                popupBody.innerHTML = filesHTML;
+            } else {
+                popupBody.innerHTML = '<div class="no-files">No files attached</div>';
+            }
+        }
+    });
+    
+    // Position popup to the left of the clicked element
+    const rect = event.target.getBoundingClientRect();
+    const popupWidth = 450;
+    const screenWidth = window.innerWidth;
+    
+    console.log('Click position:', rect.left, 'Screen width:', screenWidth, 'Popup width:', popupWidth);
+    
+    // Force popup to the left of the cursor
+    let leftPosition = rect.left - popupWidth - 20; // 20px gap from cursor
+    
+    console.log('Calculated left position:', leftPosition);
+    
+    // Only if popup would go off-screen to the left, then position it to the right
+    if (leftPosition < 20) {
+        leftPosition = rect.right + 20;
+        console.log('Repositioned to right:', leftPosition);
+    }
+    
+    // Ensure popup doesn't go off-screen to the right
+    if (leftPosition + popupWidth > screenWidth - 20) {
+        leftPosition = screenWidth - popupWidth - 20;
+        console.log('Adjusted for right edge:', leftPosition);
+    }
+    
+    // Final safety check
+    leftPosition = Math.max(20, leftPosition);
+    
+    console.log('Final position:', leftPosition);
+    
+    popup.style.top = rect.top + 'px';
+    popup.style.left = leftPosition + 'px';
+    
+    popup.classList.add('active');
+}
+
+function closeFilesPopup() {
+    const popup = document.getElementById('files-popup');
+    popup.classList.remove('active');
 }
 
 function calculateDaysLeft(deadline) {
@@ -1083,12 +1640,117 @@ function getDeadlineColor(deadline) {
     return '#4CAF50';
 }
 
+function openCommentModal(taskId) {
+    currentTaskId = taskId;
+    if (elements.commentModal) {
+        elements.commentModal.classList.add('active');
+    }
+}
+
+function closeCommentModal() {
+    if (elements.commentModal) {
+        elements.commentModal.classList.remove('active');
+        currentTaskId = null;
+        document.getElementById('comment-text').value = '';
+    }
+}
+
+async function submitComment() {
+    if (!currentTaskId) {
+        alert('No task selected');
+        return;
+    }
+    
+    const commentText = document.getElementById('comment-text').value.trim();
+    if (!commentText) {
+        alert('Please enter a comment');
+        return;
+    }
+    
+    try {
+        const commentsRef = ref(db, `tasks/${currentTaskId}/comments`);
+        const currentUser = await fetchCurrentUserProfile();
+        
+        const comment = {
+            authorId: userId,
+            authorName: currentUser.name,
+            content: commentText,
+            timestamp: new Date().toISOString()
+        };
+        
+        await push(commentsRef, comment);
+        closeCommentModal();
+        
+        // Refresh the timeline
+        loadWorkflows();
+        
+    } catch (error) {
+        console.error('Error submitting comment:', error);
+        alert('Failed to submit comment. Please try again.');
+    }
+}
+
+// AI Apps Panel Functions
+function toggleAIAppsPanel() {
+    const panel = document.getElementById('ai-apps-panel');
+    const button = document.getElementById('ai-apps-button');
+    
+    if (panel.classList.contains('active')) {
+        closeAIAppsPanel();
+    } else {
+        openAIAppsPanel();
+    }
+}
+
+function openAIAppsPanel() {
+    const panel = document.getElementById('ai-apps-panel');
+    const button = document.getElementById('ai-apps-button');
+    
+    panel.classList.add('active');
+    button.classList.add('active');
+}
+
+function closeAIAppsPanel() {
+    const panel = document.getElementById('ai-apps-panel');
+    const button = document.getElementById('ai-apps-button');
+    
+    panel.classList.remove('active');
+    button.classList.remove('active');
+}
+
+function openAIApp(appType) {
+    // Close the panel first
+    closeAIAppsPanel();
+    
+    // Handle different AI app types
+    switch(appType) {
+        case 'image-generator':
+            alert('Image Generator - Coming Soon!');
+            break;
+        case 'video-generator':
+            alert('Video Generator - Coming Soon!');
+            break;
+        case 'code-assistant':
+            alert('Code Assistant - Coming Soon!');
+            break;
+        case 'data-analyzer':
+            alert('Data Analyzer - Coming Soon!');
+            break;
+        case 'text-writer':
+            alert('Text Writer - Coming Soon!');
+            break;
+        case 'translator':
+            alert('Translator - Coming Soon!');
+            break;
+        default:
+            alert('AI Tool - Coming Soon!');
+    }
+}
+
 window.sendMessage = sendMessage;
 window.sendFileMessage = sendFileMessage;
 window.openTaskPopup = openTaskPopup;
-window.toggleCompletedTasks = toggleCompletedTasks;
 window.selectProfessional = selectProfessional;
-window.updateStatus = updateStatus;
 window.acceptRequest = acceptRequest;
 window.deleteRequest = deleteRequest;
 window.deleteConnection = deleteConnection;
@@ -1097,6 +1759,23 @@ window.deleteMessage = deleteMessage;
 window.confirmAction = confirmAction;
 window.closeConfirmation = closeConfirmation;
 window.toggleReaction = toggleReaction;
+window.hideChat = hideChat;
+window.showChat = showChat;
+window.openFileViewer = openFileViewer;
+window.closeFileViewer = closeFileViewer;
+window.openSubmissionModal = openSubmissionModal;
+window.closeSubmissionModal = closeSubmissionModal;
+window.removeSubmissionFile = removeSubmissionFile;
+window.submitWork = submitWork;
+window.toggleFilesPopup = toggleFilesPopup;
+window.closeFilesPopup = closeFilesPopup;
+window.openCommentModal = openCommentModal;
+window.closeCommentModal = closeCommentModal;
+window.submitComment = submitComment;
+window.toggleAIAppsPanel = toggleAIAppsPanel;
+window.openAIAppsPanel = openAIAppsPanel;
+window.closeAIAppsPanel = closeAIAppsPanel;
+window.openAIApp = openAIApp;
 
 init();
 

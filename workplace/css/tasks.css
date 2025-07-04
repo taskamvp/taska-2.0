@@ -243,14 +243,22 @@ body {
 }
 
 .chat-area { 
-    width: 42%; 
+    position: fixed;
+    top: 60px;
+    right: 0;
+    width: 400px;
+    height: calc(100vh - 60px);
     background: #fff; 
-    border-right: 1px solid #e0e0e0; 
+    border-left: 1px solid #e0e0e0; 
     overflow: hidden; 
-    min-width: 200px; 
-    max-width: 600px; 
     display: none; 
-    position: relative; 
+    z-index: 1000;
+    transition: transform 0.3s ease;
+    box-shadow: -2px 0 8px rgba(0,0,0,0.1);
+}
+
+.chat-area.chat-hidden {
+    transform: translateX(100%);
 }
 
 .chat-header { 
@@ -707,11 +715,11 @@ body {
 }
 
 .sidebar-right { 
-    width: 30%; 
+    width: 70%; 
     background: #fff; 
     overflow-y: auto; 
-    min-width: 200px; 
-    max-width: 400px; 
+    min-width: 300px; 
+    max-width: none; 
     display: none; 
     position: relative;
 }
@@ -747,20 +755,123 @@ body {
 .workflow-item .task-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.5rem;
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+    gap: 1rem;
+}
+
+.workflow-item .task-info {
+    flex: 1;
 }
 
 .workflow-item h4 { 
     color: #1a1a1a; 
     font-size: 1rem; 
-    margin: 0; 
+    margin: 0 0 0.25rem 0; 
+    font-weight: 600;
 }
 
-.workflow-item p { 
+.workflow-item .task-description {
     color: #6c757d; 
     font-size: 0.85rem; 
-    margin: 0.25rem 0; 
+    margin: 0; 
+    line-height: 1.4;
+}
+
+.workflow-item .task-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+    padding: 0.5rem 0;
+    border-top: 1px solid #f0f0f0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.workflow-item .task-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.workflow-item .status-select {
+    padding: 0.4rem 0.6rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    background: #f8f9fa;
+    font-size: 0.8rem;
+    cursor: pointer;
+    min-width: 100px;
+    transition: border-color 0.3s, background 0.3s;
+}
+
+.workflow-item .status-select:focus {
+    outline: none;
+    border-color: #4CAF50;
+    background: #fff;
+}
+
+.workflow-item .status-select option {
+    font-size: 0.8rem;
+    padding: 0.25rem;
+}
+
+.workflow-item .status-label {
+    padding: 0.4rem 0.8rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.workflow-item .status-label.completed {
+    background: #4CAF50;
+    color: #fff;
+}
+
+.workflow-item .files-count {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    background: #f8f9fa;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s, border-color 0.3s;
+    font-size: 0.85rem;
+    color: #1a1a1a;
+}
+
+.workflow-item .files-count:hover {
+    background: #e9ecef;
+    border-color: #4CAF50;
+}
+
+.workflow-item .files-count i {
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.workflow-item .file-icons {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.workflow-item .file-icon-container {
+    position: relative;
+}
+
+.workflow-item .file-icon {
+    font-size: 1.5rem;
+}
+
+.workflow-item .file-icon:hover {
+    opacity: 0.8;
 }
 
 .workflow-item .task-menu {
@@ -817,97 +928,588 @@ body {
 
 .workflow-item .deadline-container {
     position: relative;
-    margin: 0.5rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.workflow-item .deadline-slider {
-    height: 4px;
-    border-radius: 2px;
-    transition: width 0.3s ease;
+.circular-progress {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.workflow-item .days-left {
-    font-size: 0.8rem;
+.circular-progress-ring {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.progress-ring {
+    transform: rotate(-90deg);
+}
+
+.progress-ring-circle-bg {
+    fill: none;
+    stroke: #e0e0e0;
+}
+
+.progress-ring-circle {
+    fill: none;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.3s ease;
+}
+
+.progress-text {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.days-number {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    line-height: 1;
+}
+
+.days-label {
+    font-size: 0.7rem;
     color: #6c757d;
-    margin-top: 0.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 2px;
 }
 
-.workflow-item .status-select {
-    margin-top: 0.5rem;
-    padding: 0.5rem;
-    border: 1px solid #e0e0e0;
-    border-radius: 5px;
+/* Task Timeline Styles */
+.task-timeline {
+    margin-top: 1rem;
+    padding: 1rem;
     background: #f8f9fa;
-    font-size: 0.9rem;
-    width: 100%;
-    cursor: pointer;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
 }
 
-.workflow-item .status-select:focus {
-    outline: none;
-    border-color: #4CAF50;
+.timeline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #e0e0e0;
 }
 
-.workflow-item .file-icons {
+.timeline-header h5 {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #1a1a1a;
+    font-weight: 600;
+}
+
+.timeline-actions {
     display: flex;
     gap: 0.5rem;
-    margin-top: 0.5rem;
+    align-items: center;
 }
 
-.workflow-item .file-icon-container {
-    position: relative;
-}
-
-.workflow-item .file-icon {
-    font-size: 1.5rem;
-}
-
-.workflow-item .file-icon:hover {
-    opacity: 0.8;
-}
-
-.workflow-item .status-label {
-    position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
-    padding: 0.25rem 0.5rem;
-    border-radius: 12px;
-    font-size: 0.8rem;
-}
-
-.workflow-item .status-label.completed {
+.add-submission-btn {
     background: #4CAF50;
     color: #fff;
-}
-
-.completed-tasks {
-    margin: 1rem;
-    padding: 0.5rem;
-}
-
-.completed-tasks h4 {
-    font-size: 1rem;
-    color: #1a1a1a;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
     cursor: pointer;
+    transition: background 0.3s;
     display: flex;
     align-items: center;
     gap: 0.5rem;
 }
 
-.completed-tasks .toggle-icon {
-    transition: transform 0.3s;
+.add-submission-btn:hover {
+    background: #45a049;
 }
 
-.completed-tasks .toggle-icon.active {
-    transform: rotate(180deg);
+.timeline-content {
+    max-height: 300px;
+    overflow-y: auto;
 }
 
-.completed-tasks-list {
+.timeline-empty {
+    text-align: center;
+    color: #6c757d;
+    font-size: 0.9rem;
+    padding: 2rem 0;
+    font-style: italic;
+}
+
+.timeline-item {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+.timeline-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 40px;
+    bottom: -1rem;
+    width: 2px;
+    background: #e0e0e0;
+}
+
+.timeline-marker {
+    width: 32px;
+    height: 32px;
+    background: #4CAF50;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    z-index: 1;
+}
+
+.timeline-marker i {
+    color: #fff;
+    font-size: 0.8rem;
+}
+
+.timeline-marker.comment-marker {
+    background: #2196F3;
+}
+
+.timeline-item-content {
+    flex: 1;
+    background: #fff;
+    border-radius: 8px;
+    padding: 0.75rem;
+    border: 1px solid #e0e0e0;
+}
+
+.timeline-item-content .timeline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.submission-author,
+.comment-author {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.submission-date,
+.comment-date {
+    font-size: 0.75rem;
+    color: #6c757d;
+}
+
+.submission-comment,
+.comment-content {
+    font-size: 0.9rem;
+    color: #1a1a1a;
+    margin-bottom: 0.75rem;
+    line-height: 1.4;
+}
+
+.comment-content {
+    margin-bottom: 0;
+}
+
+.add-comment-btn {
+    background: #2196F3;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: background 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.add-comment-btn:hover {
+    background: #1976D2;
+}
+
+/* Comment Modal Styles */
+.comment-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
     display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
 }
 
-.completed-tasks-list.active {
+.comment-modal.active {
+    display: flex;
+}
+
+.comment-modal .modal-content {
+    background: #fff;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.comment-modal .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.comment-modal .modal-header h3 {
+    margin: 0;
+    color: #1a1a1a;
+    font-size: 1.2rem;
+}
+
+.comment-modal .modal-header .close-modal {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: #6c757d;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: background 0.3s;
+}
+
+.comment-modal .modal-header .close-modal:hover {
+    background: #f1f3f5;
+}
+
+.comment-modal .modal-body {
+    padding: 1.5rem;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.comment-modal .form-group {
+    margin-bottom: 1.5rem;
+}
+
+.comment-modal .form-group label {
     display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    color: #1a1a1a;
+    font-weight: 500;
+}
+
+.comment-modal .form-group textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    resize: vertical;
+    min-height: 120px;
+}
+
+.comment-modal .form-group textarea:focus {
+    outline: none;
+    border-color: #2196F3;
+}
+
+.comment-modal .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding: 1.5rem;
+    border-top: 1px solid #e0e0e0;
+    background: #f8f9fa;
+}
+
+.comment-modal .btn-secondary {
+    background: #e0e0e0;
+    color: #1a1a1a;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.comment-modal .btn-secondary:hover {
+    background: #d0d0d0;
+}
+
+.comment-modal .btn-primary {
+    background: #2196F3;
+    color: #fff;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.comment-modal .btn-primary:hover {
+    background: #1976D2;
+}
+
+/* Files Popup Styles */
+.files-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    display: none;
+    z-index: 1500;
+    pointer-events: none;
+}
+
+.files-popup.active {
+    display: block;
+}
+
+.files-popup .popup-content {
+    position: absolute;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    width: 450px;
+    max-height: 80vh;
+    overflow: hidden;
+    pointer-events: auto;
+}
+
+.files-popup .popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #e0e0e0;
+    background: #f8f9fa;
+}
+
+.files-popup .popup-header h4 {
+    margin: 0;
+    color: #1a1a1a;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.files-popup .close-popup {
+    background: #e81123;
+    border: none;
+    font-size: 0.9rem;
+    color: #fff;
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+    font-weight: bold;
+}
+
+.files-popup .close-popup:hover {
+    background: #c50e1f;
+}
+
+.files-popup .popup-body {
+    padding: 1rem;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.popup-file-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    transition: background 0.3s;
+}
+
+.popup-file-item:hover {
+    background: #f8f9fa;
+}
+
+.popup-file-item .file-thumbnail-container {
+    width: 60px;
+    height: 60px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+}
+
+.popup-file-item .file-thumbnail-container .file-thumbnail {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.popup-file-item .file-thumbnail-container .file-thumbnail:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.popup-file-item .file-thumbnail-container .file-thumbnail img,
+.popup-file-item .file-thumbnail-container .file-thumbnail video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.popup-file-item .file-thumbnail-container .file-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s;
+    border-radius: 8px;
+}
+
+.popup-file-item .file-thumbnail-container .file-thumbnail:hover .file-overlay {
+    opacity: 1;
+}
+
+.popup-file-item .file-thumbnail-container .file-overlay i {
+    color: #fff;
+    font-size: 1.2rem;
+}
+
+.popup-file-item .file-thumbnail-container .image-thumbnail .file-overlay i {
+    color: #fff;
+}
+
+.popup-file-item .file-thumbnail-container .video-thumbnail .file-overlay i {
+    color: #fff;
+    background: rgba(0,0,0,0.7);
+    padding: 0.5rem;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.popup-file-item .file-thumbnail-container .file-icon-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+}
+
+.popup-file-item .file-thumbnail-container .file-icon {
+    font-size: 1.5rem;
+}
+
+.popup-file-item .file-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.popup-file-item .file-name {
+    font-size: 0.9rem;
+    color: #1a1a1a;
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.popup-file-item .file-size {
+    font-size: 0.8rem;
+    color: #6c757d;
+}
+
+.popup-file-item .file-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-shrink: 0;
+}
+
+.popup-file-item .download-btn,
+.popup-file-item .view-btn {
+    background: #4CAF50;
+    color: #fff;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    transition: background 0.3s;
+    text-decoration: none;
+}
+
+.popup-file-item .download-btn:hover,
+.popup-file-item .view-btn:hover {
+    background: #45a049;
+}
+
+.popup-file-item .view-btn {
+    background: #2196F3;
+}
+
+.popup-file-item .view-btn:hover {
+    background: #1976D2;
+}
+
+.no-files {
+    text-align: center;
+    color: #6c757d;
+    font-size: 0.9rem;
+    padding: 2rem;
+    font-style: italic;
 }
 
 .confirmation-dialog {
@@ -986,6 +1588,63 @@ body {
 
 .confirmation-dialog .dialog-actions .delete:hover {
     background: #e04848;
+}
+
+/* File Viewer Modal */
+.file-viewer-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.9);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+.file-viewer-modal.active {
+    display: flex;
+}
+
+.file-viewer-modal .modal-content {
+    position: relative;
+    max-width: 90%;
+    max-height: 90%;
+    background: transparent;
+}
+
+.file-viewer-modal .close-modal {
+    position: absolute;
+    top: -40px;
+    right: 0;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: background 0.3s;
+}
+
+.file-viewer-modal .close-modal:hover {
+    background: rgba(255,255,255,0.2);
+}
+
+.file-viewer-modal .file-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.file-viewer-modal .file-content img,
+.file-viewer-modal .file-content video {
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
 }
 
 /* Skeleton Loader Styles */
@@ -1083,5 +1742,805 @@ body {
         bottom: auto;
         top: 100%;
         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+}
+
+.chat-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.chat-toggle-btn {
+    position: fixed;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #4CAF50;
+    color: #fff;
+    padding: 1rem 0.75rem;
+    border-radius: 8px 0 0 8px;
+    cursor: pointer;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: -2px 0 8px rgba(0,0,0,0.1);
+    z-index: 1001;
+    transition: background 0.3s;
+}
+
+.chat-toggle-btn:hover {
+    background: #45a049;
+}
+
+.chat-toggle-btn i {
+    font-size: 1.2rem;
+}
+
+.chat-toggle-btn span {
+    font-size: 0.8rem;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+}
+
+.file-thumbnail {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.file-thumbnail:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.file-thumbnail img,
+.file-thumbnail video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.file-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s;
+    border-radius: 8px;
+}
+
+.file-thumbnail:hover .file-overlay {
+    opacity: 1;
+}
+
+.file-overlay i {
+    color: #fff;
+    font-size: 1.2rem;
+}
+
+.image-thumbnail .file-overlay i {
+    color: #fff;
+}
+
+.video-thumbnail .file-overlay i {
+    color: #fff;
+    background: rgba(0,0,0,0.7);
+    padding: 0.5rem;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.workflow-item .task-menu {
+    position: relative;
+}
+
+.workflow-item .task-menu-icon {
+    font-size: 1rem;
+    color: #6c757d;
+    cursor: pointer;
+}
+
+.workflow-item .task-menu-icon:hover {
+    color: #1a1a1a;
+}
+
+.workflow-item .task-menu-dropdown {
+    display: none;
+    position: absolute;
+    bottom: 100%;
+    right: 0;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+    z-index: 200;
+    min-width: 120px;
+}
+
+.workflow-item .task-menu-dropdown.active {
+    display: block;
+}
+
+.workflow-item .task-menu-dropdown button {
+    display: block;
+    width: 100%;
+    padding: 0.5rem 1rem;
+    background: none;
+    border: none;
+    text-align: left;
+    font-size: 0.9rem;
+    color: #1a1a1a;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.workflow-item .task-menu-dropdown button.delete-task-btn {
+    color: #FF5252;
+}
+
+.workflow-item .task-menu-dropdown button:hover {
+    background: #f1f3f5;
+}
+
+.workflow-item .deadline-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.circular-progress {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.circular-progress-ring {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.progress-ring {
+    transform: rotate(-90deg);
+}
+
+.progress-ring-circle-bg {
+    fill: none;
+    stroke: #e0e0e0;
+}
+
+.progress-ring-circle {
+    fill: none;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.3s ease;
+}
+
+.progress-text {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.days-number {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    line-height: 1;
+}
+
+.days-label {
+    font-size: 0.7rem;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+}
+
+/* Task Timeline Styles */
+.task-timeline {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+}
+
+.timeline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.timeline-header h5 {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #1a1a1a;
+    font-weight: 600;
+}
+
+.timeline-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.add-submission-btn {
+    background: #4CAF50;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: background 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.add-submission-btn:hover {
+    background: #45a049;
+}
+
+.timeline-content {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.timeline-empty {
+    text-align: center;
+    color: #6c757d;
+    font-size: 0.9rem;
+    padding: 2rem 0;
+    font-style: italic;
+}
+
+.timeline-item {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+.timeline-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 40px;
+    bottom: -1rem;
+    width: 2px;
+    background: #e0e0e0;
+}
+
+.timeline-marker {
+    width: 32px;
+    height: 32px;
+    background: #4CAF50;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    z-index: 1;
+}
+
+.timeline-marker i {
+    color: #fff;
+    font-size: 0.8rem;
+}
+
+.timeline-marker.comment-marker {
+    background: #2196F3;
+}
+
+.timeline-item-content {
+    flex: 1;
+    background: #fff;
+    border-radius: 8px;
+    padding: 0.75rem;
+    border: 1px solid #e0e0e0;
+}
+
+.timeline-item-content .timeline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.submission-author {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.submission-date {
+    font-size: 0.75rem;
+    color: #6c757d;
+}
+
+.submission-comment {
+    font-size: 0.9rem;
+    color: #1a1a1a;
+    margin-bottom: 0.75rem;
+    line-height: 1.4;
+}
+
+.submission-files {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.submission-file {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    background: #f8f9fa;
+    border-radius: 6px;
+    text-decoration: none;
+    color: #1a1a1a;
+    transition: background 0.3s;
+    border: 1px solid #e0e0e0;
+}
+
+.submission-file:hover {
+    background: #e9ecef;
+}
+
+.submission-file i {
+    font-size: 1.2rem;
+    color: #6c757d;
+}
+
+.submission-file span {
+    font-size: 0.85rem;
+    flex: 1;
+}
+
+/* Submission Modal Styles */
+.submission-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+.submission-modal.active {
+    display: flex;
+}
+
+.submission-modal .modal-content {
+    background: #fff;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.submission-modal .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.submission-modal .modal-header h3 {
+    margin: 0;
+    color: #1a1a1a;
+    font-size: 1.2rem;
+}
+
+.submission-modal .modal-header .close-modal {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: #6c757d;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: background 0.3s;
+}
+
+.submission-modal .modal-header .close-modal:hover {
+    background: #f1f3f5;
+}
+
+.submission-modal .modal-body {
+    padding: 1.5rem;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.submission-modal .form-group {
+    margin-bottom: 1.5rem;
+}
+
+.submission-modal .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    color: #1a1a1a;
+    font-weight: 500;
+}
+
+.submission-modal .form-group textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    resize: vertical;
+    min-height: 80px;
+}
+
+.submission-modal .form-group textarea:focus {
+    outline: none;
+    border-color: #4CAF50;
+}
+
+.file-upload-area {
+    border: 2px dashed #e0e0e0;
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.3s, background 0.3s;
+    position: relative;
+}
+
+.file-upload-area:hover,
+.file-upload-area.dragover {
+    border-color: #4CAF50;
+    background: #f8f9fa;
+}
+
+.file-upload-area input[type="file"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.upload-placeholder {
+    pointer-events: none;
+}
+
+.upload-placeholder i {
+    font-size: 2rem;
+    color: #6c757d;
+    margin-bottom: 0.5rem;
+}
+
+.upload-placeholder p {
+    margin: 0;
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.uploaded-files {
+    margin-top: 1rem;
+}
+
+.uploaded-file {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    border: 1px solid #e0e0e0;
+}
+
+.uploaded-file i {
+    font-size: 1.2rem;
+    color: #6c757d;
+}
+
+.uploaded-file span {
+    flex: 1;
+    font-size: 0.9rem;
+    color: #1a1a1a;
+}
+
+.uploaded-file .remove-file {
+    background: #FF5252;
+    color: #fff;
+    border: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    transition: background 0.3s;
+}
+
+.uploaded-file .remove-file:hover {
+    background: #e04848;
+}
+
+.submission-modal .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding: 1.5rem;
+    border-top: 1px solid #e0e0e0;
+    background: #f8f9fa;
+}
+
+.submission-modal .btn-secondary {
+    background: #e0e0e0;
+    color: #1a1a1a;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.submission-modal .btn-secondary:hover {
+    background: #d0d0d0;
+}
+
+.submission-modal .btn-primary {
+    background: #4CAF50;
+    color: #fff;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.submission-modal .btn-primary:hover {
+    background: #45a049;
+}
+
+/* AI Apps Panel Styles */
+.ai-apps-panel {
+    position: fixed;
+    bottom: 100px;
+    right: 20px;
+    width: 400px;
+    max-height: 500px;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+    z-index: 1500;
+    display: none;
+    overflow: hidden;
+    border: 1px solid #e0e0e0;
+}
+
+.ai-apps-panel.active {
+    display: block;
+    animation: slideInUp 0.3s ease-out;
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.ai-apps-panel .panel-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.ai-apps-panel .panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #e0e0e0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+}
+
+.ai-apps-panel .panel-header h4 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.ai-apps-panel .close-panel {
+    background: rgba(255,255,255,0.2);
+    border: none;
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s;
+}
+
+.ai-apps-panel .close-panel:hover {
+    background: rgba(255,255,255,0.3);
+}
+
+.ai-apps-panel .panel-body {
+    padding: 1rem;
+    overflow-y: auto;
+    max-height: 400px;
+}
+
+.ai-apps-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+}
+
+.ai-app-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+}
+
+.ai-app-item:hover {
+    background: #fff;
+    border-color: #667eea;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+}
+
+.ai-app-item .app-icon {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.ai-app-item .app-icon i {
+    color: #fff;
+    font-size: 1.2rem;
+}
+
+.ai-app-item .app-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.ai-app-item .app-info h5 {
+    margin: 0 0 0.25rem 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.ai-app-item .app-info p {
+    margin: 0;
+    font-size: 0.75rem;
+    color: #6c757d;
+    line-height: 1.3;
+}
+
+/* AI Apps Floating Button */
+.ai-apps-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    padding: 1rem 1.5rem;
+    border-radius: 50px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+    z-index: 1400;
+    transition: all 0.3s ease;
+    border: none;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.ai-apps-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(102, 126, 234, 0.4);
+}
+
+.ai-apps-button.active {
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+}
+
+.ai-apps-button i {
+    font-size: 1.1rem;
+}
+
+.ai-apps-button span {
+    font-weight: 500;
+}
+
+/* Responsive adjustments for AI apps panel */
+@media (max-width: 768px) {
+    .ai-apps-panel {
+        width: calc(100vw - 40px);
+        right: 20px;
+        left: 20px;
+        bottom: 100px;
+    }
+    
+    .ai-apps-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .ai-apps-button {
+        bottom: 20px;
+        right: 20px;
+        padding: 0.75rem 1.25rem;
     }
 }
