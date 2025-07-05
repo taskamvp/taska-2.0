@@ -339,6 +339,37 @@
             color: #666;
         }
 
+        .student-status.accepted {
+            color: #137333;
+            font-weight: 500;
+        }
+
+        .student-status.rejected {
+            color: #d93025;
+            font-weight: 500;
+        }
+
+        .student-status.pending {
+            color: #ea8600;
+            font-weight: 500;
+        }
+
+        .student-status.waitlist {
+            color: #1a73e8;
+            font-weight: 500;
+        }
+
+        .student-status.no-primary,
+        .student-status.removed,
+        .student-status.unknown {
+            color: #666;
+            font-style: italic;
+        }
+
+        .student-status i {
+            margin-right: 0.25rem;
+        }
+
         .files-section {
             margin-top: 1rem;
         }
@@ -1518,11 +1549,103 @@ async function init() {
             await fetchCurrentUserProfile();
             await fetchAllStudents();
             loadAssignedTasks();
+            // Start real-time monitoring
+            startRealTimeMonitoring();
         } else {
             console.error("User not authenticated");
             window.location.href = "../index.html";
         }
     });
+}
+
+// Start real-time monitoring for student assignment status changes
+function startRealTimeMonitoring() {
+    const tasksRef = ref(db, 'assignedTasks');
+    onValue(tasksRef, (snapshot) => {
+        if (snapshot.exists()) {
+            const tasks = snapshot.val();
+            // Check for tasks that need waitlist promotion
+            for (const taskId in tasks) {
+                const task = tasks[taskId];
+                if (task.professionalId === userId) {
+                    checkAndPromoteWaitlistStudent(taskId, task);
+                }
+            }
+        }
+    });
+}
+
+// Check if primary student rejected and promote next waitlist student
+async function checkAndPromoteWaitlistStudent(taskId, task) {
+    if (!task.primaryStudent || !task.waitlistStudents || task.waitlistStudents.length === 0) {
+        return;
+    }
+    
+    try {
+        // Check primary student's assignment status
+        const primaryStudentRef = ref(db, `students/${task.primaryStudent}/assignedTasks/${taskId}`);
+        const primarySnapshot = await get(primaryStudentRef);
+        
+        if (!primarySnapshot.exists()) {
+            // Primary student assignment was removed (likely rejected)
+            await promoteNextWaitlistStudent(taskId, task);
+        } else {
+            const primaryAssignment = primarySnapshot.val();
+            if (primaryAssignment.status === 'rejected') {
+                await promoteNextWaitlistStudent(taskId, task);
+            }
+        }
+    } catch (error) {
+        console.error('Error checking waitlist promotion:', error);
+    }
+}
+
+// Promote the next student from waitlist to primary
+async function promoteNextWaitlistStudent(taskId, task) {
+    try {
+        const waitlist = [...task.waitlistStudents];
+        if (waitlist.length === 0) {
+            // No more waitlist students, update task to show no primary
+            await update(ref(db, `assignedTasks/${taskId}`), {
+                primaryStudent: null,
+                waitlistStudents: [],
+                currentWaitlistIndex: 0
+            });
+            return;
+        }
+        
+        // Get the next student from waitlist
+        const nextStudentId = waitlist.shift();
+        
+        // Update the main task
+        await update(ref(db, `assignedTasks/${taskId}`), {
+            primaryStudent: nextStudentId,
+            waitlistStudents: waitlist,
+            currentWaitlistIndex: 0
+        });
+        
+        // Update the promoted student's assignment
+        const nextStudentAssignmentRef = ref(db, `students/${nextStudentId}/assignedTasks/${taskId}`);
+        await update(nextStudentAssignmentRef, {
+            status: 'pending',
+            assignmentType: 'primary',
+            waitlistPosition: null,
+            promotedAt: new Date().toISOString()
+        });
+        
+        // Remove the old primary student's assignment if it exists
+        if (task.primaryStudent) {
+            await remove(ref(db, `students/${task.primaryStudent}/assignedTasks/${taskId}`));
+        }
+        
+        console.log(`Promoted student ${nextStudentId} to primary for task ${taskId}`);
+        
+        // Reload tasks to show updated status
+        loadAssignedTasks();
+        
+    } catch (error) {
+        console.error('Error promoting waitlist student:', error);
+    }
 }
 
 async function fetchCurrentUserProfile() {
@@ -1915,11 +2038,11 @@ async function loadAssignedTasks() {
             });
 
             // Create task cards for sorted tasks
-            professionalTasks.forEach(({ taskId, ...task }) => {
-                    hasTasks = true;
-                    const taskCard = createTaskCard(task, taskId);
-                    activeGigsList.appendChild(taskCard);
-            });
+            for (const { taskId, ...task } of professionalTasks) {
+                hasTasks = true;
+                const taskCard = await createTaskCard(task, taskId);
+                activeGigsList.appendChild(taskCard);
+            }
 
             if (!hasTasks) {
                 activeGigsList.innerHTML = `
@@ -1948,7 +2071,7 @@ async function loadAssignedTasks() {
     }
 }
 
-function createTaskCard(task, taskId) {
+async function createTaskCard(task, taskId) {
     const card = document.createElement('div');
     card.className = 'gig-card';
     
@@ -1967,7 +2090,7 @@ function createTaskCard(task, taskId) {
         '../assets/avatar/1.png';
     
     // Get primary student status
-    const primaryStudentStatus = getPrimaryStudentStatus(task, taskId);
+    const primaryStudentStatus = await getPrimaryStudentStatus(task, taskId);
     
     card.innerHTML = `
         <div class="gig-header">
