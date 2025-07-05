@@ -1,0 +1,2033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taska - Task Assignment</title>
+    <link rel="stylesheet" href="css/gigs.css">
+   
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Clean, Minimal Design */
+        body {
+            background: #fafafa;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Navbar Styles - Fixed Height */
+        .navbar {
+            background: #fff;
+            padding: 1rem 2rem;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .navbar .logo {
+            font-size: 1.5rem;
+            color: #1a1a1a;
+        }
+
+        .navbar .nav-menu {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar .nav-menu li a {
+            color: #1a1a1a;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: color 0.3s;
+        }
+
+        .navbar .nav-menu li a:hover {
+            color: #4CAF50;
+        }
+
+        .navbar .nav-menu li a.active {
+            color: #0000ff;
+        }
+
+        .navbar .hamburger {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #1a1a1a;
+        }
+
+        .gigs-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 2rem;
+            align-items: start;
+            margin-top: 90px; /* Adjust for navbar height (1rem top + 1rem bottom padding + content) */
+        }
+
+        /* Assigned Tasks Section */
+        .active-gigs {
+            background: white;
+            border: 1px solid #e0e0e0;
+            padding: 1.5rem;
+        }
+
+        .active-gigs h2 {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: #333;
+            margin: 0 0 1.5rem 0;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        /* Create Task Button */
+        .gigs-actions {
+            position: sticky;
+            top: 2rem;
+        }
+
+        .action-card.create-task {
+            background: white;
+            border: 1px solid #e0e0e0;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .action-card h3 {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #333;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .action-card p {
+            color: #666;
+            font-size: 0.9rem;
+            margin: 0 0 1rem 0;
+            line-height: 1.4;
+        }
+
+        .action-btn.create-btn {
+            background: #1a73e8;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .action-btn.create-btn:hover {
+            background: #1557b0;
+        }
+
+        /* Task Cards - Clean Design */
+        .gig-card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            margin-bottom: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .gig-card:hover {
+            border-color: #1a73e8;
+        }
+
+        .gig-header {
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1.5rem;
+        }
+
+        .gig-info {
+            flex: 1;
+        }
+
+        .gig-info h4 {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #333;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .gig-description {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            margin: 0 0 1rem 0;
+        }
+
+        .gig-meta {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .gig-category {
+            background: #f1f3f4;
+            color: #333;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-transform: capitalize;
+        }
+
+        .deadline-info {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .deadline-info.urgent {
+            background: #fce8e6;
+            color: #d93025;
+        }
+
+        .deadline-info.warning {
+            background: #fef7e0;
+            color: #ea8600;
+        }
+
+        .deadline-info.normal {
+            background: #e6f4ea;
+            color: #137333;
+        }
+
+        .gig-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            min-width: 180px;
+        }
+
+        .assignment-info {
+            background: #f8f9fa;
+            padding: 0.75rem;
+            border: 1px solid #e0e0e0;
+        }
+
+        .primary-assignment, .waitlist-info {
+            margin-bottom: 0.25rem;
+            font-size: 0.85rem;
+        }
+
+        .primary-assignment strong {
+            color: #137333;
+        }
+
+        .waitlist-info strong {
+            color: #1a73e8;
+        }
+
+        .view-details-btn {
+            background: #1a73e8;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .view-details-btn:hover {
+            background: #1557b0;
+        }
+
+        /* Modal Styles - Clean */
+        .gig-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gig-modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border: 1px solid #e0e0e0;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .large-modal {
+            max-width: 900px;
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #333;
+            margin: 0;
+        }
+
+        .modal-header button {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: #666;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-actions {
+            padding: 1.5rem;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+        }
+
+        .cancel-btn {
+            background: #f1f3f4;
+            color: #333;
+            border: 1px solid #e0e0e0;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .edit-btn, .save-btn, .confirm-btn {
+            background: #1a73e8;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 0.25rem;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #e0e0e0;
+            font-size: 0.9rem;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #1a73e8;
+        }
+
+        /* Priority Management - Drag & Drop */
+        .priority-management {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .priority-drag-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .priority-section {
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            padding: 1rem;
+        }
+
+        .priority-section h4 {
+            margin: 0 0 1rem 0;
+            color: #333;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .priority-student, .priority-students {
+            min-height: 60px;
+            background: white;
+            border: 1px solid #e0e0e0;
+            padding: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .change-priority-btn {
+            background: #f1f3f4;
+            color: #333;
+            border: 1px solid #e0e0e0;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+
+        /* Drag & Drop Styles */
+        .draggable-student {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background: white;
+            border: 1px solid #e0e0e0;
+            margin-bottom: 0.25rem;
+            cursor: grab;
+            transition: background 0.2s;
+        }
+
+        .draggable-student:hover {
+            background: #f8f9fa;
+        }
+
+        .draggable-student.dragging {
+            opacity: 0.5;
+            cursor: grabbing;
+        }
+
+        .drag-handle {
+            color: #666;
+            cursor: grab;
+            padding: 0.25rem;
+        }
+
+        .drag-handle:active {
+            cursor: grabbing;
+        }
+
+        .drop-zone {
+            min-height: 40px;
+            border: 2px dashed #e0e0e0;
+            margin: 0.5rem 0;
+            transition: border-color 0.2s;
+        }
+
+        .drop-zone.drag-over {
+            border-color: #1a73e8;
+            background: #f8f9fa;
+        }
+
+        .priority-instructions {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+        }
+
+        .priority-instructions p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        /* Task Details Styles */
+        .task-details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .detail-section {
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            padding: 1rem;
+        }
+
+        .detail-section h4 {
+            margin: 0 0 1rem 0;
+            color: #333;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .detail-item {
+            margin-bottom: 0.5rem;
+            padding: 0.25rem 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+
+        .detail-item strong {
+            color: #333;
+            font-weight: 500;
+            min-width: 80px;
+            display: inline-block;
+        }
+
+        .student-detail {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background: white;
+            border: 1px solid #e0e0e0;
+            margin-bottom: 0.25rem;
+        }
+
+        .student-avatar {
+            width: 32px;
+            height: 32px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .student-name {
+            font-weight: 500;
+            color: #333;
+            font-size: 0.9rem;
+        }
+
+        .student-status {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem 2rem;
+            }
+
+            .navbar .logo {
+                font-size: 1.5rem;
+            }
+
+            .navbar .nav-menu {
+                display: none;
+            }
+
+            .navbar .hamburger {
+                display: block;
+            }
+
+            .gigs-container {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                padding: 1rem;
+                margin-top: 90px; /* Keep same margin as desktop */
+            }
+
+            .gig-header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .gig-actions {
+                min-width: auto;
+            }
+
+            .priority-management {
+                grid-template-columns: 1fr;
+            }
+
+            .task-details-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 1rem;
+            }
+        }
+
+        /* No tasks message */
+        .no-gigs {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+        }
+
+        .no-gigs i {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="mobile-message">
+        <p>Please use a desktop for a better experience.</p>
+    </div>
+    <nav class="navbar">
+        <a href="../index.html">
+            <div class="logo">Taska</div>
+        </a>
+        <ul class="nav-menu">
+            <li><a href="explore.html">Explore</a></li>
+            <li><a href="tasks.html">Workplace</a></li>
+            <li><a href="gigs.html">Tasks</a></li>
+            <li><a href="profile.html">Account</a></li>
+        </ul>
+        <div class="hamburger">☰</div>
+    </nav>
+
+    <div class="gigs-container">
+        <div class="active-gigs">
+            <h2>Assigned Tasks</h2>
+            <div id="active-gigs-list" class="gigs-list">
+                <!-- Assigned tasks will be populated here -->
+            </div>
+        </div>
+
+        <div class="gigs-actions">
+            <div class="action-card create-task">
+                <h3>Create New Task</h3>
+                <p>Create a new task and assign it to one or multiple students</p>
+                <button class="action-btn create-btn" onclick="openCreateTaskModal()">
+                    <i class="fas fa-plus"></i> Create Task
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Task Modal -->
+    <div class="gig-modal" id="create-task-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create New Task</h3>
+                <button onclick="closeCreateTaskModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="task-title">Task Title</label>
+                    <input type="text" id="task-title" placeholder="Enter task title">
+                </div>
+                <div class="form-group">
+                    <label for="task-description">Description</label>
+                    <textarea id="task-description" placeholder="Describe the task requirements"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="task-deadline">Deadline</label>
+                    <input type="date" id="task-deadline">
+                </div>
+                <div class="form-group">
+                    <label for="task-category">Category</label>
+                    <select id="task-category">
+                        <option value="web-development">Web Development</option>
+                        <option value="mobile-development">Mobile Development</option>
+                        <option value="design">Design</option>
+                        <option value="writing">Writing</option>
+                        <option value="marketing">Marketing</option>
+                        <option value="data-analysis">Data Analysis</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="task-files">Attach Files</label>
+                    <input type="file" id="task-files" multiple>
+                    <div id="task-files-list"></div>
+                </div>
+                <div class="form-group">
+                    <label>Assign to Students</label>
+                    <div class="student-assignment">
+                        <div class="assignment-section">
+                            <h4>Primary Assignment</h4>
+                            <button type="button" class="assign-students-btn primary-btn" onclick="openStudentSearchModal('primary')">
+                                <i class="fas fa-user-check"></i> Assign Primary Student
+                            </button>
+                            <div id="primary-student-list" class="selected-students primary-students">
+                                <!-- Primary assigned student will be shown here -->
+                            </div>
+                        </div>
+                        <div class="assignment-section">
+                            <h4>Waitlist (Up to 5 students)</h4>
+                            <button type="button" class="assign-students-btn waitlist-btn" onclick="openStudentSearchModal('waitlist')">
+                                <i class="fas fa-user-clock"></i> Add to Waitlist
+                            </button>
+                            <div id="waitlist-students-list" class="selected-students waitlist-students">
+                                <!-- Waitlisted students will be shown here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="cancel-btn" onclick="closeCreateTaskModal()">Cancel</button>
+                <button class="create-btn" onclick="createTask()">Create Task</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Student Search Modal -->
+    <div class="gig-modal" id="student-search-modal">
+        <div class="modal-content large-modal">
+            <div class="modal-header">
+                <h3>Select Students</h3>
+                <button onclick="closeStudentSearchModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="search-section">
+                    <div class="ai-search-container">
+                        <div class="search-input">
+                            <input type="text" id="student-search" placeholder="Search students by name, skills, education, or describe what you're looking for...">
+                            <button onclick="searchStudents()">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                        <div class="ai-suggestions" id="ai-suggestions">
+                            <div class="suggestion-item" onclick="useSuggestion('web developers with React experience')">
+                                <i class="fas fa-lightbulb"></i>
+                                <span>web developers with React experience</span>
+                            </div>
+                            <div class="suggestion-item" onclick="useSuggestion('designers with UI/UX skills')">
+                                <i class="fas fa-lightbulb"></i>
+                                <span>designers with UI/UX skills</span>
+                            </div>
+                            <div class="suggestion-item" onclick="useSuggestion('writers with technical background')">
+                                <i class="fas fa-lightbulb"></i>
+                                <span>writers with technical background</span>
+                            </div>
+                            <div class="suggestion-item" onclick="useSuggestion('data analysts with Python skills')">
+                                <i class="fas fa-lightbulb"></i>
+                                <span>data analysts with Python skills</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="search-filters">
+                        <select id="skill-filter">
+                            <option value="">All Skills</option>
+                            <option value="web-development">Web Development</option>
+                            <option value="mobile-development">Mobile Development</option>
+                            <option value="design">Design</option>
+                            <option value="writing">Writing</option>
+                            <option value="marketing">Marketing</option>
+                            <option value="data-analysis">Data Analysis</option>
+                        </select>
+                        <select id="education-filter">
+                            <option value="">All Education</option>
+                            <option value="computer-science">Computer Science</option>
+                            <option value="engineering">Engineering</option>
+                            <option value="design">Design</option>
+                            <option value="business">Business</option>
+                            <option value="arts">Arts</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="search-results-container">
+                    <div class="students-results" id="students-results">
+                        <!-- Search results will be populated here -->
+                    </div>
+                    <div class="student-profile-panel" id="student-profile-panel">
+                        <!-- Student profile will be shown here -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="cancel-btn" onclick="closeStudentSearchModal()">Cancel</button>
+                <button class="confirm-btn" onclick="confirmStudentSelection()">Confirm Selection</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="gig-modal" id="success-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="success-title">Success!</h3>
+                <button onclick="closeSuccessModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="success-message" id="success-message">
+                    <!-- Success message will be populated here -->
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="success-btn" onclick="closeSuccessModal()">Continue</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Task Details Modal -->
+    <div class="gig-modal" id="task-details-modal">
+        <div class="modal-content large-modal">
+            <div class="modal-header">
+                <h3 id="task-details-title">Task Details</h3>
+                <button onclick="closeTaskDetailsModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="task-details-body">
+                <!-- Task details will be populated here -->
+            </div>
+            <div class="modal-actions">
+                <button class="edit-btn" onclick="editCurrentTask()">
+                    <i class="fas fa-edit"></i> Edit Task
+                </button>
+                <button class="cancel-btn" onclick="closeTaskDetailsModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Task Modal -->
+    <div class="gig-modal" id="edit-task-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edit Task</h3>
+                <button onclick="closeEditTaskModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="edit-task-title">Task Title</label>
+                    <input type="text" id="edit-task-title" placeholder="Enter task title">
+                </div>
+                <div class="form-group">
+                    <label for="edit-task-description">Description</label>
+                    <textarea id="edit-task-description" placeholder="Describe the task requirements"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="edit-task-deadline">Deadline</label>
+                    <input type="date" id="edit-task-deadline">
+                </div>
+                <div class="form-group">
+                    <label for="edit-task-category">Category</label>
+                    <select id="edit-task-category">
+                        <option value="web-development">Web Development</option>
+                        <option value="mobile-development">Mobile Development</option>
+                        <option value="design">Design</option>
+                        <option value="writing">Writing</option>
+                        <option value="marketing">Marketing</option>
+                        <option value="data-analysis">Data Analysis</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Student Priority Management</label>
+                    <div class="priority-management">
+                        <div class="priority-section">
+                            <h4>Primary Student</h4>
+                            <div id="edit-primary-student" class="priority-student">
+                                <!-- Primary student will be shown here -->
+                            </div>
+                            <button type="button" class="change-priority-btn" onclick="openPriorityChangeModal('primary')">
+                                <i class="fas fa-exchange-alt"></i> Change Primary
+                            </button>
+                        </div>
+                        <div class="priority-section">
+                            <h4>Waitlist Students</h4>
+                            <div id="edit-waitlist-students" class="priority-students">
+                                <!-- Waitlist students will be shown here -->
+                            </div>
+                            <button type="button" class="change-priority-btn" onclick="openPriorityChangeModal('waitlist')">
+                                <i class="fas fa-exchange-alt"></i> Manage Waitlist
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="cancel-btn" onclick="closeEditTaskModal()">Cancel</button>
+                <button class="save-btn" onclick="saveTaskChanges()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Priority Change Modal -->
+    <div class="gig-modal" id="priority-change-modal">
+        <div class="modal-content large-modal">
+            <div class="modal-header">
+                <h3 id="priority-change-title">Manage Student Priority</h3>
+                <button onclick="closePriorityChangeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="priority-drag-container">
+                    <div class="priority-section">
+                        <h4>Primary Student</h4>
+                        <div id="primary-drop-zone" class="drop-zone">
+                            <div id="primary-student-display">
+                                <!-- Primary student will be shown here -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="priority-section">
+                        <h4>Waitlist Students</h4>
+                        <div id="waitlist-drop-zone" class="drop-zone">
+                            <div id="waitlist-students-display">
+                                <!-- Waitlist students will be shown here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="priority-instructions">
+                    <p><strong>Instructions:</strong> Drag and drop students to reorder them. Move students between primary and waitlist positions.</p>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="cancel-btn" onclick="closePriorityChangeModal()">Cancel</button>
+                <button class="confirm-btn" onclick="confirmPriorityChanges()">Confirm Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+import { getDatabase, ref, get, push, set, onValue, update, remove } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+import { getStorage, ref as storageRef, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-storage.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyDZIDlEtaNRxODoFhRw0xF2yYFBqqBexqo",
+    authDomain: "taska-45011.firebaseapp.com",
+    databaseURL: "https://taska-45011-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "taska-45011",
+    storageBucket: "gs://taska-45011.firebasestorage.app",
+    messagingSenderId: "205487498813",
+    appId: "1:205487498813:web:0de2c9eab567482781ec54",
+    measurementId: "G-G0G1F6GQ9B"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+const auth = getAuth(app);
+const storage = getStorage(app);
+
+let userId = null;
+let currentUserProfile = null;
+let primaryStudent = null;
+let waitlistStudents = [];
+let uploadedTaskFiles = [];
+let allStudents = [];
+let currentAssignmentType = 'primary'; // 'primary' or 'waitlist'
+let currentTaskDetails = null;
+let currentEditTask = null;
+let pendingPriorityChanges = null;
+
+// Initialize the app
+async function init() {
+    auth.onAuthStateChanged(async user => {
+        if (user) {
+            userId = user.uid;
+            await fetchCurrentUserProfile();
+            await fetchAllStudents();
+            loadAssignedTasks();
+        } else {
+            console.error("User not authenticated");
+            window.location.href = "../index.html";
+        }
+    });
+}
+
+async function fetchCurrentUserProfile() {
+    try {
+        const snapshot = await get(ref(db, `professionalslist/${userId}`));
+        const user = snapshot.val() || {};
+        currentUserProfile = {
+            name: user.personal?.name || "Unnamed",
+            profilePic: user.personal?.profilePic || "../assets/avatar/1.png",
+            type: 'professional'
+        };
+        return currentUserProfile;
+    } catch (error) {
+        console.error('Error fetching current user profile:', error);
+        return { name: "Unnamed", profilePic: "../assets/avatar/1.png", type: 'professional' };
+    }
+}
+
+async function fetchAllStudents() {
+    try {
+        const snapshot = await get(ref(db, 'studentslist'));
+        const students = snapshot.val() || {};
+        allStudents = Object.entries(students).map(([id, data]) => ({
+            id,
+            ...data,
+            personal: data.personal || {},
+            education: data.education || {},
+            skills: data.skills || ''
+        }));
+        return allStudents;
+    } catch (error) {
+        console.error('Error fetching students:', error);
+        return [];
+    }
+}
+
+function openCreateTaskModal() {
+    document.getElementById('create-task-modal').classList.add('active');
+    resetTaskForm();
+}
+
+function closeCreateTaskModal() {
+    document.getElementById('create-task-modal').classList.remove('active');
+    resetTaskForm();
+}
+
+function resetTaskForm() {
+    document.getElementById('task-title').value = '';
+    document.getElementById('task-description').value = '';
+    document.getElementById('task-deadline').value = '';
+    document.getElementById('task-category').value = 'web-development';
+    document.getElementById('task-files').value = '';
+    document.getElementById('task-files-list').innerHTML = '';
+    document.getElementById('primary-student-list').innerHTML = '';
+    document.getElementById('waitlist-students-list').innerHTML = '';
+    primaryStudent = null;
+    waitlistStudents = [];
+    uploadedTaskFiles = [];
+}
+
+function closeStudentSearchModal() {
+    document.getElementById('student-search-modal').classList.remove('active');
+}
+
+function closeSuccessModal() {
+    document.getElementById('success-modal').classList.remove('active');
+}
+
+function openStudentSearchModal(type) {
+    currentAssignmentType = type;
+    document.getElementById('student-search-modal').classList.add('active');
+    searchStudents();
+    // Show AI suggestions initially
+    document.getElementById('ai-suggestions').style.display = 'block';
+}
+
+async function searchStudents() {
+    const searchTerm = document.getElementById('student-search').value.toLowerCase();
+    const skillFilter = document.getElementById('skill-filter').value;
+    const educationFilter = document.getElementById('education-filter').value;
+    
+    // Hide AI suggestions when user starts typing
+    if (searchTerm.length > 0) {
+        document.getElementById('ai-suggestions').style.display = 'none';
+    } else {
+        document.getElementById('ai-suggestions').style.display = 'block';
+    }
+    
+    let filteredStudents = allStudents.filter(student => {
+        const name = student.personal?.name?.toLowerCase() || '';
+        const skills = student.skills?.toLowerCase() || '';
+        const education = student.education?.branch?.toLowerCase() || '';
+        const bio = student.personal?.bio?.toLowerCase() || '';
+        const interests = student.personal?.interests?.toLowerCase() || '';
+        
+        // AI-powered search: check if search term matches any relevant field
+        const matchesSearch = name.includes(searchTerm) || 
+                            skills.includes(searchTerm) || 
+                            education.includes(searchTerm) ||
+                            bio.includes(searchTerm) ||
+                            interests.includes(searchTerm) ||
+                            // Check for skill combinations
+                            (searchTerm.includes('web') && skills.includes('web')) ||
+                            (searchTerm.includes('design') && (skills.includes('design') || education.includes('design'))) ||
+                            (searchTerm.includes('react') && skills.includes('react')) ||
+                            (searchTerm.includes('python') && skills.includes('python')) ||
+                            (searchTerm.includes('ui') && skills.includes('ui')) ||
+                            (searchTerm.includes('ux') && skills.includes('ux')) ||
+                            (searchTerm.includes('data') && (skills.includes('data') || education.includes('data'))) ||
+                            (searchTerm.includes('writer') && (skills.includes('writing') || education.includes('writing'))) ||
+                            (searchTerm.includes('developer') && skills.includes('development'));
+        
+        const matchesSkill = !skillFilter || skills.includes(skillFilter);
+        const matchesEducation = !educationFilter || education.includes(educationFilter);
+        
+        return matchesSearch && matchesSkill && matchesEducation;
+    });
+    
+    displayStudentResults(filteredStudents);
+}
+
+function useSuggestion(suggestion) {
+    document.getElementById('student-search').value = suggestion;
+    searchStudents();
+}
+
+function displayStudentResults(students) {
+    const resultsContainer = document.getElementById('students-results');
+    
+    if (students.length === 0) {
+        resultsContainer.innerHTML = '<div class="no-results">No students found</div>';
+        return;
+    }
+    
+    resultsContainer.innerHTML = students.map(student => {
+        const isPrimary = primaryStudent === student.id;
+        const isWaitlisted = waitlistStudents.some(s => s.id === student.id);
+        const isSelected = isPrimary || isWaitlisted;
+        
+        return `
+            <div class="student-result ${isSelected ? 'selected' : ''}">
+                <div class="student-info" onclick="toggleStudentSelection('${student.id}')">
+                    <img src="${student.personal?.profilePic || '../assets/avatar/1.png'}" alt="${student.personal?.name || 'Unnamed'}" class="student-avatar">
+                    <div class="student-details">
+                        <h4>${student.personal?.name || 'Unnamed'}</h4>
+                        <p>${student.education?.branch || 'No education info'}</p>
+                        <p class="student-skills">${student.skills || 'No skills listed'}</p>
+                        ${isPrimary ? '<span class="assignment-badge primary-badge">Primary</span>' : ''}
+                        ${isWaitlisted ? '<span class="assignment-badge waitlist-badge">Waitlisted</span>' : ''}
+                    </div>
+                </div>
+                <div class="student-actions">
+                    <div class="selection-indicator">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <button class="show-profile-btn" onclick="showStudentProfile('${student.id}')">
+                        <i class="fas fa-user"></i> Show Profile
+                    </button>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+function toggleStudentSelection(studentId) {
+    const student = allStudents.find(s => s.id === studentId);
+    if (!student) return;
+    
+    if (currentAssignmentType === 'primary') {
+        // For primary assignment, only one student can be selected
+        if (primaryStudent === studentId) {
+            primaryStudent = null;
+        } else {
+            primaryStudent = studentId;
+        }
+    } else {
+        // For waitlist, up to 5 students can be selected
+        const waitlistIndex = waitlistStudents.findIndex(s => s.id === studentId);
+        if (waitlistIndex > -1) {
+            waitlistStudents.splice(waitlistIndex, 1);
+        } else {
+            if (waitlistStudents.length < 5) {
+                waitlistStudents.push({
+                    id: studentId,
+                    name: student.personal?.name || 'Unnamed',
+                    profilePic: student.personal?.profilePic || '../assets/avatar/1.png'
+                });
+            } else {
+                alert('Waitlist is full (maximum 5 students)');
+            }
+        }
+    }
+    
+    updateSelectedStudentsList();
+    searchStudents(); // Refresh the results to update selection state
+}
+
+function updateSelectedStudentsList() {
+    const primaryContainer = document.getElementById('primary-student-list');
+    const waitlistContainer = document.getElementById('waitlist-students-list');
+    
+    // Update primary student list
+    if (primaryStudent) {
+        const student = allStudents.find(s => s.id === primaryStudent);
+        primaryContainer.innerHTML = `
+            <div class="selected-student primary-student">
+                <img src="${student.personal?.profilePic || '../assets/avatar/1.png'}" alt="${student.personal?.name || 'Unnamed'}" class="student-avatar">
+                <span>${student.personal?.name || 'Unnamed'}</span>
+                <span class="assignment-type">Primary</span>
+                <button onclick="removeSelectedStudent('${primaryStudent}')" class="remove-student">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        `;
+    } else {
+        primaryContainer.innerHTML = '';
+    }
+    
+    // Update waitlist students
+    waitlistContainer.innerHTML = waitlistStudents.map((student, index) => `
+        <div class="selected-student waitlist-student">
+            <img src="${student.profilePic}" alt="${student.name}" class="student-avatar">
+            <span>${student.name}</span>
+            <span class="assignment-type">Waitlist #${index + 1}</span>
+            <button onclick="removeSelectedStudent('${student.id}')" class="remove-student">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    `).join('');
+}
+
+function removeSelectedStudent(studentId) {
+    if (primaryStudent === studentId) {
+        primaryStudent = null;
+    } else {
+        waitlistStudents = waitlistStudents.filter(s => s.id !== studentId);
+    }
+    updateSelectedStudentsList();
+    searchStudents();
+}
+
+function confirmStudentSelection() {
+    closeStudentSearchModal();
+}
+
+async function createTask() {
+    const title = document.getElementById('task-title').value.trim();
+    const description = document.getElementById('task-description').value.trim();
+    const deadline = document.getElementById('task-deadline').value;
+    const category = document.getElementById('task-category').value;
+
+    if (!title || !deadline) {
+        alert('Please fill in the task title and deadline.');
+        return;
+    }
+
+    if (!primaryStudent && waitlistStudents.length === 0) {
+        alert('Please select at least one student (primary or waitlist) to assign the task to.');
+        return;
+    }
+
+    try {
+        let taskData = {
+            title,
+            description,
+            deadline,
+            category,
+            professionalId: userId,
+            professionalName: currentUserProfile.name,
+            status: 'assigned',
+            createdAt: new Date().toISOString(),
+            primaryStudent: primaryStudent,
+            waitlistStudents: waitlistStudents.map(s => s.id),
+            currentWaitlistIndex: 0
+        };
+
+        // Handle file uploads
+        if (uploadedTaskFiles.length > 0) {
+            taskData.files = {};
+            for (let i = 0; i < uploadedTaskFiles.length; i++) {
+                const file = uploadedTaskFiles[i];
+                if (!file.url) {
+                    const storagePath = `tasks/${Date.now()}_${file.name}`;
+                    const fileRef = storageRef(storage, storagePath);
+                    const uploadTask = await uploadBytesResumable(fileRef, file);
+                    const fileUrl = await getDownloadURL(fileRef);
+                    taskData.files[i] = {
+                        name: file.name,
+                        url: fileUrl,
+                        type: file.type,
+                        size: file.size
+                    };
+                } else {
+                    taskData.files[i] = {
+                        name: file.name,
+                        url: file.url,
+                        type: file.type,
+                        size: file.size
+                    };
+                }
+            }
+        }
+
+        // Create the task
+        const taskRef = ref(db, 'assignedTasks');
+        const newTaskRef = await push(taskRef, taskData);
+        const taskId = newTaskRef.key;
+
+        // Assign to primary student if exists
+        if (primaryStudent) {
+            const assignmentRef = ref(db, `students/${primaryStudent}/assignedTasks/${taskId}`);
+            await set(assignmentRef, {
+                taskId: taskId,
+                title,
+                description,
+                deadline,
+                category,
+                professionalId: userId,
+                professionalName: currentUserProfile.name,
+                status: 'pending',
+                assignedAt: new Date().toISOString(),
+                files: taskData.files || {},
+                assignmentType: 'primary'
+            });
+        }
+
+        // Assign to waitlist students
+        for (let i = 0; i < waitlistStudents.length; i++) {
+            const student = waitlistStudents[i];
+            const assignmentRef = ref(db, `students/${student.id}/assignedTasks/${taskId}`);
+            await set(assignmentRef, {
+                taskId: taskId,
+                title,
+                description,
+                deadline,
+                category,
+                professionalId: userId,
+                professionalName: currentUserProfile.name,
+                status: 'waitlisted',
+                assignedAt: new Date().toISOString(),
+                files: taskData.files || {},
+                assignmentType: 'waitlist',
+                waitlistPosition: i + 1
+            });
+        }
+
+        closeCreateTaskModal();
+        
+        // Show success modal
+        document.getElementById('success-title').textContent = 'Task Created Successfully!';
+        document.getElementById('success-message').innerHTML = `
+            <div class="success-content">
+                <i class="fas fa-check-circle"></i>
+                <h4>Task has been created and assigned!</h4>
+                <p><strong>Task Title:</strong> ${title}</p>
+                <p><strong>Primary Student:</strong> ${primaryStudent ? allStudents.find(s => s.id === primaryStudent).personal?.name : 'None'}</p>
+                <p><strong>Waitlist Students:</strong> ${waitlistStudents.length} student(s)</p>
+                <p>Students will be notified and can accept the task to become connections.</p>
+            </div>
+        `;
+        document.getElementById('success-modal').classList.add('active');
+        
+        loadAssignedTasks();
+    } catch (error) {
+        console.error('Error creating task:', error);
+        alert('Failed to create task.');
+    }
+}
+
+async function loadAssignedTasks() {
+    const activeGigsList = document.getElementById('active-gigs-list');
+    
+    try {
+        const tasksRef = ref(db, 'assignedTasks');
+        const snapshot = await get(tasksRef);
+        
+        activeGigsList.innerHTML = '';
+        
+        if (snapshot.exists()) {
+            const tasks = snapshot.val();
+            let hasTasks = false;
+
+            for (const taskId in tasks) {
+                const task = tasks[taskId];
+                if (task.professionalId === userId) {
+                    hasTasks = true;
+                    const taskCard = createTaskCard(task, taskId);
+                    activeGigsList.appendChild(taskCard);
+                }
+            }
+
+            if (!hasTasks) {
+                activeGigsList.innerHTML = `
+                    <div class="no-gigs">
+                        <i class="fas fa-info-circle"></i>
+                        <p>You haven't assigned any tasks yet. Create a new task to get started!</p>
+                    </div>
+                `;
+            }
+        } else {
+            activeGigsList.innerHTML = `
+                <div class="no-gigs">
+                    <i class="fas fa-info-circle"></i>
+                    <p>No tasks assigned yet. Create a new task to get started!</p>
+                </div>
+            `;
+        }
+    } catch (error) {
+        console.error('Error loading assigned tasks:', error);
+        activeGigsList.innerHTML = `
+            <div class="no-gigs">
+                <i class="fas fa-exclamation-triangle"></i>
+                <p>Error loading tasks. Please try again.</p>
+            </div>
+        `;
+    }
+}
+
+function createTaskCard(task, taskId) {
+    const card = document.createElement('div');
+    card.className = 'gig-card';
+    
+    const primaryStudentName = task.primaryStudent ? allStudents.find(s => s.id === task.primaryStudent)?.personal?.name || 'Unknown' : 'None';
+    const waitlistCount = task.waitlistStudents ? task.waitlistStudents.length : 0;
+    const daysLeft = calculateDaysLeft(task.deadline);
+    
+    card.innerHTML = `
+        <div class="gig-header">
+            <div class="gig-info">
+                <h4>${task.title}</h4>
+                <p class="gig-description">${task.description}</p>
+                <div class="gig-meta">
+                    <span class="gig-category">${task.category.replace('-', ' ')}</span>
+                    <span class="deadline-info ${daysLeft <= 3 ? 'urgent' : daysLeft <= 7 ? 'warning' : 'normal'}">
+                        ${daysLeft} days left
+                    </span>
+                </div>
+            </div>
+            <div class="gig-actions">
+                <div class="assignment-info">
+                    <div class="primary-assignment">
+                        <strong>Primary:</strong> ${primaryStudentName}
+                    </div>
+                    <div class="waitlist-info">
+                        <strong>Waitlist:</strong> ${waitlistCount} student(s)
+                    </div>
+                </div>
+                <button class="view-details-btn" onclick="viewTaskDetails('${taskId}')">
+                    <i class="fas fa-eye"></i> View Details
+                </button>
+            </div>
+        </div>
+    `;
+    
+    return card;
+}
+
+function calculateDaysLeft(deadline) {
+    const now = new Date();
+    const deadlineDate = new Date(deadline);
+    const diffTime = deadlineDate - now;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays > 0 ? diffDays : 0;
+}
+
+function viewTaskDetails(taskId) {
+    try {
+        const taskRef = ref(db, `assignedTasks/${taskId}`);
+        get(taskRef).then(snapshot => {
+            if (snapshot.exists()) {
+                const task = snapshot.val();
+                currentTaskDetails = { ...task, id: taskId };
+                
+                const primaryStudentName = task.primaryStudent ? 
+                    allStudents.find(s => s.id === task.primaryStudent)?.personal?.name || 'Unknown' : 'None';
+                const waitlistStudents = task.waitlistStudents ? task.waitlistStudents.map(id => 
+                    allStudents.find(s => s.id === id)?.personal?.name || 'Unknown'
+                ) : [];
+                const daysLeft = calculateDaysLeft(task.deadline);
+                
+                document.getElementById('task-details-title').textContent = task.title;
+                document.getElementById('task-details-body').innerHTML = `
+                    <div class="task-details-grid">
+                        <div class="detail-section">
+                            <h4>Task Information</h4>
+                            <div class="detail-item">
+                                <strong>Title:</strong> ${task.title}
+                            </div>
+                            <div class="detail-item">
+                                <strong>Description:</strong> ${task.description}
+                            </div>
+                            <div class="detail-item">
+                                <strong>Category:</strong> ${task.category.replace('-', ' ')}
+                            </div>
+                            <div class="detail-item">
+                                <strong>Deadline:</strong> ${new Date(task.deadline).toLocaleDateString()}
+                            </div>
+                            <div class="detail-item">
+                                <strong>Days Left:</strong> ${daysLeft} days
+                            </div>
+                            <div class="detail-item">
+                                <strong>Created:</strong> ${new Date(task.createdAt).toLocaleDateString()}
+                            </div>
+                        </div>
+                        
+                        <div class="detail-section">
+                            <h4>Student Assignments</h4>
+                            <div class="assignment-details">
+                                <div class="primary-detail">
+                                    <h5>Primary Student</h5>
+                                    <div class="student-detail">
+                                        <img src="${task.primaryStudent ? allStudents.find(s => s.id === task.primaryStudent)?.personal?.profilePic || '../assets/avatar/1.png' : '../assets/avatar/1.png'}" 
+                                             alt="Primary Student" class="student-avatar">
+                                        <div>
+                                            <div class="student-name">${primaryStudentName}</div>
+                                            <div class="student-status">Primary Assignment</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="waitlist-detail">
+                                    <h5>Waitlist Students (${waitlistStudents.length})</h5>
+                                    ${waitlistStudents.length > 0 ? 
+                                        waitlistStudents.map((name, index) => `
+                                            <div class="student-detail">
+                                                <img src="${allStudents.find(s => s.personal?.name === name)?.personal?.profilePic || '../assets/avatar/1.png'}" 
+                                                     alt="${name}" class="student-avatar">
+                                                <div>
+                                                    <div class="student-name">${name}</div>
+                                                    <div class="student-status">Waitlist #${index + 1}</div>
+                                                </div>
+                                            </div>
+                                        `).join('') : 
+                                        '<p>No waitlist students</p>'
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        
+                        ${task.files && Object.keys(task.files).length > 0 ? `
+                            <div class="detail-section">
+                                <h4>Attached Files (${Object.keys(task.files).length})</h4>
+                                <div class="files-list">
+                                    ${Object.values(task.files).map(file => `
+                                        <a href="${file.url}" download="${file.name}" class="file-item">
+                                            <i class="fas fa-file"></i>
+                                            <span>${file.name}</span>
+                                        </a>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+                
+                document.getElementById('task-details-modal').classList.add('active');
+            }
+        });
+    } catch (error) {
+        console.error('Error loading task details:', error);
+        alert('Failed to load task details.');
+    }
+}
+
+function closeTaskDetailsModal() {
+    document.getElementById('task-details-modal').classList.remove('active');
+    currentTaskDetails = null;
+}
+
+function editCurrentTask() {
+    if (!currentTaskDetails) return;
+    
+    currentEditTask = { ...currentTaskDetails };
+    
+    // Populate edit form
+    document.getElementById('edit-task-title').value = currentEditTask.title;
+    document.getElementById('edit-task-description').value = currentEditTask.description;
+    document.getElementById('edit-task-deadline').value = currentEditTask.deadline;
+    document.getElementById('edit-task-category').value = currentEditTask.category;
+    
+    // Populate student assignments
+    updateEditStudentAssignments();
+    
+    // Close details modal and open edit modal
+    closeTaskDetailsModal();
+    document.getElementById('edit-task-modal').classList.add('active');
+}
+
+function closeEditTaskModal() {
+    document.getElementById('edit-task-modal').classList.remove('active');
+    currentEditTask = null;
+}
+
+function updateEditStudentAssignments() {
+    if (!currentEditTask) return;
+    
+    // Update primary student display
+    const primaryContainer = document.getElementById('edit-primary-student');
+    if (currentEditTask.primaryStudent) {
+        const student = allStudents.find(s => s.id === currentEditTask.primaryStudent);
+        primaryContainer.innerHTML = `
+            <div class="student-item">
+                <img src="${student?.personal?.profilePic || '../assets/avatar/1.png'}" alt="${student?.personal?.name || 'Unknown'}" class="student-avatar">
+                <div>
+                    <div class="student-name">${student?.personal?.name || 'Unknown'}</div>
+                    <div class="student-position">Primary Assignment</div>
+                </div>
+            </div>
+        `;
+    } else {
+        primaryContainer.innerHTML = '<p>No primary student assigned</p>';
+    }
+    
+    // Update waitlist students display
+    const waitlistContainer = document.getElementById('edit-waitlist-students');
+    if (currentEditTask.waitlistStudents && currentEditTask.waitlistStudents.length > 0) {
+        waitlistContainer.innerHTML = currentEditTask.waitlistStudents.map((studentId, index) => {
+            const student = allStudents.find(s => s.id === studentId);
+            return `
+                <div class="student-item">
+                    <img src="${student?.personal?.profilePic || '../assets/avatar/1.png'}" alt="${student?.personal?.name || 'Unknown'}" class="student-avatar">
+                    <div>
+                        <div class="student-name">${student?.personal?.name || 'Unknown'}</div>
+                        <div class="student-position">Waitlist #${index + 1}</div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    } else {
+        waitlistContainer.innerHTML = '<p>No waitlist students</p>';
+    }
+}
+
+function openPriorityChangeModal(type) {
+    if (!currentEditTask) return;
+    
+    document.getElementById('priority-change-title').textContent = 
+        type === 'primary' ? 'Manage Primary Student' : 'Manage Waitlist Students';
+    
+    // Display current assignments
+    updatePriorityChangeDisplay();
+    
+    document.getElementById('priority-change-modal').classList.add('active');
+}
+
+function closePriorityChangeModal() {
+    document.getElementById('priority-change-modal').classList.remove('active');
+    pendingPriorityChanges = null;
+}
+
+function updatePriorityChangeDisplay() {
+    if (!currentEditTask) return;
+    
+    // Display current primary student
+    const primaryDisplay = document.getElementById('primary-student-display');
+    if (currentEditTask.primaryStudent) {
+        const student = allStudents.find(s => s.id === currentEditTask.primaryStudent);
+        primaryDisplay.innerHTML = `
+            <div class="draggable-student" draggable="true" data-student-id="${currentEditTask.primaryStudent}" data-type="primary">
+                <i class="fas fa-grip-vertical drag-handle"></i>
+                <img src="${student?.personal?.profilePic || '../assets/avatar/1.png'}" alt="${student?.personal?.name || 'Unknown'}" class="student-avatar">
+                <div>
+                    <div class="student-name">${student?.personal?.name || 'Unknown'}</div>
+                    <div class="student-position">Primary Assignment</div>
+                </div>
+            </div>
+        `;
+    } else {
+        primaryDisplay.innerHTML = '<p>No primary student assigned</p>';
+    }
+    
+    // Display current waitlist students
+    const waitlistDisplay = document.getElementById('waitlist-students-display');
+    if (currentEditTask.waitlistStudents && currentEditTask.waitlistStudents.length > 0) {
+        waitlistDisplay.innerHTML = currentEditTask.waitlistStudents.map((studentId, index) => {
+            const student = allStudents.find(s => s.id === studentId);
+            return `
+                <div class="draggable-student" draggable="true" data-student-id="${studentId}" data-type="waitlist" data-index="${index}">
+                    <i class="fas fa-grip-vertical drag-handle"></i>
+                    <img src="${student?.personal?.profilePic || '../assets/avatar/1.png'}" alt="${student?.personal?.name || 'Unknown'}" class="student-avatar">
+                    <div>
+                        <div class="student-name">${student?.personal?.name || 'Unknown'}</div>
+                        <div class="student-position">Waitlist #${index + 1}</div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    } else {
+        waitlistDisplay.innerHTML = '<p>No waitlist students</p>';
+    }
+    
+    // Initialize drag and drop
+    initializeDragAndDrop();
+}
+
+function initializeDragAndDrop() {
+    const draggableStudents = document.querySelectorAll('.draggable-student');
+    const dropZones = document.querySelectorAll('.drop-zone');
+    
+    draggableStudents.forEach(student => {
+        student.addEventListener('dragstart', handleDragStart);
+        student.addEventListener('dragend', handleDragEnd);
+    });
+    
+    dropZones.forEach(zone => {
+        zone.addEventListener('dragover', handleDragOver);
+        zone.addEventListener('drop', handleDrop);
+        zone.addEventListener('dragenter', handleDragEnter);
+        zone.addEventListener('dragleave', handleDragLeave);
+    });
+}
+
+function handleDragStart(e) {
+    e.target.classList.add('dragging');
+    e.dataTransfer.setData('text/plain', e.target.dataset.studentId);
+    e.dataTransfer.setData('text/type', e.target.dataset.type);
+    e.dataTransfer.setData('text/index', e.target.dataset.index || '');
+}
+
+function handleDragEnd(e) {
+    e.target.classList.remove('dragging');
+}
+
+function handleDragOver(e) {
+    e.preventDefault();
+}
+
+function handleDragEnter(e) {
+    e.preventDefault();
+    e.currentTarget.classList.add('drag-over');
+}
+
+function handleDragLeave(e) {
+    e.currentTarget.classList.remove('drag-over');
+}
+
+function handleDrop(e) {
+    e.preventDefault();
+    e.currentTarget.classList.remove('drag-over');
+    
+    const studentId = e.dataTransfer.getData('text/plain');
+    const studentType = e.dataTransfer.getData('text/type');
+    const studentIndex = e.dataTransfer.getData('text/index');
+    const dropZone = e.currentTarget;
+    const dropZoneType = dropZone.id.includes('primary') ? 'primary' : 'waitlist';
+    
+    if (!currentEditTask) return;
+    
+    // Handle the drop logic
+    if (studentType === 'primary' && dropZoneType === 'waitlist') {
+        // Move primary to waitlist
+        if (!currentEditTask.waitlistStudents) {
+            currentEditTask.waitlistStudents = [];
+        }
+        currentEditTask.waitlistStudents.push(currentEditTask.primaryStudent);
+        currentEditTask.primaryStudent = null;
+        pendingPriorityChanges = true;
+    } else if (studentType === 'waitlist' && dropZoneType === 'primary') {
+        // Move waitlist to primary
+        const studentToPromote = currentEditTask.waitlistStudents[parseInt(studentIndex)];
+        if (currentEditTask.primaryStudent) {
+            // Move current primary to waitlist
+            currentEditTask.waitlistStudents.push(currentEditTask.primaryStudent);
+        }
+        // Remove promoted student from waitlist
+        currentEditTask.waitlistStudents.splice(parseInt(studentIndex), 1);
+        currentEditTask.primaryStudent = studentToPromote;
+        pendingPriorityChanges = true;
+    } else if (studentType === 'waitlist' && dropZoneType === 'waitlist') {
+        // Reorder within waitlist
+        const fromIndex = parseInt(studentIndex);
+        const toIndex = getDropIndex(e, dropZone);
+        
+        if (fromIndex !== toIndex) {
+            const student = currentEditTask.waitlistStudents[fromIndex];
+            currentEditTask.waitlistStudents.splice(fromIndex, 1);
+            currentEditTask.waitlistStudents.splice(toIndex, 0, student);
+            pendingPriorityChanges = true;
+        }
+    }
+    
+    // Update display
+    updatePriorityChangeDisplay();
+}
+
+function getDropIndex(e, dropZone) {
+    const students = dropZone.querySelectorAll('.draggable-student');
+    const rect = dropZone.getBoundingClientRect();
+    const y = e.clientY - rect.top;
+    
+    for (let i = 0; i < students.length; i++) {
+        const studentRect = students[i].getBoundingClientRect();
+        const studentY = studentRect.top - rect.top;
+        
+        if (y < studentY + studentRect.height / 2) {
+            return i;
+        }
+    }
+    
+    return students.length;
+}
+
+function confirmPriorityChanges() {
+    if (!pendingPriorityChanges) {
+        alert('No changes to confirm');
+        return;
+    }
+    
+    // Update the edit form display
+    updateEditStudentAssignments();
+    
+    // Close priority change modal
+    closePriorityChangeModal();
+    
+    alert('Priority changes confirmed and applied to the edit form.');
+}
+
+async function saveTaskChanges() {
+    if (!currentEditTask) return;
+    
+    try {
+        const taskId = currentEditTask.id;
+        const taskRef = ref(db, `assignedTasks/${taskId}`);
+        
+        // Update task data
+        const updatedTaskData = {
+            ...currentEditTask,
+            title: document.getElementById('edit-task-title').value,
+            description: document.getElementById('edit-task-description').value,
+            deadline: document.getElementById('edit-task-deadline').value,
+            category: document.getElementById('edit-task-category').value,
+            updatedAt: new Date().toISOString()
+        };
+        
+        // Update the main task
+        await update(taskRef, updatedTaskData);
+        
+        // Update student assignments
+        await updateStudentAssignments(taskId, updatedTaskData);
+        
+        closeEditTaskModal();
+        
+        // Show success message
+        document.getElementById('success-title').textContent = 'Task Updated Successfully!';
+        document.getElementById('success-message').innerHTML = `
+            <div class="success-content">
+                <i class="fas fa-check-circle"></i>
+                <h4>Task has been updated!</h4>
+                <p><strong>Task Title:</strong> ${updatedTaskData.title}</p>
+                <p>All changes have been applied and students have been notified.</p>
+            </div>
+        `;
+        document.getElementById('success-modal').classList.add('active');
+        
+        // Reload tasks
+        loadAssignedTasks();
+        
+    } catch (error) {
+        console.error('Error updating task:', error);
+        alert('Failed to update task: ' + error.message);
+    }
+}
+
+async function updateStudentAssignments(taskId, updatedTaskData) {
+    try {
+        // Get current task data to compare
+        const currentTaskRef = ref(db, `assignedTasks/${taskId}`);
+        const currentSnapshot = await get(currentTaskRef);
+        const currentTask = currentSnapshot.val();
+        
+        // Update primary student assignment
+        if (updatedTaskData.primaryStudent !== currentTask.primaryStudent) {
+            // Remove old primary student assignment
+            if (currentTask.primaryStudent) {
+                await remove(ref(db, `students/${currentTask.primaryStudent}/assignedTasks/${taskId}`));
+            }
+            
+            // Add new primary student assignment
+            if (updatedTaskData.primaryStudent) {
+                const newPrimaryAssignment = {
+                    taskId: taskId,
+                    title: updatedTaskData.title,
+                    description: updatedTaskData.description,
+                    deadline: updatedTaskData.deadline,
+                    category: updatedTaskData.category,
+                    professionalId: userId,
+                    professionalName: currentUserProfile.name,
+                    status: 'pending',
+                    assignedAt: new Date().toISOString(),
+                    files: updatedTaskData.files || {},
+                    assignmentType: 'primary'
+                };
+                await set(ref(db, `students/${updatedTaskData.primaryStudent}/assignedTasks/${taskId}`), newPrimaryAssignment);
+            }
+        }
+        
+        // Update waitlist students
+        const currentWaitlist = currentTask.waitlistStudents || [];
+        const newWaitlist = updatedTaskData.waitlistStudents || [];
+        
+        // Remove students no longer in waitlist
+        for (const studentId of currentWaitlist) {
+            if (!newWaitlist.includes(studentId)) {
+                await remove(ref(db, `students/${studentId}/assignedTasks/${taskId}`));
+            }
+        }
+        
+        // Add new waitlist students
+        for (let i = 0; i < newWaitlist.length; i++) {
+            const studentId = newWaitlist[i];
+            if (!currentWaitlist.includes(studentId)) {
+                const waitlistAssignment = {
+                    taskId: taskId,
+                    title: updatedTaskData.title,
+                    description: updatedTaskData.description,
+                    deadline: updatedTaskData.deadline,
+                    category: updatedTaskData.category,
+                    professionalId: userId,
+                    professionalName: currentUserProfile.name,
+                    status: 'waitlisted',
+                    assignedAt: new Date().toISOString(),
+                    files: updatedTaskData.files || {},
+                    assignmentType: 'waitlist',
+                    waitlistPosition: i + 1
+                };
+                await set(ref(db, `students/${studentId}/assignedTasks/${taskId}`), waitlistAssignment);
+            }
+        }
+        
+        // Update waitlist positions for existing students
+        for (let i = 0; i < newWaitlist.length; i++) {
+            const studentId = newWaitlist[i];
+            if (currentWaitlist.includes(studentId)) {
+                await update(ref(db, `students/${studentId}/assignedTasks/${taskId}`), {
+                    waitlistPosition: i + 1,
+                    title: updatedTaskData.title,
+                    description: updatedTaskData.description,
+                    deadline: updatedTaskData.deadline,
+                    category: updatedTaskData.category
+                });
+            }
+        }
+        
+    } catch (error) {
+        console.error('Error updating student assignments:', error);
+        throw error;
+    }
+}
+
+// File handling
+document.getElementById('task-files').addEventListener('change', (e) => {
+    const files = Array.from(e.target.files);
+    uploadedTaskFiles.push(...files);
+    updateTaskFilesList();
+    e.target.value = '';
+});
+
+function updateTaskFilesList() {
+    const filesList = document.getElementById('task-files-list');
+    filesList.innerHTML = uploadedTaskFiles.map((file, index) => `
+        <div class="task-file-item">
+            <i class="fas fa-file"></i>
+            <span>${file.name}</span>
+            <i class="fas fa-times remove-file" onclick="removeTaskFile(${index})"></i>
+        </div>
+    `).join('');
+}
+
+function removeTaskFile(index) {
+    uploadedTaskFiles.splice(index, 1);
+    updateTaskFilesList();
+}
+
+async function showStudentProfile(studentId) {
+    const student = allStudents.find(s => s.id === studentId);
+    if (!student) return;
+    
+    const profilePanel = document.getElementById('student-profile-panel');
+    
+    profilePanel.innerHTML = `
+        <div class="profile-header">
+            <img src="${student.personal?.profilePic || '../assets/avatar/1.png'}" alt="${student.personal?.name || 'Unnamed'}" class="profile-avatar">
+            <div class="profile-info">
+                <h3>${student.personal?.name || 'Unnamed'}</h3>
+                <p class="profile-title">${student.education?.branch || 'No education info'}</p>
+            </div>
+        </div>
+        <div class="profile-content">
+            <div class="profile-section">
+                <h4>About</h4>
+                <p>${student.personal?.bio || 'No bio available'}</p>
+            </div>
+            <div class="profile-section">
+                <h4>Skills</h4>
+                <div class="skills-list">
+                    ${student.skills ? student.skills.split(',').map(skill => 
+                        `<span class="skill-tag">${skill.trim()}</span>`
+                    ).join('') : '<p>No skills listed</p>'}
+                </div>
+            </div>
+            <div class="profile-section">
+                <h4>Education</h4>
+                <div class="education-info">
+                    <p><strong>Branch:</strong> ${student.education?.branch || 'Not specified'}</p>
+                    <p><strong>Year:</strong> ${student.education?.year || 'Not specified'}</p>
+                    <p><strong>Institution:</strong> ${student.education?.institution || 'Not specified'}</p>
+                </div>
+            </div>
+            ${student.personal?.interests ? `
+                <div class="profile-section">
+                    <h4>Interests</h4>
+                    <p>${student.personal.interests}</p>
+                </div>
+            ` : ''}
+            ${student.portfolio && student.portfolio.length > 0 ? `
+                <div class="profile-section">
+                    <h4>Portfolio</h4>
+                    <div class="portfolio-items">
+                        ${student.portfolio.slice(0, 3).map(item => `
+                            <div class="portfolio-item">
+                                <h5>${item.title || 'Untitled'}</h5>
+                                <p>${item.description || 'No description'}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            ` : ''}
+        </div>
+    `;
+    
+    // Show the profile panel
+    profilePanel.style.display = 'block';
+}
+
+// Window functions
+window.openCreateTaskModal = openCreateTaskModal;
+window.closeCreateTaskModal = closeCreateTaskModal;
+window.openStudentSearchModal = openStudentSearchModal;
+window.closeStudentSearchModal = closeStudentSearchModal;
+window.closeSuccessModal = closeSuccessModal;
+window.createTask = createTask;
+window.searchStudents = searchStudents;
+window.toggleStudentSelection = toggleStudentSelection;
+window.removeSelectedStudent = removeSelectedStudent;
+window.confirmStudentSelection = confirmStudentSelection;
+window.viewTaskDetails = viewTaskDetails;
+window.closeTaskDetailsModal = closeTaskDetailsModal;
+window.editCurrentTask = editCurrentTask;
+window.closeEditTaskModal = closeEditTaskModal;
+window.openPriorityChangeModal = openPriorityChangeModal;
+window.closePriorityChangeModal = closePriorityChangeModal;
+window.confirmPriorityChanges = confirmPriorityChanges;
+window.saveTaskChanges = saveTaskChanges;
+window.removeTaskFile = removeTaskFile;
+window.showStudentProfile = showStudentProfile;
+window.useSuggestion = useSuggestion;
+
+// Initialize
+init();
+    </script>
+</body>
+</html> 
