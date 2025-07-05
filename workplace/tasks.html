@@ -10,6 +10,363 @@
     <link rel="stylesheet" href="../css/dashboard.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Confirmation Dialog Styles */
+        .confirmation-dialog {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            backdrop-filter: blur(4px);
+        }
+
+        .confirmation-dialog.active {
+            display: flex;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .confirmation-dialog .dialog-box {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            border: 1px solid #e0e0e0;
+            animation: slideInUp 0.3s ease-out;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .confirmation-dialog .dialog-box h3 {
+            margin: 0 0 1rem;
+            color: #1a1a1a;
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .confirmation-dialog .dialog-box p {
+            margin: 0 0 2rem;
+            color: #666;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .confirmation-dialog .dialog-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .confirmation-dialog .dialog-actions button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 100px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .confirmation-dialog .dialog-actions .cancel {
+            background: #f5f5f5;
+            color: #666;
+            border: 1px solid #e0e0e0;
+        }
+
+        .confirmation-dialog .dialog-actions .cancel:hover {
+            background: #e9ecef;
+            color: #333;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .confirmation-dialog .dialog-actions .confirm {
+            background: #4CAF50;
+            color: #fff;
+        }
+
+        .confirmation-dialog .dialog-actions .confirm:hover {
+            background: #45a049;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+        }
+
+        .confirmation-dialog .dialog-actions .delete {
+            background: #FF5252;
+            color: #fff;
+        }
+
+        .confirmation-dialog .dialog-actions .delete:hover {
+            background: #e04848;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(255, 82, 82, 0.3);
+        }
+
+        /* Success Modal Styles */
+        .success-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            backdrop-filter: blur(4px);
+        }
+
+        .success-modal.active {
+            display: flex;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .success-modal .modal-content {
+            background: #fff;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            border: 1px solid #e0e0e0;
+            animation: slideInUp 0.3s ease-out;
+        }
+
+        .success-modal .modal-header {
+            padding: 1.5rem 2rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .success-modal .modal-header h3 {
+            margin: 0;
+            color: #1a1a1a;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .success-modal .modal-header button {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: #666;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .success-modal .modal-body {
+            padding: 1rem 2rem;
+        }
+
+        .success-modal .modal-actions {
+            padding: 0 2rem 1.5rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .success-modal .success-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .success-modal .success-btn:hover {
+            background: #45a049;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+        }
+
+        /* Success Content Styles */
+        .success-content {
+            text-align: center;
+            padding: 1rem 0;
+        }
+
+        .success-content i {
+            font-size: 2.5rem;
+            color: #16a34a;
+            margin-bottom: 0.75rem;
+        }
+
+        .success-content h4 {
+            font-size: 1.1rem;
+            color: #333;
+            margin: 0 0 0.75rem 0;
+            font-weight: 600;
+        }
+
+        .success-content p {
+            color: #666;
+            margin: 0.25rem 0;
+            line-height: 1.4;
+            font-size: 0.9rem;
+        }
+
+        /* Task Acceptance Modal Styles */
+        .task-acceptance-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            backdrop-filter: blur(4px);
+        }
+
+        .task-acceptance-modal.active {
+            display: flex;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .task-acceptance-modal .modal-content {
+            background: #fff;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            border: 1px solid #e0e0e0;
+            animation: slideInUp 0.3s ease-out;
+        }
+
+        .task-acceptance-modal .modal-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .task-acceptance-modal .modal-header h3 {
+            margin: 0;
+            color: #1a1a1a;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .task-acceptance-modal .modal-header button {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: #666;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .task-acceptance-modal .modal-body {
+            padding: 2rem;
+        }
+
+        .task-acceptance-modal .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .task-acceptance-modal .form-group label {
+            display: block;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .task-acceptance-modal .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-family: 'Poppins', sans-serif;
+            resize: vertical;
+            min-height: 100px;
+            box-sizing: border-box;
+        }
+
+        .task-acceptance-modal .form-group textarea:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        }
+
+        .task-acceptance-modal .modal-actions {
+            padding: 1.5rem 2rem;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        .task-acceptance-modal .cancel-btn {
+            background: #f5f5f5;
+            color: #666;
+            border: 1px solid #e0e0e0;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .task-acceptance-modal .cancel-btn:hover {
+            background: #e9ecef;
+            color: #333;
+        }
+
+        .task-acceptance-modal .accept-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .task-acceptance-modal .accept-btn:hover {
+            background: #45a049;
+        }
+
+        .task-acceptance-modal .accept-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
 </head>
 <body>
     <div class="mobile-message">
@@ -20,8 +377,7 @@
             <div class="logo">Taska</div>
           </a>
         <ul class="nav-menu">
-            <li><a href="tasks.html" class="active">Tasks</a></li>
-            <li><a href="gigs.html">Gigs</a></li>
+            <li><a href="tasks.html" class="active">Workplace</a></li>
             <li><a href="profile.html">Account</a></li>
         </ul>
         <div class="hamburger">☰</div>
@@ -29,15 +385,26 @@
 
     <div class="dashboard-content">
         <div class="sidebar-left">
-            <h3>connections</h3>
-            <div id="connections-list" class="skeleton-loading">
-                <div class="skeleton-user-item"></div>
-                <div class="skeleton-user-item"></div>
-                <div class="skeleton-user-item"></div>
+            <!-- Assigned Tasks Section -->
+            <div class="assigned-tasks-section" id="assigned-tasks-section" style="display: none;">
+                <h3>Assigned Tasks</h3>
+                <div id="assigned-tasks-list" class="assigned-tasks-list">
+                    <!-- Assigned tasks will be populated here -->
+                </div>
             </div>
-            <div class="pending-requests" style="display: none;">
-                <h3>Pending Requests</h3>
-                <div id="pending-requests-list"></div>
+            
+            <!-- Connections Section -->
+            <div class="connections-section">
+                <h3>Connections</h3>
+                <div id="connections-list" class="skeleton-loading">
+                    <div class="skeleton-user-item"></div>
+                    <div class="skeleton-user-item"></div>
+                    <div class="skeleton-user-item"></div>
+                </div>
+                <div class="pending-requests" style="display: none;">
+                    <h3>Pending Requests</h3>
+                    <div id="pending-requests-list"></div>
+                </div>
             </div>
         </div>
         <div class="sidebar-right" id="workflow-area">
@@ -168,80 +535,72 @@
         </div>
     </div>
 
-    <!-- AI Apps Panel -->
-    <div class="ai-apps-panel" id="ai-apps-panel">
-        <div class="panel-content">
-            <div class="panel-header">
-                <h4>AI Tools</h4>
-                <button class="close-panel" onclick="closeAIAppsPanel()">
+    <!-- Assigned Task Details Modal -->
+    <div class="assigned-task-modal" id="assigned-task-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="assigned-task-title">Task Details</h3>
+                <button onclick="closeAssignedTaskModal()">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
-            <div class="panel-body">
-                <div class="ai-apps-grid">
-                    <div class="ai-app-item" onclick="openAIApp('image-generator')">
-                        <div class="app-icon">
-                            <i class="fas fa-image"></i>
-                        </div>
-                        <div class="app-info">
-                            <h5>Image Generator</h5>
-                            <p>Create stunning images with AI</p>
-                        </div>
-                    </div>
-                    <div class="ai-app-item" onclick="openAIApp('video-generator')">
-                        <div class="app-icon">
-                            <i class="fas fa-video"></i>
-                        </div>
-                        <div class="app-info">
-                            <h5>Video Generator</h5>
-                            <p>Generate videos from text prompts</p>
-                        </div>
-                    </div>
-                    <div class="ai-app-item" onclick="openAIApp('code-assistant')">
-                        <div class="app-icon">
-                            <i class="fas fa-code"></i>
-                        </div>
-                        <div class="app-info">
-                            <h5>Code Assistant</h5>
-                            <p>AI-powered coding help</p>
-                        </div>
-                    </div>
-                    <div class="ai-app-item" onclick="openAIApp('data-analyzer')">
-                        <div class="app-icon">
-                            <i class="fas fa-chart-line"></i>
-                        </div>
-                        <div class="app-info">
-                            <h5>Data Analyzer</h5>
-                            <p>Analyze and visualize data</p>
-                        </div>
-                    </div>
-                    <div class="ai-app-item" onclick="openAIApp('text-writer')">
-                        <div class="app-icon">
-                            <i class="fas fa-pen-fancy"></i>
-                        </div>
-                        <div class="app-info">
-                            <h5>Text Writer</h5>
-                            <p>AI content writing assistant</p>
-                        </div>
-                    </div>
-                    <div class="ai-app-item" onclick="openAIApp('translator')">
-                        <div class="app-icon">
-                            <i class="fas fa-language"></i>
-                        </div>
-                        <div class="app-info">
-                            <h5>Translator</h5>
-                            <p>Multi-language translation</p>
-                        </div>
-                    </div>
-                </div>
+            <div class="modal-body" id="assigned-task-body">
+                <!-- Task details will be populated here -->
+            </div>
+            <div class="modal-actions" id="assigned-task-actions">
+                <!-- Action buttons will be populated here -->
             </div>
         </div>
     </div>
 
-    <!-- AI Apps Floating Button -->
-    <div class="ai-apps-button" id="ai-apps-button" onclick="toggleAIAppsPanel()">
-        <i class="fas fa-robot"></i>
-        <span>AI Tools</span>
+    <!-- Success Modal -->
+    <div class="success-modal" id="success-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="success-title">Success!</h3>
+                <button onclick="closeSuccessModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="success-message" id="success-message">
+                    <!-- Success message will be populated here -->
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="success-btn" onclick="closeSuccessModal()">Continue</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Task Acceptance Modal -->
+    <div class="task-acceptance-modal" id="task-acceptance-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Accept Task</h3>
+                <button onclick="closeTaskAcceptanceModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="task-plan">Your Plan & Approach</label>
+                    <textarea id="task-plan" placeholder="Describe your plan for completing this task, your approach, and any initial thoughts..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="task-questions">Questions & Clarifications</label>
+                    <textarea id="task-questions" placeholder="Ask any questions you have about the task, request clarifications, or discuss requirements..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="task-timeline">Timeline & Milestones</label>
+                    <textarea id="task-timeline" placeholder="Outline your proposed timeline, key milestones, and when you expect to deliver the work..."></textarea>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="cancel-btn" onclick="closeTaskAcceptanceModal()">Cancel</button>
+                <button class="accept-btn" id="confirm-accept-btn" onclick="confirmAcceptTask()">Accept Task</button>
+            </div>
+        </div>
     </div>
 
     <audio id="message-ding" src="../assets/ding.mp3"></audio>
@@ -301,7 +660,15 @@ const elements = {
     fileViewerModal: document.getElementById('file-viewer-modal'),
     fileContent: document.getElementById('file-content'),
     submissionModal: document.getElementById('submission-modal'),
-    commentModal: document.getElementById('comment-modal')
+    commentModal: document.getElementById('comment-modal'),
+    assignedTasksList: document.getElementById('assigned-tasks-list'),
+    assignedTaskModal: document.getElementById('assigned-task-modal'),
+    assignedTaskTitle: document.getElementById('assigned-task-title'),
+    assignedTaskBody: document.getElementById('assigned-task-body'),
+    assignedTaskActions: document.getElementById('assigned-task-actions'),
+    successModal: document.getElementById('success-modal'),
+    successTitle: document.getElementById('success-title'),
+    successMessage: document.getElementById('success-message')
 };
 
 async function fetchProfessionalData() {
@@ -431,6 +798,9 @@ async function init() {
                 fetchCurrentUserProfile().then(() => {
                     loadConnections();
                     loadPendingRequests();
+                    loadAssignedTasks();
+                    loadWorkflows(); // Load workflows by default
+                    checkAndShowWorkflowArea(); // Check if there are tasks and show workflow area
                 });
             } else {
                 console.error("User not authenticated");
@@ -1186,85 +1556,124 @@ function insertMention(taskTitle) {
 
 function loadWorkflows() {
     if (!elements.workflowList) return;
-    if (selectedProfessionalId) {
-        const tasksRef = ref(db, `tasks`);
-        onValue(tasksRef, (snapshot) => {
-            elements.workflowList.innerHTML = '';
-            let hasTasks = false;
-            if (snapshot.exists()) {
-                const tasks = snapshot.val();
-                for (const taskId in tasks) {
-                    const task = tasks[taskId];
-                    if (task.studentId === userId && task.professionalId === selectedProfessionalId) {
-                        hasTasks = true;
-                        const workflowItem = document.createElement('div');
-                        workflowItem.className = 'workflow-item';
-                        workflowItem.dataset.taskId = taskId;
-                        workflowItem.innerHTML = `
-                            <div class="task-header">
-                                <div class="task-info">
-                                <h4>${task.title}</h4>
-                                    <p class="task-description">${task.description}</p>
-                                </div>
-                                <div class="task-menu">
-                                    <i class="fas fa-ellipsis-v task-menu-icon"></i>
-                                    <div class="task-menu-dropdown">
-                                        <button data-action="deleteTask" class="delete-task-btn">Delete Task</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="task-meta">
-                            <div class="deadline-container">
-                                    <div class="circular-progress">
-                                        <div class="circular-progress-ring">
-                                            <svg class="progress-ring" width="60" height="60">
-                                                <circle class="progress-ring-circle-bg" cx="30" cy="30" r="24" stroke-width="4"></circle>
-                                                <circle class="progress-ring-circle" cx="30" cy="30" r="24" stroke-width="4" 
-                                                    stroke-dasharray="${2 * Math.PI * 24}" 
-                                                    stroke-dashoffset="${2 * Math.PI * 24 * (1 - calculateDeadlineProgress(task.deadline) / 100)}"
-                                                    style="stroke: ${getDeadlineColor(task.deadline)};"></circle>
-                                            </svg>
-                                            <div class="progress-text">
-                                                <span class="days-number">${calculateDaysLeft(task.deadline)}</span>
-                                                <span class="days-label">days</span>
-                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                ${task.files && Object.keys(task.files).length > 0 ? `
-                                    <div class="files-count" onclick="toggleFilesPopup('${taskId}', event)">
-                                        <i class="fas fa-paperclip"></i>
-                                        <span>${Object.keys(task.files).length} ${getFileTypeLabel(task.files)}</span>
-                                    </div>
-                                ` : ''}
-                            </div>
-                            <div class="task-timeline">
-                                <div class="timeline-header">
-                                    <h5>Submission Timeline</h5>
-                                    <div class="timeline-actions">
-                                        <button class="add-comment-btn" onclick="openCommentModal('${taskId}')">
-                                            <i class="fas fa-comment"></i> Add Comment
-                                        </button>
-                                        <button class="add-submission-btn" onclick="openSubmissionModal('${taskId}')">
-                                            <i class="fas fa-plus"></i> Add Submission
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="timeline-content" id="timeline-${taskId}">
-                                    ${generateTimelineHTML(task.submissions || {}, task.comments || {})}
-                                </div>
-                            </div>
-                        `;
-                        elements.workflowList.appendChild(workflowItem);
-                    }
+    
+    const tasksRef = ref(db, `tasks`);
+    onValue(tasksRef, (snapshot) => {
+        elements.workflowList.innerHTML = '';
+        let hasTasks = false;
+        
+        if (snapshot.exists()) {
+            const tasks = snapshot.val();
+            const filteredTasks = [];
+            
+            // Filter and collect tasks for the current student
+            for (const taskId in tasks) {
+                const task = tasks[taskId];
+                // Show tasks for the current student, either all tasks or filtered by selected professional
+                if (task.studentId === userId && (!selectedProfessionalId || task.professionalId === selectedProfessionalId)) {
+                    filteredTasks.push({ taskId, ...task });
                 }
             }
-            if (!hasTasks) {
-                elements.workflowList.innerHTML = '<p>No tasks found.</p>';
+            
+            // Sort tasks by deadline (nearest first)
+            filteredTasks.sort((a, b) => {
+                const deadlineA = new Date(a.deadline);
+                const deadlineB = new Date(b.deadline);
+                return deadlineA - deadlineB;
+            });
+            
+            // Create workflow items for sorted tasks
+            filteredTasks.forEach(({ taskId, ...task }) => {
+                hasTasks = true;
+                const workflowItem = document.createElement('div');
+                workflowItem.className = 'workflow-item';
+                workflowItem.dataset.taskId = taskId;
+                workflowItem.innerHTML = `
+                    <div class="task-header">
+                        <div class="task-info">
+                        <h4>${task.title}</h4>
+                            <p class="task-description">${task.description}</p>
+                        </div>
+                        <div class="task-menu">
+                            <i class="fas fa-ellipsis-v task-menu-icon"></i>
+                            <div class="task-menu-dropdown">
+                                <button data-action="deleteTask" class="delete-task-btn">Delete Task</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="task-meta">
+                    <div class="deadline-container">
+                            <div class="circular-progress">
+                                <div class="circular-progress-ring">
+                                    <svg class="progress-ring" width="60" height="60">
+                                        <circle class="progress-ring-circle-bg" cx="30" cy="30" r="24" stroke-width="4"></circle>
+                                        <circle class="progress-ring-circle" cx="30" cy="30" r="24" stroke-width="4" 
+                                            stroke-dasharray="${2 * Math.PI * 24}" 
+                                            stroke-dashoffset="${2 * Math.PI * 24 * (1 - calculateDeadlineProgress(task.deadline) / 100)}"
+                                            style="stroke: ${getDeadlineColor(task.deadline)};"></circle>
+                                    </svg>
+                                    <div class="progress-text">
+                                        <span class="days-number">${calculateDaysLeft(task.deadline)}</span>
+                                        <span class="days-label">days</span>
+                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        ${task.files && Object.keys(task.files).length > 0 ? `
+                            <div class="files-count" onclick="toggleFilesPopup('${taskId}', event)">
+                                <i class="fas fa-paperclip"></i>
+                                <span>${Object.keys(task.files).length} ${getFileTypeLabel(task.files)}</span>
+                            </div>
+                        ` : ''}
+                    </div>
+                    <div class="task-timeline">
+                        <div class="timeline-header">
+                            <h5>Submission Timeline</h5>
+                            <div class="timeline-actions">
+                                <button class="add-comment-btn" onclick="openCommentModal('${taskId}')">
+                                    <i class="fas fa-comment"></i> Add Comment
+                                </button>
+                                <button class="add-submission-btn" onclick="openSubmissionModal('${taskId}')">
+                                    <i class="fas fa-plus"></i> Add Submission
+                                </button>
+                            </div>
+                        </div>
+                        <div class="timeline-content" id="timeline-${taskId}">
+                            ${generateTimelineHTML(task.submissions || {}, task.comments || {})}
+                        </div>
+                    </div>
+                `;
+                elements.workflowList.appendChild(workflowItem);
+            });
+        }
+        if (!hasTasks) {
+            elements.workflowList.innerHTML = '<p>No tasks found.</p>';
+        }
+        isDataLoaded.tasks = true;
+        checkAllDataLoaded();
+        
+        // Check and show workflow area if there are tasks
+        if (hasTasks && elements.workflowArea) {
+            elements.workflowArea.style.display = 'block';
+        }
+    });
+}
+
+async function checkAndShowWorkflowArea() {
+    try {
+        const tasksRef = ref(db, `tasks`);
+        const snapshot = await get(tasksRef);
+        
+        if (snapshot.exists()) {
+            const tasks = snapshot.val();
+            const hasTasks = Object.values(tasks).some(task => task.studentId === userId);
+            
+            if (hasTasks && elements.workflowArea) {
+                elements.workflowArea.style.display = 'block';
             }
-            isDataLoaded.tasks = true;
-            checkAllDataLoaded();
-        });
+        }
+    } catch (error) {
+        console.error('Error checking workflow area:', error);
     }
 }
 
@@ -1381,7 +1790,7 @@ function generateTimelineHTML(submissions, comments) {
                             <span class="comment-author">${item.authorName}</span>
                             <span class="comment-date">${formatSubmissionDate(item.timestamp)}</span>
                         </div>
-                        <div class="comment-content">${item.content}</div>
+                        <div class="comment-content">${formatCommentContent(item.content)}</div>
                     </div>
                 </div>
             `;
@@ -1404,6 +1813,19 @@ function formatSubmissionDate(timestamp) {
     } else {
         return date.toLocaleDateString();
     }
+}
+
+function formatCommentContent(content) {
+    if (!content) return '';
+    
+    // Convert markdown-like formatting to HTML
+    let formattedContent = content
+        // Convert **text** to <strong>text</strong>
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        // Convert line breaks to <br> tags
+        .replace(/\n/g, '<br>');
+    
+    return formattedContent;
 }
 
 function openSubmissionModal(taskId) {
@@ -1748,6 +2170,397 @@ function openAIApp(appType) {
     }
 }
 
+// Assigned Tasks Functions
+async function loadAssignedTasks() {
+    try {
+        const assignedTasksRef = ref(db, `students/${userId}/assignedTasks`);
+        const snapshot = await get(assignedTasksRef);
+        
+        elements.assignedTasksList.innerHTML = '';
+        const assignedTasksSection = document.getElementById('assigned-tasks-section');
+        
+        if (snapshot.exists()) {
+            const tasks = snapshot.val();
+            let hasPendingTasks = false;
+            console.log('Loaded assigned tasks:', tasks); // DEBUG
+
+            // Fetch professional data to get photos
+            const professionals = await fetchProfessionalData();
+
+            // Filter and collect pending tasks
+            const pendingTasks = [];
+            for (const taskId in tasks) {
+                const task = tasks[taskId];
+                if (task.status === 'pending') {
+                    pendingTasks.push({ taskId, ...task });
+                }
+            }
+
+            // Sort pending tasks by deadline (nearest first)
+            pendingTasks.sort((a, b) => {
+                const deadlineA = new Date(a.deadline);
+                const deadlineB = new Date(b.deadline);
+                return deadlineA - deadlineB;
+            });
+
+            // Create cards for sorted tasks
+            pendingTasks.forEach(({ taskId, ...task }) => {
+                hasPendingTasks = true;
+                // Find professional photo
+                const professional = professionals.find(p => p.id === task.professionalId);
+                const professionalPhoto = professional?.personal?.profilePic || '../assets/avatar/1.png';
+                
+                const card = createAssignedTaskCard(task, taskId, professionalPhoto);
+                if (card) elements.assignedTasksList.appendChild(card);
+            });
+
+            if (hasPendingTasks) {
+                assignedTasksSection.style.display = 'block';
+            } else {
+                assignedTasksSection.style.display = 'none';
+            }
+        } else {
+            assignedTasksSection.style.display = 'none';
+        }
+    } catch (error) {
+        console.error('Error loading assigned tasks:', error);
+        document.getElementById('assigned-tasks-section').style.display = 'none';
+    }
+}
+
+function createAssignedTaskCard(task, taskId, professionalPhoto) {
+    if (task.status !== 'pending') return null;
+    const card = document.createElement('div');
+    card.className = `assigned-task-card pending`;
+    card.dataset.taskId = taskId;
+    const daysLeft = calculateDaysLeft(task.deadline);
+    
+    console.log('Rendering card for task:', task.title, 'Photo:', professionalPhoto); // DEBUG
+    card.innerHTML = `
+        <div class="assigned-task-content">
+            <div class="assigned-task-main">
+                <div class="assigned-task-header">
+                    <h4 class="assigned-task-title">${task.title}</h4>
+                    <div class="assigned-task-badge">
+                        <i class="fas fa-clock"></i>
+                        ${daysLeft}d
+                    </div>
+                </div>
+                <p class="assigned-task-description">${task.description || 'No description provided'}</p>
+                <div class="assigned-task-meta">
+                    <span class="assigned-task-category">${task.category.replace('-', ' ')}</span>
+                    <div class="assigned-task-employer">
+                        <img src="${professionalPhoto}" alt="${task.professionalName}" onerror="this.src='../assets/avatar/1.png'">
+                        <span>${task.professionalName}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="assigned-task-actions">
+                <button class="assigned-task-btn accept-btn" onclick="acceptTask('${taskId}')">
+                    <i class="fas fa-check"></i>
+                    Accept
+                </button>
+                <button class="assigned-task-btn reject-btn" onclick="rejectTask('${taskId}')">
+                    <i class="fas fa-times"></i>
+                    Reject
+                </button>
+            </div>
+        </div>
+    `;
+    return card;
+}
+
+async function acceptTask(taskId) {
+    try {
+        // Store the task ID for the acceptance process
+        window.currentAcceptingTaskId = taskId;
+        
+        // Show the task acceptance modal
+        document.getElementById('task-acceptance-modal').classList.add('active');
+        
+        // Clear previous form data
+        document.getElementById('task-plan').value = '';
+        document.getElementById('task-questions').value = '';
+        document.getElementById('task-timeline').value = '';
+        
+    } catch (error) {
+        console.error('Error showing task acceptance modal:', error);
+        alert('Failed to show acceptance form.');
+    }
+}
+
+async function confirmAcceptTask() {
+    try {
+        const taskId = window.currentAcceptingTaskId;
+        if (!taskId) {
+            alert('No task selected for acceptance.');
+            return;
+        }
+
+        // Get form data
+        const plan = document.getElementById('task-plan').value.trim();
+        const questions = document.getElementById('task-questions').value.trim();
+        const timeline = document.getElementById('task-timeline').value.trim();
+
+        // Validate that at least plan is provided
+        if (!plan) {
+            alert('Please provide your plan and approach for the task.');
+            return;
+        }
+
+        // Get the task details first
+        const taskSnapshot = await get(ref(db, `students/${userId}/assignedTasks/${taskId}`));
+        const task = taskSnapshot.val();
+        
+        if (!task) {
+            alert('Task not found.');
+            return;
+        }
+
+        // Update task status to accepted
+        await update(ref(db, `students/${userId}/assignedTasks/${taskId}`), {
+            status: 'accepted',
+            acceptedAt: new Date().toISOString()
+        });
+        
+        // Add employer as connection if not already connected
+        const studentConnectionRef = ref(db, `users/${userId}/connections/${task.professionalId}`);
+        const professionalConnectionRef = ref(db, `users/${task.professionalId}/connections/${userId}`);
+        
+        const connectionSnapshot = await get(studentConnectionRef);
+        if (!connectionSnapshot.exists()) {
+            await set(studentConnectionRef, { status: "connected" });
+            await set(professionalConnectionRef, { status: "connected" });
+        }
+        
+        // Add to workflow tasks (this creates the task in the main task section)
+        await set(ref(db, `tasks/${taskId}`), {
+            ...task,
+            studentId: userId,
+            professionalId: task.professionalId,
+            status: 'in-progress',
+            createdAt: new Date().toISOString(),
+            title: task.title,
+            description: task.description,
+            category: task.category,
+            deadline: task.deadline,
+            files: task.files || {}
+        });
+
+        // Create initial comment with plan, questions, and timeline
+        const currentUser = await fetchCurrentUserProfile();
+        const initialComment = {
+            authorId: userId,
+            authorName: currentUser.name,
+            content: `**Task Acceptance & Initial Plan**\n\n**My Plan & Approach:**\n${plan}\n\n${questions ? `**Questions & Clarifications:**\n${questions}\n\n` : ''}${timeline ? `**Timeline & Milestones:**\n${timeline}` : ''}`,
+            timestamp: new Date().toISOString(),
+            type: 'acceptance-comment'
+        };
+
+        // Add the initial comment to the task timeline
+        const commentsRef = ref(db, `tasks/${taskId}/comments`);
+        await push(commentsRef, initialComment);
+        
+        // Close the acceptance modal
+        closeTaskAcceptanceModal();
+        
+        // Automatically select the professional to show the task in workflow
+        await selectProfessional(task.professionalId);
+        
+        // Show success message
+        showSuccessModal('Task Accepted!', 'The task has been accepted and added to your workflow. Your initial plan has been shared with the employer.');
+        
+        // Reload assigned tasks and connections
+        loadAssignedTasks();
+        loadConnections();
+        
+    } catch (error) {
+        console.error('Error accepting task:', error);
+        alert('Failed to accept task. Please try again.');
+    }
+}
+
+function closeTaskAcceptanceModal() {
+    document.getElementById('task-acceptance-modal').classList.remove('active');
+    window.currentAcceptingTaskId = null;
+}
+
+async function rejectTask(taskId) {
+    try {
+        // Show styled confirmation dialog
+        confirmAction('confirmRejectTask', 'Reject Task', 'Are you sure you want to reject this task? This action cannot be undone.', { taskId });
+    } catch (error) {
+        console.error('Error showing reject confirmation:', error);
+        alert('Failed to show confirmation dialog.');
+    }
+}
+
+async function confirmRejectTask({ taskId }) {
+    try {
+        // Get the task details first
+        const taskSnapshot = await get(ref(db, `students/${userId}/assignedTasks/${taskId}`));
+        const task = taskSnapshot.val();
+        
+        if (!task) {
+            alert('Task not found.');
+            return;
+        }
+
+        // Remove the task from assigned tasks
+        await remove(ref(db, `students/${userId}/assignedTasks/${taskId}`));
+        
+        // Update the professional's task assignments
+        const professionalTaskRef = ref(db, `professionals/${task.professionalId}/tasks/${taskId}`);
+        const professionalTaskSnapshot = await get(professionalTaskRef);
+        
+        if (professionalTaskSnapshot.exists()) {
+            const professionalTask = professionalTaskSnapshot.val();
+            
+            // Remove current student from primary or waitlist
+            if (professionalTask.primaryStudents && professionalTask.primaryStudents[userId]) {
+                await remove(ref(db, `professionals/${task.professionalId}/tasks/${taskId}/primaryStudents/${userId}`));
+            }
+            if (professionalTask.waitlistStudents && professionalTask.waitlistStudents[userId]) {
+                await remove(ref(db, `professionals/${task.professionalId}/tasks/${taskId}/waitlistStudents/${userId}`));
+            }
+            
+            // Move next waitlisted student to primary if available
+            if (professionalTask.waitlistStudents && Object.keys(professionalTask.waitlistStudents).length > 0) {
+                const waitlistStudentIds = Object.keys(professionalTask.waitlistStudents);
+                const nextStudentId = waitlistStudentIds[0];
+                const nextStudent = professionalTask.waitlistStudents[nextStudentId];
+                
+                // Move to primary
+                await set(ref(db, `professionals/${task.professionalId}/tasks/${taskId}/primaryStudents/${nextStudentId}`), nextStudent);
+                
+                // Remove from waitlist
+                await remove(ref(db, `professionals/${task.professionalId}/tasks/${taskId}/waitlistStudents/${nextStudentId}`));
+                
+                // Update the student's assigned task status to pending
+                await set(ref(db, `students/${nextStudentId}/assignedTasks/${taskId}`), {
+                    ...task,
+                    status: 'pending',
+                    assignedAt: new Date().toISOString()
+                });
+            }
+        }
+        
+        // Show success message
+        showSuccessModal('Task Rejected!', 'The task has been rejected and removed from your list.');
+        
+        // Reload assigned tasks
+        loadAssignedTasks();
+        
+    } catch (error) {
+        console.error('Error rejecting task:', error);
+        alert('Failed to reject task. Please try again.');
+    }
+}
+
+async function viewAssignedTask(taskId) {
+    try {
+        const taskSnapshot = await get(ref(db, `students/${userId}/assignedTasks/${taskId}`));
+        const task = taskSnapshot.val();
+        
+        if (!task) {
+            alert('Task not found.');
+            return;
+        }
+        
+        const daysLeft = calculateDaysLeft(task.deadline);
+        
+        elements.assignedTaskTitle.textContent = task.title;
+        elements.assignedTaskBody.innerHTML = `
+            <div class="task-details">
+                <div class="detail-section">
+                    <h4>Task Information</h4>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <strong>Title:</strong> ${task.title}
+                        </div>
+                        <div class="detail-item">
+                            <strong>Description:</strong> ${task.description}
+                        </div>
+                        <div class="detail-item">
+                            <strong>Category:</strong> ${task.category.replace('-', ' ')}
+                        </div>
+                        <div class="detail-item">
+                            <strong>Deadline:</strong> ${new Date(task.deadline).toLocaleDateString()}
+                        </div>
+                        <div class="detail-item">
+                            <strong>Days Left:</strong> ${daysLeft} days
+                        </div>
+                        <div class="detail-item">
+                            <strong>Status:</strong> ${task.status}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="detail-section">
+                    <h4>Professional Information</h4>
+                    <div class="professional-detail">
+                        <div class="professional-name">${task.professionalName}</div>
+                        <div class="assigned-date">Assigned: ${new Date(task.assignedAt).toLocaleDateString()}</div>
+                    </div>
+                </div>
+                
+                ${task.files && Object.keys(task.files).length > 0 ? `
+                    <div class="detail-section">
+                        <h4>Attached Files (${Object.keys(task.files).length})</h4>
+                        <div class="task-files">
+                            ${Object.values(task.files).map(file => `
+                                <a href="${file.url}" download="${file.name}" class="task-file">
+                                    <i class="fas fa-file"></i>
+                                    <span>${file.name}</span>
+                                </a>
+                            `).join('')}
+                        </div>
+                    </div>
+                ` : ''}
+            </div>
+        `;
+        
+        // Set up action buttons based on task status
+        if (task.status === 'pending') {
+            elements.assignedTaskActions.innerHTML = `
+                <button class="cancel-btn" onclick="closeAssignedTaskModal()">Cancel</button>
+                <button class="accept-btn" onclick="acceptTask('${taskId}')">Accept Task</button>
+                <button class="reject-btn" onclick="rejectTask('${taskId}')">Reject Task</button>
+            `;
+        } else {
+            elements.assignedTaskActions.innerHTML = `
+                <button class="cancel-btn" onclick="closeAssignedTaskModal()">Close</button>
+            `;
+        }
+        
+        elements.assignedTaskModal.classList.add('active');
+        
+    } catch (error) {
+        console.error('Error loading task details:', error);
+        alert('Failed to load task details.');
+    }
+}
+
+function closeAssignedTaskModal() {
+    elements.assignedTaskModal.classList.remove('active');
+}
+
+function showSuccessModal(title, message) {
+    elements.successTitle.textContent = title;
+    elements.successMessage.innerHTML = `
+        <div class="success-content">
+            <i class="fas fa-check-circle"></i>
+            <h4>${title}</h4>
+            <p>${message}</p>
+        </div>
+    `;
+    elements.successModal.classList.add('active');
+}
+
+function closeSuccessModal() {
+    elements.successModal.classList.remove('active');
+}
+
 window.sendMessage = sendMessage;
 window.sendFileMessage = sendFileMessage;
 window.openTaskPopup = openTaskPopup;
@@ -1777,6 +2590,16 @@ window.toggleAIAppsPanel = toggleAIAppsPanel;
 window.openAIAppsPanel = openAIAppsPanel;
 window.closeAIAppsPanel = closeAIAppsPanel;
 window.openAIApp = openAIApp;
+
+// Assigned Tasks Window Functions
+window.acceptTask = acceptTask;
+window.rejectTask = rejectTask;
+window.confirmRejectTask = confirmRejectTask;
+window.viewAssignedTask = viewAssignedTask;
+window.closeAssignedTaskModal = closeAssignedTaskModal;
+window.closeSuccessModal = closeSuccessModal;
+window.confirmAcceptTask = confirmAcceptTask;
+window.closeTaskAcceptanceModal = closeTaskAcceptanceModal;
 
 init();
 

@@ -71,11 +71,11 @@
         }
 
         .gigs-container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 2rem;
             display: grid;
-            grid-template-columns: 1fr 300px;
+            grid-template-columns: 1fr 250px;
             gap: 2rem;
             align-items: start;
             margin-top: 90px; /* Adjust for navbar height (1rem top + 1rem bottom padding + content) */
@@ -139,24 +139,32 @@
             background: #1557b0;
         }
 
-        /* Task Cards - Clean Design */
+        /* Task Cards - Enhanced Design with Full Details */
         .gig-card {
             background: white;
             border: 1px solid #e0e0e0;
-            margin-bottom: 1rem;
-            transition: border-color 0.2s;
+            margin-bottom: 1.5rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            border-radius: 8px;
+            overflow: hidden;
         }
 
         .gig-card:hover {
             border-color: #1a73e8;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
         .gig-header {
             padding: 1.5rem;
+            border-bottom: 1px solid #f0f0f0;
+            position: relative;
+        }
+
+        .gig-title-section {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            gap: 1.5rem;
+            margin-bottom: 1rem;
         }
 
         .gig-info {
@@ -164,16 +172,16 @@
         }
 
         .gig-info h4 {
-            font-size: 1.1rem;
-            font-weight: 500;
+            font-size: 1.3rem;
+            font-weight: 600;
             color: #333;
             margin: 0 0 0.5rem 0;
         }
 
         .gig-description {
             color: #666;
-            font-size: 0.9rem;
-            line-height: 1.4;
+            font-size: 0.95rem;
+            line-height: 1.5;
             margin: 0 0 1rem 0;
         }
 
@@ -182,21 +190,24 @@
             gap: 1rem;
             align-items: center;
             flex-wrap: wrap;
+            margin-bottom: 1rem;
         }
 
         .gig-category {
             background: #f1f3f4;
             color: #333;
-            padding: 0.25rem 0.5rem;
-            font-size: 0.8rem;
+            padding: 0.4rem 0.8rem;
+            font-size: 0.85rem;
             font-weight: 500;
             text-transform: capitalize;
+            border-radius: 4px;
         }
 
         .deadline-info {
-            padding: 0.25rem 0.5rem;
-            font-size: 0.8rem;
+            padding: 0.4rem 0.8rem;
+            font-size: 0.85rem;
             font-weight: 500;
+            border-radius: 4px;
         }
 
         .deadline-info.urgent {
@@ -215,21 +226,22 @@
         }
 
         .gig-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-            min-width: 180px;
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            z-index: 10;
         }
 
         .assignment-info {
             background: #f8f9fa;
-            padding: 0.75rem;
+            padding: 1rem;
             border: 1px solid #e0e0e0;
+            border-radius: 6px;
         }
 
         .primary-assignment, .waitlist-info {
-            margin-bottom: 0.25rem;
-            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
         }
 
         .primary-assignment strong {
@@ -244,15 +256,234 @@
             background: #1a73e8;
             color: white;
             border: none;
-            padding: 0.5rem 1rem;
-            font-size: 0.85rem;
+            padding: 0.6rem 1.2rem;
+            font-size: 0.9rem;
             font-weight: 500;
             cursor: pointer;
             transition: background 0.2s;
+            border-radius: 4px;
         }
 
         .view-details-btn:hover {
             background: #1557b0;
+        }
+
+        /* New: Task Details Section */
+        .gig-details {
+            padding: 1.5rem;
+            background: #fafafa;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        .detail-section {
+            background: white;
+            border: 1px solid #e0e0e0;
+            padding: 1rem;
+            border-radius: 6px;
+        }
+
+        .detail-section h5 {
+            margin: 0 0 0.75rem 0;
+            color: #333;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 0.5rem;
+        }
+
+        .detail-item {
+            margin-bottom: 0.5rem;
+            padding: 0.25rem 0;
+            font-size: 0.9rem;
+        }
+
+        .detail-item strong {
+            color: #333;
+            font-weight: 500;
+            min-width: 100px;
+            display: inline-block;
+        }
+
+        .student-detail {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            margin-bottom: 0.5rem;
+            border-radius: 4px;
+        }
+
+        .student-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid #e0e0e0;
+        }
+
+        .student-name {
+            font-weight: 500;
+            color: #333;
+            font-size: 0.9rem;
+        }
+
+        .student-status {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .files-section {
+            margin-top: 1rem;
+        }
+
+        .files-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            text-decoration: none;
+            color: #333;
+            font-size: 0.85rem;
+            transition: background 0.2s;
+        }
+
+        .file-item:hover {
+            background: #f8f9fa;
+        }
+
+        .file-item i {
+            color: #1a73e8;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .delete-task-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+            border-radius: 4px;
+        }
+
+        .delete-task-btn:hover {
+            background: #c82333;
+        }
+
+        .edit-task-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+            border-radius: 4px;
+        }
+
+        .edit-task-btn:hover {
+            background: #218838;
+        }
+
+        /* Three Dot Menu */
+        .three-dot-menu {
+            position: relative;
+            display: inline-block;
+        }
+
+        .three-dot-btn {
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            color: #666;
+            padding: 0.5rem;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .three-dot-btn:hover {
+            background: #e9ecef;
+            color: #333;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            min-width: 150px;
+            z-index: 1000;
+            display: none;
+            margin-top: 0.25rem;
+        }
+
+        .dropdown-menu.active {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: #333;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+        }
+
+        .dropdown-item:hover {
+            background: #f8f9fa;
+        }
+
+        .dropdown-item.edit {
+            color: #28a745;
+        }
+
+        .dropdown-item.delete {
+            color: #dc3545;
+        }
+
+        .dropdown-item i {
+            width: 16px;
         }
 
         /* Modal Styles - Clean */
@@ -370,39 +601,159 @@
             border-color: #1a73e8;
         }
 
-        /* Priority Management - Drag & Drop */
+        /* Priority Management - Vertical List Design */
         .priority-management {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
             margin-top: 1rem;
         }
 
-        .priority-drag-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-        }
-
-        .priority-section {
+        .priority-list {
             background: #f8f9fa;
             border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .priority-header {
+            background: #1a73e8;
+            color: white;
+            padding: 0.75rem 1rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .primary-student-section {
+            background: #e8f5e8;
+            border-bottom: 1px solid #e0e0e0;
             padding: 1rem;
         }
 
-        .priority-section h4 {
-            margin: 0 0 1rem 0;
-            color: #333;
+        .primary-student-section h4 {
+            margin: 0 0 0.75rem 0;
+            color: #137333;
             font-size: 0.9rem;
-            font-weight: 500;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .priority-student, .priority-students {
-            min-height: 60px;
+        .primary-student-section h4 i {
+            color: #137333;
+        }
+
+        .waitlist-section {
+            padding: 1rem;
+        }
+
+        .waitlist-section h4 {
+            margin: 0 0 0.75rem 0;
+            color: #666;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .waitlist-section h4 i {
+            color: #666;
+        }
+
+        .student-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
             background: white;
             border: 1px solid #e0e0e0;
-            padding: 0.5rem;
-            margin-bottom: 0.75rem;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .student-item:hover {
+            border-color: #1a73e8;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .student-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .student-item.dragging {
+            opacity: 0.5;
+            transform: rotate(2deg);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .drag-handle {
+            color: #888;
+            cursor: grab;
+            padding: 0.25rem;
+            border-radius: 3px;
+            transition: color 0.2s;
+        }
+
+        .drag-handle:hover {
+            color: #1a73e8;
+        }
+
+        .drag-handle:active {
+            cursor: grabbing;
+        }
+
+        .student-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #e0e0e0;
+            flex-shrink: 0;
+        }
+
+        .student-info {
+            flex: 1;
+        }
+
+        .student-name {
+            font-weight: 500;
+            color: #333;
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .student-position {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .primary-badge {
+            background: #137333;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            margin-left: auto;
+        }
+
+        .waitlist-badge {
+            background: #1a73e8;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            margin-left: auto;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 1rem;
+            color: #666;
+            font-style: italic;
         }
 
         .change-priority-btn {
@@ -412,6 +763,21 @@
             padding: 0.5rem 0.75rem;
             font-size: 0.8rem;
             cursor: pointer;
+            border-radius: 4px;
+            margin-top: 0.75rem;
+            transition: all 0.2s;
+        }
+
+        .change-priority-btn:hover {
+            background: #e9ecef;
+            border-color: #1a73e8;
+        }
+
+        /* Drag Over Effects */
+        .primary-student-section.drag-over,
+        .waitlist-section.drag-over {
+            background: #f0f8ff;
+            border: 2px dashed #1a73e8;
         }
 
         /* Drag & Drop Styles */
@@ -560,20 +926,24 @@
                 margin-top: 90px; /* Keep same margin as desktop */
             }
 
-            .gig-header {
-                flex-direction: column;
-                gap: 1rem;
-            }
-
             .gig-actions {
-                min-width: auto;
+                top: 0.75rem;
+                right: 0.75rem;
             }
 
-            .priority-management {
-                grid-template-columns: 1fr;
+            .three-dot-btn {
+                width: 36px;
+                height: 36px;
+                font-size: 0.9rem;
             }
 
-            .task-details-grid {
+            .dropdown-menu {
+                right: 0;
+                left: auto;
+                min-width: 140px;
+            }
+
+            .details-grid {
                 grid-template-columns: 1fr;
             }
 
@@ -594,6 +964,194 @@
             font-size: 2rem;
             margin-bottom: 1rem;
             color: #ccc;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
+
+        .delete-task-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .delete-task-btn:hover {
+            background: #c82333;
+        }
+
+        /* Confirmation Dialog */
+        .confirmation-dialog {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            backdrop-filter: blur(4px);
+        }
+
+        .confirmation-dialog.active {
+            display: flex;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .confirmation-dialog .dialog-box {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            border: 1px solid #e0e0e0;
+            animation: slideInUp 0.3s ease-out;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .confirmation-dialog .dialog-box h3 {
+            margin: 0 0 1rem;
+            color: #1a1a1a;
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .confirmation-dialog .dialog-box p {
+            margin: 0 0 2rem;
+            color: #666;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .confirmation-dialog .dialog-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .confirmation-dialog .dialog-actions button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 100px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .confirmation-dialog .dialog-actions .cancel {
+            background: #f5f5f5;
+            color: #666;
+            border: 1px solid #e0e0e0;
+        }
+
+        .confirmation-dialog .dialog-actions .cancel:hover {
+            background: #e9ecef;
+            color: #333;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .confirmation-dialog .dialog-actions .confirm {
+            background: #4CAF50;
+            color: #fff;
+        }
+
+        .confirmation-dialog .dialog-actions .confirm:hover {
+            background: #45a049;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+        }
+
+        .confirmation-dialog .dialog-actions .delete {
+            background: #FF5252;
+            color: #fff;
+        }
+
+        .confirmation-dialog .dialog-actions .delete:hover {
+            background: #e04848;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(255, 82, 82, 0.3);
+        }
+
+        /* Success Modal Content */
+        .success-content {
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .success-content i {
+            font-size: 2.5rem;
+            color: #16a34a;
+            margin-bottom: 0.75rem;
+        }
+
+        .success-content h4 {
+            font-size: 1.1rem;
+            color: #333;
+            margin: 0 0 0.75rem 0;
+            font-weight: 600;
+        }
+
+        .success-content p {
+            color: #666;
+            margin: 0.25rem 0;
+            line-height: 1.4;
+            font-size: 0.9rem;
+        }
+
+        .student-item.dragging {
+            opacity: 0.5;
+            transform: rotate(2deg);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .drag-instructions {
+            margin-top: 0.75rem;
+            padding: 0.5rem;
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .drag-instructions small {
+            color: #666;
+            font-size: 0.8rem;
+        }
+
+        .drag-instructions i {
+            color: #1a73e8;
+            margin-right: 0.25rem;
         }
     </style>
 </head>
@@ -721,24 +1279,6 @@
                                 <i class="fas fa-search"></i>
                             </button>
                         </div>
-                        <div class="ai-suggestions" id="ai-suggestions">
-                            <div class="suggestion-item" onclick="useSuggestion('web developers with React experience')">
-                                <i class="fas fa-lightbulb"></i>
-                                <span>web developers with React experience</span>
-                            </div>
-                            <div class="suggestion-item" onclick="useSuggestion('designers with UI/UX skills')">
-                                <i class="fas fa-lightbulb"></i>
-                                <span>designers with UI/UX skills</span>
-                            </div>
-                            <div class="suggestion-item" onclick="useSuggestion('writers with technical background')">
-                                <i class="fas fa-lightbulb"></i>
-                                <span>writers with technical background</span>
-                            </div>
-                            <div class="suggestion-item" onclick="useSuggestion('data analysts with Python skills')">
-                                <i class="fas fa-lightbulb"></i>
-                                <span>data analysts with Python skills</span>
-                            </div>
-                        </div>
                     </div>
                     <div class="search-filters">
                         <select id="skill-filter">
@@ -792,6 +1332,18 @@
             </div>
             <div class="modal-actions">
                 <button class="success-btn" onclick="closeSuccessModal()">Continue</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Dialog -->
+    <div class="confirmation-dialog" id="confirmation-dialog">
+        <div class="dialog-box">
+            <h3 id="dialog-title"></h3>
+            <p id="dialog-message"></p>
+            <div class="dialog-actions">
+                <button class="cancel" onclick="closeConfirmation()">Cancel</button>
+                <button id="confirm-button" class="confirm"></button>
             </div>
         </div>
     </div>
@@ -854,23 +1406,25 @@
                 <div class="form-group">
                     <label>Student Priority Management</label>
                     <div class="priority-management">
-                        <div class="priority-section">
-                            <h4>Primary Student</h4>
-                            <div id="edit-primary-student" class="priority-student">
-                                <!-- Primary student will be shown here -->
+                        <div class="priority-list">
+                            <div class="priority-header">
+                                <i class="fas fa-users"></i> Student Assignments
                             </div>
-                            <button type="button" class="change-priority-btn" onclick="openPriorityChangeModal('primary')">
-                                <i class="fas fa-exchange-alt"></i> Change Primary
-                            </button>
-                        </div>
-                        <div class="priority-section">
-                            <h4>Waitlist Students</h4>
-                            <div id="edit-waitlist-students" class="priority-students">
-                                <!-- Waitlist students will be shown here -->
+                            <div class="primary-student-section">
+                                <h4><i class="fas fa-user-check"></i> Primary Student</h4>
+                                <div id="edit-primary-student">
+                                    <!-- Primary student will be shown here -->
+                                </div>
                             </div>
-                            <button type="button" class="change-priority-btn" onclick="openPriorityChangeModal('waitlist')">
-                                <i class="fas fa-exchange-alt"></i> Manage Waitlist
-                            </button>
+                            <div class="waitlist-section">
+                                <h4><i class="fas fa-user-clock"></i> Waitlist Students</h4>
+                                <div id="edit-waitlist-students">
+                                    <!-- Waitlist students will be shown here -->
+                                </div>
+                                <div class="drag-instructions">
+                                    <small><i class="fas fa-info-circle"></i> Drag students to reorder waitlist or move between primary and waitlist</small>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1049,13 +1603,6 @@ async function searchStudents() {
     const searchTerm = document.getElementById('student-search').value.toLowerCase();
     const skillFilter = document.getElementById('skill-filter').value;
     const educationFilter = document.getElementById('education-filter').value;
-    
-    // Hide AI suggestions when user starts typing
-    if (searchTerm.length > 0) {
-        document.getElementById('ai-suggestions').style.display = 'none';
-    } else {
-        document.getElementById('ai-suggestions').style.display = 'block';
-    }
     
     let filteredStudents = allStudents.filter(student => {
         const name = student.personal?.name?.toLowerCase() || '';
@@ -1351,14 +1898,28 @@ async function loadAssignedTasks() {
             const tasks = snapshot.val();
             let hasTasks = false;
 
+            // Filter and collect tasks for the current professional
+            const professionalTasks = [];
             for (const taskId in tasks) {
                 const task = tasks[taskId];
                 if (task.professionalId === userId) {
+                    professionalTasks.push({ taskId, ...task });
+                }
+            }
+
+            // Sort tasks by deadline (nearest first)
+            professionalTasks.sort((a, b) => {
+                const deadlineA = new Date(a.deadline);
+                const deadlineB = new Date(b.deadline);
+                return deadlineA - deadlineB;
+            });
+
+            // Create task cards for sorted tasks
+            professionalTasks.forEach(({ taskId, ...task }) => {
                     hasTasks = true;
                     const taskCard = createTaskCard(task, taskId);
                     activeGigsList.appendChild(taskCard);
-                }
-            }
+            });
 
             if (!hasTasks) {
                 activeGigsList.innerHTML = `
@@ -1395,8 +1956,38 @@ function createTaskCard(task, taskId) {
     const waitlistCount = task.waitlistStudents ? task.waitlistStudents.length : 0;
     const daysLeft = calculateDaysLeft(task.deadline);
     
+    // Get waitlist student names
+    const waitlistStudentNames = task.waitlistStudents ? task.waitlistStudents.map(id => 
+        allStudents.find(s => s.id === id)?.personal?.name || 'Unknown'
+    ) : [];
+    
+    // Get primary student profile pic
+    const primaryStudentPic = task.primaryStudent ? 
+        allStudents.find(s => s.id === task.primaryStudent)?.personal?.profilePic || '../assets/avatar/1.png' : 
+        '../assets/avatar/1.png';
+    
+    // Get primary student status
+    const primaryStudentStatus = getPrimaryStudentStatus(task, taskId);
+    
     card.innerHTML = `
         <div class="gig-header">
+            <div class="gig-actions">
+                <div class="three-dot-menu">
+                    <button class="three-dot-btn" onclick="toggleDropdown('${taskId}')">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                    <div class="dropdown-menu" id="dropdown-${taskId}">
+                        <button class="dropdown-item edit" onclick="editTaskFromCard('${taskId}')">
+                            <i class="fas fa-edit"></i>
+                            Edit Task
+                        </button>
+                        <button class="dropdown-item delete" onclick="deleteAssignedTask('${taskId}')">
+                            <i class="fas fa-trash"></i>
+                            Delete Task
+                        </button>
+                    </div>
+                </div>
+            </div>
             <div class="gig-info">
                 <h4>${task.title}</h4>
                 <p class="gig-description">${task.description}</p>
@@ -1407,23 +1998,99 @@ function createTaskCard(task, taskId) {
                     </span>
                 </div>
             </div>
-            <div class="gig-actions">
-                <div class="assignment-info">
-                    <div class="primary-assignment">
-                        <strong>Primary:</strong> ${primaryStudentName}
+        </div>
+        
+        <div class="gig-details">
+            <div class="details-grid">
+                <div class="detail-section">
+                    <h5>Student Assignments</h5>
+                    <div class="primary-detail">
+                        <div class="detail-item">
+                            <strong>Primary Student:</strong>
+                        </div>
+                        <div class="student-detail">
+                            <img src="${primaryStudentPic}" alt="Primary Student" class="student-avatar">
+                            <div>
+                                <div class="student-name">${primaryStudentName}</div>
+                                <div class="student-status ${primaryStudentStatus.class}">
+                                    <i class="fas ${primaryStudentStatus.icon}"></i>
+                                    ${primaryStudentStatus.text}
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="waitlist-info">
-                        <strong>Waitlist:</strong> ${waitlistCount} student(s)
+                    
+                    <div class="waitlist-detail">
+                        <div class="detail-item">
+                            <strong>Waitlist Students:</strong> ${waitlistCount}
+                        </div>
+                        ${waitlistStudentNames.length > 0 ? 
+                            waitlistStudentNames.map((name, index) => {
+                                const studentPic = allStudents.find(s => s.personal?.name === name)?.personal?.profilePic || '../assets/avatar/1.png';
+                                return `
+                                    <div class="student-detail">
+                                        <img src="${studentPic}" alt="${name}" class="student-avatar">
+                                        <div>
+                                            <div class="student-name">${name}</div>
+                                            <div class="student-status waitlist">Waitlist #${index + 1}</div>
+                                        </div>
+                                    </div>
+                                `;
+                            }).join('') : 
+                            '<div class="detail-item">No waitlist students</div>'
+                        }
                     </div>
                 </div>
-                <button class="view-details-btn" onclick="viewTaskDetails('${taskId}')">
-                    <i class="fas fa-eye"></i> View Details
-                </button>
+                
+                ${task.files && Object.keys(task.files).length > 0 ? `
+                    <div class="detail-section files-section">
+                        <h5>Attached Files (${Object.keys(task.files).length})</h5>
+                        <div class="files-list">
+                            ${Object.values(task.files).map(file => `
+                                <a href="${file.url}" download="${file.name}" class="file-item">
+                                    <i class="fas fa-file"></i>
+                                    <span>${file.name}</span>
+                                </a>
+                            `).join('')}
+                        </div>
+                    </div>
+                ` : ''}
             </div>
         </div>
     `;
     
     return card;
+}
+
+// Function to get primary student status
+async function getPrimaryStudentStatus(task, taskId) {
+    if (!task.primaryStudent) {
+        return { text: 'No Primary Student', class: 'no-primary', icon: 'fa-user-times' };
+    }
+    
+    try {
+        const studentTaskRef = ref(db, `students/${task.primaryStudent}/assignedTasks/${taskId}`);
+        const snapshot = await get(studentTaskRef);
+        
+        if (!snapshot.exists()) {
+            return { text: 'Student Removed', class: 'removed', icon: 'fa-user-times' };
+        }
+        
+        const studentTask = snapshot.val();
+        
+        switch (studentTask.status) {
+            case 'accepted':
+                return { text: 'Accepted', class: 'accepted', icon: 'fa-check-circle' };
+            case 'rejected':
+                return { text: 'Rejected', class: 'rejected', icon: 'fa-times-circle' };
+            case 'pending':
+            default:
+                return { text: 'Pending', class: 'pending', icon: 'fa-clock' };
+        }
+    } catch (error) {
+        console.error('Error getting student status:', error);
+        return { text: 'Unknown', class: 'unknown', icon: 'fa-question-circle' };
+    }
 }
 
 function calculateDaysLeft(deadline) {
@@ -1557,6 +2224,33 @@ function editCurrentTask() {
     document.getElementById('edit-task-modal').classList.add('active');
 }
 
+function editTaskFromCard(taskId) {
+    try {
+        const taskRef = ref(db, `assignedTasks/${taskId}`);
+        get(taskRef).then(snapshot => {
+            if (snapshot.exists()) {
+                const task = snapshot.val();
+                currentEditTask = { ...task, id: taskId };
+                
+                // Populate edit form
+                document.getElementById('edit-task-title').value = currentEditTask.title;
+                document.getElementById('edit-task-description').value = currentEditTask.description;
+                document.getElementById('edit-task-deadline').value = currentEditTask.deadline;
+                document.getElementById('edit-task-category').value = currentEditTask.category;
+                
+                // Populate student assignments
+                updateEditStudentAssignments();
+                
+                // Open edit modal
+                document.getElementById('edit-task-modal').classList.add('active');
+            }
+        });
+    } catch (error) {
+        console.error('Error loading task for editing:', error);
+        alert('Failed to load task for editing.');
+    }
+}
+
 function closeEditTaskModal() {
     document.getElementById('edit-task-modal').classList.remove('active');
     currentEditTask = null;
@@ -1565,40 +2259,234 @@ function closeEditTaskModal() {
 function updateEditStudentAssignments() {
     if (!currentEditTask) return;
     
+    // Clean up any duplicate students
+    cleanupStudentArrays();
+    
     // Update primary student display
     const primaryContainer = document.getElementById('edit-primary-student');
     if (currentEditTask.primaryStudent) {
         const student = allStudents.find(s => s.id === currentEditTask.primaryStudent);
         primaryContainer.innerHTML = `
             <div class="student-item">
+                <i class="fas fa-grip-vertical drag-handle"></i>
                 <img src="${student?.personal?.profilePic || '../assets/avatar/1.png'}" alt="${student?.personal?.name || 'Unknown'}" class="student-avatar">
-                <div>
+                <div class="student-info">
                     <div class="student-name">${student?.personal?.name || 'Unknown'}</div>
                     <div class="student-position">Primary Assignment</div>
                 </div>
+                <span class="primary-badge">Primary</span>
             </div>
         `;
     } else {
-        primaryContainer.innerHTML = '<p>No primary student assigned</p>';
+        primaryContainer.innerHTML = '<div class="empty-state">No primary student assigned</div>';
     }
     
-    // Update waitlist students display
+    // Update waitlist students display with drag handles
     const waitlistContainer = document.getElementById('edit-waitlist-students');
     if (currentEditTask.waitlistStudents && currentEditTask.waitlistStudents.length > 0) {
         waitlistContainer.innerHTML = currentEditTask.waitlistStudents.map((studentId, index) => {
             const student = allStudents.find(s => s.id === studentId);
             return `
-                <div class="student-item">
+                <div class="student-item waitlist-draggable" draggable="true" data-index="${index}" data-student-id="${studentId}">
+                    <i class="fas fa-grip-vertical drag-handle"></i>
                     <img src="${student?.personal?.profilePic || '../assets/avatar/1.png'}" alt="${student?.personal?.name || 'Unknown'}" class="student-avatar">
-                    <div>
+                    <div class="student-info">
                         <div class="student-name">${student?.personal?.name || 'Unknown'}</div>
                         <div class="student-position">Waitlist #${index + 1}</div>
                     </div>
+                    <span class="waitlist-badge">#${index + 1}</span>
                 </div>
             `;
         }).join('');
     } else {
-        waitlistContainer.innerHTML = '<p>No waitlist students</p>';
+        waitlistContainer.innerHTML = '<div class="empty-state">No waitlist students</div>';
+    }
+
+    // Enable drag-and-drop sorting for waitlist
+    enableWaitlistDragAndDrop();
+}
+
+function cleanupStudentArrays() {
+    if (!currentEditTask) return;
+    
+    // Remove duplicates from waitlist
+    if (currentEditTask.waitlistStudents) {
+        const uniqueWaitlist = [];
+        const seen = new Set();
+        
+        for (const studentId of currentEditTask.waitlistStudents) {
+            if (studentId && !seen.has(studentId)) {
+                seen.add(studentId);
+                uniqueWaitlist.push(studentId);
+            }
+        }
+        currentEditTask.waitlistStudents = uniqueWaitlist;
+    }
+    
+    // Ensure primary student is not in waitlist
+    if (currentEditTask.primaryStudent && currentEditTask.waitlistStudents) {
+        currentEditTask.waitlistStudents = currentEditTask.waitlistStudents.filter(
+            id => id !== currentEditTask.primaryStudent
+        );
+    }
+}
+
+function enableWaitlistDragAndDrop() {
+    const primaryContainer = document.getElementById('edit-primary-student');
+    const waitlistContainer = document.getElementById('edit-waitlist-students');
+    
+    // Clear any existing event listeners
+    const newPrimaryContainer = primaryContainer.cloneNode(true);
+    const newWaitlistContainer = waitlistContainer.cloneNode(true);
+    primaryContainer.parentNode.replaceChild(newPrimaryContainer, primaryContainer);
+    waitlistContainer.parentNode.replaceChild(newWaitlistContainer, waitlistContainer);
+    
+    // Get the new references
+    const updatedPrimaryContainer = document.getElementById('edit-primary-student');
+    const updatedWaitlistContainer = document.getElementById('edit-waitlist-students');
+    
+    let dragSrcElement = null;
+    let dragSrcType = null;
+    let dragSrcIndex = null;
+
+    // Make primary student draggable
+    const primaryStudent = updatedPrimaryContainer.querySelector('.student-item');
+    if (primaryStudent && currentEditTask.primaryStudent) {
+        primaryStudent.draggable = true;
+        primaryStudent.classList.add('primary-draggable');
+        primaryStudent.dataset.studentId = currentEditTask.primaryStudent;
+        primaryStudent.dataset.type = 'primary';
+        
+        primaryStudent.addEventListener('dragstart', handleDragStart);
+        primaryStudent.addEventListener('dragend', handleDragEnd);
+    }
+
+    // Make waitlist students draggable
+    const waitlistStudents = updatedWaitlistContainer.querySelectorAll('.waitlist-draggable');
+    waitlistStudents.forEach((student, index) => {
+        student.addEventListener('dragstart', handleDragStart);
+        student.addEventListener('dragend', handleDragEnd);
+        student.addEventListener('dragover', handleDragOver);
+        student.addEventListener('drop', handleDrop);
+    });
+
+    // Allow dropping on containers
+    updatedPrimaryContainer.addEventListener('dragover', handleDragOver);
+    updatedPrimaryContainer.addEventListener('drop', handleDrop);
+    updatedWaitlistContainer.addEventListener('dragover', handleDragOver);
+    updatedWaitlistContainer.addEventListener('drop', handleDrop);
+
+    // Allow dropping on section containers
+    const primarySection = updatedPrimaryContainer.closest('.primary-student-section');
+    const waitlistSection = updatedWaitlistContainer.closest('.waitlist-section');
+    
+    if (primarySection) {
+        primarySection.addEventListener('dragover', handleDragOver);
+        primarySection.addEventListener('drop', handleDrop);
+        primarySection.addEventListener('dragleave', handleDragLeave);
+    }
+    
+    if (waitlistSection) {
+        waitlistSection.addEventListener('dragover', handleDragOver);
+        waitlistSection.addEventListener('drop', handleDrop);
+        waitlistSection.addEventListener('dragleave', handleDragLeave);
+    }
+
+    function handleDragStart(e) {
+        dragSrcElement = e.target;
+        dragSrcType = e.target.dataset.type || 'waitlist';
+        dragSrcIndex = dragSrcType === 'waitlist' ? Number(e.target.dataset.index) : null;
+        e.target.classList.add('dragging');
+    }
+
+    function handleDragEnd(e) {
+        e.target.classList.remove('dragging');
+    }
+
+    function handleDragOver(e) {
+        e.preventDefault();
+        const section = e.currentTarget.closest('.primary-student-section, .waitlist-section');
+        if (section) {
+            section.classList.add('drag-over');
+        }
+    }
+
+    function handleDragLeave(e) {
+        const section = e.currentTarget.closest('.primary-student-section, .waitlist-section');
+        if (section) {
+            section.classList.remove('drag-over');
+        }
+    }
+
+    function handleDrop(e) {
+        e.preventDefault();
+        const section = e.currentTarget.closest('.primary-student-section, .waitlist-section');
+        if (section) {
+            section.classList.remove('drag-over');
+        }
+        
+        if (!dragSrcElement || !currentEditTask) return;
+
+        const dropTarget = e.currentTarget;
+        const isPrimaryContainer = dropTarget.id === 'edit-primary-student' || dropTarget.closest('.primary-student-section');
+        const isWaitlistContainer = dropTarget.id === 'edit-waitlist-students' || dropTarget.closest('.waitlist-section');
+        
+        if (dragSrcType === 'primary' && isWaitlistContainer) {
+            // Move primary to waitlist
+            if (!currentEditTask.waitlistStudents) {
+                currentEditTask.waitlistStudents = [];
+            }
+            // Add primary student to waitlist
+            currentEditTask.waitlistStudents.push(currentEditTask.primaryStudent);
+            // Clear primary student
+            currentEditTask.primaryStudent = null;
+            updateEditStudentAssignments();
+        } else if (dragSrcType === 'waitlist' && isPrimaryContainer) {
+            // Move waitlist to primary
+            const studentToPromote = currentEditTask.waitlistStudents[dragSrcIndex];
+            
+            // Remove the student from waitlist first
+            currentEditTask.waitlistStudents.splice(dragSrcIndex, 1);
+            
+            // If there's already a primary student, move it to waitlist
+            if (currentEditTask.primaryStudent) {
+                currentEditTask.waitlistStudents.push(currentEditTask.primaryStudent);
+            }
+            
+            // Set the new primary student
+            currentEditTask.primaryStudent = studentToPromote;
+            updateEditStudentAssignments();
+        } else if (dragSrcType === 'waitlist' && isWaitlistContainer) {
+            // Reorder within waitlist
+            const dropIndex = getDropIndex(e, waitlistContainer);
+            if (dragSrcIndex !== null && dragSrcIndex !== dropIndex && dropIndex !== -1) {
+                // Remove the item from its original position
+                const moved = currentEditTask.waitlistStudents.splice(dragSrcIndex, 1)[0];
+                // Insert it at the new position
+                const actualDropIndex = dragSrcIndex < dropIndex ? dropIndex - 1 : dropIndex;
+                currentEditTask.waitlistStudents.splice(actualDropIndex, 0, moved);
+                updateEditStudentAssignments();
+            }
+        }
+    }
+
+    function getDropIndex(e, container) {
+        const students = container.querySelectorAll('.waitlist-draggable');
+        if (students.length === 0) return 0;
+        
+        const rect = container.getBoundingClientRect();
+        const y = e.clientY - rect.top;
+        
+        for (let i = 0; i < students.length; i++) {
+            const studentRect = students[i].getBoundingClientRect();
+            const studentY = studentRect.top - rect.top;
+            
+            if (y < studentY + studentRect.height / 2) {
+                return i;
+            }
+        }
+        
+        return students.length;
     }
 }
 
@@ -2003,6 +2891,101 @@ async function showStudentProfile(studentId) {
     profilePanel.style.display = 'block';
 }
 
+// Delete Task Functionality
+async function deleteAssignedTask(taskId) {
+    try {
+        // Show confirmation dialog
+        confirmAction('confirmDeleteAssignedTask', 'Delete Task', 'Are you sure you want to delete this assigned task? This will remove the task from all students and cannot be undone.', { taskId });
+    } catch (error) {
+        console.error('Error showing delete confirmation:', error);
+        alert('Failed to show confirmation dialog.');
+    }
+}
+
+async function confirmDeleteAssignedTask({ taskId }) {
+    try {
+        // Get the task details first
+        const taskRef = ref(db, `assignedTasks/${taskId}`);
+        const taskSnapshot = await get(taskRef);
+        
+        if (!taskSnapshot.exists()) {
+            alert('Task not found.');
+            return;
+        }
+        
+        const task = taskSnapshot.val();
+        
+        // Remove task from assignedTasks collection
+        await remove(ref(db, `assignedTasks/${taskId}`));
+        
+        // Remove task from all students' assigned tasks
+        if (task.primaryStudent) {
+            await remove(ref(db, `students/${task.primaryStudent}/assignedTasks/${taskId}`));
+        }
+        
+        if (task.waitlistStudents && task.waitlistStudents.length > 0) {
+            for (const studentId of task.waitlistStudents) {
+                await remove(ref(db, `students/${studentId}/assignedTasks/${taskId}`));
+            }
+        }
+        
+        // Remove task from professional's tasks collection if it exists
+        const professionalTaskRef = ref(db, `professionals/${userId}/tasks/${taskId}`);
+        await remove(professionalTaskRef);
+        
+        // Remove task from main tasks collection if it exists
+        const mainTaskRef = ref(db, `tasks/${taskId}`);
+        await remove(mainTaskRef);
+        
+        // Show success message
+        showSuccessModal('Task Deleted!', 'The assigned task has been successfully deleted and removed from all students.');
+        
+        // Reload assigned tasks
+        loadAssignedTasks();
+        
+    } catch (error) {
+        console.error('Error deleting assigned task:', error);
+        alert('Failed to delete task. Please try again.');
+    }
+}
+
+function confirmAction(action, title, message, actionParams = {}) {
+    const dialogTitle = document.getElementById('dialog-title');
+    const dialogMessage = document.getElementById('dialog-message');
+    const confirmButton = document.getElementById('confirm-button');
+    const confirmationDialog = document.getElementById('confirmation-dialog');
+    
+    dialogTitle.textContent = title;
+    dialogMessage.textContent = message;
+    confirmationDialog.classList.add('active');
+    confirmButton.textContent = title.includes('Delete') ? 'Delete' : 'Confirm';
+    confirmButton.className = title.includes('Delete') ? 'delete' : 'confirm';
+    confirmButton.onclick = () => {
+        window[action](actionParams);
+        closeConfirmation();
+    };
+}
+
+function closeConfirmation() {
+    document.getElementById('confirmation-dialog').classList.remove('active');
+}
+
+function showSuccessModal(title, message) {
+    const successTitle = document.getElementById('success-title');
+    const successMessage = document.getElementById('success-message');
+    const successModal = document.getElementById('success-modal');
+    
+    successTitle.textContent = title;
+    successMessage.innerHTML = `
+        <div class="success-content">
+            <i class="fas fa-check-circle"></i>
+            <h4>${title}</h4>
+            <p>${message}</p>
+        </div>
+    `;
+    successModal.classList.add('active');
+}
+
 // Window functions
 window.openCreateTaskModal = openCreateTaskModal;
 window.closeCreateTaskModal = closeCreateTaskModal;
@@ -2017,6 +3000,7 @@ window.confirmStudentSelection = confirmStudentSelection;
 window.viewTaskDetails = viewTaskDetails;
 window.closeTaskDetailsModal = closeTaskDetailsModal;
 window.editCurrentTask = editCurrentTask;
+window.editTaskFromCard = editTaskFromCard;
 window.closeEditTaskModal = closeEditTaskModal;
 window.openPriorityChangeModal = openPriorityChangeModal;
 window.closePriorityChangeModal = closePriorityChangeModal;
@@ -2024,7 +3008,38 @@ window.confirmPriorityChanges = confirmPriorityChanges;
 window.saveTaskChanges = saveTaskChanges;
 window.removeTaskFile = removeTaskFile;
 window.showStudentProfile = showStudentProfile;
-window.useSuggestion = useSuggestion;
+window.deleteAssignedTask = deleteAssignedTask;
+window.confirmDeleteAssignedTask = confirmDeleteAssignedTask;
+window.confirmAction = confirmAction;
+window.closeConfirmation = closeConfirmation;
+window.showSuccessModal = showSuccessModal;
+window.toggleDropdown = toggleDropdown;
+
+function toggleDropdown(taskId) {
+    // Close all other dropdowns first
+    const allDropdowns = document.querySelectorAll('.dropdown-menu');
+    allDropdowns.forEach(dropdown => {
+        if (dropdown.id !== `dropdown-${taskId}`) {
+            dropdown.classList.remove('active');
+        }
+    });
+    
+    // Toggle the clicked dropdown
+    const dropdown = document.getElementById(`dropdown-${taskId}`);
+    if (dropdown) {
+        dropdown.classList.toggle('active');
+    }
+}
+
+// Close dropdowns when clicking outside
+document.addEventListener('click', function(event) {
+    if (!event.target.closest('.three-dot-menu')) {
+        const allDropdowns = document.querySelectorAll('.dropdown-menu');
+        allDropdowns.forEach(dropdown => {
+            dropdown.classList.remove('active');
+        });
+    }
+});
 
 // Initialize
 init();

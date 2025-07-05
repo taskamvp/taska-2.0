@@ -20,9 +20,9 @@
             <div class="logo">Taska</div>
         </a>
         <ul class="nav-menu">
-            <li><a href="explore.html">Explore</a></li>
-            <li><a href="tasks.html">Tasks</a></li>
-            <li><a href="gigs.html" class="active">Assigned Tasks</a></li>
+        
+            <li><a href="tasks.html">Workplace</a></li>
+            <li><a href="gigs.html" class="active">Tasks</a></li>
             <li><a href="profile.html">Account</a></li>
         </ul>
         <div class="hamburger">☰</div>
@@ -153,12 +153,26 @@ async function loadAssignedTasks() {
             const tasks = snapshot.val();
             let hasTasks = false;
 
+            // Filter and collect all tasks
+            const allTasks = [];
             for (const taskId in tasks) {
                 const task = tasks[taskId];
+                allTasks.push({ taskId, ...task });
+            }
+
+            // Sort tasks by deadline (nearest first)
+            allTasks.sort((a, b) => {
+                const deadlineA = new Date(a.deadline);
+                const deadlineB = new Date(b.deadline);
+                return deadlineA - deadlineB;
+            });
+
+            // Create task cards for sorted tasks
+            allTasks.forEach(({ taskId, ...task }) => {
                 hasTasks = true;
                 const taskCard = createTaskCard(task, taskId);
                 activeGigsList.appendChild(taskCard);
-            }
+            });
 
             if (!hasTasks) {
                 activeGigsList.innerHTML = `
