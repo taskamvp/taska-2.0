@@ -93,7 +93,7 @@
             padding: 2.5rem 3.5rem 2.5rem 3.5rem;
             text-align: left;
             position: relative;
-            font-family: 'Manrope', 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
+            font-family: 'Poppins', 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
             overflow: hidden;
         }
         .hero-image {
@@ -112,20 +112,22 @@
             max-width: 65%;
         }
         .hero h1, .hero p, .hero .hero-highlight {
-            font-family: 'Manrope', 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
+            font-family: 'Poppins', 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
         }
         .hero h1 {
             font-size: 2.8rem; font-weight: 700; color: var(--dark-green); margin-bottom: 1.2rem; line-height: 1.6;
+            letter-spacing: -0.02em;
         }
         .hero .hero-highlight { color: var(--green); }
         .hero-desc {
-            font-family: 'Playfair Display', 'Manrope', 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
+            font-family: 'Poppins', 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
             font-size: 1.4rem;
             font-weight: 500;
             color: #374151;
             line-height: 1.7;
             margin-bottom: 2.2rem;
             max-width: 700px;
+            letter-spacing: 0.01em;
         }
         .hero-search {
             display: flex; gap: 0.7rem; margin-bottom: 2.2rem; max-width: 520px;
@@ -133,12 +135,16 @@
         .hero-search input {
             flex: 1; padding: 1.1rem 1.2rem; border-radius: 8px; border: 1.5px solid #e5e7ea;
             font-size: 1.1rem; outline: none; transition: border 0.18s;
+            font-family: 'Poppins', 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
+            letter-spacing: 0.02em;
         }
         .hero-search input:focus { border-color: var(--dark-green); }
         .hero-search button {
             background: var(--dark-green); color: var(--yellow); border: none; border-radius: 8px;
             padding: 1.1rem 2.1rem; font-size: 1.1rem; font-weight: 600; cursor: pointer;
             transition: background 0.18s, color 0.18s;
+            font-family: 'Poppins', 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
+            letter-spacing: 0.02em;
         }
         .hero-search button:hover { background: var(--green); color: var(--yellow-light); }
         .hero-cta-row {
@@ -148,7 +154,7 @@
             justify-content: flex-start;
         }
         .hero-cta-google {
-            font-family: 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
+            font-family: 'Poppins', 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
             font-size: 1rem;
             font-weight: 600;
             border-radius: 12px;
@@ -162,6 +168,7 @@
             display: inline-block;
             position: relative;
             overflow: hidden;
+            letter-spacing: 0.02em;
         }
         .hero-cta-google::before {
             content: '';
@@ -449,29 +456,32 @@
             background: #f6fdf7;
         }
         .hero-main-heading {
-            font-family: 'Playfair Display', 'Montserrat', 'Manrope', 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
+            font-family: 'Poppins', 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
             font-size: 2.8rem;
-            font-weight: 700;
+            font-weight: 600;
             letter-spacing: -0.02em;
             color: #1a1a1a;
             margin-bottom: 1.5rem;
             line-height: 1.4;
             display: inline-block;
+            letter-spacing: 0.15em;
         }
         .hero-main-heading .hero-highlight {
-            color: #1e1602;
+            color: #1c1c1bdb;
             font-weight: 800;
             padding: 0.3rem 0.8rem;
             background: rgba(195, 228, 7, 0.737);
+            letter-spacing: 0.05em;
         }
         .hero-desc {
-            font-family: 'Playfair Display', 'Manrope', 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
+            font-family: 'Poppins', 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
             font-size: 1.4rem;
             font-weight: 500;
             color: #374151;
             line-height: 1.7;
             margin-bottom: 2.2rem;
             max-width: 700px;
+            letter-spacing: 0.01em;
         }
         /* Animated shapes for hero background */
         .hero-animated-bg {
@@ -715,6 +725,204 @@
             position: relative;
             z-index: 2;
         }
+        .skills-section {
+            margin: 2rem 0 1rem 0;
+            width: 100%;
+            font-family: 'Poppins', 'Montserrat', 'Inter', Arial, sans-serif;
+            padding: 2rem 0 1.5rem 0;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+            position: static;
+            z-index: auto;
+            clear: both;
+            min-height: 300px;
+        }
+        .skills-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+        .skills-tabs {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            justify-content: flex-start;
+        }
+        .skills-tab {
+            font-family: 'Montserrat', 'Poppins', Arial, sans-serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #fff;
+            cursor: pointer;
+            transition: color 0.18s, font-size 0.18s, background 0.18s;
+            padding: 0.4rem 1.5rem;
+            border-radius: 2rem;
+            background: #222;
+            border: none;
+            box-shadow: 0 2px 8px 0 rgba(34, 34, 34, 0.08);
+            margin-bottom: 0.2rem;
+            letter-spacing: 0.01em;
+        }
+        .skills-tab.active {
+            color: #111;
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: #ffff00;
+            box-shadow: 0 4px 16px 0 rgba(255, 255, 0, 0.3);
+        }
+        .skills-tab-content {
+            animation: fadeIn 0.4s;
+            min-height: 120px;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.7rem 1rem;
+            font-size: 0.95rem;
+            color: #fff;
+            font-weight: 400;
+            min-width: 180px;
+            margin-top: 0.8rem;
+        }
+        .skill-badge {
+            display: inline-block;
+            background: #fff;
+            color: #111;
+            border-radius: 1.5rem;
+            padding: 0.5rem 1.2rem;
+            font-family: 'Inter', Arial, sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            box-shadow: 0 2px 8px 0 rgba(255, 255, 0, 0.1);
+            border: 2px solid #000;
+            transition: background 0.18s, color 0.18s, border 0.18s;
+            margin-bottom: 0.2rem;
+        }
+        .skill-badge:hover {
+            background: #ffff00;
+            color: #111;
+            border: 2px solid #000;
+        }
+        @media (max-width: 900px) {
+            .skills-tabs { gap: 1rem; }
+            .skills-tab { font-size: 1.1rem; padding: 0.4rem 1rem; }
+            .skills-tab.active { font-size: 1.4rem; }
+            .skills-list { font-size: 0.85rem; }
+        }
+        .skills-heading-main-title {
+            font-family: 'Montserrat', 'Poppins', 'Inter', Arial, sans-serif;
+            font-size: 2.1rem;
+            font-weight: 500;
+            color: #888;
+            letter-spacing: -0.01em;
+            margin: 3.5rem auto 1.2rem auto;
+            text-align: left;
+            max-width: 1100px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .footer {
+            background: #1a1a1a;
+            color: #fff;
+            padding: 3rem 0 2rem 0;
+            margin-top: 4rem;
+            font-family: 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
+        }
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2.5rem;
+        }
+        .footer-section {
+            display: flex;
+            flex-direction: column;
+                gap: 1rem;
+            }
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: -1px;
+            margin-bottom: 1rem;
+        }
+        .footer-logo img {
+            height: 40px;
+        }
+        .footer-desc {
+            color: #ccc;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        .footer-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+        }
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+                font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+        .footer-links a:hover {
+            color: #fbbf24;
+        }
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: #333;
+            color: #fff;
+            border-radius: 50%;
+            text-decoration: none;
+            transition: background 0.2s, color 0.2s;
+        }
+        .social-links a:hover {
+            background: #fbbf24;
+            color: #1a1a1a;
+        }
+        .footer-bottom {
+            border-top: 1px solid #333;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            text-align: center;
+            color: #999;
+            font-size: 0.85rem;
+        }
+        @media (max-width: 768px) {
+            .footer-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .footer {
+                padding: 2rem 0 1.5rem 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -769,27 +977,137 @@
         <div class="ai-text-card">
             <div class="ai-generates-text">AI DRAFTS</div>
             <div class="students-customize-text">WE CRAFT</div>
+            </div>
+                </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <section class="skills-section">
+      <div class="skills-container">
+        <div class="skills-tabs">
+          <div class="skills-tab active" data-tab="developer">Developer</div>
+          <div class="skills-tab" data-tab="marketing">Marketing</div>
+          <div class="skills-tab" data-tab="designing">Designing</div>
+                </div>
+        <div class="skills-tab-content" id="skills-developer">
+          <div class="skills-list">
+            <span class="skill-badge">Web App Development</span>
+            <span class="skill-badge">Mobile App Development</span>
+            <span class="skill-badge">Automation Scripts</span>
+            <span class="skill-badge">Data Analysis & Visualization</span>
+            <span class="skill-badge">API Integration</span>
+            <span class="skill-badge">AI/ML Projects</span>
+            <span class="skill-badge">WordPress & CMS</span>
+            <span class="skill-badge">Game Development</span>
+            <span class="skill-badge">Technical Writing</span>
+                </div>
+                </div>
+        <div class="skills-tab-content" id="skills-marketing" style="display:none;">
+          <div class="skills-list">
+            <span class="skill-badge">Social Media Management</span>
+            <span class="skill-badge">SEO Optimization</span>
+            <span class="skill-badge">Content Writing</span>
+            <span class="skill-badge">Email Campaigns</span>
+            <span class="skill-badge">Market Research</span>
+            <span class="skill-badge">Brand Strategy</span>
+            <span class="skill-badge">Copywriting</span>
+            <span class="skill-badge">Ad Campaigns</span>
+            <span class="skill-badge">Influencer Outreach</span>
+                </div>
         </div>
-    </div>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-
+        <div class="skills-tab-content" id="skills-designing" style="display:none;">
+          <div class="skills-list">
+            <span class="skill-badge">Logo Design</span>
+            <span class="skill-badge">UI/UX Design</span>
+            <span class="skill-badge">Web Design</span>
+            <span class="skill-badge">Branding & Identity</span>
+            <span class="skill-badge">Graphic Design</span>
+            <span class="skill-badge">Illustrations</span>
+            <span class="skill-badge">Presentation Design</span>
+            <span class="skill-badge">Product Mockups</span>
+            <span class="skill-badge">Video Editing</span>
+          </div>
+                </div>
+            </div>
+        </section>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const tabs = document.querySelectorAll('.skills-tab');
+        const contents = {
+          developer: document.getElementById('skills-developer'),
+          marketing: document.getElementById('skills-marketing'),
+          designing: document.getElementById('skills-designing')
+        };
+        tabs.forEach(tab => {
+          tab.addEventListener('click', function() {
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            Object.keys(contents).forEach(key => contents[key].style.display = 'none');
+            contents[tab.dataset.tab].style.display = '';
+          });
+        });
+      });
+    </script>
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3 class="footer-logo">Taska</h3>
+                <p class="footer-desc">Connecting students with opportunities</p>
+            </div>
+            <div class="footer-section">
+                <h3 class="footer-title">About</h3>
+                <ul class="footer-links">
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            <div class="footer-section">
+                <h3 class="footer-title">Services</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Web Development</a></li>
+                    <li><a href="#">Marketing</a></li>
+                    <li><a href="#">Design</a></li>
+                    <li><a href="#">Data Analysis</a></li>
+                </ul>
+                </div>
+            <div class="footer-section">
+                <h3 class="footer-title">Contact</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Email</a></li>
+                    <li><a href="#">Phone</a></li>
+                    <li><a href="#">Address</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3 class="footer-title">Follow Us</h3>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+                </div>
+            </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 Taska. All rights reserved.</p>
+        </div>
+    </footer>
 </body>
 </html>
