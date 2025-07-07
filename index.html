@@ -4,673 +4,233 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Hire talented remote assistants to streamline your company's tasks. For unmatched creativity and precision, opt for our premium service powered by elite students from IITs, NITs, and IIITs.">
-    <title>Taska | Hire Remote Assistants for Your Company</title>
+    <title>Taska | Find Elite Student Talent</title>
     <link rel="icon" type="image/png" href="assets/logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+        :root {
+            --up-green: #14a800;
+            --up-green-light: #e6f7ec;
+            --up-gray: #f7f9fa;
+            --up-dark: #001e00;
         }
-        
-        body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            color: #1d1d1f;
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        /* macOS-style navbar */
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; }
+        body { background: var(--up-gray); color: #222; }
         .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 2rem;
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0.3rem 2.5vw; background: #fff; border-bottom: 1px solid #e5e7ea;
+            position: sticky; top: 0; z-index: 1000;
+            min-height: 56px;
         }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #1d1d1f;
-            letter-spacing: -0.5px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .logo:hover {
-            color: #007aff;
-            transform: scale(1.05);
-        }
-
-        .nav-menu {
-            list-style: none;
-            display: flex;
-            gap: 2rem;
-        }
-
-        .nav-menu li a {
-            text-decoration: none;
-            color: #1d1d1f;
-            font-weight: 500;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-        }
-
-        .nav-menu li a:hover {
-            color: #007aff;
-            background: rgba(0, 122, 255, 0.1);
-        }
-
-        /* Hero section */
-        .hero {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            color: #1d1d1f;
-            text-align: center;
-            padding: 6rem 2rem;
-            border-radius: 20px;
-            margin: 2rem;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .hero h1 {
-            font-size: 3.2rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            line-height: 1.2;
-            color: #1d1d1f;
+        .navbar .logo {
+            display: flex; align-items: center; gap: 0.7rem;
+            font-size: 1.7rem; font-weight: 700; color: var(--up-green);
             letter-spacing: -1px;
         }
-
+        .navbar .logo img { height: 54px; }
+        .nav-menu { display: flex; gap: 2.2rem; list-style: none; }
+        .nav-menu li a {
+            text-decoration: none; color: #222; font-weight: 500; font-size: 1rem;
+            padding: 0.5rem 1.2rem; border-radius: 8px; transition: background 0.18s, color 0.18s;
+        }
+        .nav-menu li a:hover, .nav-menu li a.active {
+            background: var(--up-green-light); color: var(--up-green);
+        }
+        .hero {
+            background: #fff; border-radius: 2.2rem; margin: 2.5rem auto 2rem auto; max-width: 1100px;
+            box-shadow: 0 8px 32px 0 rgba(20,168,0,0.07);
+            padding: 4.5rem 2.5rem 4rem 2.5rem; text-align: left; position: relative;
+        }
+        .hero h1 {
+            font-size: 2.8rem; font-weight: 700; color: var(--up-dark); margin-bottom: 1.2rem; line-height: 1.1;
+        }
+        .hero .hero-highlight { color: var(--up-green); }
         .hero p {
-            font-size: 1.2rem;
-            font-weight: 400;
-            margin-bottom: 2.5rem;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-            color: #86868b;
-            line-height: 1.6;
+            font-size: 1.25rem; color: #444; margin-bottom: 2.2rem; max-width: 600px;
         }
-
-        .cta-buttons {
-            display: flex;
-            gap: 1.5rem;
-            justify-content: center;
+        .hero-search {
+            display: flex; gap: 0.7rem; margin-bottom: 2.2rem; max-width: 520px;
         }
-
-        .cta-button {
-            padding: 1rem 2rem;
-            font-size: 1rem;
-            font-weight: 500;
-            border-radius: 12px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
+        .hero-search input {
+            flex: 1; padding: 1.1rem 1.2rem; border-radius: 8px; border: 1.5px solid #e5e7ea;
+            font-size: 1.1rem; outline: none; transition: border 0.18s;
         }
-
-        .cta-button.explore {
-            background: linear-gradient(135deg, #007aff, #5856d6);
-            color: #ffffff;
+        .hero-search input:focus { border-color: var(--up-green); }
+        .hero-search button {
+            background: var(--up-green); color: #fff; border: none; border-radius: 8px;
+            padding: 1.1rem 2.1rem; font-size: 1.1rem; font-weight: 600; cursor: pointer;
+            transition: background 0.18s;
         }
-
-        .cta-button.join {
-            background: transparent;
-            color: #007aff;
-            border: 2px solid #007aff;
+        .hero-search button:hover { background: #128a00; }
+        .hero-cta-row { display: flex; gap: 1.2rem; margin-top: 0.5rem; }
+        .hero-cta {
+            background: var(--up-green-light); color: var(--up-green); border: none;
+            border-radius: 8px; padding: 0.9rem 2.1rem; font-size: 1.1rem; font-weight: 600;
+            cursor: pointer; transition: background 0.18s;
         }
-
-        .cta-button.explore:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 122, 255, 0.3);
+        .hero-cta:hover { background: #d2f5db; }
+        .trusted-row {
+            display: flex; align-items: center; gap: 2.2rem; margin: 2.5rem auto 0 auto; max-width: 1100px;
+            justify-content: center; flex-wrap: wrap;
         }
-
-        .cta-button.join:hover {
-            background: #007aff;
-            color: #ffffff;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 122, 255, 0.3);
+        .trusted-row .trusted-label { color: #888; font-size: 1.1rem; font-weight: 500; }
+        .trusted-row img { height: 38px; filter: grayscale(1) brightness(0.7); opacity: 0.8; margin-right: 1.2rem; }
+        .categories-section {
+            margin: 3.5rem auto 2.5rem auto; max-width: 1100px;
         }
-
-        /* Premier talent section */
-        .premier-talent {
-            padding: 4rem 2rem;
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            text-align: center;
-            border-radius: 20px;
-            margin: 2rem;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+        .categories-title {
+            font-size: 2rem; font-weight: 700; color: var(--up-dark); margin-bottom: 2rem;
         }
-
-        .premier-header h2 {
-            font-size: 2.5rem;
-            font-weight: 600;
-            color: #1d1d1f;
-            margin-bottom: 1rem;
-            letter-spacing: -0.5px;
+        .categories-row {
+            display: flex; gap: 2rem; flex-wrap: wrap; justify-content: center;
         }
-
-        .premier-header p {
-            font-size: 1.3rem;
-            color: #86868b;
-            font-weight: 400;
-            max-width: 600px;
-            margin: 0 auto 2.5rem;
-            line-height: 1.6;
+        .category-card {
+            background: #fff; border-radius: 1.2rem; box-shadow: 0 2px 12px 0 rgba(20,168,0,0.06);
+            padding: 2.1rem 1.5rem 1.5rem 1.5rem; min-width: 180px; max-width: 220px;
+            display: flex; flex-direction: column; align-items: center; gap: 1.1rem;
+            border: 1.5px solid #e5e7ea; transition: box-shadow 0.18s, border 0.18s;
         }
-
-        .premier-logos {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
+        .category-card:hover {
+            box-shadow: 0 6px 24px 0 rgba(20,168,0,0.13); border: 1.5px solid var(--up-green);
         }
-
-        .logo-circle {
-            width: 120px;
-            height: 120px;
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            overflow: hidden;
+        .category-icon {
+            font-size: 2.2rem; color: var(--up-green); margin-bottom: 0.2rem;
         }
-
-        .logo-circle:hover {
-            transform: scale(1.1);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
-            border-color: rgba(0, 122, 255, 0.3);
+        .category-title {
+            font-size: 1.13rem; font-weight: 600; color: #1d1d1f; text-align: center;
         }
-
-        .logo-circle img {
-            width: 70%;
-            height: 70%;
-            object-fit: contain;
-            filter: grayscale(20%);
-            transition: filter 0.3s ease;
+        .category-desc {
+            font-size: 0.97rem; color: #444; text-align: center;
         }
-
-        .logo-circle:hover img {
-            filter: grayscale(0%);
+        .benefits-section {
+            background: #fff; border-radius: 2.2rem; margin: 3.5rem auto 2.5rem auto; max-width: 1100px;
+            box-shadow: 0 8px 32px 0 rgba(20,168,0,0.07);
+            padding: 3.5rem 2.5rem 3rem 2.5rem; text-align: left; position: relative;
         }
-
-        /* Exclusive section */
-        .exclusive {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            padding: 3rem 2rem;
-            text-align: center;
-            border-radius: 20px;
-            margin: 2rem;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            position: relative;
+        .benefits-title {
+            font-size: 2rem; font-weight: 700; color: var(--up-dark); margin-bottom: 2rem;
         }
-
-        .exclusive h2 {
-            font-size: 2.2rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            color: #1d1d1f;
-            letter-spacing: -0.5px;
+        .benefits-list {
+            display: flex; gap: 2.2rem; flex-wrap: wrap; justify-content: center;
         }
-
-        .exclusive p {
-            font-size: 1.1rem;
-            max-width: 900px;
-            margin: 0 auto 2rem;
-            color: #86868b;
-            line-height: 1.6;
+        .benefit-card {
+            background: var(--up-green-light); border-radius: 1.2rem; box-shadow: 0 2px 12px 0 rgba(20,168,0,0.04);
+            padding: 2rem 1.5rem 1.5rem 1.5rem; min-width: 200px; max-width: 260px;
+            display: flex; flex-direction: column; align-items: flex-start; gap: 1.1rem;
+            border: 1.5px solid #e5e7ea; transition: box-shadow 0.18s, border 0.18s;
         }
-
-        /* Modern questions section */
-        .modern-questions {
-            padding: 4rem 2rem;
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            text-align: center;
-            border-radius: 20px;
-            margin: 2rem;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+        .benefit-card .benefit-icon {
+            font-size: 2rem; color: var(--up-green); margin-bottom: 0.2rem;
         }
-
-        .questions-wrapper {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 3rem;
-            max-width: 1200px;
-            margin: 0 auto;
+        .benefit-card .benefit-title {
+            font-size: 1.1rem; font-weight: 600; color: #1d1d1f;
         }
-
-        .questions-text {
-            flex: 1;
-            text-align: left;
+        .benefit-card .benefit-desc {
+            font-size: 0.97rem; color: #444;
         }
-
-        .questions-text h2 {
-            font-size: 1.8rem;
-            font-weight: 600;
-            color: #1d1d1f;
-            margin-bottom: 1.5rem;
-            line-height: 1.3;
-            letter-spacing: -0.5px;
+        @media (max-width: 900px) {
+            .hero, .benefits-section, .categories-section, .trusted-row { max-width: 98vw; margin-left: 1vw; margin-right: 1vw; }
+            .categories-row, .benefits-list { gap: 1.1rem; }
         }
-
-        .modern-list {
-            list-style: none;
-            color: #86868b;
-            font-size: 1.1rem;
-            line-height: 1.8;
+        @media (max-width: 700px) {
+            .hero, .benefits-section, .categories-section { padding: 2rem 0.5rem; }
+            .hero h1 { font-size: 2rem; }
+            .categories-title, .benefits-title { font-size: 1.3rem; }
         }
-
-        .modern-list li {
-            position: relative;
-            padding-left: 2rem;
-            margin-bottom: 1rem;
-            font-weight: 400;
-        }
-
-        .modern-list li:before {
-            content: '•';
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #007aff;
-            position: absolute;
-            left: 0;
-            top: 0;
-        }
-
-        .questions-visual {
-            flex: 1;
-            max-width: 400px;
-        }
-
-        .questions-visual img {
-            width: 100%;
-            height: auto;
-            border-radius: 12px;
-        }
-
-        /* Why Taska section */
-        .why-taska {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            padding: 4rem 2rem;
-            border-radius: 20px;
-            margin: 2rem;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .why-taska h2 {
-            text-align: center;
-            font-size: 2.5rem;
-            font-weight: 600;
-            color: #1d1d1f;
-            margin-bottom: 3rem;
-            letter-spacing: -0.5px;
-        }
-
-        .content-grid {
-            display: flex;
-            justify-content: center;
-            gap: 3rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .content-card {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            padding: 2.5rem;
-            border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            width: 45%;
-            text-align: left;
-            position: relative;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-        }
-
-        .content-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
-        }
-
-        .content-card h3 {
-            font-size: 1.6rem;
-            font-weight: 600;
-            color: #1d1d1f;
-            margin-bottom: 1rem;
-            letter-spacing: -0.5px;
-        }
-
-        .content-card p {
-            font-size: 1rem;
-            color: #86868b;
-            line-height: 1.6;
-        }
-
-        /* Footer */
-        footer {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            color: #86868b;
-            text-align: center;
-            padding: 2rem;
-            border-radius: 20px;
-            margin: 2rem;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .footer-links {
-            margin-top: 0.5rem;
-        }
-
-        .footer-links a {
-            color: #86868b;
-            margin: 0 1rem;
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: color 0.3s ease;
-        }
-
-        .footer-links a:hover {
-            color: #007aff;
-        }
-
-        /* WhatsApp button */
-        .whatsapp-button {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: linear-gradient(135deg, #25D366, #128C7E);
-            color: #ffffff;
-            padding: 1rem 1.5rem;
-            border-radius: 50px;
-            text-decoration: none;
-            font-size: 1rem;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            box-shadow: 0 8px 32px rgba(37, 211, 102, 0.3);
-            transition: all 0.3s ease;
-            z-index: 1000;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-        }
-
-        .whatsapp-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 12px 40px rgba(37, 211, 102, 0.4);
-        }
-
-        .whatsapp-button i {
-            font-size: 1.3rem;
-        }
-
-        /* Responsive design */
-        @media (max-width: 768px) {
-            .navbar {
-                padding: 1rem;
-            }
-
-            .hero {
-                margin: 1rem;
-                padding: 3rem 1rem;
-            }
-
-            .hero h1 {
-                font-size: 2.2rem;
-            }
-
-            .hero p {
-                font-size: 1rem;
-            }
-
-            .cta-buttons {
-                flex-direction: column;
-                gap: 1rem;
-            }
-
-            .premier-talent,
-            .exclusive,
-            .modern-questions,
-            .why-taska,
-            footer {
-                margin: 1rem;
-                padding: 2rem 1rem;
-            }
-
-            .premier-header h2 {
-                font-size: 2rem;
-            }
-
-            .premier-header p {
-                font-size: 1.1rem;
-            }
-
-            .premier-logos {
-                gap: 1.5rem;
-            }
-
-            .logo-circle {
-                width: 100px;
-                height: 100px;
-            }
-
-            .questions-wrapper {
-                flex-direction: column-reverse;
-                gap: 2rem;
-            }
-
-            .questions-text h2 {
-                font-size: 1.5rem;
-            }
-
-            .modern-list {
-                font-size: 1rem;
-            }
-
-            .questions-visual {
-                max-width: 300px;
-            }
-
-            .content-grid {
-                flex-direction: column;
-                gap: 2rem;
-            }
-
-            .content-card {
-                width: 100%;
-            }
-
-            .exclusive h2 {
-                font-size: 1.8rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .premier-logos {
-                gap: 1rem;
-            }
-
-            .logo-circle {
-                width: 80px;
-                height: 80px;
-            }
-
-            .hero h1 {
-                font-size: 1.8rem;
-            }
-
-            .whatsapp-button {
-                padding: 0.8rem 1.2rem;
-                font-size: 0.9rem;
-            }
+        @media (max-width: 600px) {
+            .hero, .benefits-section, .categories-section { border-radius: 1rem; }
+            .navbar { flex-direction: column; gap: 0.7rem; padding: 1rem 0.5rem; }
+            .nav-menu { gap: 1rem; }
         }
     </style>
 </head>
 <body>
     <nav class="navbar">
-        <div class="logo">Taska</div>
+        <div class="logo"><img src="assets/logo.png" alt="Taska Logo"></div>
         <ul class="nav-menu">
-            <li><a href="#" id="auth-link">Login</a></li>
+            <li><a href="#" class="active">Login</a></li>
+            <li><a href="#">Signup</a></li>
+            <li><a href="#benefits">Why Taska</a></li>
+            <li><a href="#pricing">Pricing</a></li>
         </ul>
     </nav>
-
-    <main>
-        <section class="hero">
-            <h1>Hire College Students for Remote Tasks</h1>
-            <p>Get things done faster with smart remote talent. Work with top students from IITs, NITs, and IIITs for high quality, creative, and reliable results.</p>
-            <div class="cta-buttons">
-                <button class="cta-button explore" id="hire-assistants-btn">Hire Assistants</button>
-                <a href="login.html" class="cta-button join">Join as a Student</a>
-            </div>
-        </section>
-
-        <section class="premier-talent">
-            <div class="premier-header">
-                <h2>Network of Students from Premier Colleges</h2>
-                <p>Connect with talented students from top institutions</p>
-            </div>
-            <div class="premier-logos">
-                <div class="logo-circle">
-                    <img src="assets/iit1.webp" alt="IIT 1 Logo">
-                </div>
-                <div class="logo-circle">
-                    <img src="assets/iit2.webp" alt="IIT 2 Logo">
-                </div>
-                <div class="logo-circle">
-                    <img src="assets/iit3.webp" alt="IIT 3 Logo">
-                </div>
-                <div class="logo-circle">
-                    <img src="assets/iit4.webp" alt="IIT 4 Logo">
-                </div>
-                <div class="logo-circle">
-                    <img src="assets/iit5.webp" alt="IIT 5 Logo">
-                </div>
-                <div class="logo-circle">
-                    <img src="assets/iit6.webp" alt="IIT 6 Logo">
-                </div>
-            </div>
-        </section>
-
-        <section class="exclusive">
-            <h2>Outsource Non-Challenging Tasks</h2>
-            <p>Are there many non-challenging but essential tasks piling up in your business? Tasks that don't require high expertise but still need someone reliable to get them done? Outsource them to our remote college assistants, talented students from IITs, NITs, and IIITs who are eager to work with you. Free up your time while tapping into exceptional skills and fresh energy for both routine and ambitious projects.</p>
-        </section>
-
-        <section class="modern-questions">
-            <div class="questions-wrapper">
-                <div class="questions-text">
-                    <h2>Drowning in AI Tools, But Missing the Human Touch?</h2>
-                    <ul class="modern-list">
-                        <li>Auto replies, AI emails yet no real connection?</li>
-                        <li>Content feels generic, not crafted with care?</li>
-                        <li>Marketing runs, but no story behind your brand?</li>
-                        <li>Tools everywhere, but no team to trust?</li>
-                    </ul>
-                    <p style="margin-top: 1rem; font-weight: 500; color: #1d1d1f;">You don't just need automation. You need real people who understand your vision.</p>
-                </div>
-                <div class="questions-visual">
-                    <img src="assets/guy-removebg-preview.webp" alt="Guy asking questions">
-                </div>
-            </div>
-        </section>
-
-        <section class="why-taska">
-            <h2>Why Taska?</h2>
-            <div class="content-grid">
-                <div class="content-card">
-                    <h3>Boosting Business Efficiency</h3>
-                    <p>Taska delivers talented remote professionals to handle your important tasks and optimize workflows. For complex challenges, our premium service connects you with exceptional students from IITs, NITs, and IIITs who bring fresh perspectives and advanced technical skills to help your company thrive.</p>
-                </div>
-                <div class="content-card">
-                    <h3>Empowering Elite Students</h3>
-                    <p>We provide valuable opportunities for talented students from top institutions by connecting them with real world business projects. These students gain professional experience, earn income while studying, and contribute innovative solutions, creating a win-win bridge between academia and industry.</p>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <p>© 2025 Taska. All rights reserved.</p>
-        <div class="footer-links" style="display: none;">
-            <a href="">Privacy Policy</a>
-            <a href="">Terms & Conditions</a>
-            <a href="">Contact Us</a>
+    <section class="hero">
+        <h1>Find <span class="hero-highlight">Elite Student Talent</span> for Any Project</h1>
+        <p>Connect with top students from IITs, NITs, and IIITs for software, AI, design, research, and more. Get your work done by the next generation of innovators—quickly, affordably, and with unmatched creativity.</p>
+        <form class="hero-search" onsubmit="event.preventDefault(); window.location='professional/explore.html';">
+            <input type="text" placeholder="Try 'Python developer', 'AI chatbot', 'UI/UX designer'...">
+            <button type="submit"><i class="fas fa-search"></i> Find Talent</button>
+        </form>
+        <div class="hero-cta-row">
+            <button class="hero-cta" onclick="window.location='professional/explore.html'">Browse Students</button>
+            <button class="hero-cta" style="background:#fff;color:var(--up-green);border:1.5px solid var(--up-green);" onclick="window.location='workplace/'">Post a Project</button>
         </div>
+    </section>
+    <div class="trusted-row">
+        <span class="trusted-label">Trusted by teams at</span>
+        <img src="assets/brand1.png" alt="Brand 1">
+        <img src="assets/brand2.png" alt="Brand 2">
+        <img src="assets/brand3.png" alt="Brand 3">
+        <img src="assets/brand4.png" alt="Brand 4">
+    </div>
+    <section class="categories-section" id="categories">
+        <div class="categories-title">Popular Categories</div>
+        <div class="categories-row">
+            <div class="category-card">
+                <div class="category-icon"><i class="fas fa-code"></i></div>
+                <div class="category-title">Software Development</div>
+                <div class="category-desc">Web, mobile, backend, automation, and more.</div>
+            </div>
+            <div class="category-card">
+                <div class="category-icon"><i class="fas fa-brain"></i></div>
+                <div class="category-title">AI & Data Science</div>
+                <div class="category-desc">Machine learning, NLP, analytics, and research.</div>
+            </div>
+            <div class="category-card">
+                <div class="category-icon"><i class="fas fa-paint-brush"></i></div>
+                <div class="category-title">UI/UX & Design</div>
+                <div class="category-desc">Product design, prototyping, branding, and more.</div>
+            </div>
+            <div class="category-card">
+                <div class="category-icon"><i class="fas fa-chart-line"></i></div>
+                <div class="category-title">Business & Analytics</div>
+                <div class="category-desc">Market research, business analysis, dashboards.</div>
+            </div>
+            <div class="category-card">
+                <div class="category-icon"><i class="fas fa-language"></i></div>
+                <div class="category-title">Content & Language</div>
+                <div class="category-desc">Writing, translation, editing, and more.</div>
+            </div>
+        </div>
+    </section>
+    <section class="benefits-section" id="benefits">
+        <div class="benefits-title">Why Choose Taska?</div>
+        <div class="benefits-list">
+            <div class="benefit-card">
+                <div class="benefit-icon"><i class="fas fa-user-graduate"></i></div>
+                <div class="benefit-title">Elite Student Talent</div>
+                <div class="benefit-desc">Work with the brightest students from India's top institutes—pre-vetted for skills and passion.</div>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon"><i class="fas fa-bolt"></i></div>
+                <div class="benefit-title">Fast, Flexible, Affordable</div>
+                <div class="benefit-desc">Get your work done quickly and cost-effectively, with flexible engagement models.</div>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon"><i class="fas fa-shield-alt"></i></div>
+                <div class="benefit-title">Secure & Reliable</div>
+                <div class="benefit-desc">Your data and projects are protected with Taska's secure platform and support.</div>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon"><i class="fas fa-lightbulb"></i></div>
+                <div class="benefit-title">Innovative Solutions</div>
+                <div class="benefit-desc">Students bring fresh ideas and the latest tech to solve your toughest challenges.</div>
+            </div>
+        </div>
+    </section>
+    <footer style="text-align:center;padding:2rem 0 1rem 0;color:#888;font-size:1rem;background:#fff;margin-top:2rem;border-top:1px solid #e5e7ea;">
+        &copy; 2025 Taska. All rights reserved.
     </footer>
-
-    <!-- WhatsApp Button -->
-    <a href="https://wa.me/919266124039?text=Hello%20Taska,%20I%20would%20like%20to%20know%20more%20about%20your%20services!" class="whatsapp-button" target="_blank">
-        <i class="fab fa-whatsapp"></i> Message Us
-    </a>
-
-    <!-- Scripts -->
-    <script type="module">
-        // Check user role on page load
-        document.addEventListener('DOMContentLoaded', () => {
-            const userRole = localStorage.getItem('userRole');
-            const authLink = document.getElementById('auth-link');
-            const hireAssistantsBtn = document.getElementById('hire-assistants-btn');
-
-            if (userRole === 'professional') {
-                // Change Login to Profile
-                authLink.textContent = 'Go to Account';
-                authLink.href = 'professional/explore.html';
-
-                // Update Hire Assistants button behavior
-                hireAssistantsBtn.onclick = () => {
-                    window.location.href = 'professional/explore.html';
-                };
-            } else {
-                // Default behavior
-                authLink.textContent = 'Login';
-                authLink.href = 'login.html';
-                hireAssistantsBtn.onclick = () => {
-                    window.location.href = 'login.html';
-                };
-            }
-        });
-    </script>
-    <script type="module" src="js/auth.js"></script>
 </body>
 </html>
