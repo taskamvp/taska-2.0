@@ -1,6 +1,6 @@
 body { 
     background: #f8f9fa; 
-    font-family: 'Poppins', sans-serif; 
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; 
     margin: 0; 
     padding: 0; 
     height: 100vh; 
@@ -36,52 +36,6 @@ body {
     }
 }
 
-.navbar { 
-    background: #fff; 
-    padding: 1rem 2rem; 
-    position: fixed; 
-    top: 0; 
-    width: 100%; 
-    z-index: 1000; 
-    border-bottom: 1px solid #e0e0e0; 
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center; 
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
-}
-
-.navbar .logo { 
-    font-size: 1.5rem; 
-    color: #1a1a1a; 
-}
-
-.navbar .nav-menu { 
-    display: flex; 
-    gap: 1.5rem; 
-    list-style: none; 
-}
-
-.navbar .nav-menu li a { 
-    color: #1a1a1a; 
-    text-decoration: none; 
-    font-size: 1rem; 
-    transition: color 0.3s; 
-}
-
-.navbar .nav-menu li a.active { 
-    color: #0000ff; 
-}
-
-.navbar .nav-menu li a:hover { 
-    color: #4CAF50; 
-}
-
-.navbar .hamburger { 
-    display: none; 
-    font-size: 1.5rem; 
-    cursor: pointer; 
-    color: #1a1a1a; 
-}
 
 .dashboard-content { 
     display: flex; 
@@ -594,7 +548,7 @@ body {
     background: transparent;
     color: #1a1a1a;
     font-size: 0.95rem;
-    font-family: 'Poppins', sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
     resize: none;
     outline: none;
     line-height: 1.4;
@@ -1231,7 +1185,7 @@ body {
     padding: 0.75rem;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
-    font-family: 'Poppins', sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
     font-size: 0.9rem;
     resize: vertical;
     min-height: 120px;
@@ -1593,7 +1547,7 @@ body {
     cursor: pointer;
     transition: all 0.3s ease;
     min-width: 100px;
-    font-family: 'Poppins', sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
 }
 
 .confirmation-dialog .dialog-actions .cancel {
@@ -2251,7 +2205,7 @@ body {
     padding: 0.75rem;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
-    font-family: 'Poppins', sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
     font-size: 0.9rem;
     resize: vertical;
     min-height: 80px;
@@ -2547,7 +2501,7 @@ body {
     z-index: 1400;
     transition: all 0.3s ease;
     border: none;
-    font-family: 'Poppins', sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
     font-size: 0.9rem;
     font-weight: 500;
 }

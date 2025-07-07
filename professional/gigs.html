@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Taska - Task Assignment</title>
     <link rel="stylesheet" href="css/gigs.css">
-   
+    
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/global.css">
     <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/classified-navbar.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -20,144 +21,133 @@
             padding: 0;
         }
 
-        /* Navbar Styles - Fixed Height */
-        .navbar {
-            background: #fff;
-            padding: 1rem 2rem;
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-            border-bottom: 1px solid #e0e0e0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-
-        .navbar .logo {
-            font-size: 1.5rem;
-            color: #1a1a1a;
-        }
-
-        .navbar .nav-menu {
-            display: flex;
-            gap: 1.5rem;
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-
-        .navbar .nav-menu li a {
-            color: #1a1a1a;
-            text-decoration: none;
-            font-size: 1rem;
-            transition: color 0.3s;
-        }
-
-        .navbar .nav-menu li a:hover {
-            color: #4CAF50;
-        }
-
-        .navbar .nav-menu li a.active {
-            color: #0000ff;
-        }
-
-        .navbar .hamburger {
-            display: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #1a1a1a;
-        }
-
+        /* Remove old navbar styles - now using classified-navbar.css */
+        
         .gigs-container {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 2rem;
+            padding: 1rem;
             display: grid;
-            grid-template-columns: 1fr 250px;
-            gap: 2rem;
+            grid-template-columns: 1fr 300px;
+            gap: 1rem;
             align-items: start;
             margin-top: 90px; /* Adjust for navbar height (1rem top + 1rem bottom padding + content) */
+            background: #f8f9fa;
+            border: none;
+            border-radius: 12px !important;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
         }
 
-        /* Assigned Tasks Section */
+        /* Assigned Tasks Section - macOS Style */
         .active-gigs {
-            background: white;
-            border: 1px solid #e0e0e0;
+            background: #ffffff;
+            border: 1px solid #e9ecef;
             padding: 1.5rem;
+            border-radius: 12px !important;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+            margin-bottom: 0;
         }
 
         .active-gigs h2 {
             font-size: 1.5rem;
-            font-weight: 500;
-            color: #333;
+            font-weight: 600;
+            color: #1d1d1f;
             margin: 0 0 1.5rem 0;
             padding-bottom: 0.5rem;
-            border-bottom: 1px solid #e0e0e0;
+            border-bottom: 1px solid #e9ecef;
+            letter-spacing: -0.025em;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
         }
 
-        /* Create Task Button */
+        /* Create Task Button - macOS Style */
         .gigs-actions {
             position: sticky;
             top: 2rem;
+            background: transparent;
+            padding: 0;
+            border: none;
+            border-radius: 12px !important;
         }
 
         .action-card.create-task {
-            background: white;
-            border: 1px solid #e0e0e0;
+            background: #ffffff;
+            border: 1px solid #e9ecef;
             padding: 1.5rem;
             text-align: center;
+            border-radius: 12px !important;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+            margin: 0;
+            transition: all 0.2s ease;
+        }
+
+        .action-card.create-task:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
         }
 
         .action-card h3 {
             font-size: 1.2rem;
-            font-weight: 500;
-            color: #333;
+            font-weight: 600;
+            color: #1d1d1f;
             margin: 0 0 0.5rem 0;
+            letter-spacing: -0.025em;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
         }
 
         .action-card p {
-            color: #666;
+            color: #86868b;
             font-size: 0.9rem;
             margin: 0 0 1rem 0;
             line-height: 1.4;
+            font-weight: 400;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
         }
 
         .action-btn.create-btn {
-            background: #1a73e8;
-            color: white;
+            background: #007aff;
+            color: #ffffff;
             border: none;
             padding: 0.75rem 1.5rem;
             font-size: 0.9rem;
             font-weight: 500;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.2s ease;
+            border-radius: 8px !important;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
         }
 
         .action-btn.create-btn:hover {
-            background: #1557b0;
+            background: #0056cc;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
         }
 
-        /* Task Cards - Enhanced Design with Full Details */
+        /* Task Cards - macOS Style Design */
         .gig-card {
-            background: white;
-            border: 1px solid #e0e0e0;
+            background: #ffffff;
+            border: 1px solid rgba(0, 0, 0, 0.1);
             margin-bottom: 1.5rem;
-            transition: border-color 0.2s, box-shadow 0.2s;
-            border-radius: 8px;
+            transition: all 0.2s ease;
+            border-radius: 12px !important;
             overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
         }
 
         .gig-card:hover {
-            border-color: #1a73e8;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            border-color: rgba(0, 122, 255, 0.3);
         }
 
         .gig-header {
             padding: 1.5rem;
-            border-bottom: 1px solid #f0f0f0;
+            border-bottom: 1px solid #e9ecef;
             position: relative;
+            background: #f8f9fa;
         }
 
         .gig-title-section {
@@ -174,15 +164,19 @@
         .gig-info h4 {
             font-size: 1.3rem;
             font-weight: 600;
-            color: #333;
+            color: #1d1d1f;
             margin: 0 0 0.5rem 0;
+            letter-spacing: -0.025em;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
         }
 
         .gig-description {
-            color: #666;
+            color: #86868b;
             font-size: 0.95rem;
             line-height: 1.5;
             margin: 0 0 1rem 0;
+            font-weight: 400;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
         }
 
         .gig-meta {
@@ -195,34 +189,41 @@
 
         .gig-category {
             background: #f1f3f4;
-            color: #333;
+            color: #1d1d1f;
             padding: 0.4rem 0.8rem;
             font-size: 0.85rem;
             font-weight: 500;
             text-transform: capitalize;
-            border-radius: 4px;
+            border-radius: 6px !important;
+            border: none;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
         }
 
         .deadline-info {
             padding: 0.4rem 0.8rem;
             font-size: 0.85rem;
             font-weight: 500;
-            border-radius: 4px;
+            border-radius: 6px !important;
+            border: none;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
         }
 
         .deadline-info.urgent {
-            background: #fce8e6;
-            color: #d93025;
+            background: #ff3b30;
+            color: #ffffff;
+            border: none;
         }
 
         .deadline-info.warning {
-            background: #fef7e0;
-            color: #ea8600;
+            background: #ff9500;
+            color: #ffffff;
+            border: none;
         }
 
         .deadline-info.normal {
-            background: #e6f4ea;
-            color: #137333;
+            background: #34c759;
+            color: #ffffff;
+            border: none;
         }
 
         .gig-actions {
@@ -235,44 +236,51 @@
         .assignment-info {
             background: #f8f9fa;
             padding: 1rem;
-            border: 1px solid #e0e0e0;
-            border-radius: 6px;
+            border: 1px solid #e9ecef;
+            border-radius: 8px !important;
         }
 
         .primary-assignment, .waitlist-info {
             margin-bottom: 0.5rem;
             font-size: 0.9rem;
+            font-weight: 500;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
         }
 
         .primary-assignment strong {
-            color: #137333;
+            color: #34c759;
+            font-weight: 600;
         }
 
         .waitlist-info strong {
-            color: #1a73e8;
+            color: #007aff;
+            font-weight: 600;
         }
 
         .view-details-btn {
-            background: #1a73e8;
-            color: white;
+            background: #007aff;
+            color: #ffffff;
             border: none;
             padding: 0.6rem 1.2rem;
             font-size: 0.9rem;
             font-weight: 500;
             cursor: pointer;
-            transition: background 0.2s;
-            border-radius: 4px;
+            transition: all 0.2s ease;
+            border-radius: 8px !important;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
         }
 
         .view-details-btn:hover {
-            background: #1557b0;
+            background: #0056cc;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
         }
 
-        /* New: Task Details Section */
+        /* Task Details Section - macOS Style */
         .gig-details {
             padding: 1.5rem;
-            background: #fafafa;
-            border-top: 1px solid #f0f0f0;
+            background: #ffffff;
+            border-top: 1px solid #e9ecef;
         }
 
         .details-grid {
@@ -282,30 +290,34 @@
         }
 
         .detail-section {
-            background: white;
-            border: 1px solid #e0e0e0;
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
             padding: 1rem;
-            border-radius: 6px;
+            border-radius: 8px !important;
         }
 
         .detail-section h5 {
             margin: 0 0 0.75rem 0;
-            color: #333;
+            color: #1d1d1f;
             font-size: 0.95rem;
             font-weight: 600;
-            border-bottom: 1px solid #e0e0e0;
+            border-bottom: 1px solid #e9ecef;
             padding-bottom: 0.5rem;
+            letter-spacing: -0.025em;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
         }
 
         .detail-item {
             margin-bottom: 0.5rem;
             padding: 0.25rem 0;
             font-size: 0.9rem;
+            font-weight: 400;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
         }
 
         .detail-item strong {
-            color: #333;
-            font-weight: 500;
+            color: #1d1d1f;
+            font-weight: 600;
             min-width: 100px;
             display: inline-block;
         }
@@ -315,54 +327,63 @@
             align-items: center;
             gap: 0.75rem;
             padding: 0.75rem;
-            background: #f8f9fa;
-            border: 1px solid #e0e0e0;
+            background: #ffffff;
+            border: 1px solid #e9ecef;
             margin-bottom: 0.5rem;
-            border-radius: 4px;
+            border-radius: 8px !important;
+            transition: all 0.2s ease;
+        }
+
+        .student-detail:hover {
+            background: #f8f9fa;
+            border-color: #007aff;
         }
 
         .student-avatar {
             width: 36px;
             height: 36px;
-            border-radius: 50%;
-            border: 2px solid #e0e0e0;
+            border-radius: 50% !important;
+            border: 2px solid #e9ecef;
         }
 
         .student-name {
-            font-weight: 500;
-            color: #333;
+            font-weight: 600;
+            color: #1d1d1f;
             font-size: 0.9rem;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
         }
 
         .student-status {
             font-size: 0.8rem;
-            color: #666;
+            color: #86868b;
+            font-weight: 500;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
         }
 
         .student-status.accepted {
-            color: #137333;
-            font-weight: 500;
+            color: #34c759;
+            font-weight: 600;
         }
 
         .student-status.rejected {
-            color: #d93025;
-            font-weight: 500;
+            color: #ff3b30;
+            font-weight: 600;
         }
 
         .student-status.pending {
-            color: #ea8600;
-            font-weight: 500;
+            color: #ff9500;
+            font-weight: 600;
         }
 
         .student-status.waitlist {
-            color: #1a73e8;
-            font-weight: 500;
+            color: #007aff;
+            font-weight: 600;
         }
 
         .student-status.no-primary,
         .student-status.removed,
         .student-status.unknown {
-            color: #666;
+            color: #86868b;
             font-style: italic;
         }
 
@@ -385,24 +406,28 @@
             align-items: center;
             gap: 0.5rem;
             padding: 0.5rem;
-            background: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 4px;
+            background: #ffffff;
+            border: 1px solid #e9ecef;
+            border-radius: 8px !important;
             text-decoration: none;
-            color: #333;
+            color: #1d1d1f;
             font-size: 0.85rem;
-            transition: background 0.2s;
+            transition: all 0.2s ease;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
         }
 
         .file-item:hover {
             background: #f8f9fa;
+            border-color: #007aff;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
         .file-item i {
-            color: #1a73e8;
+            color: #007aff;
         }
 
-        /* Action Buttons */
+        /* Action Buttons - macOS Style */
         .action-buttons {
             display: flex;
             gap: 0.75rem;
@@ -410,72 +435,80 @@
         }
 
         .delete-task-btn {
-            background: #dc3545;
-            color: white;
+            background: #ff3b30;
+            color: #ffffff;
             border: none;
             padding: 0.6rem 1.2rem;
             font-size: 0.9rem;
             font-weight: 500;
             cursor: pointer;
-            transition: background 0.2s;
-            border-radius: 4px;
+            transition: all 0.2s ease;
+            border-radius: 8px !important;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
         }
 
         .delete-task-btn:hover {
-            background: #c82333;
+            background: #d70015;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(255, 59, 48, 0.3);
         }
 
         .edit-task-btn {
-            background: #28a745;
-            color: white;
+            background: #34c759;
+            color: #ffffff;
             border: none;
             padding: 0.6rem 1.2rem;
             font-size: 0.9rem;
             font-weight: 500;
             cursor: pointer;
-            transition: background 0.2s;
-            border-radius: 4px;
+            transition: all 0.2s ease;
+            border-radius: 8px !important;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
         }
 
         .edit-task-btn:hover {
-            background: #218838;
+            background: #28a745;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(52, 199, 89, 0.3);
         }
 
-        /* Three Dot Menu */
+        /* Three Dot Menu - macOS Style */
         .three-dot-menu {
             position: relative;
             display: inline-block;
         }
 
         .three-dot-btn {
-            background: #f8f9fa;
-            border: 1px solid #e0e0e0;
-            color: #666;
+            background: #f1f3f4;
+            border: none;
+            color: #5f6368;
             padding: 0.5rem;
             font-size: 1rem;
             cursor: pointer;
-            border-radius: 4px;
-            transition: all 0.2s;
+            border-radius: 50% !important;
+            transition: all 0.2s ease;
             width: 40px;
             height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
         }
 
         .three-dot-btn:hover {
-            background: #e9ecef;
-            color: #333;
+            background: #e8eaed;
+            color: #1d1d1f;
+            transform: scale(1.05);
         }
 
         .dropdown-menu {
             position: absolute;
             top: 100%;
             right: 0;
-            background: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 6px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            background: #ffffff;
+            border: 1px solid #e9ecef;
+            border-radius: 8px !important;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
             min-width: 150px;
             z-index: 1000;
             display: none;
@@ -489,16 +522,19 @@
         .dropdown-item {
             padding: 0.75rem 1rem;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.2s ease;
             display: flex;
             align-items: center;
             gap: 0.5rem;
             font-size: 0.9rem;
-            color: #333;
+            color: #1d1d1f;
             border: none;
             background: none;
             width: 100%;
             text-align: left;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+            font-weight: 400;
+            border-radius: 0;
         }
 
         .dropdown-item:hover {
@@ -506,11 +542,13 @@
         }
 
         .dropdown-item.edit {
-            color: #28a745;
+            color: #34c759;
+            font-weight: 500;
         }
 
         .dropdown-item.delete {
-            color: #dc3545;
+            color: #ff3b30;
+            font-weight: 500;
         }
 
         .dropdown-item i {
@@ -641,56 +679,64 @@
         }
 
         .priority-list {
-            background: #f8f9fa;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
+            background: #ffffff;
+            border: 2px solid #808080;
+            border-radius: 0 !important;
             overflow: hidden;
+            box-shadow: 1px 1px 0 #ffffff inset;
         }
 
         .priority-header {
-            background: #1a73e8;
-            color: white;
+            background: #000080;
+            color: #ffffff;
             padding: 0.75rem 1rem;
-            font-weight: 500;
+            font-weight: 700;
             font-size: 0.9rem;
+            text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+            font-family: 'Segoe UI', 'Microsoft Sans Serif', Tahoma, Geneva, Verdana, sans-serif !important;
         }
 
         .primary-student-section {
-            background: #e8f5e8;
-            border-bottom: 1px solid #e0e0e0;
+            background: #f0f8f0;
+            border-bottom: 1px solid #808080;
             padding: 1rem;
         }
 
         .primary-student-section h4 {
             margin: 0 0 0.75rem 0;
-            color: #137333;
+            color: #008000;
             font-size: 0.9rem;
-            font-weight: 600;
+            font-weight: 700;
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
+            font-family: 'Segoe UI', 'Microsoft Sans Serif', Tahoma, Geneva, Verdana, sans-serif !important;
         }
 
         .primary-student-section h4 i {
-            color: #137333;
+            color: #008000;
         }
 
         .waitlist-section {
             padding: 1rem;
+            background: #ffffff;
         }
 
         .waitlist-section h4 {
             margin: 0 0 0.75rem 0;
-            color: #666;
+            color: #000080;
             font-size: 0.9rem;
-            font-weight: 600;
+            font-weight: 700;
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
+            font-family: 'Segoe UI', 'Microsoft Sans Serif', Tahoma, Geneva, Verdana, sans-serif !important;
         }
 
         .waitlist-section h4 i {
-            color: #666;
+            color: #000080;
         }
 
         .student-item {
@@ -714,26 +760,44 @@
             margin-bottom: 0;
         }
 
-        .student-item.dragging {
-            opacity: 0.5;
-            transform: rotate(2deg);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        /* Remove drag-related styles and add up/down arrow styles */
+        .reorder-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-left: auto;
         }
 
-        .drag-handle {
-            color: #888;
-            cursor: grab;
-            padding: 0.25rem;
-            border-radius: 3px;
-            transition: color 0.2s;
+        .reorder-btn {
+            background: #f1f3f4;
+            color: #666;
+            border: 1px solid #e0e0e0;
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            transition: all 0.2s;
         }
 
-        .drag-handle:hover {
+        .reorder-btn:hover {
+            background: #e9ecef;
             color: #1a73e8;
+            border-color: #1a73e8;
         }
 
-        .drag-handle:active {
-            cursor: grabbing;
+        .reorder-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .reorder-btn:disabled:hover {
+            background: #f1f3f4;
+            color: #666;
+            border-color: #e0e0e0;
         }
 
         .student-avatar {
@@ -804,14 +868,18 @@
             border-color: #1a73e8;
         }
 
-        /* Drag Over Effects */
-        .primary-student-section.drag-over,
-        .waitlist-section.drag-over {
-            background: #f0f8ff;
-            border: 2px dashed #1a73e8;
+        /* Remove drag over effects and replace with simple hover effects */
+        .primary-student-section,
+        .waitlist-section {
+            transition: background 0.2s;
         }
 
-        /* Drag & Drop Styles */
+        .primary-student-section:hover,
+        .waitlist-section:hover {
+            background: #f8f9fa;
+        }
+
+        /* Remove drag & drop styles and replace with simple card styles */
         .draggable-student {
             display: flex;
             align-items: center;
@@ -820,7 +888,6 @@
             background: white;
             border: 1px solid #e0e0e0;
             margin-bottom: 0.25rem;
-            cursor: grab;
             transition: background 0.2s;
         }
 
@@ -828,30 +895,11 @@
             background: #f8f9fa;
         }
 
-        .draggable-student.dragging {
-            opacity: 0.5;
-            cursor: grabbing;
-        }
-
-        .drag-handle {
-            color: #666;
-            cursor: grab;
-            padding: 0.25rem;
-        }
-
-        .drag-handle:active {
-            cursor: grabbing;
-        }
-
         .drop-zone {
             min-height: 40px;
-            border: 2px dashed #e0e0e0;
+            border: 1px solid #e0e0e0;
             margin: 0.5rem 0;
             transition: border-color 0.2s;
-        }
-
-        .drop-zone.drag-over {
-            border-color: #1a73e8;
             background: #f8f9fa;
         }
 
@@ -865,70 +913,6 @@
         .priority-instructions p {
             margin: 0;
             font-size: 0.9rem;
-            color: #666;
-        }
-
-        /* Task Details Styles */
-        .task-details-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-        }
-
-        .detail-section {
-            background: #f8f9fa;
-            border: 1px solid #e0e0e0;
-            padding: 1rem;
-        }
-
-        .detail-section h4 {
-            margin: 0 0 1rem 0;
-            color: #333;
-            font-size: 1rem;
-            font-weight: 500;
-        }
-
-        .detail-item {
-            margin-bottom: 0.5rem;
-            padding: 0.25rem 0;
-            border-bottom: 1px solid #e0e0e0;
-        }
-
-        .detail-item:last-child {
-            border-bottom: none;
-        }
-
-        .detail-item strong {
-            color: #333;
-            font-weight: 500;
-            min-width: 80px;
-            display: inline-block;
-        }
-
-        .student-detail {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem;
-            background: white;
-            border: 1px solid #e0e0e0;
-            margin-bottom: 0.25rem;
-        }
-
-        .student-avatar {
-            width: 32px;
-            height: 32px;
-            border: 1px solid #e0e0e0;
-        }
-
-        .student-name {
-            font-weight: 500;
-            color: #333;
-            font-size: 0.9rem;
-        }
-
-        .student-status {
-            font-size: 0.8rem;
             color: #666;
         }
 
@@ -984,17 +968,25 @@
             }
         }
 
-        /* No tasks message */
+        /* No tasks message - Windows Style */
         .no-gigs {
             text-align: center;
             padding: 2rem;
-            color: #666;
+            color: #808080;
+            font-family: 'Segoe UI', 'Microsoft Sans Serif', Tahoma, Geneva, Verdana, sans-serif !important;
+            font-weight: 500;
         }
 
         .no-gigs i {
             font-size: 2rem;
             margin-bottom: 1rem;
-            color: #ccc;
+            color: #c0c0c0;
+        }
+
+        .no-gigs p {
+            font-size: 1rem;
+            color: #404040;
+            font-weight: 500;
         }
 
         /* Action Buttons */
@@ -1184,20 +1176,377 @@
             color: #1a73e8;
             margin-right: 0.25rem;
         }
+
+        /* --- MACOS STYLE MODAL & SCROLLBAR --- */
+        .gig-modal .modal-content,
+        .gig-modal .modal-content.large-modal {
+            border-radius: 12px !important;
+            border: none !important;
+            background: #ffffff !important;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15), 0 8px 32px rgba(0,0,0,0.1) !important;
+            backdrop-filter: blur(20px) !important;
+            -webkit-backdrop-filter: blur(20px) !important;
+            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-bottom: 1px solid #e9ecef;
+            border-radius: 12px 12px 0 0 !important;
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 44px;
+            position: relative;
+        }
+
+        .modal-header h3 {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 1.25rem;
+            color: #1d1d1f !important;
+            font-weight: 600;
+            margin: 0;
+            letter-spacing: -0.025em;
+        }
+
+        .modal-header button {
+            background: #ff3b30;
+            border: none;
+            border-radius: 50% !important;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-left: 8px;
+            font-weight: 300;
+            line-height: 1;
+            padding: 0;
+            text-align: center;
+        }
+        .modal-header button:hover {
+            background: #d70015;
+            color: #ffffff;
+            transform: scale(1.05);
+        }
+
+        .gig-modal .modal-body {
+            background: #ffffff;
+            border-radius: 0 0 12px 12px !important;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+            color: #1d1d1f;
+            padding: 1.5rem;
+            overflow-y: auto;
+            max-height: 60vh;
+            border: none;
+        }
+
+        /* macOS style text inside modals */
+        .gig-modal .modal-body h4,
+        .gig-modal .modal-body h5,
+        .gig-modal .modal-body h6 {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+            font-weight: 600 !important;
+            color: #1d1d1f !important;
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.025em;
+        }
+
+        /* macOS style for priority-header */
+        .gig-modal .modal-body .priority-header {
+            color: #ffffff !important;
+            background: linear-gradient(135deg, #007aff 0%, #0056cc 100%) !important;
+            border-radius: 8px 8px 0 0 !important;
+            text-shadow: none !important;
+            font-weight: 600 !important;
+            letter-spacing: -0.025em !important;
+        }
+
+        .gig-modal .modal-body label {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+            font-weight: 500 !important;
+            color: #1d1d1f !important;
+            font-size: 0.95rem !important;
+            text-shadow: none !important;
+            letter-spacing: -0.025em;
+        }
+
+        .gig-modal .modal-body input,
+        .gig-modal .modal-body textarea,
+        .gig-modal .modal-body select {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+            font-weight: 400 !important;
+            color: #1d1d1f !important;
+            border: 1px solid #d2d2d7 !important;
+            border-radius: 8px !important;
+            background: #ffffff !important;
+            box-shadow: none !important;
+            transition: all 0.2s ease;
+        }
+
+        .gig-modal .modal-body input:focus,
+        .gig-modal .modal-body textarea:focus,
+        .gig-modal .modal-body select:focus {
+            border-color: #007aff !important;
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1) !important;
+            outline: none !important;
+        }
+
+        .gig-modal .modal-body p,
+        .gig-modal .modal-body span,
+        .gig-modal .modal-body div {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+            font-weight: 400 !important;
+            color: #1d1d1f !important;
+            text-shadow: none !important;
+        }
+
+        .gig-modal .modal-body .student-name {
+            font-weight: 600 !important;
+            color: #1d1d1f !important;
+            text-shadow: none !important;
+        }
+
+        .gig-modal .modal-body .student-position {
+            font-weight: 500 !important;
+            color: #86868b !important;
+        }
+
+        .gig-modal .modal-body .primary-badge,
+        .gig-modal .modal-body .waitlist-badge {
+            font-weight: 600 !important;
+            font-size: 0.75rem !important;
+            text-shadow: none !important;
+            background: #34c759 !important;
+            color: #ffffff !important;
+            border: none !important;
+            border-radius: 12px !important;
+        }
+
+        .gig-modal .modal-body .waitlist-badge {
+            background: #007aff !important;
+        }
+
+        .gig-modal .modal-actions {
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            border-radius: 0 0 12px 12px !important;
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+        }
+
+        /* macOS style buttons in modals */
+        .gig-modal .modal-actions button,
+        .gig-modal .modal-body button {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+            font-weight: 500 !important;
+            border: none !important;
+            border-radius: 8px !important;
+            background: #f1f3f4 !important;
+            color: #1d1d1f !important;
+            box-shadow: none !important;
+            text-shadow: none !important;
+            transition: all 0.2s ease !important;
+            padding: 0.75rem 1.25rem !important;
+        }
+
+        .gig-modal .modal-actions button:hover,
+        .gig-modal .modal-body button:hover {
+            background: #e8eaed !important;
+            transform: translateY(-1px) !important;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
+        }
+
+        .gig-modal .modal-actions .cancel-btn:hover,
+        .gig-modal .modal-body .cancel-btn:hover {
+            background: #ff3b30 !important;
+            color: #ffffff !important;
+        }
+
+        .gig-modal .modal-actions .create-btn,
+        .gig-modal .modal-actions .save-btn,
+        .gig-modal .modal-actions .confirm-btn {
+            background: #007aff !important;
+            color: #ffffff !important;
+            border: none !important;
+            text-shadow: none !important;
+        }
+
+        .gig-modal .modal-actions .create-btn:hover,
+        .gig-modal .modal-actions .save-btn:hover,
+        .gig-modal .modal-actions .confirm-btn:hover {
+            background: #0056cc !important;
+            transform: translateY(-1px) !important;
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3) !important;
+        }
+
+        /* macOS style scrollbar */
+        .gig-modal .modal-body::-webkit-scrollbar {
+            width: 8px;
+            background: transparent;
+        }
+        .gig-modal .modal-body::-webkit-scrollbar-thumb {
+            background: #d2d2d7;
+            border-radius: 4px;
+            border: none;
+        }
+        .gig-modal .modal-body::-webkit-scrollbar-thumb:hover {
+            background: #a1a1a6;
+        }
+        .gig-modal .modal-body::-webkit-scrollbar-corner {
+            background: transparent;
+        }
+
+        /* Firefox */
+        .gig-modal .modal-body {
+            scrollbar-width: thin;
+            scrollbar-color: #d2d2d7 transparent;
+        }
+
+        /* macOS style for confirmation dialog */
+        .confirmation-dialog .dialog-box {
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15), 0 8px 32px rgba(0,0,0,0.1) !important;
+            border-radius: 12px !important;
+            border: none !important;
+            background: #ffffff !important;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        }
+
+        /* macOS style for dialog actions */
+        .confirmation-dialog .dialog-actions button {
+            border-radius: 8px !important;
+            border: none;
+            background: #f1f3f4;
+            color: #1d1d1f;
+            box-shadow: none;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+            font-weight: 500 !important;
+            text-shadow: none !important;
+            transition: all 0.2s ease;
+        }
+        .confirmation-dialog .dialog-actions button:hover {
+            background: #e8eaed;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .confirmation-dialog .dialog-actions .confirm:hover,
+        .confirmation-dialog .dialog-actions .delete:hover {
+            background: #ff3b30;
+            color: #ffffff;
+        }
+
+        /* macOS style for dialog text */
+        .confirmation-dialog .dialog-box h3 {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+            font-weight: 600 !important;
+            color: #1d1d1f !important;
+            text-shadow: none !important;
+            letter-spacing: -0.025em;
+        }
+
+        .confirmation-dialog .dialog-box p {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+            font-weight: 400 !important;
+            color: #86868b !important;
+            letter-spacing: -0.025em;
+        }
+
+        /* macOS style for other elements */
+        .file-item, .student-item, .selected-student, .task-file-item {
+            border-radius: 8px !important;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+            font-weight: 400 !important;
+            border: 1px solid #d2d2d7 !important;
+            background: #ffffff !important;
+            color: #1d1d1f !important;
+            transition: all 0.2s ease;
+        }
+
+        .file-item:hover, .student-item:hover {
+            background: #f8f9fa !important;
+            border-color: #007aff !important;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        /* macOS style for reorder buttons */
+        .reorder-btn {
+            background: #f1f3f4 !important;
+            color: #5f6368 !important;
+            border: none !important;
+            border-radius: 6px !important;
+            box-shadow: none !important;
+            transition: all 0.2s ease;
+        }
+
+        .reorder-btn:hover {
+            background: #e8eaed !important;
+            color: #1d1d1f !important;
+            transform: scale(1.05);
+        }
+
+        .reorder-btn:disabled {
+            background: #f1f3f4 !important;
+            color: #c7c7cc !important;
+            opacity: 0.5;
+        }
+
+        /* macOS style for priority sections */
+        .priority-list {
+            border-radius: 8px !important;
+            border: 1px solid #d2d2d7 !important;
+            box-shadow: none !important;
+        }
+
+        .primary-student-section {
+            background: #f0f8ff !important;
+            border-bottom: 1px solid #d2d2d7 !important;
+        }
+
+        .waitlist-section {
+            background: #ffffff !important;
+        }
+
+        .primary-student-section h4 {
+            color: #34c759 !important;
+            text-shadow: none !important;
+        }
+
+        .waitlist-section h4 {
+            color: #007aff !important;
+            text-shadow: none !important;
+        }
+
+        .primary-student-section h4 i {
+            color: #34c759 !important;
+        }
+
+        .waitlist-section h4 i {
+            color: #007aff !important;
+        }
     </style>
 </head>
 <body>
     <div class="mobile-message">
         <p>Please use a desktop for a better experience.</p>
     </div>
-    <nav class="navbar">
+    <nav class="navbar_classified">
         <a href="../index.html">
             <div class="logo">Taska</div>
         </a>
         <ul class="nav-menu">
             <li><a href="explore.html">Explore</a></li>
             <li><a href="tasks.html">Workplace</a></li>
-            <li><a href="gigs.html">Tasks</a></li>
+            <li><a href="gigs.html" class="active">Tasks</a></li>
             <li><a href="profile.html">Account</a></li>
         </ul>
         <div class="hamburger">☰</div>
@@ -1228,7 +1577,7 @@
             <div class="modal-header">
                 <h3>Create New Task</h3>
                 <button onclick="closeCreateTaskModal()">
-                    <i class="fas fa-times"></i>
+                    ×
                 </button>
             </div>
             <div class="modal-body">
@@ -1298,7 +1647,7 @@
             <div class="modal-header">
                 <h3>Select Students</h3>
                 <button onclick="closeStudentSearchModal()">
-                    <i class="fas fa-times"></i>
+                    ×
                 </button>
             </div>
             <div class="modal-body">
@@ -1353,7 +1702,7 @@
             <div class="modal-header">
                 <h3 id="success-title">Success!</h3>
                 <button onclick="closeSuccessModal()">
-                    <i class="fas fa-times"></i>
+                    ×
                 </button>
             </div>
             <div class="modal-body">
@@ -1385,7 +1734,7 @@
             <div class="modal-header">
                 <h3 id="task-details-title">Task Details</h3>
                 <button onclick="closeTaskDetailsModal()">
-                    <i class="fas fa-times"></i>
+                    ×
                 </button>
             </div>
             <div class="modal-body" id="task-details-body">
@@ -1406,7 +1755,7 @@
             <div class="modal-header">
                 <h3>Edit Task</h3>
                 <button onclick="closeEditTaskModal()">
-                    <i class="fas fa-times"></i>
+                    ×
                 </button>
             </div>
             <div class="modal-body">
@@ -1439,7 +1788,7 @@
                     <div class="priority-management">
                         <div class="priority-list">
                             <div class="priority-header">
-                                <i class="fas fa-users"></i> Student Assignments
+                                Assigned Students
                             </div>
                             <div class="primary-student-section">
                                 <h4><i class="fas fa-user-check"></i> Primary Student</h4>
@@ -1452,8 +1801,8 @@
                                 <div id="edit-waitlist-students">
                                     <!-- Waitlist students will be shown here -->
                                 </div>
-                                <div class="drag-instructions">
-                                    <small><i class="fas fa-info-circle"></i> Drag students to reorder waitlist or move between primary and waitlist</small>
+                                <div class="priority-instructions">
+                                    <p><strong>Instructions:</strong> Use the up/down arrow buttons to reorder waitlist students. Click the arrows to move students up or down in the waitlist.</p>
                                 </div>
                             </div>
                         </div>
@@ -1473,7 +1822,7 @@
             <div class="modal-header">
                 <h3 id="priority-change-title">Manage Student Priority</h3>
                 <button onclick="closePriorityChangeModal()">
-                    <i class="fas fa-times"></i>
+                    ×
                 </button>
             </div>
             <div class="modal-body">
@@ -2389,45 +2738,101 @@ function updateEditStudentAssignments() {
     const primaryContainer = document.getElementById('edit-primary-student');
     if (currentEditTask.primaryStudent) {
         const student = allStudents.find(s => s.id === currentEditTask.primaryStudent);
+        const hasWaitlist = currentEditTask.waitlistStudents && currentEditTask.waitlistStudents.length > 0;
         primaryContainer.innerHTML = `
             <div class="student-item">
-                <i class="fas fa-grip-vertical drag-handle"></i>
                 <img src="${student?.personal?.profilePic || '../assets/avatar/1.png'}" alt="${student?.personal?.name || 'Unknown'}" class="student-avatar">
                 <div class="student-info">
                     <div class="student-name">${student?.personal?.name || 'Unknown'}</div>
                     <div class="student-position">Primary Assignment</div>
                 </div>
                 <span class="primary-badge">Primary</span>
+                <div class="reorder-controls">
+                    <button class="reorder-btn" disabled title="Move Up">
+                        <i class="fas fa-chevron-up"></i>
+                    </button>
+                    <button class="reorder-btn" onclick="window.demotePrimaryToWaitlist()" ${!hasWaitlist ? 'disabled' : ''} title="Demote to Waitlist">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
             </div>
         `;
     } else {
         primaryContainer.innerHTML = '<div class="empty-state">No primary student assigned</div>';
     }
     
-    // Update waitlist students display with drag handles
+    // Update waitlist students display with up/down arrow controls
     const waitlistContainer = document.getElementById('edit-waitlist-students');
     if (currentEditTask.waitlistStudents && currentEditTask.waitlistStudents.length > 0) {
         waitlistContainer.innerHTML = currentEditTask.waitlistStudents.map((studentId, index) => {
             const student = allStudents.find(s => s.id === studentId);
+            const isFirst = index === 0;
+            const isLast = index === currentEditTask.waitlistStudents.length - 1;
             return `
-                <div class="student-item waitlist-draggable" draggable="true" data-index="${index}" data-student-id="${studentId}">
-                    <i class="fas fa-grip-vertical drag-handle"></i>
+                <div class="student-item" data-index="${index}" data-student-id="${studentId}">
                     <img src="${student?.personal?.profilePic || '../assets/avatar/1.png'}" alt="${student?.personal?.name || 'Unknown'}" class="student-avatar">
                     <div class="student-info">
                         <div class="student-name">${student?.personal?.name || 'Unknown'}</div>
                         <div class="student-position">Waitlist #${index + 1}</div>
                     </div>
                     <span class="waitlist-badge">#${index + 1}</span>
+                    <div class="reorder-controls">
+                        <button class="reorder-btn" onclick="window.moveStudentUp(${index})" ${isFirst ? 'disabled' : ''} title="Move Up">
+                            <i class="fas fa-chevron-up"></i>
+                        </button>
+                        <button class="reorder-btn" onclick="window.moveStudentDown(${index})" ${isLast ? 'disabled' : ''} title="Move Down">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <button class="reorder-btn" onclick="window.promoteWaitlistToPrimary(${index})" title="Promote to Primary">
+                            <i class="fas fa-arrow-up"></i>
+                        </button>
+                    </div>
                 </div>
             `;
         }).join('');
     } else {
         waitlistContainer.innerHTML = '<div class="empty-state">No waitlist students</div>';
     }
-
-    // Enable drag-and-drop sorting for waitlist
-    enableWaitlistDragAndDrop();
 }
+
+// Move up/down and promote/demote logic
+window.moveStudentUp = function(index) {
+    const i = parseInt(index);
+    if (i > 0) {
+        const temp = currentEditTask.waitlistStudents[i-1];
+        currentEditTask.waitlistStudents[i-1] = currentEditTask.waitlistStudents[i];
+        currentEditTask.waitlistStudents[i] = temp;
+        updateEditStudentAssignments();
+    }
+};
+window.moveStudentDown = function(index) {
+    const i = parseInt(index);
+    if (i < currentEditTask.waitlistStudents.length - 1) {
+        const temp = currentEditTask.waitlistStudents[i+1];
+        currentEditTask.waitlistStudents[i+1] = currentEditTask.waitlistStudents[i];
+        currentEditTask.waitlistStudents[i] = temp;
+        updateEditStudentAssignments();
+    }
+};
+window.promoteWaitlistToPrimary = function(index) {
+    const i = parseInt(index);
+    const promoted = currentEditTask.waitlistStudents.splice(i, 1)[0];
+    if (currentEditTask.primaryStudent) {
+        currentEditTask.waitlistStudents.unshift(currentEditTask.primaryStudent);
+    }
+    currentEditTask.primaryStudent = promoted;
+    updateEditStudentAssignments();
+};
+window.demotePrimaryToWaitlist = function() {
+    if (!currentEditTask.primaryStudent) return;
+    if (currentEditTask.waitlistStudents.length === 0) return;
+    // Swap primary with first waitlist student
+    const oldPrimary = currentEditTask.primaryStudent;
+    const newPrimary = currentEditTask.waitlistStudents.shift();
+    currentEditTask.primaryStudent = newPrimary;
+    currentEditTask.waitlistStudents.unshift(oldPrimary);
+    updateEditStudentAssignments();
+};
 
 function cleanupStudentArrays() {
     if (!currentEditTask) return;
@@ -2454,163 +2859,39 @@ function cleanupStudentArrays() {
     }
 }
 
-function enableWaitlistDragAndDrop() {
-    const primaryContainer = document.getElementById('edit-primary-student');
-    const waitlistContainer = document.getElementById('edit-waitlist-students');
-    
-    // Clear any existing event listeners
-    const newPrimaryContainer = primaryContainer.cloneNode(true);
-    const newWaitlistContainer = waitlistContainer.cloneNode(true);
-    primaryContainer.parentNode.replaceChild(newPrimaryContainer, primaryContainer);
-    waitlistContainer.parentNode.replaceChild(newWaitlistContainer, waitlistContainer);
-    
-    // Get the new references
-    const updatedPrimaryContainer = document.getElementById('edit-primary-student');
-    const updatedWaitlistContainer = document.getElementById('edit-waitlist-students');
-    
-    let dragSrcElement = null;
-    let dragSrcType = null;
-    let dragSrcIndex = null;
-
-    // Make primary student draggable
-    const primaryStudent = updatedPrimaryContainer.querySelector('.student-item');
-    if (primaryStudent && currentEditTask.primaryStudent) {
-        primaryStudent.draggable = true;
-        primaryStudent.classList.add('primary-draggable');
-        primaryStudent.dataset.studentId = currentEditTask.primaryStudent;
-        primaryStudent.dataset.type = 'primary';
-        
-        primaryStudent.addEventListener('dragstart', handleDragStart);
-        primaryStudent.addEventListener('dragend', handleDragEnd);
-    }
-
-    // Make waitlist students draggable
-    const waitlistStudents = updatedWaitlistContainer.querySelectorAll('.waitlist-draggable');
-    waitlistStudents.forEach((student, index) => {
-        student.addEventListener('dragstart', handleDragStart);
-        student.addEventListener('dragend', handleDragEnd);
-        student.addEventListener('dragover', handleDragOver);
-        student.addEventListener('drop', handleDrop);
+function enableReorderControls() {
+    const reorderControls = document.querySelectorAll('.reorder-btn');
+    reorderControls.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const index = btn.dataset.index;
+            const studentId = btn.dataset.studentId;
+            moveStudent(index, studentId);
+        });
     });
+}
 
-    // Allow dropping on containers
-    updatedPrimaryContainer.addEventListener('dragover', handleDragOver);
-    updatedPrimaryContainer.addEventListener('drop', handleDrop);
-    updatedWaitlistContainer.addEventListener('dragover', handleDragOver);
-    updatedWaitlistContainer.addEventListener('drop', handleDrop);
-
-    // Allow dropping on section containers
-    const primarySection = updatedPrimaryContainer.closest('.primary-student-section');
-    const waitlistSection = updatedWaitlistContainer.closest('.waitlist-section');
-    
-    if (primarySection) {
-        primarySection.addEventListener('dragover', handleDragOver);
-        primarySection.addEventListener('drop', handleDrop);
-        primarySection.addEventListener('dragleave', handleDragLeave);
-    }
-    
-    if (waitlistSection) {
-        waitlistSection.addEventListener('dragover', handleDragOver);
-        waitlistSection.addEventListener('drop', handleDrop);
-        waitlistSection.addEventListener('dragleave', handleDragLeave);
-    }
-
-    function handleDragStart(e) {
-        dragSrcElement = e.target;
-        dragSrcType = e.target.dataset.type || 'waitlist';
-        dragSrcIndex = dragSrcType === 'waitlist' ? Number(e.target.dataset.index) : null;
-        e.target.classList.add('dragging');
-    }
-
-    function handleDragEnd(e) {
-        e.target.classList.remove('dragging');
-    }
-
-    function handleDragOver(e) {
-        e.preventDefault();
-        const section = e.currentTarget.closest('.primary-student-section, .waitlist-section');
-        if (section) {
-            section.classList.add('drag-over');
+function moveStudentUp(index) {
+    const currentIndex = parseInt(index);
+    if (currentIndex > 0) {
+        const prevIndex = currentIndex - 1;
+        swapStudents(currentIndex, prevIndex);
+        updateEditStudentAssignments();
         }
     }
 
-    function handleDragLeave(e) {
-        const section = e.currentTarget.closest('.primary-student-section, .waitlist-section');
-        if (section) {
-            section.classList.remove('drag-over');
-        }
-    }
-
-    function handleDrop(e) {
-        e.preventDefault();
-        const section = e.currentTarget.closest('.primary-student-section, .waitlist-section');
-        if (section) {
-            section.classList.remove('drag-over');
-        }
-        
-        if (!dragSrcElement || !currentEditTask) return;
-
-        const dropTarget = e.currentTarget;
-        const isPrimaryContainer = dropTarget.id === 'edit-primary-student' || dropTarget.closest('.primary-student-section');
-        const isWaitlistContainer = dropTarget.id === 'edit-waitlist-students' || dropTarget.closest('.waitlist-section');
-        
-        if (dragSrcType === 'primary' && isWaitlistContainer) {
-            // Move primary to waitlist
-            if (!currentEditTask.waitlistStudents) {
-                currentEditTask.waitlistStudents = [];
-            }
-            // Add primary student to waitlist
-            currentEditTask.waitlistStudents.push(currentEditTask.primaryStudent);
-            // Clear primary student
-            currentEditTask.primaryStudent = null;
+function moveStudentDown(index) {
+    const currentIndex = parseInt(index);
+    if (currentIndex < currentEditTask.waitlistStudents.length - 1) {
+        const nextIndex = currentIndex + 1;
+        swapStudents(currentIndex, nextIndex);
             updateEditStudentAssignments();
-        } else if (dragSrcType === 'waitlist' && isPrimaryContainer) {
-            // Move waitlist to primary
-            const studentToPromote = currentEditTask.waitlistStudents[dragSrcIndex];
-            
-            // Remove the student from waitlist first
-            currentEditTask.waitlistStudents.splice(dragSrcIndex, 1);
-            
-            // If there's already a primary student, move it to waitlist
-            if (currentEditTask.primaryStudent) {
-                currentEditTask.waitlistStudents.push(currentEditTask.primaryStudent);
-            }
-            
-            // Set the new primary student
-            currentEditTask.primaryStudent = studentToPromote;
-            updateEditStudentAssignments();
-        } else if (dragSrcType === 'waitlist' && isWaitlistContainer) {
-            // Reorder within waitlist
-            const dropIndex = getDropIndex(e, waitlistContainer);
-            if (dragSrcIndex !== null && dragSrcIndex !== dropIndex && dropIndex !== -1) {
-                // Remove the item from its original position
-                const moved = currentEditTask.waitlistStudents.splice(dragSrcIndex, 1)[0];
-                // Insert it at the new position
-                const actualDropIndex = dragSrcIndex < dropIndex ? dropIndex - 1 : dropIndex;
-                currentEditTask.waitlistStudents.splice(actualDropIndex, 0, moved);
-                updateEditStudentAssignments();
-            }
-        }
     }
+}
 
-    function getDropIndex(e, container) {
-        const students = container.querySelectorAll('.waitlist-draggable');
-        if (students.length === 0) return 0;
-        
-        const rect = container.getBoundingClientRect();
-        const y = e.clientY - rect.top;
-        
-        for (let i = 0; i < students.length; i++) {
-            const studentRect = students[i].getBoundingClientRect();
-            const studentY = studentRect.top - rect.top;
-            
-            if (y < studentY + studentRect.height / 2) {
-                return i;
-            }
-        }
-        
-        return students.length;
-    }
+function swapStudents(index1, index2) {
+    const temp = currentEditTask.waitlistStudents[index1];
+    currentEditTask.waitlistStudents[index1] = currentEditTask.waitlistStudents[index2];
+    currentEditTask.waitlistStudents[index2] = temp;
 }
 
 function openPriorityChangeModal(type) {
@@ -2638,8 +2919,7 @@ function updatePriorityChangeDisplay() {
     if (currentEditTask.primaryStudent) {
         const student = allStudents.find(s => s.id === currentEditTask.primaryStudent);
         primaryDisplay.innerHTML = `
-            <div class="draggable-student" draggable="true" data-student-id="${currentEditTask.primaryStudent}" data-type="primary">
-                <i class="fas fa-grip-vertical drag-handle"></i>
+            <div class="draggable-student" data-student-id="${currentEditTask.primaryStudent}" data-type="primary">
                 <img src="${student?.personal?.profilePic || '../assets/avatar/1.png'}" alt="${student?.personal?.name || 'Unknown'}" class="student-avatar">
                 <div>
                     <div class="student-name">${student?.personal?.name || 'Unknown'}</div>
@@ -2651,18 +2931,27 @@ function updatePriorityChangeDisplay() {
         primaryDisplay.innerHTML = '<p>No primary student assigned</p>';
     }
     
-    // Display current waitlist students
+    // Display current waitlist students with up/down arrow controls
     const waitlistDisplay = document.getElementById('waitlist-students-display');
     if (currentEditTask.waitlistStudents && currentEditTask.waitlistStudents.length > 0) {
         waitlistDisplay.innerHTML = currentEditTask.waitlistStudents.map((studentId, index) => {
             const student = allStudents.find(s => s.id === studentId);
+            const isFirst = index === 0;
+            const isLast = index === currentEditTask.waitlistStudents.length - 1;
             return `
-                <div class="draggable-student" draggable="true" data-student-id="${studentId}" data-type="waitlist" data-index="${index}">
-                    <i class="fas fa-grip-vertical drag-handle"></i>
+                <div class="draggable-student" data-student-id="${studentId}" data-type="waitlist" data-index="${index}">
                     <img src="${student?.personal?.profilePic || '../assets/avatar/1.png'}" alt="${student?.personal?.name || 'Unknown'}" class="student-avatar">
                     <div>
                         <div class="student-name">${student?.personal?.name || 'Unknown'}</div>
                         <div class="student-position">Waitlist #${index + 1}</div>
+                    </div>
+                    <div class="reorder-controls">
+                        <button class="reorder-btn" onclick="movePriorityStudentUp(${index})" ${isFirst ? 'disabled' : ''} title="Move Up">
+                            <i class="fas fa-chevron-up"></i>
+                        </button>
+                        <button class="reorder-btn" onclick="movePriorityStudentDown(${index})" ${isLast ? 'disabled' : ''} title="Move Down">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
                     </div>
                 </div>
             `;
@@ -2671,115 +2960,45 @@ function updatePriorityChangeDisplay() {
         waitlistDisplay.innerHTML = '<p>No waitlist students</p>';
     }
     
-    // Initialize drag and drop
-    initializeDragAndDrop();
+    // Initialize reorder controls
+    initializeReorderControls();
 }
 
-function initializeDragAndDrop() {
-    const draggableStudents = document.querySelectorAll('.draggable-student');
-    const dropZones = document.querySelectorAll('.drop-zone');
-    
-    draggableStudents.forEach(student => {
-        student.addEventListener('dragstart', handleDragStart);
-        student.addEventListener('dragend', handleDragEnd);
-    });
-    
-    dropZones.forEach(zone => {
-        zone.addEventListener('dragover', handleDragOver);
-        zone.addEventListener('drop', handleDrop);
-        zone.addEventListener('dragenter', handleDragEnter);
-        zone.addEventListener('dragleave', handleDragLeave);
+function initializeReorderControls() {
+    const reorderControls = document.querySelectorAll('.reorder-btn');
+    reorderControls.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const index = btn.dataset.index;
+            const studentId = btn.dataset.studentId;
+            movePriorityStudent(index, studentId);
+        });
     });
 }
 
-function handleDragStart(e) {
-    e.target.classList.add('dragging');
-    e.dataTransfer.setData('text/plain', e.target.dataset.studentId);
-    e.dataTransfer.setData('text/type', e.target.dataset.type);
-    e.dataTransfer.setData('text/index', e.target.dataset.index || '');
-}
-
-function handleDragEnd(e) {
-    e.target.classList.remove('dragging');
-}
-
-function handleDragOver(e) {
-    e.preventDefault();
-}
-
-function handleDragEnter(e) {
-    e.preventDefault();
-    e.currentTarget.classList.add('drag-over');
-}
-
-function handleDragLeave(e) {
-    e.currentTarget.classList.remove('drag-over');
-}
-
-function handleDrop(e) {
-    e.preventDefault();
-    e.currentTarget.classList.remove('drag-over');
-    
-    const studentId = e.dataTransfer.getData('text/plain');
-    const studentType = e.dataTransfer.getData('text/type');
-    const studentIndex = e.dataTransfer.getData('text/index');
-    const dropZone = e.currentTarget;
-    const dropZoneType = dropZone.id.includes('primary') ? 'primary' : 'waitlist';
-    
-    if (!currentEditTask) return;
-    
-    // Handle the drop logic
-    if (studentType === 'primary' && dropZoneType === 'waitlist') {
-        // Move primary to waitlist
-        if (!currentEditTask.waitlistStudents) {
-            currentEditTask.waitlistStudents = [];
-        }
-        currentEditTask.waitlistStudents.push(currentEditTask.primaryStudent);
-        currentEditTask.primaryStudent = null;
+function movePriorityStudentUp(index) {
+    const currentIndex = parseInt(index);
+    if (currentIndex > 0) {
+        const prevIndex = currentIndex - 1;
+        swapPriorityStudents(currentIndex, prevIndex);
         pendingPriorityChanges = true;
-    } else if (studentType === 'waitlist' && dropZoneType === 'primary') {
-        // Move waitlist to primary
-        const studentToPromote = currentEditTask.waitlistStudents[parseInt(studentIndex)];
-        if (currentEditTask.primaryStudent) {
-            // Move current primary to waitlist
-            currentEditTask.waitlistStudents.push(currentEditTask.primaryStudent);
-        }
-        // Remove promoted student from waitlist
-        currentEditTask.waitlistStudents.splice(parseInt(studentIndex), 1);
-        currentEditTask.primaryStudent = studentToPromote;
-        pendingPriorityChanges = true;
-    } else if (studentType === 'waitlist' && dropZoneType === 'waitlist') {
-        // Reorder within waitlist
-        const fromIndex = parseInt(studentIndex);
-        const toIndex = getDropIndex(e, dropZone);
-        
-        if (fromIndex !== toIndex) {
-            const student = currentEditTask.waitlistStudents[fromIndex];
-            currentEditTask.waitlistStudents.splice(fromIndex, 1);
-            currentEditTask.waitlistStudents.splice(toIndex, 0, student);
-            pendingPriorityChanges = true;
-        }
+        updatePriorityChangeDisplay();
     }
-    
-    // Update display
+}
+
+function movePriorityStudentDown(index) {
+    const currentIndex = parseInt(index);
+    if (currentIndex < currentEditTask.waitlistStudents.length - 1) {
+        const nextIndex = currentIndex + 1;
+        swapPriorityStudents(currentIndex, nextIndex);
+            pendingPriorityChanges = true;
     updatePriorityChangeDisplay();
 }
+}
 
-function getDropIndex(e, dropZone) {
-    const students = dropZone.querySelectorAll('.draggable-student');
-    const rect = dropZone.getBoundingClientRect();
-    const y = e.clientY - rect.top;
-    
-    for (let i = 0; i < students.length; i++) {
-        const studentRect = students[i].getBoundingClientRect();
-        const studentY = studentRect.top - rect.top;
-        
-        if (y < studentY + studentRect.height / 2) {
-            return i;
-        }
-    }
-    
-    return students.length;
+function swapPriorityStudents(index1, index2) {
+    const temp = currentEditTask.waitlistStudents[index1];
+    currentEditTask.waitlistStudents[index1] = currentEditTask.waitlistStudents[index2];
+    currentEditTask.waitlistStudents[index2] = temp;
 }
 
 function confirmPriorityChanges() {

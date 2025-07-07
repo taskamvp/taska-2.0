@@ -8,35 +8,25 @@
     <link rel="stylesheet" href="../css/global.css">
     <link rel="stylesheet" href="../css/dashboard.css">
     <link rel="stylesheet" href="../css/overview.css">
+    <link rel="stylesheet" href="../css/classified-navbar.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background: #f4f5eb; min-height: 100vh; color: #6B7280; padding-bottom: 60px; }
-        .navbar {
-            background: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            padding: 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .logo { font-size: 1.5rem; font-weight: 600; color: #2c3e50; }
-        .nav-menu { display: flex; gap: 1.5rem; list-style: none; }
-        .nav-menu a { color: #2c3e50; text-decoration: none; font-weight: 500; }
-        .nav-menu a:hover, .nav-menu a.active { color: #0000ff; }
-        .hamburger { display: none; font-size: 1.5rem; cursor: pointer; }
+        body { background: #ffffff; min-height: 100vh; color: #6B7280; padding-bottom: 0; }
         .dashboard-content { padding: 2rem 1rem; max-width: 1200px; margin: 0 auto; }
         .dashboard-section h1 { font-size: 2rem; color: #374151; margin-bottom: 0.5rem; }
         .dashboard-section p { font-size: 1rem; margin-bottom: 1.5rem; }
         .search-container {
-            background: linear-gradient(135deg, #ffffff 0%, #ffffff 100%);
+            background: #ffffff;
             padding: 1.5rem;
             border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
             margin: 2rem 0;
             position: relative;
             overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
         .search-container::before {
             content: '';
@@ -45,69 +35,73 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle, rgba(43, 108, 176, 0.1) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(0, 122, 255, 0.05) 0%, transparent 70%);
             pointer-events: none;
         }
         .search-box {
             display: flex;
             align-items: center;
             gap: 1rem;
-            background: #ffffff;
-            padding: 0.5rem;
-            border-radius: 50px;
-            border: none;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-            transition: all 0.3s ease;
+            background: #f8f9fa;
+            padding: 0.75rem;
+            border-radius: 12px;
+            border: 1px solid #e9ecef;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            transition: all 0.2s ease;
             position: relative;
             z-index: 1;
         }
         .search-box:hover,
         .search-box:focus-within {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            border-color: #007aff;
         }
         .search-icon {
-            color: #2B6CB0;
-            font-size: 1.4rem;
-            margin-left: 1rem;
-            transition: transform 0.3s ease;
+            color: #007aff;
+            font-size: 1.2rem;
+            margin-left: 0.5rem;
+            transition: transform 0.2s ease;
         }
         .search-box:hover .search-icon {
-            transform: scale(1.1);
+            transform: scale(1.05);
         }
         .search-input {
             flex: 1;
             border: none;
             background: transparent;
-            padding: 1rem 0.5rem;
-            font-size: 1.1rem;
-            color: #374151;
+            padding: 0.75rem 0.5rem;
+            font-size: 1rem;
+            color: #1d1d1f;
             outline: none;
             font-weight: 400;
-            border-radius: 50px;
+            border-radius: 8px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
         .search-input::placeholder {
-            color: #9CA3AF;
-            font-style: italic;
+            color: #86868b;
+            font-style: normal;
         }
         .search-btn {
-            padding: 0.9rem 2rem;
-            background: linear-gradient(90deg, #2B6CB0 0%, #1E4A80 100%);
-            color: #FFFFFF;
+            padding: 0.75rem 1.5rem;
+            background: #007aff;
+            color: #ffffff;
             border: none;
-            border-radius: 50px;
+            border-radius: 8px;
             cursor: pointer;
-            font-weight: 600;
+            font-weight: 500;
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             position: relative;
             overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
         .search-btn:hover {
-            background: linear-gradient(90deg, #2C5282 0%, #1A3A66 100%);
-            transform: scale(1.05);
+            background: #0056cc;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
         }
         .search-btn::after {
             content: '';
@@ -118,89 +112,59 @@
             left: 0;
             background: rgba(255, 255, 255, 0.2);
             opacity: 0;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.2s ease;
         }
         .search-btn:hover::after {
             opacity: 1;
         }
         .btn-text {
-            font-size: 1.1rem;
+            font-size: 1rem;
         }
         .btn-icon {
-            font-size: 1rem;
-            transition: transform 0.3s ease;
+            font-size: 0.9rem;
+            transition: transform 0.2s ease;
         }
         .search-btn:hover .btn-icon {
-            transform: translateX(4px);
+            transform: translateX(2px);
         }
-        .search-info {
-            margin-top: 1.5rem;
-            padding: 2rem;
-            background: linear-gradient(135deg, #ffffff 0%, #f0f4f8 100%);
-            border-radius: 16px;
-            border: 1px solid rgba(43, 108, 176, 0.15);
-            text-align: center;
-            transition: opacity 0.3s ease, max-height 0.3s ease;
-            max-height: 600px;
-            overflow: hidden;
-            position: relative;
-            z-index: 1;
+        .loading-overlay { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(249, 250, 251, 0.9); 
+            display: none; 
+            justify-content: center; 
+            align-items: center; 
+            z-index: 1001; 
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
-        .search-info::before {
-            content: '';
-            position: absolute;
-            top: -20%;
-            left: -20%;
-            width: 140%;
-            height: 140%;
-            background: radial-gradient(circle, rgba(43, 108, 176, 0.1) 0%, transparent 70%);
-            pointer-events: none;
-            z-index: -1;
+        .loader { 
+            width: 200px; 
+            height: 4px; 
+            background: #e9ecef; 
+            position: relative; 
+            overflow: hidden; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         }
-        .search-info.hidden {
-            opacity: 0;
-            max-height: 0;
-            padding: 0;
-            margin-top: 0;
+        .loader::before { 
+            content: ''; 
+            position: absolute; 
+            left: -50%; 
+            height: 100%; 
+            width: 50%; 
+            background: linear-gradient(90deg, #007aff, #5856d6); 
+            animation: lineLoading 1.5s infinite ease-in-out; 
+            border-radius: 8px;
         }
-        .search-info h3 {
-            font-size: 1.7rem;
-            font-weight: 600;
-            color: #1F2937;
-            margin-bottom: 1rem;
-            background: linear-gradient(to right, #2B6CB0, #1E4A80);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        @keyframes lineLoading { 
+            0% { left: -50%; } 
+            50% { left: 50%; } 
+            100% { left: 150%; } 
         }
-        .search-info p {
-            font-size: 1.0 rem;
-            color: #4B5563;
-            line-height: 1.6;
-            margin-bottom: 0.75rem;
-        }
-        .search-info .highlight {
-            color: #2B6CB0;
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
-        .search-info .highlight:hover {
-            color: #1E4A80;
-        }
-        .search-info .ai-icon {
-            font-size: 2rem;
-            color: #2B6CB0;
-            margin-bottom: 1rem;
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.2); opacity: 0.7; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(249, 250, 251, 0.9); display: none; justify-content: center; align-items: center; z-index: 1001; }
-        .loader { width: 200px; height: 4px; background: #E5E7EB; position: relative; overflow: hidden; border-radius: 2px; }
-        .loader::before { content: ''; position: absolute; left: -50%; height: 100%; width: 50%; background: #374151; animation: lineLoading 1.5s infinite ease-in-out; }
-        @keyframes lineLoading { 0% { left: -50%; } 50% { left: 50%; } 100% { left: 150%; } }
         .students-list {
             display: flex;
             flex-direction: column;
@@ -209,20 +173,33 @@
             align-items: center;
         }
         .student-card {
-            background: #FFFFFF;
+            background: #ffffff;
             padding: 1.5rem;
             border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.1);
             width: 100%;
             max-width: 900px;
             min-height: 200px;
             display: flex;
             align-items: flex-start;
             gap: 1.5rem;
-            transition: transform 0.2s ease;
+            transition: all 0.2s ease;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+        .student-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(0, 122, 255, 0.1), transparent);
         }
         .student-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.08);
         }
         .student-card img.profile-pic {
             width: 60px;
@@ -230,6 +207,12 @@
             border-radius: 50%;
             object-fit: cover;
             flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+        }
+        .student-card:hover img.profile-pic {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
         .student-card .card-content {
             flex: 1;
@@ -239,48 +222,56 @@
         }
         .student-card h3 {
             font-size: 1.5rem;
-            color: #374151;
+            color: #1d1d1f;
             font-weight: 600;
+            letter-spacing: -0.025em;
+            margin: 0;
         }
         .student-card h4 {
             font-size: 1rem;
-            color: #6B7280;
+            color: #86868b;
             font-weight: 400;
             display: flex;
             align-items: center;
             gap: 0.75rem;
+            margin: 0;
         }
         .student-card .year-badge {
-            background: #E5E7EB;
-            color: #374151;
+            background: #f1f3f4;
+            color: #1d1d1f;
             padding: 0.25rem 0.75rem;
-            border-radius: 12px;
+            border-radius: 8px;
             font-size: 0.85rem;
             font-weight: 500;
+            border: 1px solid #e9ecef;
         }
         .student-card p.description {
             font-size: 0.95rem;
-            color: #4B5563;
+            color: #86868b;
             line-height: 1.5;
             overflow: hidden;
             display: -webkit-box;
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
             max-height: 4.5em;
+            margin: 0;
         }
         .student-card p.description.expanded {
             -webkit-line-clamp: unset;
             max-height: none;
         }
         .student-card a.read-more {
-            color: #2B6CB0;
+            color: #007aff;
             font-size: 0.9rem;
             cursor: pointer;
-            text-decoration: underline;
+            text-decoration: none;
             align-self: flex-start;
+            transition: all 0.2s ease;
+            font-weight: 500;
         }
         .student-card a.read-more:hover {
-            opacity: 0.7;
+            color: #0056cc;
+            text-decoration: underline;
         }
         .student-actions {
             display: flex;
@@ -290,34 +281,43 @@
         }
         .ai-intro-btn {
             padding: 0.6rem 1.5rem;
-            background: #2B6CB0;
-            color: #FFFFFF;
+            background: #007aff;
+            color: #ffffff;
             border: none;
-            border-radius: 20px;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: 500;
             font-size: 0.95rem;
-            transition: background 0.3s ease;
+            transition: all 0.2s ease;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            box-shadow: 0 2px 8px rgba(0, 122, 255, 0.2);
         }
         .ai-intro-btn:hover {
-            background: #2C5282;
+            background: #0056cc;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
         }
         .ai-intro-btn.connected {
-            background: #4CAF50;
+            background: #34c759;
             cursor: not-allowed;
+            box-shadow: 0 2px 8px rgba(52, 199, 89, 0.2);
         }
         .ai-intro-btn.connected:hover {
-            background: #4CAF50;
+            background: #34c759;
             transform: none;
+            box-shadow: 0 2px 8px rgba(52, 199, 89, 0.2);
         }
         .view-profile {
-            color: #374151;
-            text-decoration: underline;
+            color: #1d1d1f;
+            text-decoration: none;
             cursor: pointer;
             font-size: 0.95rem;
+            transition: all 0.2s ease;
+            font-weight: 500;
         }
         .view-profile:hover {
-            opacity: 0.7;
+            color: #007aff;
+            text-decoration: underline;
         }
         .social-icons {
             display: flex;
@@ -325,14 +325,20 @@
         }
         .social-icon {
             font-size: 1.25rem;
-            color: #374151;
+            color: #1d1d1f;
             cursor: pointer;
+            transition: all 0.2s ease;
+            padding: 0.5rem;
+            border-radius: 8px;
         }
         .social-icon:hover {
             transform: scale(1.1);
+            color: #007aff;
+            background: rgba(0, 122, 255, 0.1);
         }
         .social-icon.linkedin:hover {
             color: #0077B5;
+            background: rgba(0, 119, 181, 0.1);
         }
         .pagination { display: none; }
         .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.3); z-index: 999; }
@@ -351,7 +357,9 @@
             max-height: 80vh;
             overflow-y: auto;
             z-index: 1000;
-            border: 1px solid #e5e7eb;
+            border: 1px solid #e9ecef;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15), 0 8px 32px rgba(0,0,0,0.1);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
         .profile-popup.active { display: block; }
         .profile-section {
@@ -365,7 +373,7 @@
             height: 100px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid #e5e7eb;
+            border: 2px solid #e9ecef;
         }
         .profile-details {
             display: flex;
@@ -374,25 +382,26 @@
         }
         .profile-details h2 {
             font-size: 1.5rem;
-            color: #1F2937;
+            color: #1d1d1f;
             font-weight: 600;
             margin: 0;
+            letter-spacing: -0.025em;
         }
         .profile-details h3 {
             font-size: 1rem;
-            color: #6B7280;
+            color: #86868b;
             font-weight: 400;
             margin: 0;
         }
         .profile-content p {
             font-size: 0.9rem;
-            color: #4B5563;
+            color: #86868b;
             line-height: 1.5;
             margin-top: 0.5rem;
         }
         .profile-content p strong {
-            color: #1F2937;
-            font-weight: 500;
+            color: #1d1d1f;
+            font-weight: 600;
             display: inline-block;
             width: 100px;
         }
@@ -400,22 +409,26 @@
             position: absolute;
             top: 1rem;
             right: 1rem;
-            background: #2B6CB0;
-            color: #FFFFFF;
+            background: #ff3b30;
             border: none;
-            width: 40px;
-            height: 40px;
             border-radius: 50%;
-            font-size: 1.2rem;
-            cursor: pointer;
+            width: 32px;
+            height: 32px;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: transform 0.3s ease, background 0.3s ease;
+            font-size: 1.2rem;
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 300;
+            line-height: 1;
+            padding: 0;
+            text-align: center;
         }
         .close-btn:hover {
-            background: #1E4A80;
-            transform: rotate(90deg);
+            background: #d70015;
+            transform: scale(1.05);
         }
         .message-popup {
             display: none;
@@ -423,105 +436,99 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: #FFFFFF;
-            padding: 2rem;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            background: #ffffff;
+            padding: 1.5rem;
+            border-radius: 12px;
             width: 90%;
-            max-width: 450px;
-            height: 65vh;
+            max-width: 500px;
             z-index: 1000;
-            border: 1px solid #F0F0F0;
+            border: 1px solid #e9ecef;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15), 0 8px 32px rgba(0,0,0,0.1);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
-        .message-popup.active { display: flex; flex-direction: column; }
         .message-popup h2 {
-            font-size: 1.5rem;
-            color: #1A1A1A;
-            margin-bottom: 1.5rem;
-            text-align: center;
+            color: #1d1d1f;
             font-weight: 600;
+            margin-bottom: 1rem;
+            letter-spacing: -0.025em;
         }
         .message-popup textarea {
             width: 100%;
-            flex-grow: 1;
-            padding: 1rem;
-            border: 1px solid #E0E0E0;
-            border-radius: 8px;
-            margin-bottom: 1.5rem;
-            resize: none;
-            font-size: 1rem;
-            background: #FAFAFA;
-            color: #333;
-            outline: none;
-            transition: border-color 0.3s ease;
-        }
-        .message-popup textarea:focus { border-color: #2B6CB0; }
-        .message-popup .send-btn {
+            height: 120px;
             padding: 0.75rem;
-            width: 100%;
-            background: #2B6CB0;
-            color: #FFFFFF;
+            border: 1px solid #d2d2d7;
+            border-radius: 8px;
+            resize: vertical;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 0.9rem;
+            color: #1d1d1f;
+            transition: all 0.2s ease;
+        }
+        .message-popup textarea:focus {
+            outline: none;
+            border-color: #007aff;
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+        }
+        .message-popup .send-btn {
+            background: #007aff;
+            color: #ffffff;
             border: none;
+            padding: 0.75rem 1.5rem;
             border-radius: 8px;
             cursor: pointer;
             font-weight: 500;
-            font-size: 1rem;
-            transition: background 0.3s ease;
+            margin-top: 1rem;
+            transition: all 0.2s ease;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
-        .message-popup .send-btn:hover { background: #2C5282; }
+        .message-popup .send-btn:hover {
+            background: #0056cc;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+        }
         .connection-request-popup {
             display: none;
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: #FFFFFF;
-            padding: 2rem;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            background: #ffffff;
+            padding: 1.5rem;
+            border-radius: 12px;
             width: 90%;
-            max-width: 450px;
+            max-width: 400px;
             z-index: 1000;
-            border: 1px solid #F0F0F0;
+            border: 1px solid #e9ecef;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15), 0 8px 32px rgba(0,0,0,0.1);
             text-align: center;
-        }
-        .connection-request-popup.active {
-            display: flex;
-            flex-direction: column;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
         .connection-request-popup h2 {
-            font-size: 1.5rem;
-            color: #1A1A1A;
-            margin-bottom: 1rem;
+            color: #1d1d1f;
             font-weight: 600;
+            margin-bottom: 1rem;
+            letter-spacing: -0.025em;
         }
         .connection-request-popup p {
-            font-size: 1rem;
-            color: #4B5563;
+            color: #86868b;
             margin-bottom: 1.5rem;
+            line-height: 1.5;
         }
         .connection-request-popup .ok-btn {
-            padding: 0.75rem;
-            background: #2B6CB0;
-            color: #FFFFFF;
+            background: #007aff;
+            color: #ffffff;
             border: none;
+            padding: 0.75rem 1.5rem;
             border-radius: 8px;
             cursor: pointer;
             font-weight: 500;
-            font-size: 1rem;
-            transition: background 0.3s ease;
+            transition: all 0.2s ease;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
         .connection-request-popup .ok-btn:hover {
-            background: #2C5282;
-        }
-        .connection-request-popup .manage-connections {
-            color: #2B6CB0;
-            font-weight: 500;
-            text-decoration: underline;
-            cursor: pointer;
-        }
-        .connection-request-popup .manage-connections:hover {
-            color: #1E4A80;
+            background: #0056cc;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
         }
         footer { background: #FFFFFF; padding: 1rem; text-align: center; position: fixed; bottom: 0; width: 100%; box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05); }
         @media (max-width: 768px) {
@@ -532,9 +539,6 @@
             .search-btn { padding: 0.8rem 1.5rem; border-radius: 50px; }
             .btn-text { font-size: 0.95rem; }
             .btn-icon { font-size: 0.9rem; }
-            .search-info { padding: 1.5rem; font-size: 0.9rem; }
-            .search-info h3 { font-size: 1.2rem; }
-            .search-info .ai-icon { font-size: 1.5rem; }
             .navbar { padding: 0.8rem; }
             .nav-menu { display: none; position: absolute; top: 60px; left: 0; width: 100%; background: #FFFFFF; flex-direction: column; padding: 1rem; }
             .nav-menu.active { display: flex; }
@@ -629,7 +633,7 @@
     <div class="mobile-message">
         <p>Please use a desktop for a better experience.</p>
     </div>
-    <nav class="navbar">
+    <nav class="navbar_classified">
         <a href="../index.html">
             <div class="logo">Taska</div>
         </a>
@@ -657,20 +661,6 @@
             </div>
             <br>
             <br>
-            <div class="search-info" id="searchInfo">
-                <i class="fas fa-brain ai-icon"></i>
-                <h3>Discover Talent That Fits — Powered by Smart AI</h3>
-                <p>Our <span class="highlight">AI-powered search engine</span> understands your exact needs by analyzing keywords and context. It intelligently scans thousands of verified student profiles, evaluating their <span class="highlight">colleges, degrees, skills, and project experiences</span> to surface the most relevant candidates.</p>
-                <p>Whether you're looking for a <span class="highlight">Python developer from IIT Madras skilled in SQL</span> or a <span class="highlight">B.Tech student experienced in AI and Flutter</span>, just type your requirements in natural language — and let our AI do the magic.</p>
-                <p>The more specific your query, the better the results. Try searches like:</p>
-                <ul>
-                    "IIT Delhi CSE student with React and backend experience"<br>
-                    "Python + SQL developer from NIT with internship experience"<br>
-                    "Machine learning enthusiast with Kaggle profile and TensorFlow projects"
-                    <br>
-                </ul>
-                <p>Our smart algorithms <span class="highlight">understand your intent</span> and do a deep dive into every profile to ensure you connect with <span class="highlight">only the best-fit candidates</span>.</p>
-            </div>
             <div class="loading-overlay" id="loadingOverlay">
                 <div class="loader"></div>
             </div>
@@ -678,12 +668,9 @@
             <div class="pagination" id="pagination"></div>
         </section>
     </main>
-    <footer>
-        <p>© 2025 Taska Elite. All rights reserved.</p>
-    </footer>
     <div class="overlay" id="overlay"></div>
     <div class="profile-popup" id="profilePopup">
-        <button class="close-btn" onclick="closeProfilePopup()"><i class="fas fa-times"></i></button>
+        <button class="close-btn" onclick="closeProfilePopup()">×</button>
         <div class="profile-content" id="profileContent"></div>
     </div>
     <div class="message-popup" id="messagePopup">

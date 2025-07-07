@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/global.css">
     <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/classified-navbar.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
@@ -15,62 +16,67 @@
             background: #ffffff; 
             min-height: 100vh; 
             overflow-x: hidden; 
-            font-family: 'Poppins', sans-serif; 
-        }
-        .navbar { 
-            background: #ffffff; 
-            border-bottom: 1px solid #e0e0e0; 
-            padding: 1rem; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-        }
-        .nav-menu { 
-            display: flex; 
-            gap: 1.5rem; 
-            list-style: none; 
-        }
-        .nav-menu a { 
-            text-decoration: none; 
-            color: #2c3e50; 
-            font-weight: 400; 
-        }
-        .nav-menu a.active { 
-            font-weight: 600; 
-            color: #0000ff; 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            margin: 0;
+            padding: 0;
+            color: #1d1d1f;
         }
         .dashboard-content { 
-            padding: 2rem; 
-            display: grid; 
-            place-items: center; 
+            padding: 1.5rem; 
+            margin-top: 80px;
+            width: 100%;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
         }
         .profile-container { 
             background: #ffffff; 
-            border: 1px solid #e0e0e0; 
-            border-radius: 10px; 
+            border: none;
+            border-radius: 12px; 
             width: 100%; 
-            max-width: 700px; 
+            max-width: none; 
             padding: 2rem; 
             display: grid; 
             gap: 1.5rem; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.1);
+            position: relative;
+            grid-template-columns: 1fr 1fr;
+            grid-template-areas: 
+                "header header"
+                "personal professional"
+                "education education"
+                "actions actions";
         }
         .profile-header { 
             text-align: center; 
+            border-bottom: 1px solid #e9ecef;
+            padding-bottom: 1.5rem;
+            margin-bottom: 0;
+            grid-area: header;
         }
         .profile-header h1 { 
-            font-size: 2rem; 
-            color: #2c3e50; 
-            margin: 0; 
-            text-transform: uppercase; 
+            font-size: 1.75rem; 
+            color: #1d1d1f; 
+            margin: 0 0 1rem 0; 
+            font-weight: 600;
+            letter-spacing: -0.025em;
         }
         .profile-avatar { 
-            width: 120px; 
-            height: 120px; 
+            width: 80px; 
+            height: 80px; 
             border-radius: 50%; 
-            border: 3px solid #3498db; 
+            border: 3px solid #007aff; 
             margin: 0 auto 1rem; 
             overflow: hidden; 
             cursor: pointer; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            background: #f8f9fa;
+            transition: all 0.2s ease;
+        }
+        .profile-avatar:hover {
+            border-color: #0056cc;
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
         .profile-avatar img { 
             width: 100%; 
@@ -78,66 +84,99 @@
             object-fit: cover; 
         }
         .details-grid { 
-            background: #f9f9f9; 
-            border: 1px solid #e0e0e0; 
-            border-radius: 10px; 
+            background: #f8f9fa; 
+            border: 1px solid #e9ecef;
+            border-radius: 8px; 
             padding: 1.5rem; 
             display: grid; 
-            gap: 0.8rem; 
+            gap: 0.75rem; 
+            position: relative;
+            height: fit-content;
+        }
+        .details-grid.personal {
+            grid-area: personal;
+        }
+        .details-grid.professional {
+            grid-area: professional;
+        }
+        .details-grid.education {
+            grid-area: education;
+            grid-column: 1 / -1;
         }
         .details-grid h2 { 
-            font-size: 1.5rem; 
-            color: #2c3e50; 
-            margin-bottom: 0.5rem; 
+            font-size: 1.25rem; 
+            color: #1d1d1f; 
+            margin-bottom: 1rem; 
+            font-weight: 600;
+            letter-spacing: -0.025em;
         }
         .details-grid p { 
             margin: 0; 
-            font-size: 1rem; 
-            color: #34495e; 
+            font-size: 0.95rem; 
+            color: #86868b; 
             display: grid; 
-            grid-template-columns: 150px 1fr; 
+            grid-template-columns: 140px 1fr; 
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f1f3f4;
+            align-items: center;
+        }
+        .details-grid p:last-child {
+            border-bottom: none;
         }
         .details-grid strong { 
-            color: #2c3e50; 
-            font-weight: 600; 
+            color: #1d1d1f; 
+            font-weight: 500; 
         }
         .profile-actions { 
             text-align: center; 
+            padding: 1.5rem;
+            border: 1px solid #e9ecef;
+            background: #f8f9fa;
+            border-radius: 8px;
+            grid-area: actions;
+            grid-column: 1 / -1;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
         }
         .edit-btn { 
             display: inline-block; 
-            padding: 0.8rem 2rem; 
-            background: #3498db; 
+            padding: 0.75rem 1.5rem; 
+            background: #007aff; 
             color: #ffffff; 
             text-decoration: none; 
-            border-radius: 10px; 
-            font-size: 1rem; 
+            border-radius: 8px; 
+            font-size: 0.95rem; 
+            font-weight: 500;
+            border: none;
+            box-shadow: 0 2px 8px rgba(0, 122, 255, 0.2);
+            transition: all 0.2s ease;
+        }
+        .edit-btn:hover {
+            background: #0056cc;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
         }
         .logout-btn {
             display: inline-block;
-            padding: 0.8rem 2rem;
-            background: #e74c3c;
+            padding: 0.75rem 1.5rem;
+            background: #ff3b30;
             color: #ffffff;
             text-decoration: none;
-            border-radius: 10px;
-            font-size: 1rem;
-            margin-left: 1rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            margin-left: 0;
+            border: none;
+            box-shadow: 0 2px 8px rgba(255, 59, 48, 0.2);
+            transition: all 0.2s ease;
         }
         .logout-btn:hover {
-            background: #c0392b;
-        }
-        footer { 
-            background: #ffffff; 
-            padding: 1rem; 
-            text-align: center; 
-            border-top: 1px solid #e0e0e0; 
-            position: fixed; 
-            bottom: 0; 
-            width: 100%; 
-        }
-        footer a { 
-            color: #3498db; 
-            text-decoration: none; 
+            background: #d70015;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(255, 59, 48, 0.3);
         }
 
         /* Profile Image Upload */
@@ -150,18 +189,23 @@
         }
         .profile-upload-btn { 
             padding: 0.5rem 1rem; 
-            background: #3498db; 
+            background: #007aff; 
             color: #ffffff; 
-            border: none; 
+            border: none;
             border-radius: 6px; 
             cursor: pointer; 
             font-size: 0.9rem; 
+            font-weight: 500;
+            box-shadow: 0 2px 8px rgba(0, 122, 255, 0.2);
+            transition: all 0.2s ease;
         }
         .profile-upload-btn:hover { 
-            background: #2980b9; 
+            background: #0056cc; 
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
         }
 
-        /* Cropper Modal */
+        /* Cropper Modal - macOS Style */
         .cropper-modal { 
             display: none; 
             position: fixed; 
@@ -169,27 +213,35 @@
             left: 0; 
             width: 100%; 
             height: 100%; 
-            background: rgba(0,0,0,0.85); 
+            background: rgba(0,0,0,0.5); 
             z-index: 10000; 
             align-items: center; 
             justify-content: center; 
             opacity: 1; 
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
         .cropper-container { 
             background: #ffffff; 
-            border-radius: 8px; 
+            border: none;
+            border-radius: 12px; 
             padding: 1.5rem; 
             width: 90%; 
             max-width: 500px; 
             display: flex; 
             flex-direction: column; 
             gap: 1rem; 
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15), 0 8px 32px rgba(0,0,0,0.1);
+            position: relative;
         }
         .cropper-image-wrapper { 
             width: 100%; 
             height: 400px; 
             overflow: hidden; 
             position: relative; 
+            border: 1px solid #e9ecef;
+            background: #f8f9fa;
+            border-radius: 8px;
         }
         .cropper-image-wrapper img { 
             max-width: 100%; 
@@ -204,70 +256,114 @@
             gap: 0.5rem; 
             justify-content: center; 
             flex-wrap: wrap; 
+            padding-top: 1rem;
+            border-top: 1px solid #e9ecef;
         }
         .cropper-btn { 
             padding: 0.5rem 1rem; 
-            border: none; 
+            border: 1px solid #e9ecef;
             border-radius: 6px; 
             cursor: pointer; 
             font-size: 0.9rem; 
-            background: #f3f4f6; 
-            color: #2c3e50; 
-            transition: background 0.3s ease; 
+            background: #f8f9fa; 
+            color: #1d1d1f; 
+            transition: all 0.2s ease; 
+            font-weight: 500;
         }
         .cropper-btn:hover { 
-            background: #e5e7eb; 
+            background: #e9ecef; 
+            border-color: #007aff;
         }
         .cropper-btn.save { 
-            background: #3498db; 
+            background: #007aff; 
             color: #ffffff; 
+            border-color: #007aff;
         }
         .cropper-btn.save:hover { 
-            background: #2980b9; 
+            background: #0056cc; 
+            border-color: #0056cc;
         }
         .cropper-btn.cancel { 
-            background: #e5e7eb; 
-            color: #2c3e50; 
+            background: #f8f9fa; 
+            color: #1d1d1f; 
+            border-color: #e9ecef;
         }
         .cropper-btn.cancel:hover { 
-            background: #d1d5db; 
+            background: #e9ecef; 
+            border-color: #86868b;
         }
         .cropper-btn.zoom-in, .cropper-btn.zoom-out, .cropper-btn.rotate { 
             padding: 0.5rem; 
-            background: #f3f4f6; 
-            color: #2c3e50; 
+            background: #f8f9fa; 
+            color: #1d1d1f; 
+            border-color: #e9ecef;
         }
         .cropper-btn.zoom-in:hover, .cropper-btn.zoom-out:hover, .cropper-btn.rotate:hover { 
-            background: #e5e7eb; 
+            background: #e9ecef; 
+            border-color: #007aff;
         }
 
         /* Responsive Styles */
         @media (max-width: 768px) {
-            .navbar .nav-menu {
-                display: none;
-                position: absolute;
-                top: 60px;
-                left: 0;
-                right: 0;
-                background: #ffffff;
-                flex-direction: column;
+            .dashboard-content {
                 padding: 1rem;
-                border-top: 1px solid #e0e0e0;
             }
-            .navbar .nav-menu.active {
-                display: flex;
+            .profile-container { 
+                padding: 1.5rem; 
+                margin: 0.5rem;
+                grid-template-columns: 1fr;
+                grid-template-areas: 
+                    "header"
+                    "personal"
+                    "professional"
+                    "education"
+                    "actions";
+                gap: 1rem;
             }
-            .navbar .hamburger {
+            .profile-header h1 { 
+                font-size: 1.5rem; 
+            }
+            .profile-avatar {
+                width: 70px;
+                height: 70px;
+            }
+            .details-grid {
+                padding: 1.25rem;
+            }
+            .details-grid h2 {
+                font-size: 1.2rem;
+                margin-bottom: 0.75rem;
+            }
+            .details-grid p {
+                grid-template-columns: 1fr;
+                gap: 0.25rem;
+                padding: 0.5rem 0;
+            }
+            .details-grid strong {
                 display: block;
+                margin-bottom: 0.25rem;
+                color: #1d1d1f;
+                font-weight: 500;
             }
-            .profile-container { padding: 1.5rem; }
-            .profile-header h1 { font-size: 1.5rem; }
-            .cropper-container { padding: 1rem; }
+            .profile-actions {
+                flex-direction: column;
+                gap: 0.75rem;
+                padding: 1.25rem;
+            }
+            .edit-btn, .logout-btn {
+                margin: 0;
+                width: 100%;
+                max-width: 200px;
+            }
+            .cropper-container { 
+                padding: 1rem; 
+                width: 95%;
+            }
         }
     </style>
 </head>
 <body>
-    <nav class="navbar">
+    <nav class="navbar_classified">
         <a href="../index.html">
             <div class="logo">Taska</div>
         </a>
@@ -275,7 +371,7 @@
             <li><a href="explore.html">Explore</a></li>
             <li><a href="tasks.html">Workplace</a></li>
             <li><a href="gigs.html">Tasks</a></li>
-            <li><a href="profile.html">Account</a></li>
+            <li><a href="profile.html" class="active">Account</a></li>
         </ul>
         <div class="hamburger">☰</div>
     </nav>
@@ -292,7 +388,7 @@
                 </div>
             </div>
 
-            <div class="details-grid">
+            <div class="details-grid personal">
                 <h2>Personal Details</h2>
                 <p><strong>Name:</strong> <span id="name">Loading...</span></p>
                 <p><strong>Email:</strong> <span id="email">Loading...</span></p>
@@ -301,14 +397,14 @@
                 <p><strong>Bio:</strong> <span id="bio">Loading...</span></p>
             </div>
 
-            <div class="details-grid">
+            <div class="details-grid professional">
                 <h2>Professional Details</h2>
                 <p><strong>Job Role:</strong> <span id="jobRole">Loading...</span></p>
                 <p><strong>Company:</strong> <span id="company">Loading...</span></p>
                 <p><strong>Experience:</strong> <span id="experience">Loading...</span></p>
             </div>
 
-            <div class="details-grid">
+            <div class="details-grid education">
                 <h2>Educational Details</h2>
                 <p><strong>College:</strong> <span id="college">Loading...</span></p>
                 <p><strong>Degree:</strong> <span id="degree">Loading...</span></p>
@@ -337,10 +433,6 @@
             </div>
         </div>
     </div>
-
-    <footer>
-        <p>© 2025 Taska Elite. All rights reserved. | <a href="#" class="privacy-policy">Privacy Policy</a></p>
-    </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
     <script type="module">
