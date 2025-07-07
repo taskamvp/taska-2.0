@@ -8,6 +8,11 @@
     <link rel="icon" type="image/png" href="assets/logo.png">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&family=Inter:wght@400;600;700&family=Montserrat:wght@700;600;500;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         :root {
@@ -96,15 +101,15 @@
             top: 58%;
             right: -7%;
             transform: translateY(-50%);
-            width: 55%;
-            max-width: 650px;
+            width: 40%;
+            max-width: 500px;
             height: auto;
             z-index: 2;
         }
         .hero-content {
             position: relative;
             z-index: 3;
-            max-width: 50%;
+            max-width: 65%;
         }
         .hero h1, .hero p, .hero .hero-highlight {
             font-family: 'Manrope', 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
@@ -114,17 +119,13 @@
         }
         .hero .hero-highlight { color: var(--green); }
         .hero-desc {
-            font-family: 'Manrope', 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
-            font-size: 1.3rem;
+            font-family: 'Playfair Display', 'Manrope', 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
+            font-size: 1.4rem;
             font-weight: 500;
-            color: #2d3a3a;
+            color: #374151;
             line-height: 1.7;
             margin-bottom: 2.2rem;
             max-width: 700px;
-            background: rgba(255,255,255,0.45);
-            border-radius: 1.1rem;
-            padding: 1.1rem 1.5rem;
-            box-shadow: 0 2px 12px 0 rgba(20, 85, 20, 0.04);
         }
         .hero-search {
             display: flex; gap: 0.7rem; margin-bottom: 2.2rem; max-width: 520px;
@@ -176,26 +177,26 @@
             left: 100%;
         }
         .hero-cta-google.primary {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            background: #1a1a1a;
             color: #fff;
-            border: 1px solid #059669;
+            border: 1px solid #1a1a1a;
         }
         .hero-cta-google.primary:hover {
-            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            background: #2d2d2d;
             color: #fff;
-            box-shadow: 0 4px 16px 0 rgba(16, 185, 129, 0.25);
+            box-shadow: 0 4px 16px 0 rgba(26, 26, 26, 0.25);
             transform: translateY(-1px);
         }
         .hero-cta-google.secondary {
             background: #fff;
-            color: #059669;
-            border: 1px solid #d1fae5;
+            color: #1a1a1a;
+            border: 1px solid #1a1a1a;
         }
         .hero-cta-google.secondary:hover {
-            background: #f0fdf4;
-            color: #047857;
-            border-color: #10b981;
-            box-shadow: 0 4px 16px 0 rgba(16, 185, 129, 0.15);
+            background: #f8f8f8;
+            color: #1a1a1a;
+            border-color: #1a1a1a;
+            box-shadow: 0 4px 16px 0 rgba(26, 26, 26, 0.15);
             transform: translateY(-1px);
         }
         .trusted-row {
@@ -205,31 +206,77 @@
         .trusted-row .trusted-label { color: #888; font-size: 1.1rem; font-weight: 500; }
         .trusted-row img { height: 38px; filter: grayscale(1) brightness(0.7); opacity: 0.8; margin-right: 1.2rem; }
         .categories-section {
-            margin: 3.5rem auto 2.5rem auto; max-width: 1100px;
+            margin: 4rem auto 3rem auto;
+            max-width: 1200px;
+            padding: 0 2rem;
         }
         .categories-title {
-            font-size: 2rem; font-weight: 700; color: var(--dark-green); margin-bottom: 2rem;
+            font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #222325;
+            margin-bottom: 3rem;
+            text-align: center;
+            letter-spacing: -0.02em;
         }
         .categories-row {
-            display: flex; gap: 2rem; flex-wrap: wrap; justify-content: center;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            justify-content: center;
         }
         .category-card {
-            background: #fff; border-radius: 1.2rem; box-shadow: 0 2px 12px 0 rgba(20,168,0,0.06);
-            padding: 2.1rem 1.5rem 1.5rem 1.5rem; min-width: 180px; max-width: 220px;
-            display: flex; flex-direction: column; align-items: center; gap: 1.1rem;
-            border: 1.5px solid #e5e7ea; transition: box-shadow 0.18s, border 0.18s;
+            background: #fff;
+            border-radius: 8px;
+            border: 1px solid #e4e5e7;
+            padding: 2rem 1.5rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
         }
         .category-card:hover {
-            box-shadow: 0 6px 24px 0 rgba(20,168,0,0.13); border: 1.5px solid var(--dark-green);
+            border-color: #1dbf73;
+            box-shadow: 0 4px 12px rgba(29, 191, 115, 0.15);
+            transform: translateY(-2px);
+        }
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #1dbf73, #19a463);
+            transform: scaleX(0);
+            transition: transform 0.2s ease;
+        }
+        .category-card:hover::before {
+            transform: scaleX(1);
         }
         .category-icon {
-            font-size: 2.2rem; color: var(--dark-green); margin-bottom: 0.2rem;
+            font-size: 2.5rem;
+            color: #1dbf73;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .category-title {
-            font-size: 1.13rem; font-weight: 600; color: #1d1d1f; text-align: center;
+            font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #222325;
+            text-align: center;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.01em;
         }
         .category-desc {
-            font-size: 0.97rem; color: #444; text-align: center;
+            font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 0.95rem;
+            color: #74767e;
+            text-align: center;
+            line-height: 1.5;
         }
         .benefits-section {
             background: #fff; border-radius: 2.2rem; margin: 3.5rem auto 2.5rem auto; max-width: 1100px;
@@ -256,7 +303,7 @@
             }
         .benefit-card .benefit-desc {
             font-size: 0.97rem; color: #444;
-            }
+        }
         @media (max-width: 900px) {
             .hero, .ai-students-section, .benefits-section, .categories-section, .trusted-row { max-width: 98vw; margin-left: 1vw; margin-right: 1vw; }
             .categories-row, .benefits-list { gap: 1.1rem; }
@@ -264,7 +311,7 @@
                 width: 50%;
                 right: 0.2rem;
                 top: 52%;
-            }
+        }
             .hero-content {
                 max-width: 50%;
             }
@@ -273,7 +320,7 @@
                 gap: 2rem;
             }
             .ai-students-title {
-                font-size: 1.8rem;
+            font-size: 1.8rem;
             }
         }
         @media (max-width: 700px) {
@@ -288,7 +335,7 @@
             }
             .ai-students-title {
                 font-size: 1.5rem;
-            }
+        }
             .ai-students-desc {
                 font-size: 1rem;
             }
@@ -334,15 +381,14 @@
             background: transparent;
             font-size: 0.95rem;
             font-family: 'Manrope', 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
-            color: #1a2a1a;
+            color: #1a1a1a;
             padding: 1.2rem 0.5rem 1.2rem 0;
             font-weight: 500;
             transition: color 0.22s, box-shadow 0.22s;
             line-height: 1.4;
         }
-        .ai-search-box input:focus::placeholder {
-            color: #b0bfc0;
-            transition: color 0.22s;
+        .ai-search-box input::placeholder {
+            color: #666;
         }
         .ai-search-box button {
             background: var(--green);
@@ -403,25 +449,29 @@
             background: #f6fdf7;
         }
         .hero-main-heading {
-            font-family: 'Manrope', 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
-            font-size: 2.7rem;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            color: var(--dark-green);
-            border-radius: 1.5rem;
-            background: rgba(255,255,255,0.55);
-            padding: 1.1rem 2.2rem 1.1rem 1.5rem;
-            margin-bottom: 1.2rem;
-            line-height: 1.6;
-            box-shadow: 0 2px 12px 0 rgba(20, 85, 20, 0.04);
+            font-family: 'Playfair Display', 'Montserrat', 'Manrope', 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
+            font-size: 2.8rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: #1a1a1a;
+            margin-bottom: 1.5rem;
+            line-height: 1.4;
             display: inline-block;
         }
         .hero-main-heading .hero-highlight {
-            color: var(--green);
-            font-weight: 900;
-            border-radius: 1.2rem;
-            padding: 0.2rem 0.7rem;
-            background: rgba(250, 204, 21, 0.13);
+            color: #1e1602;
+            font-weight: 800;
+            padding: 0.3rem 0.8rem;
+            background: rgba(195, 228, 7, 0.737);
+        }
+        .hero-desc {
+            font-family: 'Playfair Display', 'Manrope', 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
+            font-size: 1.4rem;
+            font-weight: 500;
+            color: #374151;
+            line-height: 1.7;
+            margin-bottom: 2.2rem;
+            max-width: 700px;
         }
         /* Animated shapes for hero background */
         .hero-animated-bg {
@@ -502,7 +552,7 @@
             display: none;
         }
         .ai-students-section {
-            background: linear-gradient(135deg, #059669 0%, #10b981 50%, #34d399 100%);
+            background: #14532d;
             backdrop-filter: blur(24px) saturate(1.2);
             -webkit-backdrop-filter: blur(24px) saturate(1.2);
             border-radius: 2rem !important;
@@ -515,7 +565,7 @@
             padding: 4rem 3.5rem;
             text-align: left;
             position: relative;
-            font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Lato', 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             overflow: hidden;
         }
         .ai-students-section::before {
@@ -551,9 +601,9 @@
             margin: 0;
         }
         .ai-students-title {
-            font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Montserrat', 'Lato', 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             font-size: 2.8rem;
-            font-weight: 800;
+            font-weight: 600;
             color: #ffffff;
             margin-bottom: 1.5rem;
             line-height: 1.2;
@@ -565,9 +615,9 @@
             100% { filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.6)); }
         }
         .ai-students-desc {
-            font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Lato', 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             font-size: 1.25rem;
-            font-weight: 500;
+            font-weight: 400;
             color: #ffffff;
             line-height: 1.6;
             margin-bottom: 3rem;
@@ -575,107 +625,95 @@
             opacity: 0.95;
             letter-spacing: -0.01em;
         }
-        .ai-process {
-            display: flex;
-            justify-content: flex-start;
-            gap: 3.5rem;
-            margin-bottom: 3rem;
-            flex-wrap: wrap;
-        }
-        .ai-step {
+        .ai-card-visual {
+            position: relative;
+            width: 100%;
+            min-height: 180px;
+            height: 220px;
+            max-width: 520px;
+            margin: 0 auto;
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
-            gap: 1.2rem;
-            max-width: 220px;
-            animation: stepFadeIn 0.8s ease-out forwards;
-            opacity: 0;
-            transform: translateY(20px);
+            justify-content: space-between;
         }
-        .ai-step:nth-child(1) { animation-delay: 0.2s; }
-        .ai-step:nth-child(2) { animation-delay: 0.4s; }
-        .ai-step:nth-child(3) { animation-delay: 0.6s; }
-        @keyframes stepFadeIn {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        .ai-step-icon {
-            width: 85px;
-            height: 85px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.2rem;
+        .ai-card-label {
+            position: absolute;
             color: #fff;
-            position: relative;
-            animation: iconPulse 2s ease-in-out infinite;
-            box-shadow: 0 8px 24px 0 rgba(0, 0, 0, 0.15);
-        }
-        .ai-step-icon.generate {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-        }
-        .ai-step-icon.customize {
-            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-        }
-        .ai-step-icon.deliver {
-            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-        }
-        @keyframes iconPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-        .ai-step-title {
-            font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: #ffffff;
-            text-align: left;
-            letter-spacing: -0.01em;
-        }
-        .ai-step-desc {
-            font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            font-size: 0.95rem;
-            color: rgba(255, 255, 255, 0.9);
-            text-align: left;
-            line-height: 1.5;
-            letter-spacing: -0.005em;
-        }
-        .ai-cta {
-            background: rgba(255, 255, 255, 0.95);
-            color: #059669;
-            border: none;
-            border-radius: 16px;
-            padding: 1.2rem 3rem;
-            font-size: 1.1rem;
+            font-family: 'Montserrat', 'Lato', 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 2.1rem;
             font-weight: 600;
-            font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            cursor: pointer;
-            box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.15);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(255,255,255,0.08);
+            border-radius: 1.2rem;
+            padding: 0.7rem 1.6rem;
+            box-shadow: 0 2px 12px 0 rgba(0,0,0,0.08);
+            z-index: 2;
+        }
+        .ai-card-label-top {
+            top: 0;
+            left: 0;
+            transform: translateY(-30%) translateX(0%);
+        }
+        .ai-card-label-bottom {
+            bottom: 0;
+            right: 0;
+            transform: translateY(30%) translateX(0%);
+        }
+        .ai-card-connector {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+        .blank-space {
+            height: 3rem;
+            width: 100%;
+        }
+        .ai-text-card {
+            background: linear-gradient(135deg, #000000 0%, #1a1a1a 25%, #2d2d2d 50%, #1a1a1a 75%, #000000 100%);
+            border-radius: 1.5rem;
+            padding: 3rem 2rem;
+            margin: 2rem auto;
+            max-width: 1250px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
             position: relative;
             overflow: hidden;
-            letter-spacing: -0.01em;
         }
-        .ai-cta::before {
+        .ai-text-card::before {
             content: '';
             position: absolute;
             top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(5, 150, 105, 0.1), transparent);
-            transition: left 0.5s;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 40%, rgba(255, 255, 255, 0.03) 50%, transparent 60%);
+            z-index: 1;
         }
-        .ai-cta:hover::before {
-            left: 100%;
-        }
-        .ai-cta:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px 0 rgba(0, 0, 0, 0.25);
-            background: #ffffff;
+        .ai-generates-text {
+            font-family: 'Poppins', 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 5.0rem;
+            font-weight: 600;
+            color: #defb24;
+            text-align: left;
+            margin: 2rem 0 2rem 6rem;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            position: relative;
+            z-index: 2;
+            }
+        .students-customize-text {
+            font-family: 'Poppins', 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 6.5rem;
+            font-weight: 600;
+            color: #defb24;
+            text-align: right;
+            margin: 2rem 6rem 2rem 0;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            position: relative;
+            z-index: 2;
         }
     </style>
 </head>
@@ -693,11 +731,11 @@
             </span>
         </ul>
     </nav>
-    <section class="hero">
+        <section class="hero">
         <img src="assets/heroimage.png" alt="Student Talent" class="hero-image">
         <div class="hero-content">
             <h1 class="hero-main-heading">
-                Hire Talented college students for<br>
+                Hire Talented college students for
                 <span class="hero-highlight">Affordable</span> Gig works
             </h1>
             <p class="hero-desc">
@@ -724,100 +762,34 @@
                 <button class="hero-cta-google secondary" onclick="window.location='login.html'">
                     Join as a Student
                 </button>
-            </div>
-        </div>
-    </section>
-    <section class="ai-students-section">
-        <div class="ai-students-content">
-            <h2 class="ai-students-title">AI Generates, Students Customize</h2>
-            <p class="ai-students-desc">
-                Our AI-powered platform generates the perfect student match for your project, then our talented students customize and perfect every solution with human creativity and expertise.
-            </p>
-            <div class="ai-process">
-                <div class="ai-step">
-                    <div class="ai-step-icon generate">
-                        <i class="fas fa-robot"></i>
-                    </div>
-                    <div class="ai-step-title">AI Generates</div>
-                    <div class="ai-step-desc">Advanced AI matches you with the perfect student based on your project requirements</div>
-                </div>
-                <div class="ai-step">
-                    <div class="ai-step-icon customize">
-                        <i class="fas fa-magic"></i>
-                    </div>
-                    <div class="ai-step-title">Students Customize</div>
-                    <div class="ai-step-desc">Talented students bring human creativity and expertise to perfect your solution</div>
-                </div>
-                <div class="ai-step">
-                    <div class="ai-step-icon deliver">
-                        <i class="fas fa-rocket"></i>
-                    </div>
-                    <div class="ai-step-title">Perfect Delivery</div>
-                    <div class="ai-step-desc">Get high-quality, customized results that exceed your expectations</div>
                 </div>
             </div>
-            <button class="ai-cta" onclick="window.location='professional/explore.html'">
-                Start Your AI-Powered Project
-            </button>
+        </section>
+    <div class="blank-space">
+        <div class="ai-text-card">
+            <div class="ai-generates-text">AI DRAFTS</div>
+            <div class="students-customize-text">WE CRAFT</div>
         </div>
-    </section>
-    <section class="categories-section" id="categories">
-        <div class="categories-title">Popular Categories</div>
-        <div class="categories-row">
-            <div class="category-card">
-                <div class="category-icon"><i class="fas fa-code"></i></div>
-                <div class="category-title">Software Development</div>
-                <div class="category-desc">Web, mobile, backend, automation, and more.</div>
-            </div>
-            <div class="category-card">
-                <div class="category-icon"><i class="fas fa-brain"></i></div>
-                <div class="category-title">AI & Data Science</div>
-                <div class="category-desc">Machine learning, NLP, analytics, and research.</div>
-            </div>
-            <div class="category-card">
-                <div class="category-icon"><i class="fas fa-paint-brush"></i></div>
-                <div class="category-title">UI/UX & Design</div>
-                <div class="category-desc">Product design, prototyping, branding, and more.</div>
-            </div>
-            <div class="category-card">
-                <div class="category-icon"><i class="fas fa-chart-line"></i></div>
-                <div class="category-title">Business & Analytics</div>
-                <div class="category-desc">Market research, business analysis, dashboards.</div>
-            </div>
-            <div class="category-card">
-                <div class="category-icon"><i class="fas fa-language"></i></div>
-                <div class="category-title">Content & Language</div>
-                <div class="category-desc">Writing, translation, editing, and more.</div>
-            </div>
-        </div>
-    </section>
-    <section class="benefits-section" id="benefits">
-        <div class="benefits-title">Why Choose Taska?</div>
-        <div class="benefits-list">
-            <div class="benefit-card">
-                <div class="benefit-icon"><i class="fas fa-user-graduate"></i></div>
-                <div class="benefit-title">Elite Student Talent</div>
-                <div class="benefit-desc">Work with the brightest students from India's top institutes—pre-vetted for skills and passion.</div>
-            </div>
-            <div class="benefit-card">
-                <div class="benefit-icon"><i class="fas fa-bolt"></i></div>
-                <div class="benefit-title">Fast, Flexible, Affordable</div>
-                <div class="benefit-desc">Get your work done quickly and cost-effectively, with flexible engagement models.</div>
-            </div>
-            <div class="benefit-card">
-                <div class="benefit-icon"><i class="fas fa-shield-alt"></i></div>
-                <div class="benefit-title">Secure & Reliable</div>
-                <div class="benefit-desc">Your data and projects are protected with Taska's secure platform and support.</div>
-            </div>
-            <div class="benefit-card">
-                <div class="benefit-icon"><i class="fas fa-lightbulb"></i></div>
-                <div class="benefit-title">Innovative Solutions</div>
-                <div class="benefit-desc">Students bring fresh ideas and the latest tech to solve your toughest challenges.</div>
-            </div>
-        </div>
-    </section>
-    <footer style="text-align:center;padding:2rem 0 1rem 0;color:#888;font-size:1rem;background:#fff;margin-top:2rem;border-top:1px solid #e5e7ea;">
-        &copy; 2025 Taska. All rights reserved.
-    </footer>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
 </body>
 </html>
