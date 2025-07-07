@@ -324,7 +324,7 @@
             }
             .ai-students-content {
                 flex-direction: column;
-                gap: 2rem;
+            gap: 2rem;
             }
             .ai-students-title {
             font-size: 1.8rem;
@@ -712,7 +712,21 @@
             line-height: 1.1;
             position: relative;
             z-index: 2;
-            }
+        }
+        .ai-ampersand {
+            font-family: 'Poppins', 'Inter', sans-serif;
+            font-size: 12rem;
+            font-weight: 900;
+            color: #0066cc;
+            text-align: center;
+            position: absolute;
+            top: 50%;
+            left: 45%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            opacity: 0.3;
+            text-shadow: 0 4px 20px rgba(0, 102, 204, 0.4);
+        }
         .students-customize-text {
             font-family: 'Poppins', 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             font-size: 6.5rem;
@@ -828,48 +842,73 @@
             margin-right: auto;
         }
         .services-section {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, #f8f9fa 100%);
             border-radius: 1.5rem;
             padding: 3rem 2rem;
             margin: 2rem auto;
             max-width: 1200px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
             position: relative;
             overflow: hidden;
         }
         .services-title {
             font-family: 'Poppins', 'Inter', Arial, sans-serif;
-            font-size: 2.5rem;
-            font-weight: 600;
+            font-size: 2.8rem;
+            font-weight: 700;
             color: #1a1a1a;
             text-align: center;
-            margin-bottom: 2rem;
+            margin-bottom: 3rem;
             letter-spacing: -0.02em;
+            position: relative;
+        }
+        .services-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 6px;
+            background: linear-gradient(90deg, transparent 0%, #ffff00 20%, #ffd700 50%, #ffff00 80%, transparent 100%);
+            border-radius: 3px;
+            box-shadow: 0 4px 12px rgba(255, 255, 0, 0.4);
+        }
+        .services-title::before {
+            content: '';
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 0, 0.3) 30%, rgba(255, 255, 0, 0.6) 50%, rgba(255, 255, 0, 0.3) 70%, transparent 100%);
+            border-radius: 1px;
         }
         .services-tabs {
             display: flex;
-            gap: 1.5rem;
+            gap: 3rem;
             margin-bottom: 2rem;
             justify-content: center;
         }
         .service-tab {
             font-family: 'Poppins', Arial, sans-serif;
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #666;
+            font-size: 1.8rem;
+            font-weight: 500;
+            color: #999;
             cursor: pointer;
-            transition: all 0.3s;
-            padding: 0.8rem 1.8rem;
-            border-radius: 2rem;
-            background: #fff;
-            border: 2px solid #e9ecef;
-            box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border: none;
+            background: none;
+            position: relative;
         }
         .service-tab.active {
             color: #1a1a1a;
-            background: #ffff00;
-            border-color: #ffff00;
-            box-shadow: 0 4px 16px 0 rgba(255, 255, 0, 0.3);
+            font-size: 2.4rem;
+            font-weight: 700;
+            opacity: 1;
+        }
+        .service-tab:hover {
+            color: #666;
+            opacity: 0.8;
         }
         .service-content {
             animation: fadeIn 0.4s;
@@ -877,28 +916,120 @@
         }
         .service-list {
             display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            justify-content: center;
+            gap: 1.5rem;
+            justify-content: flex-start;
+            overflow-x: auto;
+            padding: 1rem 0;
+            scrollbar-width: thin;
+            scrollbar-color: #e9ecef transparent;
+        }
+        .service-list::-webkit-scrollbar {
+            height: 6px;
+        }
+        .service-list::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .service-list::-webkit-scrollbar-thumb {
+            background: #e9ecef;
+            border-radius: 3px;
+        }
+        .service-list::-webkit-scrollbar-thumb:hover {
+            background: #d1d5db;
         }
         .service-badge {
-            display: inline-block;
+            display: flex;
+            flex-direction: column;
             background: #fff;
             color: #1a1a1a;
-            border-radius: 1.5rem;
-            padding: 0.8rem 1.5rem;
+            border-radius: 1rem;
+            padding: 0;
             font-family: 'Inter', Arial, sans-serif;
             font-size: 1rem;
             font-weight: 600;
-            box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.08);
+            box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.1);
             border: 2px solid #e9ecef;
             transition: all 0.3s;
+            overflow: hidden;
+            min-width: 180px;
+            max-width: 200px;
+            flex-shrink: 0;
+        }
+        .service-badge-title {
+                padding: 1rem;
+            text-align: center;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            font-weight: 600;
+        }
+        .service-badge-image {
+            width: 100%;
+            height: 120px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            opacity: 0.7;
+        }
+        .service-badge:hover .service-badge-image {
+            opacity: 0.9;
         }
         .service-badge:hover {
-            background: #ffff00;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px 0 rgba(0, 0, 0, 0.15);
             border-color: #ffff00;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 16px 0 rgba(255, 255, 0, 0.2);
+        }
+        .service-badge.web-dev .service-badge-image {
+            background-image: url('https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=300&fit=crop');
+        }
+        .service-badge.mobile-apps .service-badge-image {
+            background-image: url('https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&h=300&fit=crop');
+        }
+        .service-badge.api-integration .service-badge-image {
+            background-image: url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400&h=300&fit=crop');
+        }
+        .service-badge.database .service-badge-image {
+            background-image: url('https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=400&h=300&fit=crop');
+        }
+        .service-badge.cloud .service-badge-image {
+            background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=400&h=300&fit=crop');
+        }
+        .service-badge.devops .service-badge-image {
+            background-image: url('https://images.unsplash.com/photo-1667372393119-3d4c48d07fc9?w=400&h=300&fit=crop');
+        }
+        .service-badge.social-media .service-badge-image {
+            background-image: url('https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=400&h=300&fit=crop');
+        }
+        .service-badge.seo .service-badge-image {
+            background-image: url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=300&fit=crop');
+        }
+        .service-badge.content .service-badge-image {
+            background-image: url('https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=300&fit=crop');
+        }
+        .service-badge.email .service-badge-image {
+            background-image: url('https://images.unsplash.com/photo-1551434678-e076c223a692?w=400&h=300&fit=crop');
+        }
+        .service-badge.ppc .service-badge-image {
+            background-image: url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=300&fit=crop');
+        }
+        .service-badge.analytics .service-badge-image {
+            background-image: url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=300&fit=crop');
+        }
+        .service-badge.uiux .service-badge-image {
+            background-image: url('https://images.unsplash.com/photo-1561070791-2526d30994b5?w=400&h=300&fit=crop');
+        }
+        .service-badge.logo .service-badge-image {
+            background-image: url('https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400&h=300&fit=crop');
+        }
+        .service-badge.brand .service-badge-image {
+            background-image: url('https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400&h=300&fit=crop');
+        }
+        .service-badge.web-design .service-badge-image {
+            background-image: url('https://images.unsplash.com/photo-1547658719-da2b51169166?w=400&h=300&fit=crop');
+        }
+        .service-badge.print .service-badge-image {
+            background-image: url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=300&fit=crop');
+        }
+        .service-badge.illustrations .service-badge-image {
+            background-image: url('https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop');
         }
         @media (max-width: 768px) {
             .services-tabs {
@@ -911,11 +1042,12 @@
             }
         }
         .footer {
-            background: #1a1a1a;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
             color: #fff;
             padding: 3rem 0 2rem 0;
             margin-top: 4rem;
             font-family: 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
+            border-top: 1px solid #333;
         }
         .footer-container {
             max-width: 1200px;
@@ -928,15 +1060,15 @@
         .footer-section {
             display: flex;
             flex-direction: column;
-                gap: 1rem;
-            }
+            gap: 1rem;
+        }
         .footer-logo {
             display: flex;
             align-items: center;
             gap: 0.7rem;
             font-size: 1.5rem;
             font-weight: 700;
-            color: #fff;
+            color: #ffff00;
             letter-spacing: -1px;
             margin-bottom: 1rem;
         }
@@ -944,7 +1076,7 @@
             height: 40px;
         }
         .footer-desc {
-            color: #ccc;
+            color: #cccccc;
             font-size: 0.95rem;
             line-height: 1.6;
             margin-bottom: 1.5rem;
@@ -952,7 +1084,7 @@
         .footer-title {
             font-size: 1.1rem;
             font-weight: 600;
-            color: #fff;
+            color: #ffffff;
             margin-bottom: 1rem;
         }
         .footer-links {
@@ -961,13 +1093,13 @@
             gap: 0.7rem;
         }
         .footer-links a {
-            color: #ccc;
+            color: #cccccc;
             text-decoration: none;
-                font-size: 0.9rem;
+            font-size: 0.9rem;
             transition: color 0.2s;
         }
         .footer-links a:hover {
-            color: #fbbf24;
+            color: #ffff00;
         }
         .social-links {
             display: flex;
@@ -987,7 +1119,7 @@
             transition: background 0.2s, color 0.2s;
         }
         .social-links a:hover {
-            background: #fbbf24;
+            background: #ffff00;
             color: #1a1a1a;
         }
         .footer-bottom {
@@ -1007,42 +1139,145 @@
                 padding: 2rem 0 1.5rem 0;
             }
         }
-        .why-taska-section {
-            padding: 3rem 2rem;
-            margin: 2rem auto;
-            max-width: 1250px;
-            position: relative;
+        .experts-section {
+            padding: 2.5rem 2rem;
+            margin: 3rem auto;
+            max-width: 1200px;
             text-align: center;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
+            border-radius: 1.5rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7ea;
         }
-        .why-taska-title {
-            font-family: 'Poppins', 'Inter', Arial, sans-serif;
-            font-size: 4.5rem;
-            font-weight: 600;
-            color: #1a1a1a;
-            text-align: center;
-            margin: 2rem 0;
+        .experts-title {
+            font-family: 'Poppins', 'Inter', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 1rem;
             letter-spacing: -0.02em;
-            line-height: 1.1;
         }
-        .why-taska-content {
-            max-width: 800px;
-            margin: 0 auto;
-            text-align: center;
+        .experts-subtitle {
+            font-family: 'Inter', 'Poppins', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #cccccc;
+            margin-bottom: 2rem;
+            line-height: 1.6;
         }
-        .why-taska-text {
-            font-family: 'Poppins', 'Inter', Arial, sans-serif;
-            font-size: 1.4rem;
-            font-weight: 400;
-            color: #666;
-            line-height: 1.8;
+        .ai-tools-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
             margin-top: 2rem;
         }
+        .ai-tool-image {
+            width: 70px;
+            height: 70px;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+        }
+        .ai-tool-image:hover {
+            transform: scale(1.1);
+        }
         @media (max-width: 768px) {
-            .why-taska-title {
-                font-size: 3rem;
+            .experts-title {
+                font-size: 2.5rem;
             }
-            .why-taska-text {
+            .experts-subtitle {
                 font-size: 1.2rem;
+            }
+            .ai-tools-row {
+                gap: 2rem;
+            }
+            .ai-tool-image {
+                width: 60px;
+                height: 60px;
+            }
+        }
+        .startup-section {
+            padding: 4rem 2rem;
+            margin: 4rem auto;
+            max-width: 1200px;
+            text-align: center;
+        }
+        .startup-question {
+            font-family: 'Poppins', 'Inter', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+        .startup-offer {
+            font-family: 'Montserrat', 'Poppins', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 2rem;
+            line-height: 1.4;
+        }
+        .startup-package {
+            font-family: 'Inter', 'Poppins', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+            letter-spacing: 0.02em;
+        }
+        .startup-price {
+            font-family: 'Poppins', 'Inter', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #14532d;
+            margin-bottom: 2rem;
+            letter-spacing: 0.05em;
+        }
+        .startup-roles {
+            font-family: 'Inter', 'Poppins', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 500;
+            color: #666;
+            margin-bottom: 3rem;
+            line-height: 1.6;
+        }
+        .startup-cta {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #14532d, #166534);
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            padding: 1.2rem 3rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(20, 83, 45, 0.3);
+            letter-spacing: 0.02em;
+        }
+        .startup-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(20, 83, 45, 0.4);
+            background: linear-gradient(135deg, #166534, #14532d);
+        }
+        @media (max-width: 768px) {
+            .startup-question {
+                font-size: 2.5rem;
+            }
+            .startup-offer {
+                font-size: 1.8rem;
+            }
+            .startup-package {
+                font-size: 1.5rem;
+            }
+            .startup-price {
+                font-size: 2rem;
+            }
+            .startup-roles {
+                font-size: 1.1rem;
             }
         }
     </style>
@@ -1051,25 +1286,22 @@
     <nav class="navbar">
         <div class="logo"><img src="assets/logo.png" alt="Taska Logo"></div>
         <ul class="nav-menu">
-            <span class="nav-links">
-                <li><a href="#benefits">Why Taska</a></li>
-                <li><a href="#pricing">Pricing</a></li>
-            </span>
+            
             <span class="auth-links">
                 <li><a href="#" class="active">Login</a></li>
                 <li><a href="#" class="signup-btn">Signup</a></li>
             </span>
         </ul>
     </nav>
-    <section class="hero">
+        <section class="hero">
         <img src="assets/heroimage.png" alt="Student Talent" class="hero-image">
         <div class="hero-content">
             <h1 class="hero-main-heading">
-                Hire Talented college students for
+                Hire AI Trained college students for
                 <span class="hero-highlight">Affordable</span> Gig works
             </h1>
             <p class="hero-desc">
-                Connect with skilled college students and get your work done for affordable but in quality from innovative and creative minds.
+                Connect with skilled college students and get your work done from innovative and creative minds.
             </p>
             <div class="ai-search-container">
                 <form class="ai-search-box" onsubmit="event.preventDefault(); window.location='professional/explore.html';" autocomplete="off">
@@ -1095,57 +1327,127 @@
                 </div>
             </div>
         </section>
+    <div class="experts-section">
+        <div class="experts-title">Student Experts on New Gen AI Tools</div>
+        <div class="experts-subtitle">
+            Our students are proficient in the latest AI powered tools and platforms
+        </div>
+        <div class="ai-tools-row">
+            <img src="assets/aitools/Base44.webp" alt="Base44" class="ai-tool-image">
+            <img src="assets/aitools/Replit.webp" alt="Replit" class="ai-tool-image">
+            <img src="assets/aitools/Bolt.webp" alt="Bolt" class="ai-tool-image">
+            <img src="assets/aitools/Lovable.webp" alt="Lovable" class="ai-tool-image">
+            
+        </div>
+    </div>
     <div class="services-section">
-        <div class="services-title">Our Services</div>
+        <div class="services-title">Top skills</div>
         <div class="services-tabs">
             <div class="service-tab active" data-tab="development">Development</div>
             <div class="service-tab" data-tab="marketing">Marketing</div>
             <div class="service-tab" data-tab="design">Design</div>
-        </div>
+                </div>
         <div class="service-content" id="service-development">
             <div class="service-list">
-                <span class="service-badge">Web Development</span>
-                <span class="service-badge">Mobile Apps</span>
-                <span class="service-badge">API Integration</span>
-                <span class="service-badge">Database Design</span>
-                <span class="service-badge">Cloud Solutions</span>
-                <span class="service-badge">DevOps</span>
+                <div class="service-badge web-dev">
+                    <div class="service-badge-title">Web Development</div>
+                    <div class="service-badge-image"></div>
+                </div>
+                <div class="service-badge mobile-apps">
+                    <div class="service-badge-title">Mobile Apps</div>
+                    <div class="service-badge-image"></div>
+                </div>
+                <div class="service-badge api-integration">
+                    <div class="service-badge-title">API Integration</div>
+                    <div class="service-badge-image"></div>
             </div>
-        </div>
+                <div class="service-badge database">
+                    <div class="service-badge-title">Database Design</div>
+                    <div class="service-badge-image"></div>
+                </div>
+                <div class="service-badge cloud">
+                    <div class="service-badge-title">Cloud Solutions</div>
+                    <div class="service-badge-image"></div>
+                </div>
+                <div class="service-badge devops">
+                    <div class="service-badge-title">DevOps</div>
+                    <div class="service-badge-image"></div>
+            </div>
+                </div>
+                </div>
         <div class="service-content" id="service-marketing" style="display:none;">
             <div class="service-list">
-                <span class="service-badge">Social Media</span>
-                <span class="service-badge">SEO Optimization</span>
-                <span class="service-badge">Content Marketing</span>
-                <span class="service-badge">Email Campaigns</span>
-                <span class="service-badge">PPC Advertising</span>
-                <span class="service-badge">Analytics</span>
+                <div class="service-badge social-media">
+                    <div class="service-badge-title">Social Media</div>
+                    <div class="service-badge-image"></div>
+            </div>
+                <div class="service-badge seo">
+                    <div class="service-badge-title">SEO Optimization</div>
+                    <div class="service-badge-image"></div>
+        </div>
+                <div class="service-badge content">
+                    <div class="service-badge-title">Content Marketing</div>
+                    <div class="service-badge-image"></div>
+                </div>
+                <div class="service-badge email">
+                    <div class="service-badge-title">Email Campaigns</div>
+                    <div class="service-badge-image"></div>
+                </div>
+                <div class="service-badge ppc">
+                    <div class="service-badge-title">PPC Advertising</div>
+                    <div class="service-badge-image"></div>
+                </div>
+                <div class="service-badge analytics">
+                    <div class="service-badge-title">Analytics</div>
+                    <div class="service-badge-image"></div>
+                </div>
             </div>
         </div>
         <div class="service-content" id="service-design" style="display:none;">
             <div class="service-list">
-                <span class="service-badge">UI/UX Design</span>
-                <span class="service-badge">Logo Design</span>
-                <span class="service-badge">Brand Identity</span>
-                <span class="service-badge">Web Design</span>
-                <span class="service-badge">Print Design</span>
-                <span class="service-badge">Illustrations</span>
+                <div class="service-badge uiux">
+                    <div class="service-badge-title">UI/UX Design</div>
+                    <div class="service-badge-image"></div>
+                </div>
+                <div class="service-badge logo">
+                    <div class="service-badge-title">Logo Design</div>
+                    <div class="service-badge-image"></div>
+                </div>
+                <div class="service-badge brand">
+                    <div class="service-badge-title">Brand Identity</div>
+                    <div class="service-badge-image"></div>
+                </div>
+                <div class="service-badge web-design">
+                    <div class="service-badge-title">Web Design</div>
+                    <div class="service-badge-image"></div>
+                </div>
+                <div class="service-badge print">
+                    <div class="service-badge-title">Print Design</div>
+                    <div class="service-badge-image"></div>
+                </div>
+                <div class="service-badge illustrations">
+                    <div class="service-badge-title">Illustrations</div>
+                    <div class="service-badge-image"></div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="why-taska-section">
-        <div class="why-taska-title">WHY TASKA?</div>
-        <div class="why-taska-content">
-            <div class="why-taska-text">
-                Taska connects you with talented college students for affordable but high-quality gig works. Our students bring fresh perspectives and cutting-edge skills from top-tier institutions like IITs, NITs, and IIITs.
-            </div>
-        </div>
+    
+    <div class="startup-section">
+        <div class="startup-question">Want extra workforce for your Business ?</div>
+        <div class="startup-offer">Hire 6 expert AI Trained student assistants</div> 
+        <div class="startup-package">Complete Package</div>
+        <div class="startup-price">₹14,999/-</div>
+        <div class="startup-roles">For Developer, Marketing & Designing roles</div>
+        <button class="startup-cta" onclick="window.location='professional/explore.html'">Hire Now</button>
     </div>
-   
-        <div class="ai-text-card">
+    
+    <div class="ai-text-card">
             <div class="ai-generates-text">AI DRAFTS</div>
+            <div class="ai-ampersand">&</div>
             <div class="students-customize-text">WE CRAFT</div>
         </div>
+   
    
     
     <script>
@@ -1169,7 +1471,6 @@
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-section">
-                <h3 class="footer-logo">Taska</h3>
                 <p class="footer-desc">Connecting students with opportunities</p>
             </div>
             <div class="footer-section">
@@ -1209,7 +1510,7 @@
                 </div>
             </div>
         <div class="footer-bottom">
-            <p>&copy; 2023 Taska. All rights reserved.</p>
+            <p>&copy; 2025 Taska. All rights reserved.</p>
         </div>
     </footer>
 </body>
