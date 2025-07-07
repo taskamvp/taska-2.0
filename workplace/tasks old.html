@@ -154,7 +154,7 @@
 </script>
 <body>
     <nav class="navbar">
-        <div class="logo">Taska Elite</div>
+        <div class="logo"><img src="../assets/logo.png" alt="Taska Logo" style="height:48px;vertical-align:middle;"></div>
         <ul class="nav-menu">
             <li><a href="overview.html">Overview</a></li>
             <li><a href="connections.html">Connections</a></li>
@@ -235,70 +235,4 @@
                         const task = childSnapshot.val();
                         const taskId = childSnapshot.key;
                         if (task.status === 'pending') {
-                            get(ref(db, `professionalslist/${task.proId}`)).then((snap) => {
-                                const pro = snap.val();
-                                tasksGrid.innerHTML += `
-                                    <div class="task-card">
-                                        <h3>${task.title}</h3>
-                                        <p><strong>Deadline:</strong> ${new Date(task.deadline).toLocaleDateString()}</p>
-                                        <p><strong>Description:</strong> ${task.description}</p>
-                                        <p><strong>Assigned by:</strong> ${pro.name}</p>
-                                        <button class="action-btn" onclick="openRejectPopup('${taskId}', '${pro.email || 'unknown@example.com'}')">Reject Task</button>
-                                    </div>
-                                `;
-                            });
-                        }
-                    });
-                } else {
-                    noTasks.style.display = 'block';
-                }
-            });
-        }
-
-        window.openRejectPopup = (taskId, proEmail) => {
-            currentTaskId = taskId;
-            document.getElementById('reject-popup').style.display = 'flex';
-            document.getElementById('reject-form').onsubmit = (e) => rejectTask(e, taskId, proEmail);
-        };
-
-        window.closeRejectPopup = () => {
-            document.getElementById('reject-popup').style.display = 'none';
-            document.getElementById('reject-form').reset();
-        };
-
-        async function rejectTask(e, taskId, proEmail) {
-            e.preventDefault();
-            const reason = document.getElementById('reject-reason').value.trim();
-            if (reason) {
-                try {
-                    // Remove task from student's and professional's database
-                    await Promise.all([
-                        remove(ref(db, `studentslist/${userId}/tasks/${taskId}`)),
-                        remove(ref(db, `professionalslist/${task.proId}/tasks/${taskId}`))
-                    ]);
-
-                    // Simulate sending email (replace with actual email service)
-                    console.log(`Sending email to ${proEmail}: Task Rejected - Reason: ${reason}`);
-                    alert('Task rejected successfully! An email has been sent to the professional.');
-                    closeRejectPopup();
-                } catch (error) {
-                    console.error('Error rejecting task:', error);
-                    alert('Failed to reject task: ' + error.message);
-                }
-            } else {
-                alert('Please provide a reason for rejection.');
-            }
-        }
-
-        // Hamburger menu logic
-        document.addEventListener('DOMContentLoaded', () => {
-            const hamburger = document.querySelector('.navbar .hamburger');
-            const navMenu = document.querySelector('.navbar .nav-menu');
-            hamburger.addEventListener('click', () => {
-                navMenu.classList.toggle('active');
-            });
-        });
-    </script>
-    <script src="../js/main.js"></script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'91fa85c00c877cc4',t:'MTc0MTg1ODMyOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
-</html>
+                            get(ref(db, `

@@ -8,25 +8,97 @@
     <link rel="stylesheet" href="../css/global.css">
     <link rel="stylesheet" href="../css/dashboard.css">
     <link rel="stylesheet" href="../css/overview.css">
-    <link rel="stylesheet" href="../css/classified-navbar.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background: #ffffff; min-height: 100vh; color: #6B7280; padding-bottom: 0; }
-        .dashboard-content { padding: 2rem 1rem; max-width: 1200px; margin: 0 auto; }
-        .dashboard-section h1 { font-size: 2rem; color: #374151; margin-bottom: 0.5rem; }
-        .dashboard-section p { font-size: 1rem; margin-bottom: 1.5rem; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, Arial, sans-serif; }
+        body { background: #e9ecf1; min-height: 100vh; color: #495057; padding-bottom: 60px; }
+        .navbar_classified {
+            background: #ffffff;
+            border-bottom: 1px solid #e9ecef;
+            padding: 0.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Inter', sans-serif;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            min-height: 56px;
+        }
+        .navbar_classified .logo {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #185abd;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            user-select: none;
+            font-family: 'Inter', sans-serif;
+        }
+        .navbar_classified .nav-menu {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+        .navbar_classified .nav-menu li {
+            display: flex;
+            font-family: 'Inter', sans-serif;
+        }
+        .navbar_classified .nav-menu li a {
+            color: #495057;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            padding: 0.5rem 1.25rem;
+            border-radius: 0;
+            border: 1px solid transparent;
+            background: transparent;
+            transition: background 0.15s, color 0.15s, border 0.15s;
+            position: relative;
+            outline: none;
+            box-shadow: none;
+            font-family: 'Inter', sans-serif;
+        }
+        .navbar_classified .nav-menu li a:hover,
+        .navbar_classified .nav-menu li a.active {
+            background: #e9ecef;
+            color: #185abd;
+            border-bottom: 2px solid #185abd;
+            border-radius: 0;
+        }
+        .navbar_classified .hamburger {
+            display: none;
+            font-size: 1.7rem;
+            color: #185abd;
+            cursor: pointer;
+            margin-left: 1.5rem;
+            background: none;
+            border: none;
+            outline: none;
+            font-family: 'Inter', sans-serif;
+        }
+        .dashboard-content { padding: 2rem 1rem; max-width: 1400px; margin: 0 auto; }
+        .dashboard-section h1 {
+            font-size: 1.8rem;
+            color: #212529;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            margin-top: 1.2rem;
+        }
+        .dashboard-section p { font-size: 0.95rem; margin-bottom: 1.5rem; color: #6c757d; }
         .search-container {
             background: #ffffff;
             padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
             margin: 2rem 0;
             position: relative;
             overflow: hidden;
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
         .search-container::before {
             content: '';
@@ -35,36 +107,33 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle, rgba(0, 122, 255, 0.05) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(43, 108, 176, 0.05) 0%, transparent 70%);
             pointer-events: none;
         }
         .search-box {
             display: flex;
             align-items: center;
             gap: 1rem;
-            background: #f8f9fa;
-            padding: 0.75rem;
-            border-radius: 12px;
-            border: 1px solid #e9ecef;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-            transition: all 0.2s ease;
+            background: #ffffff;
+            padding: 0.5rem;
+            border-radius: 6px;
+            border: 1px solid #dee2e6;
+            transition: all 0.3s ease;
             position: relative;
             z-index: 1;
+            width: calc(100% - 50px);
+            max-width: 1500px;
+            min-width: 220px;
+            margin: 0 auto;
         }
         .search-box:hover,
         .search-box:focus-within {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-            border-color: #007aff;
+            border-color: #185abd;
         }
         .search-icon {
-            color: #007aff;
+            color: #6c757d;
             font-size: 1.2rem;
-            margin-left: 0.5rem;
-            transition: transform 0.2s ease;
-        }
-        .search-box:hover .search-icon {
-            transform: scale(1.05);
+            margin-left: 1rem;
         }
         .search-input {
             flex: 1;
@@ -72,273 +141,357 @@
             background: transparent;
             padding: 0.75rem 0.5rem;
             font-size: 1rem;
-            color: #1d1d1f;
+            color: #495057;
             outline: none;
             font-weight: 400;
-            border-radius: 8px;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Inter', sans-serif;
         }
         .search-input::placeholder {
-            color: #86868b;
+            color: #adb5bd;
             font-style: normal;
         }
         .search-btn {
             padding: 0.75rem 1.5rem;
-            background: #007aff;
+            background: #185abd;
             color: #ffffff;
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
             cursor: pointer;
             font-weight: 500;
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            transition: all 0.2s ease;
-            position: relative;
-            overflow: hidden;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            transition: background 0.3s ease;
+            font-family: 'Inter', sans-serif;
         }
         .search-btn:hover {
-            background: #0056cc;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
-        }
-        .search-btn::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            background: rgba(255, 255, 255, 0.2);
-            opacity: 0;
-            transition: opacity 0.2s ease;
-        }
-        .search-btn:hover::after {
-            opacity: 1;
+            background: #0d6efd;
         }
         .btn-text {
-            font-size: 1rem;
+            font-size: 0.95rem;
         }
         .btn-icon {
             font-size: 0.9rem;
-            transition: transform 0.2s ease;
         }
-        .search-btn:hover .btn-icon {
-            transform: translateX(2px);
+        .search-info {
+            margin-top: 1.5rem;
+            padding: 1.5rem 0;
+            background: none;
+            border: none;
+            box-shadow: none;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
         }
-        .loading-overlay { 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
-            background: rgba(249, 250, 251, 0.9); 
-            display: none; 
-            justify-content: center; 
-            align-items: center; 
-            z-index: 1001; 
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+        .search-info .help-cards-row {
+            display: flex;
+            gap: 2.2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: stretch;
         }
-        .loader { 
-            width: 200px; 
-            height: 4px; 
-            background: #e9ecef; 
-            position: relative; 
-            overflow: hidden; 
-            border-radius: 8px; 
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        .search-info .help-card {
+            background: rgba(255,255,255,0.82);
+            backdrop-filter: blur(10px) saturate(1.1);
+            -webkit-backdrop-filter: blur(10px) saturate(1.1);
+            border-radius: 16px;
+            border: 1.5px solid #e3e8f0;
+            box-shadow: 0 2px 12px 0 rgba(30,34,90,0.06);
+            padding: 2.1rem 1.6rem 1.5rem 1.6rem;
+            flex: 1 1 260px;
+            min-width: 240px;
+            max-width: 340px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1.1rem;
+            margin-bottom: 1.2rem;
+            transition: box-shadow 0.18s, background 0.18s, border 0.18s;
+            position: relative;
         }
-        .loader::before { 
-            content: ''; 
-            position: absolute; 
-            left: -50%; 
-            height: 100%; 
-            width: 50%; 
-            background: linear-gradient(90deg, #007aff, #5856d6); 
-            animation: lineLoading 1.5s infinite ease-in-out; 
-            border-radius: 8px;
+        .search-info .help-card:hover {
+            background: rgba(255,255,255,0.97);
+            box-shadow: 0 6px 24px 0 rgba(30,34,90,0.13);
+            border: 1.5px solid #bfcad6;
         }
-        @keyframes lineLoading { 
-            0% { left: -50%; } 
-            50% { left: 50%; } 
-            100% { left: 150%; } 
+        .search-info .help-card .help-icon {
+            font-size: 2.3rem;
+            color: #007aff;
+            margin-bottom: 0.2rem;
         }
+        .search-info .help-card .help-title {
+            font-size: 1.18rem;
+            font-weight: 700;
+            color: #1d1d1f;
+            margin-bottom: 0.2rem;
+        }
+        .search-info .help-card .help-desc {
+            font-size: 1.01rem;
+            color: #444;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+        @media (max-width: 900px) {
+            .search-info .help-cards-row {
+                gap: 1.2rem;
+            }
+            .search-info .help-card {
+                min-width: 180px;
+                max-width: 100%;
+                padding: 1.3rem 1rem 1.1rem 1rem;
+            }
+        }
+        .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(248, 249, 250, 0.9); display: none; justify-content: center; align-items: center; z-index: 1001; }
+        .loader { width: 200px; height: 4px; background: #e9ecef; position: relative; overflow: hidden; border-radius: 2px; }
+        .loader::before { content: ''; position: absolute; left: -50%; height: 100%; width: 50%; background: #495057; animation: lineLoading 1.5s infinite ease-in-out; }
+        @keyframes lineLoading { 0% { left: -50%; } 50% { left: 50%; } 100% { left: 150%; } }
         .students-list {
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 0;
             margin-top: 2rem;
             align-items: center;
         }
         .student-card {
-            background: #ffffff;
-            padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.1);
+            background: rgba(255,255,255,0.82);
+            backdrop-filter: blur(12px) saturate(1.1);
+            -webkit-backdrop-filter: blur(12px) saturate(1.1);
+            border-radius: 10px;
+            border: 1px solid rgba(200,200,210,0.18);
+            box-shadow: 0 1px 4px 0 rgba(30,34,90,0.04);
             width: 100%;
-            max-width: 900px;
-            min-height: 200px;
+            max-width: 1200px;
+            min-height: auto;
             display: flex;
-            align-items: flex-start;
-            gap: 1.5rem;
-            transition: all 0.2s ease;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            align-items: center;
+            gap: 1rem;
+            transition: background 0.2s, box-shadow 0.2s;
+            margin-bottom: 18px;
             position: relative;
-            overflow: hidden;
-        }
-        .student-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(0, 122, 255, 0.1), transparent);
+            padding: 0.7rem 1.2rem;
         }
         .student-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.08);
+            background: rgba(255,255,255,0.95);
+            box-shadow: 0 2px 12px 0 rgba(30,34,90,0.10);
+            border: 1.5px solid #bfcad6;
+        }
+        .student-card:last-child {
+            margin-bottom: 0;
         }
         .student-card img.profile-pic {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
             object-fit: cover;
             flex-shrink: 0;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            transition: all 0.2s ease;
-        }
-        .student-card:hover img.profile-pic {
-            transform: scale(1.05);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border: 1.5px solid #e0e0e0;
+            background: #f3f3f3;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
         }
         .student-card .card-content {
-            flex: 1;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr 1.5fr 0.8fr auto;
+            align-items: center;
+            gap: 0;
+            width: 100%;
+            padding: 0;
+        }
+        .student-card .basic-info,
+        .student-card .education-info,
+        .student-card .skills-info,
+        .student-card .availability-info {
+            padding: 0 0.3rem;
+            min-width: 0;
+            max-width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            border-right: 1px solid #e5e7ea;
+            height: 100%;
             display: flex;
             flex-direction: column;
+            justify-content: center;
+        }
+        .student-card .basic-info h3,
+        .student-card .basic-info h4,
+        .student-card .education-info p,
+        .student-card .skills-info p,
+        .student-card .availability-info p {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            display: block;
+            max-width: 100%;
+            cursor: pointer;
+        }
+        .student-card .actions {
+            border-right: none;
+            flex-direction: row;
+            align-items: center;
             gap: 0.5rem;
+            justify-content: flex-end;
+            padding-left: 0.7rem;
+            min-width: 120px;
         }
         .student-card h3 {
-            font-size: 1.5rem;
+            font-size: 1.01rem;
             color: #1d1d1f;
             font-weight: 600;
-            letter-spacing: -0.025em;
             margin: 0;
+            letter-spacing: -0.01em;
         }
         .student-card h4 {
-            font-size: 1rem;
+            font-size: 0.85rem;
             color: #86868b;
             font-weight: 400;
+            margin: 0;
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            margin: 0;
+            gap: 0.5rem;
         }
         .student-card .year-badge {
-            background: #f1f3f4;
-            color: #1d1d1f;
-            padding: 0.25rem 0.75rem;
-            border-radius: 8px;
-            font-size: 0.85rem;
+            background: #e9ecef;
+            color: #495057;
+            padding: 0.13rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
             font-weight: 500;
-            border: 1px solid #e9ecef;
         }
-        .student-card p.description {
-            font-size: 0.95rem;
-            color: #86868b;
-            line-height: 1.5;
-            overflow: hidden;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            max-height: 4.5em;
-            margin: 0;
-        }
-        .student-card p.description.expanded {
-            -webkit-line-clamp: unset;
-            max-height: none;
-        }
-        .student-card a.read-more {
+        .student-card .contact-info a {
             color: #007aff;
-            font-size: 0.9rem;
-            cursor: pointer;
             text-decoration: none;
-            align-self: flex-start;
-            transition: all 0.2s ease;
-            font-weight: 500;
+            font-size: 0.81rem;
         }
-        .student-card a.read-more:hover {
-            color: #0056cc;
+        .student-card .contact-info a:hover {
             text-decoration: underline;
-        }
-        .student-actions {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1rem;
-            align-items: center;
         }
         .ai-intro-btn {
-            padding: 0.6rem 1.5rem;
-            background: #007aff;
-            color: #ffffff;
+            width: auto;
+            height: 38px;
+            min-width: 90px;
+            min-height: 38px;
+            max-width: 160px;
+            max-height: 38px;
+            padding: 0 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0;
+            background: linear-gradient(135deg, #4f8cff 0%, #007aff 100%);
+            color: #fff;
             border: none;
-            border-radius: 8px;
+            box-shadow: 0 2px 8px 0 rgba(30,34,90,0.10);
+            font-size: 1.01rem;
+            font-weight: 600;
             cursor: pointer;
-            font-weight: 500;
-            font-size: 0.95rem;
-            transition: all 0.2s ease;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            box-shadow: 0 2px 8px rgba(0, 122, 255, 0.2);
+            transition: background 0.18s, box-shadow 0.18s, color 0.18s;
+            font-family: inherit;
+            gap: 0.6rem;
+        }
+        .ai-intro-btn i {
+            color: #fff;
+            font-size: 1.1rem;
+            pointer-events: none;
+            margin-right: 0.3rem;
         }
         .ai-intro-btn:hover {
-            background: #0056cc;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+            background: linear-gradient(135deg, #007aff 0%, #4f8cff 100%);
+            color: #fff;
+            box-shadow: 0 4px 16px 0 rgba(30,34,90,0.13);
         }
         .ai-intro-btn.connected {
-            background: #34c759;
+            background: #e6f4ea;
+            color: #198754;
+            border: 1.5px solid #bfcad6;
+            box-shadow: none;
             cursor: not-allowed;
-            box-shadow: 0 2px 8px rgba(52, 199, 89, 0.2);
+        }
+        .ai-intro-btn.connected i {
+            color: #198754;
         }
         .ai-intro-btn.connected:hover {
-            background: #34c759;
-            transform: none;
-            box-shadow: 0 2px 8px rgba(52, 199, 89, 0.2);
+            background: #e6f4ea;
+            color: #198754;
+            border: 1.5px solid #bfcad6;
+            box-shadow: none;
         }
-        .view-profile {
-            color: #1d1d1f;
-            text-decoration: none;
-            cursor: pointer;
+        .toggle-details {
+            color: #007aff;
             font-size: 0.95rem;
-            transition: all 0.2s ease;
+            cursor: pointer;
+            text-decoration: underline;
+            margin-top: 0.2rem;
+            display: inline-block;
+            background: none;
+            border: none;
+            padding: 0 0.7rem;
+            border-radius: 0;
             font-weight: 500;
         }
-        .view-profile:hover {
-            color: #007aff;
-            text-decoration: underline;
+        .toggle-details:hover {
+            opacity: 0.7;
         }
         .social-icons {
             display: flex;
-            gap: 0.75rem;
+            gap: 0.5rem;
         }
         .social-icon {
-            font-size: 1.25rem;
-            color: #1d1d1f;
+            font-size: 1.1rem;
+            color: #86868b;
             cursor: pointer;
-            transition: all 0.2s ease;
-            padding: 0.5rem;
-            border-radius: 8px;
+            transition: color 0.2s;
         }
         .social-icon:hover {
-            transform: scale(1.1);
             color: #007aff;
-            background: rgba(0, 122, 255, 0.1);
         }
-        .social-icon.linkedin:hover {
-            color: #0077B5;
-            background: rgba(0, 119, 181, 0.1);
+        .student-details {
+            display: none;
+            width: 100%;
+            padding: 1rem 0 0 0;
+            border-top: 1px solid #e5e7ea;
+            margin-top: 1rem;
+        }
+        .student-details.expanded {
+            display: block;
+        }
+        .detail-section {
+            margin-bottom: 0.75rem;
+        }
+        .detail-section h5 {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 0.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .detail-section p {
+            font-size: 0.75rem;
+            color: #6c757d;
+            margin-bottom: 0.15rem;
+            line-height: 1.3;
+        }
+        .detail-section p strong {
+            color: #495057;
+            font-weight: 500;
+        }
+        .detail-section ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .detail-section li {
+            font-size: 0.75rem;
+            color: #6c757d;
+            margin-bottom: 0.15rem;
+            padding-left: 0;
+        }
+        .detail-section a {
+            color: #007aff;
+            text-decoration: none;
+        }
+        .detail-section a:hover {
+            text-decoration: underline;
         }
         .pagination { display: none; }
         .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.3); z-index: 999; }
@@ -349,200 +502,272 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: #ffffff;
-            padding: 1.5rem;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 600px;
-            max-height: 80vh;
+            background: rgba(255,255,255,0.72);
+            backdrop-filter: blur(28px) saturate(1.1);
+            -webkit-backdrop-filter: blur(28px) saturate(1.1);
+            border-radius: 0;
+            width: 96vw;
+            max-width: 540px;
+            max-height: 88vh;
             overflow-y: auto;
             z-index: 1000;
-            border: 1px solid #e9ecef;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.15), 0 8px 32px rgba(0,0,0,0.1);
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            border: 1.5px solid rgba(180,180,180,0.22);
+            box-shadow: 0 4px 24px 0 rgba(30,34,90,0.08);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            padding: 0;
+            scrollbar-width: thin;
+            scrollbar-color: #b0b0b0 #eaeaea;
+        }
+        .profile-popup::-webkit-scrollbar {
+            width: 7px;
+            background: #eaeaea;
+        }
+        .profile-popup::-webkit-scrollbar-thumb {
+            background: #b0b0b0;
+            border-radius: 6px;
         }
         .profile-popup.active { display: block; }
-        .profile-section {
-            display: grid;
-            grid-template-columns: 120px 1fr;
-            gap: 1rem;
-            align-items: start;
-        }
-        .profile-section img.profile-pic {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid #e9ecef;
-        }
-        .profile-details {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-        .profile-details h2 {
-            font-size: 1.5rem;
-            color: #1d1d1f;
-            font-weight: 600;
-            margin: 0;
-            letter-spacing: -0.025em;
-        }
-        .profile-details h3 {
-            font-size: 1rem;
-            color: #86868b;
-            font-weight: 400;
-            margin: 0;
-        }
-        .profile-content p {
-            font-size: 0.9rem;
-            color: #86868b;
-            line-height: 1.5;
-            margin-top: 0.5rem;
-        }
-        .profile-content p strong {
-            color: #1d1d1f;
-            font-weight: 600;
-            display: inline-block;
-            width: 100px;
-        }
-        .close-btn {
+        .profile-popup .macos-close {
             position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: #ff3b30;
-            border: none;
+            top: 12px;
+            left: 12px;
+            width: 28px;
+            height: 28px;
+            background: #ededed;
             border-radius: 50%;
-            width: 32px;
-            height: 32px;
+            border: 1.5px solid #e0e0e0;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
-            color: #ffffff;
             cursor: pointer;
-            transition: all 0.2s ease;
-            font-weight: 300;
-            line-height: 1;
-            padding: 0;
-            text-align: center;
+            transition: background 0.18s, box-shadow 0.18s;
+            z-index: 10;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
         }
-        .close-btn:hover {
-            background: #d70015;
-            transform: scale(1.05);
+        .profile-popup .macos-close:hover {
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.10);
         }
-        .message-popup {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: #ffffff;
-            padding: 1.5rem;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 500px;
-            z-index: 1000;
-            border: 1px solid #e9ecef;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.15), 0 8px 32px rgba(0,0,0,0.1);
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        .profile-popup .macos-close i {
+            color: #ff5f57;
+            font-size: 1.1rem;
+            font-weight: bold;
+            pointer-events: none;
         }
-        .message-popup h2 {
-            color: #1d1d1f;
+        .profile-header-macos {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            padding: 2.2rem 2.2rem 1.1rem 2.2rem;
+            border-bottom: 1px solid #e5e5e7;
+            background: transparent;
+        }
+        .profile-header-macos .profile-avatar {
+            width: 72px;
+            height: 72px;
+            border-radius: 16px;
+            object-fit: cover;
+            background: #f3f3f3;
+            border: 1.5px solid #e0e0e0;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+        }
+        .profile-header-macos .profile-info {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+        .profile-header-macos .profile-name {
+            font-size: 1.18rem;
             font-weight: 600;
-            margin-bottom: 1rem;
-            letter-spacing: -0.025em;
-        }
-        .message-popup textarea {
-            width: 100%;
-            height: 120px;
-            padding: 0.75rem;
-            border: 1px solid #d2d2d7;
-            border-radius: 8px;
-            resize: vertical;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            font-size: 0.9rem;
             color: #1d1d1f;
-            transition: all 0.2s ease;
+            margin-bottom: 0.1rem;
+            letter-spacing: -0.01em;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
-        .message-popup textarea:focus {
-            outline: none;
-            border-color: #007aff;
-            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
-        }
-        .message-popup .send-btn {
-            background: #007aff;
-            color: #ffffff;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 500;
-            margin-top: 1rem;
-            transition: all 0.2s ease;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        }
-        .message-popup .send-btn:hover {
-            background: #0056cc;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
-        }
-        .connection-request-popup {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: #ffffff;
-            padding: 1.5rem;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 400px;
-            z-index: 1000;
-            border: 1px solid #e9ecef;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.15), 0 8px 32px rgba(0,0,0,0.1);
-            text-align: center;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        }
-        .connection-request-popup h2 {
-            color: #1d1d1f;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            letter-spacing: -0.025em;
-        }
-        .connection-request-popup p {
+        .profile-header-macos .profile-title {
+            font-size: 0.98rem;
             color: #86868b;
-            margin-bottom: 1.5rem;
+            font-weight: 400;
+            margin-bottom: 0.2rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .profile-header-macos .profile-links {
+            display: flex;
+            gap: 0.7rem;
+            margin-top: 0.2rem;
+        }
+        .profile-header-macos .profile-link {
+            color: #007aff;
+            font-size: 0.93rem;
+            text-decoration: none;
+            background: rgba(0,122,255,0.07);
+            padding: 0.18rem 0.7rem;
+            border-radius: 7px;
+            transition: background 0.18s, color 0.18s;
+            font-weight: 500;
+        }
+        .profile-header-macos .profile-link:hover {
+            background: #e5f1fb;
+            color: #0056cc;
+        }
+        .profile-content-macos {
+            padding: 1.2rem 2.2rem 2.2rem 2.2rem;
+            font-size: 0.98rem;
+            color: #222;
+            display: flex;
+            flex-direction: column;
+            gap: 1.1rem;
+        }
+        .profile-section-macos {
+            margin-bottom: 0.2rem;
+            padding-bottom: 0.7rem;
+            border-bottom: 1px solid #ececec;
+        }
+        .profile-section-macos:last-child {
+            border-bottom: none;
+        }
+        .profile-section-macos h2 {
+            font-size: 1.01rem;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 0.3rem;
+            letter-spacing: -0.01em;
+        }
+        .profile-section-macos p, .profile-section-macos ul {
+            margin: 0.1rem 0 0.2rem 0;
+            color: #444;
+            font-size: 0.97rem;
             line-height: 1.5;
         }
-        .connection-request-popup .ok-btn {
-            background: #007aff;
-            color: #ffffff;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        .profile-section-macos ul {
+            padding-left: 1.1em;
+            margin-bottom: 0.2rem;
         }
-        .connection-request-popup .ok-btn:hover {
-            background: #0056cc;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+        .profile-section-macos li {
+            margin-bottom: 0.1rem;
+        }
+        .profile-section-macos a {
+            color: #007aff;
+            text-decoration: none;
+            transition: color 0.18s;
+        }
+        .profile-section-macos a:hover {
+            color: #0056cc;
+            text-decoration: underline;
+        }
+        @media (max-width: 600px) {
+            .profile-popup {
+                max-width: 99vw;
+                padding: 0;
+            }
+            .profile-header-macos, .profile-content-macos {
+                padding-left: 0.7rem;
+                padding-right: 0.7rem;
+            }
+            .profile-header-macos {
+                padding-top: 1.1rem;
+                padding-bottom: 0.7rem;
+            }
+            .profile-header-macos .profile-avatar {
+                width: 54px;
+                height: 54px;
+                border-radius: 10px;
+            }
+            .profile-header-macos .profile-name {
+                font-size: 1rem;
+            }
+            .profile-header-macos .profile-title {
+                font-size: 0.89rem;
+            }
+            .profile-header-macos .profile-link {
+                font-size: 0.85rem;
+                padding: 0.12rem 0.5rem;
+            }
+            .profile-content-macos {
+                font-size: 0.93rem;
+                gap: 0.7rem;
+                padding-bottom: 1.1rem;
+            }
+            .profile-section-macos h2 {
+                font-size: 0.93rem;
+            }
+            .profile-section-macos p, .profile-section-macos ul {
+                font-size: 0.91rem;
+            }
         }
         footer { background: #FFFFFF; padding: 1rem; text-align: center; position: fixed; bottom: 0; width: 100%; box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05); }
+        @media (max-width: 900px) {
+            .navbar_classified {
+                padding: 0.5rem 1rem;
+            }
+            .navbar_classified .logo {
+                font-size: 1.2rem;
+            }
+            .student-card .card-content {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+            .student-card .basic-info,
+            .student-card .education-info,
+            .student-card .skills-info,
+            .student-card .availability-info,
+            .student-card .contact-info {
+                min-width: auto;
+                flex: 1;
+                min-width: 150px;
+            }
+        }
+        
         @media (max-width: 768px) {
+            .navbar_classified {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 0.5rem 0.5rem;
+                min-height: 48px;
+            }
+            .navbar_classified .nav-menu {
+                flex-direction: column;
+                width: 100%;
+                background: #ffffff;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+                position: absolute;
+                top: 56px;
+                left: 0;
+                display: none;
+                border-top: 1px solid #e9ecef;
+                z-index: 1001;
+            }
+            .navbar_classified .nav-menu.active {
+                display: flex;
+            }
+            .navbar_classified .nav-menu li a {
+                padding: 1rem 2rem;
+                border-radius: 0;
+                border: none;
+                font-size: 1.1rem;
+            }
+            .navbar_classified .hamburger {
+                display: block;
+                position: absolute;
+                right: 1rem;
+                top: 0.7rem;
+            }
             .search-container { padding: 1rem; margin: 1.5rem 0; border-radius: 8px; }
             .search-box { flex-direction: row; gap: 0.5rem; padding: 0.8rem; }
             .search-icon { font-size: 1.2rem; margin-left: 0.5rem; }
             .search-input { padding: 0.8rem 0.4rem; font-size: 0.95rem; }
-            .search-btn { padding: 0.8rem 1.5rem; border-radius: 50px; }
+            .search-btn { padding: 0.8rem 1.5rem; border-radius: 6px; }
             .btn-text { font-size: 0.95rem; }
             .btn-icon { font-size: 0.9rem; }
-            .navbar { padding: 0.8rem; }
-            .nav-menu { display: none; position: absolute; top: 60px; left: 0; width: 100%; background: #FFFFFF; flex-direction: column; padding: 1rem; }
-            .nav-menu.active { display: flex; }
-            .hamburger { display: block; }
+            .search-info { padding: 1.5rem; font-size: 0.9rem; }
+            .search-info h3 { font-size: 1.2rem; }
+            .search-info .ai-icon { font-size: 1.5rem; }
             .student-card {
                 flex-direction: column;
                 align-items: stretch;
@@ -550,42 +775,37 @@
                 max-width: 100%;
             }
             .student-card img.profile-pic {
-                width: 60px;
-                height: 60px;
+                width: 40px;
+                height: 40px;
                 margin-bottom: 0.5rem;
             }
-            .student-card h3 { font-size: 1.25rem; }
-            .student-card h4 { font-size: 0.9rem; }
-            .student-card .year-badge { font-size: 0.8rem; }
-            .student-card p.description { font-size: 0.9rem; }
-            .student-actions { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
-            .profile-popup {
-                width: 95%;
-                max-width: 400px;
-                max-height: 80vh;
-                padding: 1rem;
-                border-radius: 10px;
-            }
-            .profile-section {
-                grid-template-columns: 80px 1fr;
+            .student-card .card-content {
+                flex-direction: column;
                 gap: 0.75rem;
             }
-            .profile-section img.profile-pic { width: 80px; height: 80px; }
-            .profile-details h2 { font-size: 1.25rem; }
-            .profile-details h3 { font-size: 0.9rem; }
-            .profile-content p { font-size: 0.85rem; }
-            .profile-content p strong { width: 90px; }
-            .close-btn {
-                width: 36px;
-                height: 36px;
-                font-size: 1rem;
+            .student-card .basic-info,
+            .student-card .education-info,
+            .student-card .skills-info,
+            .student-card .availability-info,
+            .student-card .contact-info,
+            .student-card .actions {
+                min-width: auto;
+                width: 100%;
             }
-            .message-popup { padding: 1.5rem; max-width: 90%; height: 65vh; }
+            .student-card h3 { font-size: 1rem; }
+            .student-card h4 { font-size: 0.85rem; }
+            .student-card .year-badge { font-size: 0.7rem; }
+            .student-card .actions { 
+                flex-direction: row; 
+                justify-content: space-between;
+                align-items: center;
+            }
+            .message-popup { padding: 1.2rem; max-width: 90%; height: 65vh; }
             .message-popup h2 { font-size: 1.25rem; margin-bottom: 1rem; }
             .message-popup textarea { font-size: 0.9rem; }
             .message-popup .send-btn { font-size: 0.9rem; }
             .connection-request-popup {
-                padding: 1.5rem;
+                padding: 1.2rem;
                 max-width: 90%;
             }
             .connection-request-popup h2 {
@@ -622,10 +842,288 @@
                 display: flex;
             }
             .dashboard-content,
-            .navbar,
+            .navbar_classified,
             footer {
                 display: none;
             }
+        }
+        .message-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #FFFFFF;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            max-width: 500px;
+            width: 90%;
+        }
+        .message-popup.active { display: block; }
+        .message-popup h2 {
+            margin-bottom: 1rem;
+            color: #374151;
+        }
+        .message-popup textarea {
+            width: 100%;
+            height: 120px;
+            padding: 0.75rem;
+            border: 1px solid #D1D5DB;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            resize: vertical;
+        }
+        .message-popup .send-btn {
+            background: #2B6CB0;
+            color: #FFFFFF;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .message-popup .send-btn:hover {
+            background: #2C5282;
+        }
+        .connection-request-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #FFFFFF;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+        .connection-request-popup.active { display: block; }
+        .connection-request-popup h2 {
+            margin-bottom: 1rem;
+            color: #374151;
+        }
+        .connection-request-popup p {
+            margin-bottom: 1.5rem;
+            color: #6B7280;
+            line-height: 1.5;
+        }
+        .connection-request-popup .ok-btn {
+            background: #2B6CB0;
+            color: #FFFFFF;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .connection-request-popup .ok-btn:hover {
+            background: #2C5282;
+        }
+        .connection-request-popup .manage-connections {
+            color: #2B6CB0;
+            text-decoration: underline;
+        }
+        .connection-request-popup .manage-connections:hover {
+            color: #2C5282;
+        }
+        .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #6B7280;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.2s ease;
+        }
+        .close-btn:hover {
+            background: #F3F4F6;
+            color: #374151;
+        }
+        .student-details-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(18px) saturate(1.1);
+            -webkit-backdrop-filter: blur(18px) saturate(1.1);
+            border-radius: 16px;
+            width: 680px;
+            max-width: 98vw;
+            max-height: 90vh;
+            overflow-y: auto;
+            z-index: 2001;
+            border: 1.5px solid rgba(180,180,180,0.22);
+            box-shadow: 0 8px 32px 0 rgba(30,34,90,0.13);
+            font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, Arial, sans-serif;
+            padding: 0 0 2.2rem 0;
+            transition: box-shadow 0.18s, background 0.18s;
+        }
+        .student-details-popup.active { display: block; }
+        .student-details-popup .macos-close {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            left: auto;
+            width: 36px;
+            height: 36px;
+            background: #ededed;
+            border-radius: 50%;
+            border: 1.5px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.18s, box-shadow 0.18s;
+            z-index: 10;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+            font-size: 1.3rem;
+            color: #ff5f57;
+            outline: none;
+        }
+        .student-details-popup .macos-close:focus {
+            box-shadow: 0 0 0 2px #007aff44;
+        }
+        .student-details-popup .macos-close:hover {
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+        }
+        .student-details-popup .macos-close i {
+            color: #ff5f57;
+            font-size: 1.3rem;
+            font-weight: bold;
+            pointer-events: none;
+        }
+        .student-details-content {
+            padding: 2.2rem 2.2rem 1.2rem 2.2rem;
+            font-size: 0.98rem;
+            color: #222;
+            display: flex;
+            flex-direction: column;
+            gap: 1.1rem;
+        }
+        .popup-header-row {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            margin-bottom: 1.1rem;
+        }
+        .popup-avatar {
+            width: 72px;
+            height: 72px;
+            border-radius: 16px;
+            object-fit: cover;
+            background: #f3f3f3;
+            border: 1.5px solid #e0e0e0;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+        }
+        .popup-header-info {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+        .popup-name {
+            font-size: 1.18rem;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 0.1rem;
+            letter-spacing: -0.01em;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .popup-title {
+            font-size: 0.98rem;
+            color: #86868b;
+            font-weight: 400;
+            margin-bottom: 0.2rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .popup-section {
+            margin-bottom: 0.2rem;
+            padding-bottom: 0.7rem;
+            border-bottom: 1px solid #ececec;
+        }
+        .popup-section:last-child {
+            border-bottom: none;
+        }
+        .popup-section h5 {
+            font-size: 1.01rem;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 0.3rem;
+            letter-spacing: -0.01em;
+        }
+        .popup-section p, .popup-section ul {
+            margin: 0.1rem 0 0.2rem 0;
+            color: #444;
+            font-size: 0.97rem;
+            line-height: 1.5;
+        }
+        .popup-section ul {
+            padding-left: 1.1em;
+            margin-bottom: 0.2rem;
+        }
+        .popup-section li {
+            margin-bottom: 0.1rem;
+        }
+        .popup-section a {
+            color: #007aff;
+            text-decoration: none;
+            transition: color 0.18s;
+        }
+        .popup-section a:hover {
+            color: #0056cc;
+            text-decoration: underline;
+        }
+        #studentDetailsOverlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.18);
+            z-index: 2000;
+        }
+        #studentDetailsOverlay.active { display: block; }
+        .card-tooltip {
+            position: fixed;
+            z-index: 3000;
+            background: rgba(255,255,255,0.97);
+            backdrop-filter: blur(8px) saturate(1.1);
+            -webkit-backdrop-filter: blur(8px) saturate(1.1);
+            color: #222;
+            font-size: 0.97rem;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 16px 0 rgba(30,34,90,0.13);
+            border: 1px solid #e0e0e0;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.13s;
+            max-width: 420px;
+            min-width: 80px;
+            word-break: break-word;
+            white-space: pre-line;
+        }
+        .card-tooltip.active {
+            opacity: 1;
         }
     </style>
 </head>
@@ -635,10 +1133,10 @@
     </div>
     <nav class="navbar_classified">
         <a href="../index.html">
-            <div class="logo">Taska</div>
+            <div class="logo"><img src="../assets/logo.png" alt="Taska Logo" style="height:48px;vertical-align:middle;"></div>
         </a>
         <ul class="nav-menu">
-            <li><a href="explore.html">Explore</a></li>
+            <li><a href="explore.html" class="active">Explore</a></li>
             <li><a href="tasks.html">Workplace</a></li>
             <li><a href="gigs.html">Tasks</a></li>
             <li><a href="profile.html">Account</a></li>
@@ -661,6 +1159,30 @@
             </div>
             <br>
             <br>
+            <div class="search-info" id="searchInfo">
+                <div class="help-cards-row">
+                    <div class="help-card">
+                        <div class="help-icon"><i class="fas fa-robot"></i></div>
+                        <div class="help-title">Automate Your Workflow</div>
+                        <div class="help-desc">Our students can build custom AI tools, scripts, and bots to automate repetitive business tasks, saving you hours every week.</div>
+                    </div>
+                    <div class="help-card">
+                        <div class="help-icon"><i class="fas fa-chart-bar"></i></div>
+                        <div class="help-title">Unlock Data Insights</div>
+                        <div class="help-desc">Get dashboards, analytics, and reports tailored to your business. Students can turn your raw data into actionable insights and visualizations.</div>
+                    </div>
+                    <div class="help-card">
+                        <div class="help-icon"><i class="fas fa-mobile-alt"></i></div>
+                        <div class="help-title">Delight Your Users</div>
+                        <div class="help-desc">From mobile apps to web platforms, students design and develop user-friendly digital products that engage and retain your customers.</div>
+                    </div>
+                    <div class="help-card">
+                        <div class="help-icon"><i class="fas fa-lightbulb"></i></div>
+                        <div class="help-title">Innovate & Research</div>
+                        <div class="help-desc">Need a fresh perspective? Students can help you prototype new ideas, conduct research, and bring innovative solutions to your toughest problems.</div>
+                    </div>
+                </div>
+            </div>
             <div class="loading-overlay" id="loadingOverlay">
                 <div class="loader"></div>
             </div>
@@ -668,11 +1190,10 @@
             <div class="pagination" id="pagination"></div>
         </section>
     </main>
+    <footer>
+        <p>© 2025 Taska Elite. All rights reserved.</p>
+    </footer>
     <div class="overlay" id="overlay"></div>
-    <div class="profile-popup" id="profilePopup">
-        <button class="close-btn" onclick="closeProfilePopup()">×</button>
-        <div class="profile-content" id="profileContent"></div>
-    </div>
     <div class="message-popup" id="messagePopup">
         <button class="close-btn" onclick="closeMessagePopup()">×</button>
         <h2>Connect</h2>
@@ -685,6 +1206,11 @@
         <p id="connectionRequestMessage"></p>
         <button class="ok-btn" onclick="closeConnectionRequestPopup()">OK</button>
     </div>
+    <div class="student-details-popup" id="studentDetailsPopup">
+        <div class="macos-close" onclick="closeStudentDetailsPopup()"><i class="fas fa-times"></i></div>
+        <div class="student-details-content" id="studentDetailsContent"></div>
+    </div>
+    <div class="overlay" id="studentDetailsOverlay"></div>
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
@@ -871,28 +1397,45 @@ async function aiSearch(query = '') {
 
         studentsList.innerHTML = filteredStudents.length > 0
             ? filteredStudents.map(student => {
-                const description = student.personal?.about || student.skills || 'No description available';
-                const isLong = description.length > 100;
-                const subheading = `${student.education?.college || 'Not set'} - ${student.education?.branch || 'Not set'}`;
-                const yearLabel = getYearLabel(student.education?.year);
+                const personal = student.personal || {};
+                const education = student.education || {};
+                const profiles = student.profiles || {};
+                const availability = student.availability || {};
+                const softSkills = student.softSkills || {};
+                const preferences = student.preferences || {};
+                const yearLabel = getYearLabel(education?.year);
                 const isConnected = connectedStudents.has(student.id);
+                const hasLinkedIn = !!personal.linkedin;
+                
                 return `
                     <div class="student-card">
-                        <img src="${student.personal?.profilePic || '../assets/avatar/1.png'}" alt="Profile Picture" class="profile-pic">
+                        <img src="${personal.profilePic || '../assets/avatar/1.png'}" alt="Profile Picture" class="profile-pic">
                         <div class="card-content">
-                            <h3>${student.personal?.name || 'Unnamed'}</h3>
-                            <h4>${subheading}<span class="year-badge">${yearLabel}</span></h4>
-                            <p class="description${isLong ? '' : ' expanded'}">${description}</p>
-                            ${isLong ? `<a class="read-more" onclick="toggleReadMore(this)">Read More</a>` : ''}
-                            <div class="student-actions">
+                            <div class="basic-info">
+                                <h3>${personal.name || 'Unnamed'}</h3>
+                                <h4>${education.college || 'Not set'}<span class="year-badge">${yearLabel}</span></h4>
+                            </div>
+                            <div class="education-info">
+                                <p><strong>${education.degree || 'Not set'}</strong></p>
+                                <p>${education.branch || 'Not set'}</p>
+                                ${education.cgpa ? `<p>CGPA: ${education.cgpa}</p>` : ''}
+                            </div>
+                            <div class="skills-info">
+                                <p><strong>Skills:</strong> ${student.skills || 'Not specified'}</p>
+                                ${personal.about ? `<p>${personal.about.substring(0, 80)}${personal.about.length > 80 ? '...' : ''}</p>` : ''}
+                            </div>
+                            <div class="availability-info">
+                                <p><strong>Hours:</strong> ${availability.hours || 'N/A'}</p>
+                            </div>
+                            <div class="actions">
                                 <button class="ai-intro-btn${isConnected ? ' connected' : ''}" 
                                         onclick="${isConnected ? '' : `generateAIIntro('${student.id}')`}" 
                                         ${isConnected ? 'disabled' : ''}>
-                                    ${isConnected ? 'Connected' : 'Connect'}
+                                    <i class="fas fa-plus"></i>Connect
                                 </button>
-                                <span class="view-profile" onclick="showProfile('${student.id}')">View Profile</span>
+                                <span class="toggle-details" onclick="showStudentDetailsPopup('${student.id}')">View</span>
                                 <div class="social-icons">
-                                    <i class="fab fa-linkedin social-icon linkedin" onclick="window.open('${student.personal?.linkedin || '#'}', '_blank')"></i>
+                                    ${hasLinkedIn ? `<i class='fab fa-linkedin social-icon linkedin' onclick="window.open('${personal.linkedin}', '_blank')"></i>` : ''}
                                 </div>
                             </div>
                         </div>
@@ -934,6 +1477,13 @@ window.toggleReadMore = (element) => {
     const description = element.previousElementSibling;
     description.classList.toggle('expanded');
     element.textContent = description.classList.contains('expanded') ? 'Read Less' : 'Read More';
+};
+
+window.toggleStudentDetails = (element) => {
+    const card = element.closest('.student-card');
+    const details = card.querySelector('.student-details');
+    details.classList.toggle('expanded');
+    element.textContent = details.classList.contains('expanded') ? 'Hide Details' : 'View Details';
 };
 
 window.generateAIIntro = async (studentId) => {
@@ -1042,38 +1592,13 @@ window.closeConnectionRequestPopup = () => {
 };
 
 window.showProfile = (targetUserId) => {
-    const student = studentsData.find(s => s.id === targetUserId);
-    if (student) {
-        const fields = [
-            { label: 'Degree', value: student.education?.degree },
-            { label: 'Year', value: student.education?.year },
-            { label: 'Skills', value: student.skills },
-            { label: 'About', value: student.personal?.about },
-            { label: 'Email', value: student.personal?.email },
-            { label: 'LinkedIn', value: student.personal?.linkedin ? `<a href="${student.personal.linkedin}" target="_blank">View LinkedIn</a>` : null }
-        ].filter(field => field.value && field.value !== 'Not set');
-        profileContent.innerHTML = `
-            <div class="profile-section">
-                <img src="${student.personal?.profilePic || '../assets/avatar/1.png'}" alt="Profile Picture" class="profile-pic">
-                <div class="profile-details">
-                    <h2>${student.personal?.name || 'Unnamed'}</h2>
-                    <h3>${student.education?.college || 'Not set'} - ${student.education?.branch || 'Not set'}</h3>
-                    ${fields.map(field => `<p><strong>${field.label}:</strong> ${field.value}</p>`).join('')}
-                </div>
-            </div>
-        `;
-        profilePopup.classList.add('active');
-        overlay.classList.add('active');
-    } else {
-        profileContent.innerHTML = '<div class="profile-section"><h2>Profile Not Found</h2><p>No data available.</p></div>';
-        profilePopup.classList.add('active');
-        overlay.classList.add('active');
-    }
+    // This function is no longer needed since details are shown in cards
+    console.log('Profile details are now shown directly in the student cards');
 };
 
 window.closeProfilePopup = () => {
-    profilePopup.classList.remove('active');
-    overlay.classList.remove('active');
+    // This function is no longer needed since profile popup is removed
+    console.log('Profile popup is no longer used');
 };
 
 window.closeMessagePopup = () => {
@@ -1122,10 +1647,163 @@ async function storeConnection(studentId) {
 }
 
 overlay.addEventListener('click', () => {
-    closeProfilePopup();
     closeMessagePopup();
     closeConnectionRequestPopup();
 });
+
+window.showStudentDetailsPopup = (studentId) => {
+    const student = studentsData.find(s => s.id === studentId);
+    if (!student) return;
+    const personal = student.personal || {};
+    const education = student.education || {};
+    const profiles = student.profiles || {};
+    const availability = student.availability || {};
+    const softSkills = student.softSkills || {};
+    const preferences = student.preferences || {};
+    let content = '';
+    content += `<div class='popup-header-row'>`;
+    content += `<img class='popup-avatar' src='${personal.profilePic || '../assets/avatar/1.png'}' alt='Profile Picture'>`;
+    content += `<div class='popup-header-info'>`;
+    content += `<div class='popup-name'>${personal.name || 'Unnamed'}</div>`;
+    content += `<div class='popup-title'>${education.college || 'Unknown College'}${education.branch ? ' - ' + education.branch : ''}</div>`;
+    content += `</div></div>`;
+    content += `<div class='popup-section'><h5>About</h5><p>${personal.about || 'No about info.'}</p></div>`;
+    content += `<div class='popup-section'><h5>Skills & Experience</h5>`;
+    if (student.skills) content += `<p><strong>Skills:</strong> ${student.skills}</p>`;
+    if (student.experience) content += `<p><strong>Experience:</strong> ${student.experience}</p>`;
+    content += `</div>`;
+    content += `<div class='popup-section'><h5>Education</h5>`;
+    content += `<p><strong>College:</strong> ${education.college || 'Not specified'}</p>`;
+    content += `<p><strong>Degree:</strong> ${education.degree || 'Not specified'}</p>`;
+    content += `<p><strong>Branch:</strong> ${education.branch || 'Not specified'}</p>`;
+    content += `<p><strong>Year:</strong> ${education.year || 'Not specified'}</p>`;
+    if (education.cgpa) content += `<p><strong>CGPA:</strong> ${education.cgpa}</p>`;
+    if (education.graduation) content += `<p><strong>Graduation:</strong> ${education.graduation}</p>`;
+    if (education.achievements) content += `<p><strong>Achievements:</strong> ${education.achievements}</p>`;
+    content += `</div>`;
+    content += `<div class='popup-section'><h5>Online Profiles</h5>`;
+    if (profiles.github?.username) content += `<p><strong>GitHub:</strong> <a href='https://github.com/${profiles.github.username}' target='_blank'>${profiles.github.username}</a></p>`;
+    if (profiles.codeforces?.username) content += `<p><strong>Codeforces:</strong> <a href='https://codeforces.com/profile/${profiles.codeforces.username}' target='_blank'>${profiles.codeforces.username}</a></p>`;
+    if (profiles.leetcode?.username) content += `<p><strong>LeetCode:</strong> <a href='https://leetcode.com/${profiles.leetcode.username}' target='_blank'>${profiles.leetcode.username}</a></p>`;
+    if (!profiles.github?.username && !profiles.codeforces?.username && !profiles.leetcode?.username) content += `<p>No online profiles available</p>`;
+    content += `</div>`;
+    if (student.portfolio && student.portfolio.length > 0) {
+        content += `<div class='popup-section'><h5>Portfolio</h5><ul>`;
+        content += student.portfolio.map(item => `<li><a href='${item}' target='_blank'>${item}</a></li>`).join('');
+        content += `</ul></div>`;
+    }
+    content += `<div class='popup-section'><h5>Availability</h5>`;
+    content += `<p><strong>Hours/Week:</strong> ${availability.hours || 'N/A'}</p>`;
+    content += `<p><strong>Preferred Time:</strong> ${availability.worktime || 'N/A'}</p>`;
+    content += `<p><strong>Duration:</strong> ${availability.duration || 'N/A'}</p>`;
+    content += `</div>`;
+    if (softSkills.communication || softSkills.deadlines) {
+        content += `<div class='popup-section'><h5>Soft Skills</h5>`;
+        if (softSkills.communication) content += `<p><strong>Communication:</strong> ${softSkills.communication}</p>`;
+        if (softSkills.deadlines) content += `<p><strong>Deadlines:</strong> ${softSkills.deadlines}</p>`;
+        content += `</div>`;
+    }
+    if (preferences.roles || preferences.why) {
+        content += `<div class='popup-section'><h5>Preferences</h5>`;
+        if (preferences.roles) content += `<p><strong>Preferred Roles:</strong> ${preferences.roles}</p>`;
+        if (preferences.why) content += `<p><strong>Why Interested:</strong> ${preferences.why}</p>`;
+        content += `</div>`;
+    }
+    document.getElementById('studentDetailsContent').innerHTML = content;
+    document.getElementById('studentDetailsPopup').classList.add('active');
+    document.getElementById('studentDetailsOverlay').classList.add('active');
+    // Focus close button for accessibility
+    const closeBtn = document.querySelector('.student-details-popup .macos-close');
+    if (closeBtn) closeBtn.focus();
+};
+window.closeStudentDetailsPopup = () => {
+    document.getElementById('studentDetailsPopup').classList.remove('active');
+    document.getElementById('studentDetailsOverlay').classList.remove('active');
+};
+document.getElementById('studentDetailsOverlay').onclick = closeStudentDetailsPopup;
+// Keyboard accessibility for close button and Escape
+const closeBtn = document.querySelector('.student-details-popup .macos-close');
+if (closeBtn) {
+    closeBtn.setAttribute('tabindex', '0');
+    closeBtn.setAttribute('role', 'button');
+    closeBtn.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
+            closeStudentDetailsPopup();
+        }
+    });
+}
+document.addEventListener('keydown', function(e) {
+    if (document.getElementById('studentDetailsPopup').classList.contains('active') && e.key === 'Escape') {
+        closeStudentDetailsPopup();
+    }
+});
+
+// Tooltip for truncated card content
+let cardTooltip;
+function showCardTooltip(e, text) {
+    if (!cardTooltip) {
+        cardTooltip = document.createElement('div');
+        cardTooltip.className = 'card-tooltip';
+        document.body.appendChild(cardTooltip);
+    }
+    cardTooltip.textContent = text;
+    cardTooltip.classList.add('active');
+    // Position tooltip near mouse, but not off screen
+    const padding = 12;
+    let x = e.clientX + padding;
+    let y = e.clientY + padding;
+    // Adjust if tooltip would go off right/bottom edge
+    setTimeout(() => {
+        const rect = cardTooltip.getBoundingClientRect();
+        if (x + rect.width > window.innerWidth - 8) x = window.innerWidth - rect.width - 8;
+        if (y + rect.height > window.innerHeight - 8) y = window.innerHeight - rect.height - 8;
+        cardTooltip.style.left = x + 'px';
+        cardTooltip.style.top = y + 'px';
+    }, 0);
+}
+function hideCardTooltip() {
+    if (cardTooltip) cardTooltip.classList.remove('active');
+}
+function isTruncated(el) {
+    return el.scrollWidth > el.clientWidth;
+}
+function addTooltipListenersToCardCells() {
+    // Select all card content cells that may overflow
+    const selectors = [
+        '.student-card .basic-info h3',
+        '.student-card .basic-info h4',
+        '.student-card .education-info p',
+        '.student-card .skills-info p',
+        '.student-card .availability-info p'
+    ];
+    document.querySelectorAll(selectors.join(',')).forEach(cell => {
+        cell.onmouseenter = function(e) {
+            if (isTruncated(this)) {
+                showCardTooltip(e, this.textContent);
+                console.log('Tooltip shown for:', this.textContent);
+            } else {
+                console.log('Not truncated:', this.textContent);
+            }
+        };
+        cell.onmousemove = function(e) {
+            if (cardTooltip && cardTooltip.classList.contains('active')) {
+                showCardTooltip(e, this.textContent);
+            }
+        };
+        cell.onmouseleave = function() {
+            hideCardTooltip();
+        };
+    });
+    console.log('Tooltip listeners attached to card cells');
+}
+// Re-apply listeners after cards are rendered
+const origPerformSearch = window.performSearch;
+window.performSearch = function() {
+    origPerformSearch.apply(this, arguments);
+    setTimeout(addTooltipListenersToCardCells, 0);
+};
+window.addEventListener('DOMContentLoaded', addTooltipListenersToCardCells);
 </script>
 </body>
+</html>
 </html>

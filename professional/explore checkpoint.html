@@ -1031,33 +1031,8 @@
             currentStudentId = null;
         };
         window.showProfile = (targetUserId) => {
-            const student = studentsData.find(s => s.id === targetUserId);
-            if (student) {
-                const fields = [
-                    { label: 'Degree', value: student.education?.degree },
-                    { label: 'Year', value: student.education?.year },
-                    { label: 'Skills', value: student.skills },
-                    { label: 'Experience', value: student.experience },
-                    { label: 'Email', value: student.personal?.email },
-                    { label: 'LinkedIn', value: student.personal?.linkedin ? `<a href="${student.personal.linkedin}" target="_blank">View LinkedIn</a>` : null }
-                ].filter(field => field.value && field.value !== 'Not set');
-                profileContent.innerHTML = `
-                    <div class="profile-section">
-                        <img src="${student.personal?.profilePic || '../assets/avatar/1.png'}" alt="Profile Picture" class="profile-pic">
-                        <div class="profile-details">
-                            <h2>${student.personal?.name || 'Unnamed'}</h2>
-                            <h3>${student.education?.college || 'Not set'} - ${student.education?.branch || 'Not set'}</h3>
-                            ${fields.map(field => `<p><strong>${field.label}:</strong> ${field.value}</p>`).join('')}
-                        </div>
-                    </div>
-                `;
-                profilePopup.classList.add('active');
-                overlay.classList.add('active');
-            } else {
-                profileContent.innerHTML = '<div class="profile-section"><h2>Profile Not Found</h2><p>No data available.</p></div>';
-                profilePopup.classList.add('active');
-                overlay.classList.add('active');
-            }
+            // Redirect to the new student profile page
+            window.location.href = `../st/${targetUserId}`;
         };
         window.closeProfilePopup = () => {
             profilePopup.classList.remove('active');

@@ -1,0 +1,9 @@
+RewriteEngine On
+
+# Handle student profile URLs: /st/{student_id}
+RewriteRule ^st/([^/]+)/?$ st.html?id=$1 [L,QSA]
+
+# Handle other clean URLs if needed
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([^/]+)/?$ $1.html [L] 

@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Profile - Taska</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/global.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background: #f5f5f7;
+            min-height: 100vh;
+            color: #1d1d1f;
+            overflow-x: hidden;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 600;
+            font-size: 1.25rem;
+            color: #1d1d1f;
+        }
+
+        .logo img {
+            height: 32px;
+            width: auto;
+        }
+
+        .back-btn {
+            background: #007aff;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-btn:hover {
+            background: #0056cc;
+            transform: translateY(-1px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 6rem 2rem 2rem;
+        }
+
+        .profile-header {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #fff;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            flex-shrink: 0;
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-name {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.025em;
+        }
+
+        .profile-title {
+            font-size: 1.125rem;
+            color: #86868b;
+            margin-bottom: 1rem;
+            font-weight: 400;
+        }
+
+        .profile-location {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #86868b;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(0, 122, 255, 0.1);
+            color: #007aff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .social-link:hover {
+            background: rgba(0, 122, 255, 0.15);
+            transform: translateY(-1px);
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .card-icon {
+            width: 32px;
+            height: 32px;
+            background: #007aff;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.875rem;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1d1d1f;
+        }
+
+        .about-text {
+            line-height: 1.6;
+            color: #424245;
+            font-size: 0.95rem;
+        }
+
+        .skills-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .skill-tag {
+            background: rgba(0, 122, 255, 0.1);
+            color: #007aff;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border: 1px solid rgba(0, 122, 255, 0.2);
+        }
+
+        .education-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .education-item:last-child {
+            border-bottom: none;
+        }
+
+        .education-label {
+            font-weight: 500;
+            color: #1d1d1f;
+        }
+
+        .education-value {
+            color: #86868b;
+            text-align: right;
+        }
+
+        .experience-item {
+            margin-bottom: 1.5rem;
+        }
+
+        .experience-title {
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 0.5rem;
+        }
+
+        .experience-desc {
+            color: #424245;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .portfolio-grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .portfolio-item {
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.02);
+            border-radius: 8px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .portfolio-title {
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 0.5rem;
+        }
+
+        .portfolio-link {
+            color: #007aff;
+            text-decoration: none;
+            font-size: 0.875rem;
+        }
+
+        .portfolio-link:hover {
+            text-decoration: underline;
+        }
+
+        .availability-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .availability-item {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.02);
+            border-radius: 8px;
+        }
+
+        .availability-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #007aff;
+            margin-bottom: 0.25rem;
+        }
+
+        .availability-label {
+            font-size: 0.75rem;
+            color: #86868b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .soft-skills-grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .skill-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            background: rgba(0, 0, 0, 0.02);
+            border-radius: 8px;
+        }
+
+        .skill-name {
+            font-weight: 500;
+            color: #1d1d1f;
+        }
+
+        .skill-rating {
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .rating-excellent {
+            background: rgba(52, 199, 89, 0.1);
+            color: #34c759;
+        }
+
+        .rating-good {
+            background: rgba(0, 122, 255, 0.1);
+            color: #007aff;
+        }
+
+        .rating-average {
+            background: rgba(255, 149, 0, 0.1);
+            color: #ff9500;
+        }
+
+        .rating-needs-improvement {
+            background: rgba(255, 59, 48, 0.1);
+            color: #ff3b30;
+        }
+
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
+            font-size: 1.125rem;
+            color: #86868b;
+        }
+
+        .error {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
+            font-size: 1.125rem;
+            color: #ff3b30;
+        }
+
+        .not-found {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .not-found-icon {
+            font-size: 4rem;
+            color: #86868b;
+            margin-bottom: 1rem;
+        }
+
+        .not-found-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 0.5rem;
+        }
+
+        .not-found-text {
+            color: #86868b;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 5rem 1rem 1rem;
+            }
+
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 1.5rem;
+            }
+
+            .profile-avatar {
+                width: 100px;
+                height: 100px;
+            }
+
+            .profile-name {
+                font-size: 1.5rem;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .availability-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .navbar {
+                padding: 1rem;
+            }
+
+            .social-links {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .profile-header {
+                padding: 1.5rem;
+            }
+
+            .card {
+                padding: 1.25rem;
+            }
+
+            .skills-grid {
+                gap: 0.5rem;
+            }
+
+            .skill-tag {
+                padding: 0.375rem 0.75rem;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="assets/logo.png" alt="Taska Logo">
+            <span>Taska</span>
+        </div>
+        <a href="index.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i>
+            Back to Home
+        </a>
+    </nav>
+
+    <div class="container">
+        <div id="loading" class="loading">
+            <i class="fas fa-spinner fa-spin"></i>
+            Loading profile...
+        </div>
+
+        <div id="error" class="error" style="display: none;">
+            <i class="fas fa-exclamation-triangle"></i>
+            Error loading profile
+        </div>
+
+        <div id="not-found" class="not-found" style="display: none;">
+            <div class="not-found-icon">
+                <i class="fas fa-user-slash"></i>
+            </div>
+            <h1 class="not-found-title">Student Not Found</h1>
+            <p class="not-found-text">The student profile you're looking for doesn't exist or has been removed.</p>
+            <a href="index.html" class="back-btn">
+                <i class="fas fa-home"></i>
+                Go to Home
+            </a>
+        </div>
+
+        <div id="profile-content" style="display: none;">
+            <div class="profile-header">
+                <img id="profile-avatar" class="profile-avatar" src="assets/avatar/1.png" alt="Profile Picture">
+                <div class="profile-info">
+                    <h1 id="profile-name" class="profile-name">Loading...</h1>
+                    <p id="profile-title" class="profile-title">Loading...</p>
+                    <div id="profile-location" class="profile-location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Loading...</span>
+                    </div>
+                    <div id="social-links" class="social-links">
+                        <!-- Social links will be populated here -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-grid">
+                <div class="main-content">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <h2 class="card-title">About</h2>
+                        </div>
+                        <p id="about-text" class="about-text">Loading...</p>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <h2 class="card-title">Skills</h2>
+                        </div>
+                        <div id="skills-grid" class="skills-grid">
+                            <!-- Skills will be populated here -->
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fas fa-briefcase"></i>
+                            </div>
+                            <h2 class="card-title">Experience</h2>
+                        </div>
+                        <div id="experience-content">
+                            <!-- Experience will be populated here -->
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fas fa-folder"></i>
+                            </div>
+                            <h2 class="card-title">Portfolio</h2>
+                        </div>
+                        <div id="portfolio-grid" class="portfolio-grid">
+                            <!-- Portfolio will be populated here -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <h2 class="card-title">Education</h2>
+                        </div>
+                        <div id="education-content">
+                            <!-- Education will be populated here -->
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <h2 class="card-title">Availability</h2>
+                        </div>
+                        <div id="availability-grid" class="availability-grid">
+                            <!-- Availability will be populated here -->
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <h2 class="card-title">Soft Skills</h2>
+                        </div>
+                        <div id="soft-skills-grid" class="soft-skills-grid">
+                            <!-- Soft skills will be populated here -->
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fas fa-code-branch"></i>
+                            </div>
+                            <h2 class="card-title">Online Profiles</h2>
+                        </div>
+                        <div id="profiles-content">
+                            <!-- Online profiles will be populated here -->
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <h2 class="card-title">Preferences</h2>
+                        </div>
+                        <div id="preferences-content">
+                            <!-- Preferences will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import { getStorage, ref as storageRef, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDZIDlEtaNRxODoFhRw0xF2yYFBqqBexqo",
+            authDomain: "taska-45011.firebaseapp.com",
+            databaseURL: "https://taska-45011-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "taska-45011",
+            storageBucket: "taska-45011.firebasestorage.app",
+            messagingSenderId: "205487498813",
+            appId: "1:205487498813:web:0de2c9eab567482781ec54"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const storage = getStorage(app);
+
+        // Get student ID from URL
+        const pathSegments = window.location.pathname.split('/');
+        let studentId = null;
+        
+        // Handle both /st/{id} and /st.html?id={id} formats
+        if (pathSegments.includes('st') && pathSegments.length > 2) {
+            // Extract ID from path like /st/student_123
+            studentId = pathSegments[pathSegments.length - 1];
+        } else {
+            // Fallback to query parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            studentId = urlParams.get('id');
+        }
+
+        if (!studentId) {
+            showNotFound();
+            return;
+        }
+
+        loadStudentProfile(studentId);
+
+        async function loadStudentProfile(studentId) {
+            try {
+                const studentRef = ref(db, `studentslist/${studentId}`);
+                const snapshot = await get(studentRef);
+
+                if (!snapshot.exists()) {
+                    showNotFound();
+                    return;
+                }
+
+                const student = snapshot.val();
+                displayProfile(student);
+            } catch (error) {
+                console.error('Error loading profile:', error);
+                showError();
+            }
+        }
+
+        function displayProfile(student) {
+            // Hide loading, show content
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('profile-content').style.display = 'block';
+
+            // Load profile picture
+            loadProfilePicture(studentId);
+
+            // Personal Information
+            document.getElementById('profile-name').textContent = student.personal?.name || 'Unnamed';
+            document.getElementById('profile-title').textContent = 
+                `${student.education?.college || 'Unknown College'} - ${student.education?.branch || 'Unknown Branch'}`;
+            document.getElementById('profile-location').innerHTML = 
+                `<i class="fas fa-map-marker-alt"></i><span>${student.personal?.location || 'Location not specified'}</span>`;
+
+            // Social Links
+            const socialLinks = document.getElementById('social-links');
+            socialLinks.innerHTML = '';
+            
+            if (student.personal?.linkedin) {
+                socialLinks.innerHTML += `
+                    <a href="${student.personal.linkedin}" target="_blank" class="social-link">
+                        <i class="fab fa-linkedin"></i>
+                        LinkedIn
+                    </a>
+                `;
+            }
+
+            if (student.personal?.whatsapp) {
+                socialLinks.innerHTML += `
+                    <a href="https://wa.me/${student.personal.whatsapp}" target="_blank" class="social-link">
+                        <i class="fab fa-whatsapp"></i>
+                        WhatsApp
+                    </a>
+                `;
+            }
+
+            if (student.personal?.email) {
+                socialLinks.innerHTML += `
+                    <a href="mailto:${student.personal.email}" class="social-link">
+                        <i class="fas fa-envelope"></i>
+                        Email
+                    </a>
+                `;
+            }
+
+            // About
+            document.getElementById('about-text').textContent = 
+                student.personal?.about || student.about || 'No description available.';
+
+            // Skills
+            const skillsGrid = document.getElementById('skills-grid');
+            if (student.skills) {
+                const skills = student.skills.split(',').map(skill => skill.trim());
+                skillsGrid.innerHTML = skills.map(skill => 
+                    `<span class="skill-tag">${skill}</span>`
+                ).join('');
+            } else {
+                skillsGrid.innerHTML = '<p>No skills listed</p>';
+            }
+
+            // Experience
+            const experienceContent = document.getElementById('experience-content');
+            if (student.experience) {
+                experienceContent.innerHTML = `
+                    <div class="experience-item">
+                        <div class="experience-title">Experience</div>
+                        <div class="experience-desc">${student.experience}</div>
+                    </div>
+                `;
+            } else {
+                experienceContent.innerHTML = '<p>No experience listed</p>';
+            }
+
+            // Portfolio
+            const portfolioGrid = document.getElementById('portfolio-grid');
+            if (student.portfolio && student.portfolio.length > 0) {
+                portfolioGrid.innerHTML = student.portfolio.map(item => `
+                    <div class="portfolio-item">
+                        <div class="portfolio-title">Project</div>
+                        <a href="${item}" target="_blank" class="portfolio-link">${item}</a>
+                    </div>
+                `).join('');
+            } else {
+                portfolioGrid.innerHTML = '<p>No portfolio items available</p>';
+            }
+
+            // Education
+            const educationContent = document.getElementById('education-content');
+            const education = student.education || {};
+            educationContent.innerHTML = `
+                <div class="education-item">
+                    <span class="education-label">College</span>
+                    <span class="education-value">${education.college || 'Not specified'}</span>
+                </div>
+                <div class="education-item">
+                    <span class="education-label">Degree</span>
+                    <span class="education-value">${education.degree || 'Not specified'}</span>
+                </div>
+                <div class="education-item">
+                    <span class="education-label">Branch</span>
+                    <span class="education-value">${education.branch || 'Not specified'}</span>
+                </div>
+                <div class="education-item">
+                    <span class="education-label">Year</span>
+                    <span class="education-value">${education.year || 'Not specified'}</span>
+                </div>
+                ${education.cgpa ? `
+                    <div class="education-item">
+                        <span class="education-label">CGPA</span>
+                        <span class="education-value">${education.cgpa}</span>
+                    </div>
+                ` : ''}
+                ${education.graduation ? `
+                    <div class="education-item">
+                        <span class="education-label">Expected Graduation</span>
+                        <span class="education-value">${education.graduation}</span>
+                    </div>
+                ` : ''}
+            `;
+
+            // Availability
+            const availabilityGrid = document.getElementById('availability-grid');
+            const availability = student.availability || {};
+            availabilityGrid.innerHTML = `
+                <div class="availability-item">
+                    <div class="availability-value">${availability.hours || 'N/A'}</div>
+                    <div class="availability-label">Hours/Week</div>
+                </div>
+                <div class="availability-item">
+                    <div class="availability-value">${availability.worktime || 'N/A'}</div>
+                    <div class="availability-label">Preferred Time</div>
+                </div>
+                <div class="availability-item">
+                    <div class="availability-value">${availability.remote === 'Yes' ? 'Yes' : 'No'}</div>
+                    <div class="availability-label">Remote Work</div>
+                </div>
+                <div class="availability-item">
+                    <div class="availability-value">${availability.duration || 'N/A'}</div>
+                    <div class="availability-label">Duration</div>
+                </div>
+            `;
+
+            // Soft Skills
+            const softSkillsGrid = document.getElementById('soft-skills-grid');
+            const softSkills = student.softSkills || {};
+            softSkillsGrid.innerHTML = `
+                <div class="skill-item">
+                    <span class="skill-name">Communication</span>
+                    <span class="skill-rating rating-${getRatingClass(softSkills.communication)}">${softSkills.communication || 'Not rated'}</span>
+                </div>
+                <div class="skill-item">
+                    <span class="skill-name">Deadlines</span>
+                    <span class="skill-rating rating-${getRatingClass(softSkills.deadlines)}">${softSkills.deadlines || 'Not rated'}</span>
+                </div>
+            `;
+
+            // Online Profiles
+            const profilesContent = document.getElementById('profiles-content');
+            const profiles = student.profiles || {};
+            let profilesHTML = '';
+            
+            if (profiles.github?.username) {
+                profilesHTML += `
+                    <div class="education-item">
+                        <span class="education-label">GitHub</span>
+                        <span class="education-value">
+                            <a href="https://github.com/${profiles.github.username}" target="_blank" class="portfolio-link">
+                                ${profiles.github.username}
+                            </a>
+                        </span>
+                    </div>
+                `;
+            }
+            
+            if (profiles.codeforces?.username) {
+                profilesHTML += `
+                    <div class="education-item">
+                        <span class="education-label">Codeforces</span>
+                        <span class="education-value">
+                            <a href="https://codeforces.com/profile/${profiles.codeforces.username}" target="_blank" class="portfolio-link">
+                                ${profiles.codeforces.username}
+                            </a>
+                        </span>
+                    </div>
+                `;
+            }
+            
+            if (profiles.leetcode?.username) {
+                profilesHTML += `
+                    <div class="education-item">
+                        <span class="education-label">LeetCode</span>
+                        <span class="education-value">
+                            <a href="https://leetcode.com/${profiles.leetcode.username}" target="_blank" class="portfolio-link">
+                                ${profiles.leetcode.username}
+                            </a>
+                        </span>
+                    </div>
+                `;
+            }
+            
+            if (!profilesHTML) {
+                profilesHTML = '<p>No online profiles available</p>';
+            }
+            
+            profilesContent.innerHTML = profilesHTML;
+
+            // Preferences
+            const preferencesContent = document.getElementById('preferences-content');
+            const preferences = student.preferences || {};
+            preferencesContent.innerHTML = `
+                <div class="experience-item">
+                    <span class="education-label">Preferred Roles</span>
+                    <span class="education-value">${preferences.roles || 'Not specified'}</span>
+                </div>
+                ${preferences.why ? `
+                    <div class="experience-item">
+                        <span class="education-label">Why Interested</span>
+                        <span class="education-value">${preferences.why}</span>
+                    </div>
+                ` : ''}
+            `;
+        }
+
+        function getRatingClass(rating) {
+            if (!rating) return 'average';
+            const lowerRating = rating.toLowerCase();
+            if (lowerRating.includes('excellent')) return 'excellent';
+            if (lowerRating.includes('good')) return 'good';
+            if (lowerRating.includes('average')) return 'average';
+            if (lowerRating.includes('needs improvement')) return 'needs-improvement';
+            return 'average';
+        }
+
+        async function loadProfilePicture(studentId) {
+            try {
+                const profilePhotoRef = storageRef(storage, `profile/${studentId}.webp`);
+                const profilePhotoUrl = await getDownloadURL(profilePhotoRef);
+                document.getElementById('profile-avatar').src = profilePhotoUrl;
+            } catch (error) {
+                // Keep default avatar if no profile photo exists
+                console.log('No profile photo found, using default avatar');
+            }
+        }
+
+        function showNotFound() {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('not-found').style.display = 'block';
+        }
+
+        function showError() {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('error').style.display = 'block';
+        }
+    </script>
+</body>
+</html> 

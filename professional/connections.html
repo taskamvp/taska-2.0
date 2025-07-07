@@ -410,10 +410,8 @@
     </style>
 </head>
 <body>
-    <nav class="navbar">
-        <a href="../index.html">
-            <div class="logo">Taska</div>
-        </a>
+    <nav class="top-navbar">
+        <div class="logo"><img src="../assets/logo.png" alt="Taska Logo" style="height:32px;vertical-align:middle;"></div>
         <ul class="nav-menu">
             <li><a href="explore.html">Explore</a></li>
             <li><a href="tasks.html">Workplace</a></li>
@@ -704,84 +702,8 @@
         };
     
         window.showProfile = async (targetUserId) => {
-            try {
-                const studentRef = ref(db, `studentslist/${targetUserId}`);
-                const snapshot = await get(studentRef);
-                const profilePopup = document.getElementById('profilePopup');
-                const profileContent = document.getElementById('profileContent');
-                const overlay = document.getElementById('overlay');
-                if (snapshot.exists()) {
-                    const profileData = snapshot.val();
-                    profileContent.innerHTML = `
-                        <h2 class="profile-name">${profileData.personal.name || 'Unnamed'}</h2>
-                        <div class="profile-section">
-                            <h2>Personal Details</h2>
-                            <p><strong>Email:</strong> ${profileData.personal.email || 'Not set'}</p>
-                            <p><strong>Gender:</strong> ${profileData.personal.gender || 'Not set'}</p>
-                            <p><strong>Location:</strong> ${profileData.personal.location || 'Not set'}</p>
-                            <p><strong>LinkedIn:</strong> <a href="${profileData.personal.linkedin || '#'}" target="_blank">${profileData.personal.linkedin || 'Not set'}</a></p>
-                        </div>
-                        <div class="profile-section">
-                            <h2>Profiles</h2>
-                            <p><strong>GitHub:</strong> ${profileData.profiles?.github?.username ? `${profileData.profiles.github.username} (Repos: ${profileData.profiles.github.details?.repos || 0})` : 'Not set'}</p>
-                            <p><strong>Codeforces:</strong> ${profileData.profiles?.codeforces?.username ? `${profileData.profiles.codeforces.username} (Rating: ${profileData.profiles.codeforces.details?.rating || 'N/A'})` : 'Not set'}</p>
-                            <p><strong>LeetCode:</strong> ${profileData.profiles?.leetcode?.username ? `${profileData.profiles.leetcode.username} (Solved: ${profileData.profiles.leetcode.details?.totalSolved || 0})` : 'Not set'}</p>
-                        </div>
-                        <div class="profile-section">
-                            <h2>Educational Details</h2>
-                            <p><strong>College:</strong> ${profileData.education.college || 'Not set'}</p>
-                            <p><strong>Degree:</strong> ${profileData.education.degree || 'Not set'}</p>
-                            <p><strong>Branch:</strong> ${profileData.education.branch || 'Not set'}</p>
-                            <p><strong>Year:</strong> ${profileData.education.year || 'Not set'}</p>
-                        </div>
-                        <div class="profile-section">
-                            <h2>Skills & Experience</h2>
-                            <p><strong>Skills:</strong> ${profileData.skills || 'Not set'}</p>
-                            <p><strong>Experience:</strong> ${profileData.experience || 'Not set'}</p>
-                        </div>
-                        <div class="bottom-section">
-                            <div class="profile-section">
-                                <h2>Availability</h2>
-                                <p><strong>Hours/Week:</strong> ${profileData.availability?.hours || 'Not set'}</p>
-                                <p><strong>Work Time:</strong> ${profileData.availability?.worktime || 'Not set'}</p>
-                                <p><strong>Remote:</strong> ${profileData.availability?.remote || 'Not set'}</p>
-                                <p><strong>Duration:</strong> ${profileData.availability?.duration || 'Not set'}</p>
-                            </div>
-                            <div class="profile-section">
-                                <h2>Portfolio</h2>
-                                <ul>${
-                                    profileData.portfolio && profileData.portfolio.length > 0 
-                                    ? profileData.portfolio.map(url => `<li><a href="${url}" target="_blank">${url}</a></li>`).join('')
-                                    : '<li>Not set</li>'
-                                }</ul>
-                            </div>
-                            <div class="profile-section">
-                                <h2>Preferences</h2>
-                                <p><strong>Roles:</strong> ${profileData.preferences?.roles || 'Not set'}</p>
-                                <p><strong>Why:</strong> ${profileData.preferences?.why || 'Not set'}</p>
-                            </div>
-                            <div class="profile-section">
-                                <h2>Soft Skills</h2>
-                                <p><strong>Communication:</strong> ${profileData.softSkills?.communication || 'Not set'}</p>
-                                <p><strong>Deadlines:</strong> ${profileData.softSkills?.deadlines || 'Not set'}</p>
-                            </div>
-                        </div>
-                    `;
-                    profilePopup.classList.add('active');
-                    overlay.classList.add('active');
-                } else {
-                    profileContent.innerHTML = '<h2>Profile Not Found</h2><p>No data available.</p>';
-                    profilePopup.classList.add('active');
-                    overlay.classList.add('active');
-                }
-            } catch (error) {
-                const profilePopup = document.getElementById('profilePopup');
-                const profileContent = document.getElementById('profileContent');
-                const overlay = document.getElementById('overlay');
-                profileContent.innerHTML = `<h2>Error</h2><p>Failed to load profile: ${error.message}</p>`;
-                profilePopup.classList.add('active');
-                overlay.classList.add('active');
-            }
+            // Redirect to the new student profile page
+            window.location.href = `../st/${targetUserId}`;
         };
     
         window.closeProfilePopup = () => {
