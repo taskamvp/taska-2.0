@@ -7,47 +7,108 @@
     <title>Taska | Find Elite Student Talent</title>
     <link rel="icon" type="image/png" href="assets/logo.png">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&family=Inter:wght@400;600;700&family=Montserrat:wght@700;600;500;400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         :root {
-            --up-green: #14a800;
-            --up-green-light: #e6f7ec;
-            --up-gray: #f7f9fa;
-            --up-dark: #001e00;
+            --dark-green: #14532d;
+            --green: #166534;
+            --yellow: #facc15;
+            --yellow-light: #fef9c3;
+            --gray-bg: #f7f9fa;
+            --dark: #001e00;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; }
-        body { background: var(--up-gray); color: #222; }
+        body { background: #fff; color: #222; font-family: 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif; }
         .navbar {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 0.3rem 2.5vw; background: #fff; border-bottom: 1px solid #e5e7ea;
+            padding: 0.3rem 2.5vw; background: #fff;
             position: sticky; top: 0; z-index: 1000;
             min-height: 56px;
         }
         .navbar .logo {
             display: flex; align-items: center; gap: 0.7rem;
-            font-size: 1.7rem; font-weight: 700; color: var(--up-green);
+            font-size: 1.7rem; font-weight: 700; color: var(--dark-green);
             letter-spacing: -1px;
         }
         .navbar .logo img { height: 54px; }
-        .nav-menu { display: flex; gap: 2.2rem; list-style: none; }
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            list-style: none;
+            margin-left: auto;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2.2rem;
+        }
+        .auth-links {
+            display: flex;
+            gap: 1.1rem;
+            margin-left: 2.5rem;
+        }
+        .signup-btn {
+            background: var(--yellow);
+            color: var(--dark-green) !important;
+            border-radius: 8px;
+            padding: 0.5rem 1.3rem;
+            font-weight: 600;
+            border: none;
+            transition: background 0.18s, color 0.18s;
+            text-decoration: none;
+            font-family: 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
+        }
+        .signup-btn:hover {
+            background: var(--yellow-light);
+            color: var(--green) !important;
+        }
         .nav-menu li a {
             text-decoration: none; color: #222; font-weight: 500; font-size: 1rem;
-            padding: 0.5rem 1.2rem; border-radius: 8px; transition: background 0.18s, color 0.18s;
+            padding: 0.5rem 1.2rem; border-radius: 8px; transition: color 0.18s;
+            background: none;
+            box-shadow: none;
         }
         .nav-menu li a:hover, .nav-menu li a.active {
-            background: var(--up-green-light); color: var(--up-green);
+            background: none;
+            color: var(--dark-green);
+            box-shadow: none;
         }
         .hero {
-            background: #fff; border-radius: 2.2rem; margin: 2.5rem auto 2rem auto; max-width: 1100px;
-            box-shadow: 0 8px 32px 0 rgba(20,168,0,0.07);
-            padding: 4.5rem 2.5rem 4rem 2.5rem; text-align: left; position: relative;
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(24px) saturate(1.2);
+            -webkit-backdrop-filter: blur(24px) saturate(1.2);
+            border-radius: 1.5rem !important;
+            margin: 2.2rem auto 2.5rem auto;
+            max-width: 1250px;
+            min-width: 340px;
+            width: 96vw;
+            box-shadow: none !important;
+            border: 2px solid rgba(20, 85, 20, 0.13) !important;
+            padding: 2.5rem 3.5rem 5.5rem 3.5rem;
+            text-align: left;
+            position: relative;
+            font-family: 'Manrope', 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
+        }
+        .hero h1, .hero p, .hero .hero-highlight {
+            font-family: 'Manrope', 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
         }
         .hero h1 {
-            font-size: 2.8rem; font-weight: 700; color: var(--up-dark); margin-bottom: 1.2rem; line-height: 1.1;
+            font-size: 2.8rem; font-weight: 700; color: var(--dark-green); margin-bottom: 1.2rem; line-height: 1.6;
         }
-        .hero .hero-highlight { color: var(--up-green); }
-        .hero p {
-            font-size: 1.25rem; color: #444; margin-bottom: 2.2rem; max-width: 600px;
+        .hero .hero-highlight { color: var(--green); }
+        .hero-desc {
+            font-family: 'Manrope', 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
+            font-size: 1.3rem;
+            font-weight: 500;
+            color: #2d3a3a;
+            line-height: 1.7;
+            margin-bottom: 2.2rem;
+            max-width: 700px;
+            background: rgba(255,255,255,0.45);
+            border-radius: 1.1rem;
+            padding: 1.1rem 1.5rem;
+            box-shadow: 0 2px 12px 0 rgba(20, 85, 20, 0.04);
         }
         .hero-search {
             display: flex; gap: 0.7rem; margin-bottom: 2.2rem; max-width: 520px;
@@ -56,20 +117,53 @@
             flex: 1; padding: 1.1rem 1.2rem; border-radius: 8px; border: 1.5px solid #e5e7ea;
             font-size: 1.1rem; outline: none; transition: border 0.18s;
         }
-        .hero-search input:focus { border-color: var(--up-green); }
+        .hero-search input:focus { border-color: var(--dark-green); }
         .hero-search button {
-            background: var(--up-green); color: #fff; border: none; border-radius: 8px;
+            background: var(--dark-green); color: var(--yellow); border: none; border-radius: 8px;
             padding: 1.1rem 2.1rem; font-size: 1.1rem; font-weight: 600; cursor: pointer;
-            transition: background 0.18s;
+            transition: background 0.18s, color 0.18s;
         }
-        .hero-search button:hover { background: #128a00; }
-        .hero-cta-row { display: flex; gap: 1.2rem; margin-top: 0.5rem; }
-        .hero-cta {
-            background: var(--up-green-light); color: var(--up-green); border: none;
-            border-radius: 8px; padding: 0.9rem 2.1rem; font-size: 1.1rem; font-weight: 600;
-            cursor: pointer; transition: background 0.18s;
+        .hero-search button:hover { background: var(--green); color: var(--yellow-light); }
+        .hero-cta-row {
+            display: flex;
+            gap: 1.2rem;
+            margin-top: 1.2rem;
+            justify-content: flex-start;
         }
-        .hero-cta:hover { background: #d2f5db; }
+        .hero-cta-google {
+            font-family: 'Manrope', 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
+            font-size: 1.08rem;
+            font-weight: 400;
+            border-radius: 22px;
+            padding: 1.05rem 2.2rem;
+            cursor: pointer;
+            border: none;
+            outline: none;
+            box-shadow: 0 1.5px 6px 0 rgba(60, 64, 67, 0.08);
+            transition: background 0.16s, color 0.16s, box-shadow 0.16s, border 0.16s;
+            margin-bottom: 0.2rem;
+            display: inline-block;
+        }
+        .hero-cta-google.primary {
+            background: #328e6c;
+            color: #fff;
+            border: 1.5px solid #1a5a45;
+        }
+        .hero-cta-google.primary:hover {
+            background: #6ee7b7;
+            color: #14532d;
+            box-shadow: 0 3px 12px 0 rgba(20, 85, 20, 0.13);
+        }
+        .hero-cta-google.secondary {
+            background: #fff;
+            color: var(--green);
+            border: 1.5px solid var(--green);
+        }
+        .hero-cta-google.secondary:hover {
+            background: #f7f9fa;
+            color: #14532d;
+            box-shadow: 0 3px 12px 0 rgba(20, 85, 20, 0.10);
+        }
         .trusted-row {
             display: flex; align-items: center; gap: 2.2rem; margin: 2.5rem auto 0 auto; max-width: 1100px;
             justify-content: center; flex-wrap: wrap;
@@ -80,7 +174,7 @@
             margin: 3.5rem auto 2.5rem auto; max-width: 1100px;
         }
         .categories-title {
-            font-size: 2rem; font-weight: 700; color: var(--up-dark); margin-bottom: 2rem;
+            font-size: 2rem; font-weight: 700; color: var(--dark-green); margin-bottom: 2rem;
         }
         .categories-row {
             display: flex; gap: 2rem; flex-wrap: wrap; justify-content: center;
@@ -92,10 +186,10 @@
             border: 1.5px solid #e5e7ea; transition: box-shadow 0.18s, border 0.18s;
         }
         .category-card:hover {
-            box-shadow: 0 6px 24px 0 rgba(20,168,0,0.13); border: 1.5px solid var(--up-green);
+            box-shadow: 0 6px 24px 0 rgba(20,168,0,0.13); border: 1.5px solid var(--dark-green);
         }
         .category-icon {
-            font-size: 2.2rem; color: var(--up-green); margin-bottom: 0.2rem;
+            font-size: 2.2rem; color: var(--dark-green); margin-bottom: 0.2rem;
         }
         .category-title {
             font-size: 1.13rem; font-weight: 600; color: #1d1d1f; text-align: center;
@@ -109,26 +203,26 @@
             padding: 3.5rem 2.5rem 3rem 2.5rem; text-align: left; position: relative;
         }
         .benefits-title {
-            font-size: 2rem; font-weight: 700; color: var(--up-dark); margin-bottom: 2rem;
+            font-size: 2rem; font-weight: 700; color: var(--dark-green); margin-bottom: 2rem;
         }
         .benefits-list {
             display: flex; gap: 2.2rem; flex-wrap: wrap; justify-content: center;
         }
         .benefit-card {
-            background: var(--up-green-light); border-radius: 1.2rem; box-shadow: 0 2px 12px 0 rgba(20,168,0,0.04);
+            background: var(--yellow-light); border-radius: 1.2rem; box-shadow: 0 2px 12px 0 rgba(20,168,0,0.04);
             padding: 2rem 1.5rem 1.5rem 1.5rem; min-width: 200px; max-width: 260px;
             display: flex; flex-direction: column; align-items: flex-start; gap: 1.1rem;
             border: 1.5px solid #e5e7ea; transition: box-shadow 0.18s, border 0.18s;
         }
         .benefit-card .benefit-icon {
-            font-size: 2rem; color: var(--up-green); margin-bottom: 0.2rem;
+            font-size: 2rem; color: var(--dark-green); margin-bottom: 0.2rem;
         }
         .benefit-card .benefit-title {
             font-size: 1.1rem; font-weight: 600; color: #1d1d1f;
-        }
+            }
         .benefit-card .benefit-desc {
             font-size: 0.97rem; color: #444;
-        }
+            }
         @media (max-width: 900px) {
             .hero, .benefits-section, .categories-section, .trusted-row { max-width: 98vw; margin-left: 1vw; margin-right: 1vw; }
             .categories-row, .benefits-list { gap: 1.1rem; }
@@ -143,28 +237,252 @@
             .navbar { flex-direction: column; gap: 0.7rem; padding: 1rem 0.5rem; }
             .nav-menu { gap: 1rem; }
         }
+        .ai-search-container {
+            position: relative;
+            display: flex;
+            justify-content: flex-start;
+            margin: 2.2rem 0 2.5rem 0;
+        }
+        .ai-search-box {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            max-width: 580px;
+            background: #fff;
+            border-radius: 999px;
+            box-shadow: 0 4px 32px 0 rgba(20, 85, 20, 0.10);
+            border: 1.5px solid #e5e7ea;
+            padding: 0.3rem 0.3rem 0.3rem 1.5rem;
+            position: relative;
+            transition: box-shadow 0.32s cubic-bezier(.4,1.4,.6,1), border 0.22s cubic-bezier(.4,1.4,.6,1);
+            font-family: 'Manrope', 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
+        }
+        .ai-search-box:focus-within {
+            /* No visual effect on focus */
+        }
+        .ai-search-icon {
+            color: var(--green);
+            font-size: 1.5rem;
+            margin-right: 1.1rem;
+            opacity: 0.92;
+        }
+        .ai-search-box input {
+            flex: 1;
+            border: none;
+            outline: none;
+            background: transparent;
+            font-size: 1.05rem;
+            font-family: 'Manrope', 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
+            color: #1a2a1a;
+            padding: 1.2rem 0.5rem 1.2rem 0;
+            font-weight: 500;
+            transition: color 0.22s, box-shadow 0.22s;
+        }
+        .ai-search-box input:focus::placeholder {
+            color: #b0bfc0;
+            transition: color 0.22s;
+        }
+        .ai-search-box button {
+            background: var(--green);
+            color: #fff;
+            border: none;
+            border-radius: 999px;
+            padding: 1.1rem 1.7rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-left: 0.7rem;
+            cursor: pointer;
+            box-shadow: 0 2px 8px 0 rgba(20, 85, 20, 0.10);
+            transition: background 0.18s, box-shadow 0.18s, transform 0.18s;
+            position: relative;
+            top: 0;
+            font-family: 'Manrope', 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
+        }
+        .ai-search-box button:active {
+            animation: ai-btn-pop 0.18s cubic-bezier(.4,1.4,.6,1);
+        }
+        @keyframes ai-btn-pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.09); }
+            100% { transform: scale(1); }
+        }
+        .ai-suggestions {
+            position: absolute;
+            left: 0;
+            top: 100%;
+            width: 100%;
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 8px 32px 0 rgba(20, 85, 20, 0.10);
+            border: 1.5px solid #e5e7ea;
+            margin-top: 0.2rem;
+            z-index: 10;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(6px) scale(0.98);
+            transition: opacity 0.22s cubic-bezier(.4,1.4,.6,1), transform 0.22s cubic-bezier(.4,1.4,.6,1);
+        }
+        .ai-search-box:focus-within + .ai-suggestions,
+        .ai-suggestions.active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0) scale(1);
+        }
+        .ai-suggestion-item {
+            padding: 0.7rem 1.3rem;
+            font-size: 1rem;
+            color: #1a2a1a;
+            font-family: 'Manrope', 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
+            cursor: pointer;
+            transition: background 0.16s;
+        }
+        .ai-suggestion-item:hover {
+            background: #f6fdf7;
+        }
+        .hero-main-heading {
+            font-family: 'Manrope', 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
+            font-size: 2.7rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: var(--dark-green);
+            border-radius: 1.5rem;
+            background: rgba(255,255,255,0.55);
+            padding: 1.1rem 2.2rem 1.1rem 1.5rem;
+            margin-bottom: 1.2rem;
+            line-height: 1.6;
+            box-shadow: 0 2px 12px 0 rgba(20, 85, 20, 0.04);
+            display: inline-block;
+        }
+        .hero-main-heading .hero-highlight {
+            color: var(--green);
+            font-weight: 900;
+            border-radius: 1.2rem;
+            padding: 0.2rem 0.7rem;
+            background: rgba(250, 204, 21, 0.13);
+        }
+        /* Animated shapes for hero background */
+        .hero-animated-bg {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 48%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .hero-blob, .hero-circle {
+            position: absolute;
+            opacity: 0.18;
+            filter: blur(2px);
+            z-index: 1;
+        }
+        .hero-blob {
+            width: 320px;
+            height: 320px;
+            background: linear-gradient(135deg, var(--green) 60%, var(--yellow) 100%);
+            border-radius: 50% 60% 40% 60% / 60% 40% 60% 50%;
+            top: 10%;
+            right: 0;
+            animation: heroBlobMove 7s ease-in-out infinite alternate;
+        }
+        .hero-circle {
+            width: 120px;
+            height: 120px;
+            background: var(--yellow);
+            border-radius: 50%;
+            top: 60%;
+            right: 10%;
+            animation: heroCircleFloat 5s ease-in-out infinite alternate;
+        }
+        @keyframes heroBlobMove {
+            0% { transform: translateY(0) scale(1) rotate(0deg); }
+            100% { transform: translateY(-30px) scale(1.08) rotate(12deg); }
+        }
+        @keyframes heroCircleFloat {
+            0% { transform: translateY(0) scale(1); }
+            100% { transform: translateY(-40px) scale(1.12); }
+        }
+        /* Dynamic animated chat bubbles (random, non-stop) */
+        .hero-chat-bg {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 48%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+        .chat-bubble {
+            position: absolute;
+            right: 0;
+            background: #fff;
+            color: #222;
+            font-family: 'Montserrat', 'Manrope', 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
+            font-size: 0.98rem;
+            font-weight: 400;
+            border-radius: 2.2rem 2.2rem 2.2rem 1.2rem / 2.5rem 2.2rem 2.2rem 2.2rem;
+            border: 1.2px solid #e5e7ea;
+            box-shadow: 0 2px 8px 0 rgba(20, 20, 20, 0.05);
+            padding: 0.7rem 1.5rem 0.8rem 1.7rem;
+            min-width: 120px;
+            max-width: 240px;
+            opacity: 0;
+            pointer-events: none;
+            will-change: transform, opacity;
+            z-index: 2;
+            transition: opacity 0.3s, box-shadow 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .chat-bubble::after {
+            display: none;
+        }
     </style>
 </head>
 <body>
     <nav class="navbar">
         <div class="logo"><img src="assets/logo.png" alt="Taska Logo"></div>
         <ul class="nav-menu">
-            <li><a href="#" class="active">Login</a></li>
-            <li><a href="#">Signup</a></li>
-            <li><a href="#benefits">Why Taska</a></li>
-            <li><a href="#pricing">Pricing</a></li>
+            <span class="nav-links">
+                <li><a href="#benefits">Why Taska</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+            </span>
+            <span class="auth-links">
+                <li><a href="#" class="active">Login</a></li>
+                <li><a href="#" class="signup-btn">Signup</a></li>
+            </span>
         </ul>
     </nav>
     <section class="hero">
-        <h1>Find <span class="hero-highlight">Elite Student Talent</span> for Any Project</h1>
-        <p>Connect with top students from IITs, NITs, and IIITs for software, AI, design, research, and more. Get your work done by the next generation of innovators—quickly, affordably, and with unmatched creativity.</p>
-        <form class="hero-search" onsubmit="event.preventDefault(); window.location='professional/explore.html';">
-            <input type="text" placeholder="Try 'Python developer', 'AI chatbot', 'UI/UX designer'...">
-            <button type="submit"><i class="fas fa-search"></i> Find Talent</button>
-        </form>
+        <h1 class="hero-main-heading">
+            Hire Talented college students for<br>
+            <span class="hero-highlight">Affordable</span> Gig works
+        </h1>
+        <p class="hero-desc">
+            Connect with skilled college students and get your work done for affordable but in quality from innovative and creative minds.
+        </p>
+        <div class="ai-search-container">
+            <form class="ai-search-box" onsubmit="event.preventDefault(); window.location='professional/explore.html';" autocomplete="off">
+                <span class="ai-search-icon"><i class="fas fa-search"></i></span>
+                <input id="ai-search-input" type="text" placeholder="Find the perfect student for your project (e.g. React dashboard, automate Excel, data science intern)">
+                <button type="submit"><i class="fas fa-arrow-right"></i></button>
+            </form>
+            <div class="ai-suggestions" id="ai-suggestions">
+                <div class="ai-suggestion-item">Build a React dashboard for my startup</div>
+                <div class="ai-suggestion-item">Automate my Excel reports with Python</div>
+                <div class="ai-suggestion-item">Find a data science intern for summer</div>
+                <div class="ai-suggestion-item">Create a modern UI/UX for my app</div>
+                <div class="ai-suggestion-item">Research competitors in my industry</div>
+            </div>
+        </div>
         <div class="hero-cta-row">
-            <button class="hero-cta" onclick="window.location='professional/explore.html'">Browse Students</button>
-            <button class="hero-cta" style="background:#fff;color:var(--up-green);border:1.5px solid var(--up-green);" onclick="window.location='workplace/'">Post a Project</button>
+            <button class="hero-cta-google primary" onclick="window.location='professional/explore.html'">
+                Hire AI Trained Student
+            </button>
+            <button class="hero-cta-google secondary" onclick="window.location='login.html'">
+                Join as a Student
+            </button>
         </div>
     </section>
     <div class="trusted-row">
