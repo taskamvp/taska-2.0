@@ -59,14 +59,17 @@
             border-radius: 8px;
             padding: 0.5rem 1.3rem;
             font-weight: 600;
-            border: none;
-            transition: background 0.18s, color 0.18s;
+            border: 2px solid var(--yellow);
+            transition: background 0.18s, color 0.18s, border-color 0.18s;
             text-decoration: none;
             font-family: 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
+            box-shadow: 0 2px 8px rgba(250, 204, 21, 0.3);
         }
         .signup-btn:hover {
-            background: var(--yellow-light);
+            background: #fef9c3;
             color: var(--green) !important;
+            border-color: var(--yellow);
+            box-shadow: 0 4px 12px rgba(250, 204, 21, 0.4);
         }
         .nav-menu li a {
             text-decoration: none; color: #222; font-weight: 500; font-size: 1rem;
@@ -76,7 +79,7 @@
         }
         .nav-menu li a:hover, .nav-menu li a.active {
             background: none;
-            color: var(--dark-green);
+            color: var(--green);
             box-shadow: none;
         }
         .hero {
@@ -1037,7 +1040,7 @@
                 align-items: center;
             }
             .service-tab {
-                font-size: 1rem;
+            font-size: 1rem;
                 padding: 0.6rem 1.4rem;
             }
         }
@@ -1046,7 +1049,7 @@
             color: #fff;
             padding: 3rem 0 2rem 0;
             margin-top: 4rem;
-            font-family: 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
+            font-family: 'Poppins', 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
             border-top: 1px solid #333;
         }
         .footer-container {
@@ -1071,6 +1074,7 @@
             color: #ffff00;
             letter-spacing: -1px;
             margin-bottom: 1rem;
+            font-family: 'Poppins', 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
         }
         .footer-logo img {
             height: 40px;
@@ -1080,23 +1084,36 @@
             font-size: 0.95rem;
             line-height: 1.6;
             margin-bottom: 1.5rem;
+            font-family: 'Poppins', 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
         }
         .footer-title {
             font-size: 1.1rem;
             font-weight: 600;
             color: #ffffff;
             margin-bottom: 1rem;
+            font-family: 'Poppins', 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
         }
         .footer-links {
             display: flex;
             flex-direction: column;
             gap: 0.7rem;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .footer-links li {
+            list-style: none;
+            margin: 0;
+            padding: 0;
         }
         .footer-links a {
             color: #cccccc;
             text-decoration: none;
             font-size: 0.9rem;
             transition: color 0.2s;
+            font-family: 'Poppins', 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
+            padding: 0.3rem 0;
+            display: block;
         }
         .footer-links a:hover {
             color: #ffff00;
@@ -1129,6 +1146,7 @@
             text-align: center;
             color: #999;
             font-size: 0.85rem;
+            font-family: 'Poppins', 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
         }
         @media (max-width: 768px) {
             .footer-container {
@@ -1156,7 +1174,7 @@
             color: #ffffff;
             margin-bottom: 1rem;
             letter-spacing: -0.02em;
-        }
+            }
         .experts-subtitle {
             font-family: 'Inter', 'Poppins', sans-serif;
             font-size: 1.2rem;
@@ -1172,7 +1190,7 @@
             gap: 2rem;
             flex-wrap: wrap;
             margin-top: 2rem;
-        }
+            }
         .ai-tool-image {
             width: 70px;
             height: 70px;
@@ -1202,7 +1220,7 @@
             margin: 4rem auto;
             max-width: 1200px;
             text-align: center;
-        }
+            }
         .startup-question {
             font-family: 'Poppins', 'Inter', sans-serif;
             font-size: 3.5rem;
@@ -1219,10 +1237,10 @@
             color: #666;
             margin-bottom: 2rem;
             line-height: 1.4;
-        }
+            }
         .startup-package {
             font-family: 'Inter', 'Poppins', sans-serif;
-            font-size: 1.8rem;
+                font-size: 1.8rem;
             font-weight: 600;
             color: #1a1a1a;
             margin-bottom: 1rem;
@@ -1262,7 +1280,7 @@
             transform: translateY(-3px);
             box-shadow: 0 12px 35px rgba(20, 83, 45, 0.4);
             background: linear-gradient(135deg, #166534, #14532d);
-        }
+            }
         @media (max-width: 768px) {
             .startup-question {
                 font-size: 2.5rem;
@@ -1338,8 +1356,8 @@
             <img src="assets/aitools/Bolt.webp" alt="Bolt" class="ai-tool-image">
             <img src="assets/aitools/Lovable.webp" alt="Lovable" class="ai-tool-image">
             
-        </div>
-    </div>
+            </div>
+                </div>
     <div class="services-section">
         <div class="services-title">Top skills</div>
         <div class="services-tabs">
@@ -1360,7 +1378,7 @@
                 <div class="service-badge api-integration">
                     <div class="service-badge-title">API Integration</div>
                     <div class="service-badge-image"></div>
-            </div>
+                </div>
                 <div class="service-badge database">
                     <div class="service-badge-title">Database Design</div>
                     <div class="service-badge-image"></div>
@@ -1368,27 +1386,27 @@
                 <div class="service-badge cloud">
                     <div class="service-badge-title">Cloud Solutions</div>
                     <div class="service-badge-image"></div>
-                </div>
+            </div>
                 <div class="service-badge devops">
                     <div class="service-badge-title">DevOps</div>
                     <div class="service-badge-image"></div>
+                </div>
+                </div>
             </div>
-                </div>
-                </div>
         <div class="service-content" id="service-marketing" style="display:none;">
             <div class="service-list">
                 <div class="service-badge social-media">
                     <div class="service-badge-title">Social Media</div>
                     <div class="service-badge-image"></div>
-            </div>
+                </div>
                 <div class="service-badge seo">
                     <div class="service-badge-title">SEO Optimization</div>
                     <div class="service-badge-image"></div>
-        </div>
+                </div>
                 <div class="service-badge content">
                     <div class="service-badge-title">Content Marketing</div>
                     <div class="service-badge-image"></div>
-                </div>
+            </div>
                 <div class="service-badge email">
                     <div class="service-badge-title">Email Campaigns</div>
                     <div class="service-badge-image"></div>
@@ -1440,7 +1458,7 @@
         <div class="startup-price">₹14,999/-</div>
         <div class="startup-roles">For Developer, Marketing & Designing roles</div>
         <button class="startup-cta" onclick="window.location='professional/explore.html'">Hire Now</button>
-    </div>
+        </div>
     
     <div class="ai-text-card">
             <div class="ai-generates-text">AI DRAFTS</div>
@@ -1466,7 +1484,7 @@
             contents[tab.dataset.tab].style.display = '';
           });
         });
-      });
+        });
     </script>
     <footer class="footer">
         <div class="footer-container">
