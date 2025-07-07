@@ -737,6 +737,7 @@
             z-index: auto;
             clear: both;
             min-height: 300px;
+            background: #000;
         }
         .skills-container {
             max-width: 900px;
@@ -825,6 +826,89 @@
             max-width: 1100px;
             margin-left: auto;
             margin-right: auto;
+        }
+        .services-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, #f8f9fa 100%);
+            border-radius: 1.5rem;
+            padding: 3rem 2rem;
+            margin: 2rem auto;
+            max-width: 1200px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        .services-title {
+            font-family: 'Poppins', 'Inter', Arial, sans-serif;
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            text-align: center;
+            margin-bottom: 2rem;
+            letter-spacing: -0.02em;
+        }
+        .services-tabs {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            justify-content: center;
+        }
+        .service-tab {
+            font-family: 'Poppins', Arial, sans-serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s;
+            padding: 0.8rem 1.8rem;
+            border-radius: 2rem;
+            background: #fff;
+            border: 2px solid #e9ecef;
+            box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.05);
+        }
+        .service-tab.active {
+            color: #1a1a1a;
+            background: #ffff00;
+            border-color: #ffff00;
+            box-shadow: 0 4px 16px 0 rgba(255, 255, 0, 0.3);
+        }
+        .service-content {
+            animation: fadeIn 0.4s;
+            min-height: 150px;
+        }
+        .service-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+        }
+        .service-badge {
+            display: inline-block;
+            background: #fff;
+            color: #1a1a1a;
+            border-radius: 1.5rem;
+            padding: 0.8rem 1.5rem;
+            font-family: 'Inter', Arial, sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.08);
+            border: 2px solid #e9ecef;
+            transition: all 0.3s;
+        }
+        .service-badge:hover {
+            background: #ffff00;
+            border-color: #ffff00;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px 0 rgba(255, 255, 0, 0.2);
+        }
+        @media (max-width: 768px) {
+            .services-tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+            .service-tab {
+                font-size: 1rem;
+                padding: 0.6rem 1.4rem;
+            }
         }
         .footer {
             background: #1a1a1a;
@@ -923,6 +1007,44 @@
                 padding: 2rem 0 1.5rem 0;
             }
         }
+        .why-taska-section {
+            padding: 3rem 2rem;
+            margin: 2rem auto;
+            max-width: 1250px;
+            position: relative;
+            text-align: center;
+        }
+        .why-taska-title {
+            font-family: 'Poppins', 'Inter', Arial, sans-serif;
+            font-size: 4.5rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            text-align: center;
+            margin: 2rem 0;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+        .why-taska-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .why-taska-text {
+            font-family: 'Poppins', 'Inter', Arial, sans-serif;
+            font-size: 1.4rem;
+            font-weight: 400;
+            color: #666;
+            line-height: 1.8;
+            margin-top: 2rem;
+        }
+        @media (max-width: 768px) {
+            .why-taska-title {
+                font-size: 3rem;
+            }
+            .why-taska-text {
+                font-size: 1.2rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -939,7 +1061,7 @@
             </span>
         </ul>
     </nav>
-        <section class="hero">
+    <section class="hero">
         <img src="assets/heroimage.png" alt="Student Talent" class="hero-image">
         <div class="hero-content">
             <h1 class="hero-main-heading">
@@ -973,85 +1095,66 @@
                 </div>
             </div>
         </section>
-    <div class="blank-space">
+    <div class="services-section">
+        <div class="services-title">Our Services</div>
+        <div class="services-tabs">
+            <div class="service-tab active" data-tab="development">Development</div>
+            <div class="service-tab" data-tab="marketing">Marketing</div>
+            <div class="service-tab" data-tab="design">Design</div>
+        </div>
+        <div class="service-content" id="service-development">
+            <div class="service-list">
+                <span class="service-badge">Web Development</span>
+                <span class="service-badge">Mobile Apps</span>
+                <span class="service-badge">API Integration</span>
+                <span class="service-badge">Database Design</span>
+                <span class="service-badge">Cloud Solutions</span>
+                <span class="service-badge">DevOps</span>
+            </div>
+        </div>
+        <div class="service-content" id="service-marketing" style="display:none;">
+            <div class="service-list">
+                <span class="service-badge">Social Media</span>
+                <span class="service-badge">SEO Optimization</span>
+                <span class="service-badge">Content Marketing</span>
+                <span class="service-badge">Email Campaigns</span>
+                <span class="service-badge">PPC Advertising</span>
+                <span class="service-badge">Analytics</span>
+            </div>
+        </div>
+        <div class="service-content" id="service-design" style="display:none;">
+            <div class="service-list">
+                <span class="service-badge">UI/UX Design</span>
+                <span class="service-badge">Logo Design</span>
+                <span class="service-badge">Brand Identity</span>
+                <span class="service-badge">Web Design</span>
+                <span class="service-badge">Print Design</span>
+                <span class="service-badge">Illustrations</span>
+            </div>
+        </div>
+    </div>
+    <div class="why-taska-section">
+        <div class="why-taska-title">WHY TASKA?</div>
+        <div class="why-taska-content">
+            <div class="why-taska-text">
+                Taska connects you with talented college students for affordable but high-quality gig works. Our students bring fresh perspectives and cutting-edge skills from top-tier institutions like IITs, NITs, and IIITs.
+            </div>
+        </div>
+    </div>
+   
         <div class="ai-text-card">
             <div class="ai-generates-text">AI DRAFTS</div>
             <div class="students-customize-text">WE CRAFT</div>
-            </div>
-                </div>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <section class="skills-section">
-      <div class="skills-container">
-        <div class="skills-tabs">
-          <div class="skills-tab active" data-tab="developer">Developer</div>
-          <div class="skills-tab" data-tab="marketing">Marketing</div>
-          <div class="skills-tab" data-tab="designing">Designing</div>
-                </div>
-        <div class="skills-tab-content" id="skills-developer">
-          <div class="skills-list">
-            <span class="skill-badge">Web App Development</span>
-            <span class="skill-badge">Mobile App Development</span>
-            <span class="skill-badge">Automation Scripts</span>
-            <span class="skill-badge">Data Analysis & Visualization</span>
-            <span class="skill-badge">API Integration</span>
-            <span class="skill-badge">AI/ML Projects</span>
-            <span class="skill-badge">WordPress & CMS</span>
-            <span class="skill-badge">Game Development</span>
-            <span class="skill-badge">Technical Writing</span>
-                </div>
-                </div>
-        <div class="skills-tab-content" id="skills-marketing" style="display:none;">
-          <div class="skills-list">
-            <span class="skill-badge">Social Media Management</span>
-            <span class="skill-badge">SEO Optimization</span>
-            <span class="skill-badge">Content Writing</span>
-            <span class="skill-badge">Email Campaigns</span>
-            <span class="skill-badge">Market Research</span>
-            <span class="skill-badge">Brand Strategy</span>
-            <span class="skill-badge">Copywriting</span>
-            <span class="skill-badge">Ad Campaigns</span>
-            <span class="skill-badge">Influencer Outreach</span>
-                </div>
         </div>
-        <div class="skills-tab-content" id="skills-designing" style="display:none;">
-          <div class="skills-list">
-            <span class="skill-badge">Logo Design</span>
-            <span class="skill-badge">UI/UX Design</span>
-            <span class="skill-badge">Web Design</span>
-            <span class="skill-badge">Branding & Identity</span>
-            <span class="skill-badge">Graphic Design</span>
-            <span class="skill-badge">Illustrations</span>
-            <span class="skill-badge">Presentation Design</span>
-            <span class="skill-badge">Product Mockups</span>
-            <span class="skill-badge">Video Editing</span>
-          </div>
-                </div>
-            </div>
-        </section>
+   
+    
     <script>
       document.addEventListener('DOMContentLoaded', function() {
-        const tabs = document.querySelectorAll('.skills-tab');
+        const tabs = document.querySelectorAll('.service-tab');
         const contents = {
-          developer: document.getElementById('skills-developer'),
-          marketing: document.getElementById('skills-marketing'),
-          designing: document.getElementById('skills-designing')
+          development: document.getElementById('service-development'),
+          marketing: document.getElementById('service-marketing'),
+          design: document.getElementById('service-design')
         };
         tabs.forEach(tab => {
           tab.addEventListener('click', function() {
