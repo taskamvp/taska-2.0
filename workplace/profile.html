@@ -419,24 +419,24 @@
         /* Portfolio Styles */
         .portfolio-header {
             background: #fff;
-            border-radius: 8px;
+            border-radius: 12px;
             padding: 2rem;
             margin-bottom: 2rem;
-            box-shadow: 0 1px 2px rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
             text-align: center;
         }
 
         .portfolio-header h2 {
             font-size: 1.75rem;
-            font-weight: 400;
-            color: #202124;
+            font-weight: 600;
+            color: #1a1a1a;
             margin-bottom: 0.5rem;
         }
 
         .portfolio-header p {
-            color: #5f6368;
+            color: #666;
             font-size: 0.875rem;
-            }
+        }
 
         .create-post-section {
             margin-bottom: 2rem;
@@ -444,9 +444,9 @@
 
         .create-post-card {
             background: #fff;
-            border-radius: 8px;
+            border-radius: 12px;
             padding: 1.5rem;
-            box-shadow: 0 1px 2px rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
 
         .post-input-area {
@@ -455,7 +455,7 @@
 
         #post-content {
             width: 100%;
-            border: 1px solid #dadce0;
+            border: 1px solid #e0e0e0;
             border-radius: 8px;
             padding: 1rem;
             font-size: 0.875rem;
@@ -467,7 +467,7 @@
         #post-content:focus {
             outline: none;
             border-color: #1a73e8;
-            box-shadow: 0 0 0 2px rgba(26,115,232,0.2);
+            box-shadow: 0 0 0 2px rgba(26,115,232,0.1);
         }
 
         .post-media-preview {
@@ -489,9 +489,9 @@
         .media-btn {
             padding: 0.5rem 1rem;
             background: #f8f9fa;
-            border: 1px solid #dadce0;
+            border: 1px solid #e0e0e0;
             border-radius: 6px;
-            color: #5f6368;
+            color: #666;
             font-size: 0.875rem;
             cursor: pointer;
             transition: all 0.2s;
@@ -526,163 +526,345 @@
         }
 
         .create-post-btn:disabled {
-            background: #dadce0;
+            background: #e0e0e0;
             cursor: not-allowed;
         }
 
         .portfolio-feed {
-            display: flex;
-                flex-direction: column;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 1.5rem;
+            align-items: start;
         }
 
-        .post-card {
+        /* Portfolio Card Types */
+        .portfolio-card {
             background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 1px 2px rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
             overflow: hidden;
-            margin-bottom: 2rem;
-        }
-
-        .post-content {
-            display: flex;
-            min-height: 400px;
-        }
-
-        .post-media-section {
-            flex: 0 0 400px;
-            background: #000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .post-media-section img,
-        .post-media-section video {
-            width: 100%;
-            height: 400px;
-            object-fit: cover;
-        }
-
-        .post-details-section {
-            flex: 1;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            height: fit-content;
             display: flex;
             flex-direction: column;
-            min-height: 400px;
         }
 
-        .post-header {
+        .portfolio-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        /* Text Only Card */
+        .portfolio-card.text-only {
+            padding: 1.5rem;
+            min-height: 200px;
+        }
+
+        .portfolio-card.text-only .card-content {
             display: flex;
-            align-items: center;
-            padding: 1rem;
-            border-bottom: 1px solid #f1f3f4;
-        }
-
-        .post-author-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-right: 0.75rem;
-        }
-
-        .post-author-info {
+            flex-direction: column;
+            gap: 1rem;
             flex: 1;
         }
 
-        .post-author-name {
-            font-weight: 600;
-            color: #202124;
-            font-size: 0.875rem;
+        .portfolio-card.text-only .card-text {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #1a1a1a;
+            flex: 1;
         }
 
-        .post-timestamp {
-            color: #5f6368;
-            font-size: 0.75rem;
+        /* Image Only Card */
+        .portfolio-card.image-only {
+            height: 400px;
         }
 
-        .post-actions-menu {
+        .portfolio-card.image-only .card-media {
+            width: 100%;
+            height: 320px;
+            overflow: hidden;
             position: relative;
         }
 
-        .post-menu-btn {
+        .portfolio-card.image-only .card-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .portfolio-card.image-only:hover .card-media img {
+            transform: scale(1.05);
+        }
+
+        .portfolio-card.image-only .card-content {
+            padding: 1rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Video Only Card */
+        .portfolio-card.video-only {
+            height: 400px;
+        }
+
+        .portfolio-card.video-only .card-media {
+            width: 100%;
+            height: 320px;
+            overflow: hidden;
+        }
+
+        .portfolio-card.video-only .card-media video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .portfolio-card.video-only .card-content {
+            padding: 1rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Image with Text Card */
+        .portfolio-card.image-text {
+            height: 450px;
+        }
+
+        .portfolio-card.image-text .card-media {
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .portfolio-card.image-text .card-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .portfolio-card.image-text:hover .card-media img {
+            transform: scale(1.05);
+        }
+
+        .portfolio-card.image-text .card-content {
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Video with Text Card */
+        .portfolio-card.video-text {
+            height: 450px;
+        }
+
+        .portfolio-card.video-text .card-media {
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+        }
+
+        .portfolio-card.video-text .card-media video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .portfolio-card.video-text .card-content {
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Card Header */
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .card-author-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .card-author-name {
+            font-weight: 600;
+            color: #1a1a1a;
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .card-timestamp {
+            color: #666;
+            font-size: 0.75rem;
+        }
+
+        .card-actions-menu {
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .card-menu-btn {
             background: none;
             border: none;
-            color: #5f6368;
+            color: #666;
             cursor: pointer;
             padding: 0.5rem;
             border-radius: 50%;
             transition: background 0.2s;
-        }
-
-        .post-menu-btn:hover {
-            background: #f1f3f4;
-        }
-
-        .post-caption-section {
-            flex: 1;
-            padding: 1rem;
-            overflow-y: auto;
-        }
-
-        .post-text {
-            color: #202124;
-            font-size: 0.875rem;
-            line-height: 1.5;
-            margin-bottom: 1rem;
-        }
-
-        .post-stats {
-            font-size: 0.75rem;
-            color: #5f6368;
-            margin-bottom: 1rem;
-        }
-
-        .post-actions-bar {
+            font-size: 1.2rem;
             display: flex;
-            gap: 1rem;
-            padding: 1rem;
-            border-top: 1px solid #f1f3f4;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
         }
 
-        .post-action-btn {
-            background: none;
-            border: none;
-            color: #5f6368;
+        .card-menu-btn:hover {
+            background: #f5f5f5;
+        }
+
+        /* Dropdown Menu */
+        .card-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border: 1px solid #e0e0e0;
+            z-index: 1000;
+            min-width: 120px;
+            display: none;
+            overflow: hidden;
+        }
+
+        .card-dropdown.active {
+            display: block;
+        }
+
+        .card-dropdown-item {
+            padding: 0.75rem 1rem;
             cursor: pointer;
-            padding: 0.5rem;
-            border-radius: 6px;
-            font-size: 0.875rem;
-            transition: all 0.2s;
+            transition: background 0.2s;
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            font-size: 0.85rem;
+            color: #1a1a1a;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
         }
 
-        .post-action-btn:hover {
-            background: #f1f3f4;
-            color: #1a73e8;
+        .card-dropdown-item:hover {
+            background: #f5f5f5;
         }
 
-        .post-action-btn.endorsed {
-            color: #1a73e8;
-            font-weight: 500;
+        .card-dropdown-item.delete {
+            color: #e74c3c;
         }
 
-        .post-action-btn.endorsed i {
-            color: #ea4335;
+        .card-dropdown-item.delete:hover {
+            background: #fdf2f2;
         }
 
-        .post-endorsements {
-            padding: 1rem;
-            border-top: 1px solid #f1f3f4;
+        /* Card Content */
+        .card-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            flex: 1;
+        }
+
+        .card-text {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #1a1a1a;
+            flex: 1;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+
+        /* Card Footer */
+        .card-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
+
+        .card-stats {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .card-action-btn {
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .card-action-btn:hover {
+            background: #f5f5f5;
+            color: #1a1a1a;
+        }
+
+        .card-action-btn.endorsed {
+            color: #e74c3c;
+        }
+
+        .card-action-btn.endorsed:hover {
+            background: #fdf2f2;
+        }
+
+        /* Endorsements Section */
+        .card-endorsements {
+            padding: 1rem 1.5rem;
             background: #f8f9fa;
+            border-top: 1px solid #f0f0f0;
         }
 
         .endorsements-title {
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: #5f6368;
+            font-size: 0.8rem;
+            color: #666;
             margin-bottom: 0.5rem;
         }
 
@@ -693,15 +875,44 @@
         }
 
         .endorsement-item {
-            background: #e8f0fe;
-            color: #1a73e8;
+            background: #fff;
             padding: 0.25rem 0.5rem;
-            border-radius: 12px;
+            border-radius: 4px;
             font-size: 0.75rem;
-            font-weight: 500;
+            color: #666;
         }
 
+        /* Responsive Design */
         @media (max-width: 768px) {
+            .portfolio-feed {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .portfolio-card {
+                min-height: auto;
+            }
+            
+            .portfolio-card.image-only,
+            .portfolio-card.video-only {
+                height: auto;
+            }
+            
+            .portfolio-card.image-only .card-media,
+            .portfolio-card.video-only .card-media {
+                height: 250px;
+            }
+            
+            .portfolio-card.image-text,
+            .portfolio-card.video-text {
+                height: auto;
+            }
+            
+            .portfolio-card.image-text .card-media,
+            .portfolio-card.video-text .card-media {
+                height: 200px;
+            }
+            
             .post-actions {
                 flex-direction: column;
                 gap: 1rem;
@@ -709,11 +920,6 @@
             }
             
             .media-buttons {
-                justify-content: center;
-            }
-            
-            .create-post-btn {
-                width: 100%;
                 justify-content: center;
             }
         }
@@ -1388,54 +1594,71 @@ function renderPost(post) {
     const isEndorsed = post.endorsements && post.endorsements.includes(currentUserId);
     const endorsementCount = post.endorsements ? post.endorsements.length : 0;
     
+    // Determine card type based on content
+    let cardType = 'text-only';
+    if (post.mediaUrl && post.content) {
+        cardType = post.mediaType === 'image' ? 'image-text' : 'video-text';
+    } else if (post.mediaUrl && !post.content) {
+        cardType = post.mediaType === 'image' ? 'image-only' : 'video-only';
+    }
+    
     return `
-        <div class="post-card">
-            <div class="post-content">
-                ${post.mediaUrl ? `
-                    <div class="post-media-section">
-                        ${post.mediaType === 'image' 
-                            ? `<img src="${post.mediaUrl}" alt="Post media">`
-                            : `<video src="${post.mediaUrl}" controls></video>`
-                        }
+        <div class="portfolio-card ${cardType}">
+            ${post.mediaUrl ? `
+                <div class="card-media">
+                    ${post.mediaType === 'image' 
+                        ? `<img src="${post.mediaUrl}" alt="Post media">`
+                        : `<video src="${post.mediaUrl}" controls></video>`
+                    }
+                </div>
+            ` : ''}
+            
+            <div class="card-content">
+                <div class="card-header">
+                    <img src="../assets/avatar/1.png" 
+                         alt="Avatar" class="card-avatar" 
+                         id="post-avatar-${post.id}"
+                         onload="loadPostAvatar('${post.authorId}', '${post.id}')">
+                    <div class="card-author-info">
+                        <div class="card-author-name">${post.authorName}</div>
+                        <div class="card-timestamp">${formatTimestamp(post.timestamp)}</div>
                     </div>
-                ` : ''}
-                <div class="post-details-section">
-                    <div class="post-header">
-                        <img src="../assets/avatar/1.png" 
-                             alt="Avatar" class="post-author-avatar" 
-                             id="post-avatar-${post.id}"
-                             onload="loadPostAvatar('${post.authorId}', '${post.id}')">
-                        <div class="post-author-info">
-                            <div class="post-author-name">${post.authorName}</div>
-                            <div class="post-timestamp">${formatTimestamp(post.timestamp)}</div>
-                        </div>
-                        ${post.authorId === currentUserId ? `
-                            <div class="post-actions-menu">
-                                <button class="post-menu-btn" onclick="deletePost('${post.id}')">
+                    ${post.authorId === currentUserId ? `
+                        <div class="card-actions-menu">
+                            <button class="card-menu-btn" onclick="toggleCardMenu('${post.id}')">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                            <div class="card-dropdown" id="dropdown-${post.id}">
+                                <button class="card-dropdown-item" onclick="editPost('${post.id}')">
+                                    <i class="fas fa-edit"></i>
+                                    Edit
+                                </button>
+                                <button class="card-dropdown-item delete" onclick="deletePost('${post.id}')">
                                     <i class="fas fa-trash"></i>
+                                    Delete
                                 </button>
                             </div>
-                        ` : ''}
-                    </div>
-                    
-                    <div class="post-caption-section">
-                        ${post.content ? `<div class="post-text">${post.content}</div>` : ''}
-                        <div class="post-stats">
-                            <span>${endorsementCount} endorsement${endorsementCount !== 1 ? 's' : ''}</span>
                         </div>
-                    </div>
-                    
-                    <div class="post-actions-bar">
-                        <button class="post-action-btn ${isEndorsed ? 'endorsed' : ''}" id="endorse-${post.id}">
-                            <i class="fas fa-heart"></i>
-                            ${isEndorsed ? 'Endorsed' : 'Endorse'}
-                        </button>
-                    </div>
+                    ` : ''}
+                </div>
+                
+                ${post.content ? `<div class="card-text">${post.content}</div>` : ''}
+            </div>
+            
+            <div class="card-footer">
+                <div class="card-stats">
+                    ${endorsementCount} endorsement${endorsementCount !== 1 ? 's' : ''}
+                </div>
+                <div class="card-actions">
+                    <button class="card-action-btn ${isEndorsed ? 'endorsed' : ''}" id="endorse-${post.id}">
+                        <i class="fas fa-heart"></i>
+                        ${isEndorsed ? 'Endorsed' : 'Endorse'}
+                    </button>
                 </div>
             </div>
             
             ${endorsementCount > 0 ? `
-                <div class="post-endorsements">
+                <div class="card-endorsements">
                     <div class="endorsements-title">Endorsed by:</div>
                     <div class="endorsements-list">
                         ${post.endorsements.map(userId => `
@@ -1578,6 +1801,165 @@ async function loadProfileData(userId) {
 window.deletePost = deletePost;
 window.toggleEndorsement = toggleEndorsement;
 window.loadPostAvatar = loadPostAvatar;
+window.toggleCardMenu = toggleCardMenu;
+window.editPost = editPost;
+
+// Dropdown menu functionality
+function toggleCardMenu(postId) {
+    const dropdown = document.getElementById(`dropdown-${postId}`);
+    const allDropdowns = document.querySelectorAll('.card-dropdown');
+    
+    // Close all other dropdowns
+    allDropdowns.forEach(dd => {
+        if (dd !== dropdown) {
+            dd.classList.remove('active');
+        }
+    });
+    
+    // Toggle current dropdown
+    dropdown.classList.toggle('active');
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', (e) => {
+    if (!e.target.closest('.card-actions-menu')) {
+        const allDropdowns = document.querySelectorAll('.card-dropdown');
+        allDropdowns.forEach(dd => dd.classList.remove('active'));
+    }
+});
+
+// Edit post functionality
+async function editPost(postId) {
+    try {
+        const postsRef = ref(db, `portfolio_posts/${postId}`);
+        const snapshot = await get(postsRef);
+        const post = snapshot.val();
+        
+        if (post) {
+            // Populate the create post form with existing data
+            document.getElementById('post-content').value = post.content || '';
+            
+            // If there's media, show it in preview
+            if (post.mediaUrl) {
+                const preview = document.getElementById('post-media-preview');
+                const previewImage = document.getElementById('preview-image');
+                const previewVideo = document.getElementById('preview-video');
+                
+                preview.style.display = 'block';
+                
+                if (post.mediaType === 'image') {
+                    previewImage.style.display = 'block';
+                    previewVideo.style.display = 'none';
+                    previewImage.src = post.mediaUrl;
+                } else {
+                    previewVideo.style.display = 'block';
+                    previewImage.style.display = 'none';
+                    previewVideo.src = post.mediaUrl;
+                }
+                
+                selectedFile = null; // Clear selected file since we're editing
+                selectedFileType = post.mediaType;
+            }
+            
+            // Switch to portfolio tab
+            document.getElementById('portfolio-tab-btn').click();
+            
+            // Scroll to create post section
+            document.querySelector('.create-post-section').scrollIntoView({ 
+                behavior: 'smooth' 
+            });
+            
+            // Change create button to update button
+            const createBtn = document.getElementById('create-post-btn');
+            createBtn.innerHTML = '<i class="fas fa-save"></i> Update Post';
+            createBtn.onclick = () => updatePost(postId);
+            
+            // Close dropdown
+            document.getElementById(`dropdown-${postId}`).classList.remove('active');
+            
+        }
+    } catch (error) {
+        console.error('Error loading post for editing:', error);
+        alert('Failed to load post for editing: ' + error.message);
+    }
+}
+
+// Update post functionality
+async function updatePost(postId) {
+    const content = document.getElementById('post-content').value.trim();
+    const hasExistingMedia = document.getElementById('preview-image').style.display !== 'none' || 
+                            document.getElementById('preview-video').style.display !== 'none';
+    
+    if (!content && !selectedFile && !hasExistingMedia) {
+        alert('Please add some content or media to your post.');
+        return;
+    }
+    
+    try {
+        showLoadingOverlay('Updating post...', 0);
+        
+        let mediaUrl = null;
+        let mediaType = null;
+        
+        // Check if there's new media to upload
+        if (selectedFile) {
+            setLoadingBar(25);
+            const fileRef = storageRef(storage, `portfolio/${currentUserId}_${Date.now()}_${selectedFile.name}`);
+            const uploadTask = uploadBytes(fileRef, selectedFile);
+            setLoadingBar(50);
+            await uploadTask;
+            mediaUrl = await getDownloadURL(fileRef);
+            mediaType = selectedFileType;
+            setLoadingBar(75);
+        } else {
+            // Keep existing media if no new media is selected
+            const postsRef = ref(db, `portfolio_posts/${postId}`);
+            const snapshot = await get(postsRef);
+            const post = snapshot.val();
+            mediaUrl = post.mediaUrl;
+            mediaType = post.mediaType;
+        }
+        
+        const updateData = {
+            content: content,
+            mediaUrl: mediaUrl,
+            mediaType: mediaType,
+            lastEdited: Date.now()
+        };
+        
+        // Update the post
+        await set(ref(db, `portfolio_posts/${postId}`), {
+            ...updateData,
+            authorId: currentUserId,
+            timestamp: Date.now(),
+            endorsements: [],
+            authorName: document.getElementById('name').value || 'Anonymous'
+        });
+        
+        setLoadingBar(100);
+        hideLoadingOverlay();
+        
+        // Reset form
+        document.getElementById('post-content').value = '';
+        document.getElementById('post-media-preview').style.display = 'none';
+        selectedFile = null;
+        selectedFileType = null;
+        
+        // Reset create button
+        const createBtn = document.getElementById('create-post-btn');
+        createBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Post';
+        createBtn.onclick = document.getElementById('create-post-btn').onclick; // Restore original handler
+        
+        // Reload feed
+        loadPortfolioFeed();
+        
+        alert('Post updated successfully!');
+        
+    } catch (error) {
+        hideLoadingOverlay();
+        alert('Failed to update post: ' + error.message);
+    }
+}
 
 function showLoadingOverlay(text = 'Uploading...', progress = 0) {
     document.getElementById('loading-overlay').style.display = 'flex';
