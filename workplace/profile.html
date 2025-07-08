@@ -272,7 +272,11 @@
             border-top: 1px solid #dadce0;
             color: #5f6368;
             font-size: 0.75rem;
-            margin-top: 2rem;
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 100;
         }
 
         footer a {
@@ -978,6 +982,309 @@
             border-radius: 4px;
             transition: width 0.2s;
         }
+/* Portfolio List Modern Styles */
+#portfolio-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  margin-top: 1.5rem;
+}
+.portfolio-card-fashion {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border-radius: 1.1rem;
+  border: 1.5px solid #e5e7ea;
+  box-shadow: 0 2px 12px 0 rgba(20, 85, 20, 0.04);
+  padding: 1.5rem 2rem;
+  transition: box-shadow 0.18s, border 0.18s, transform 0.18s;
+  position: relative;
+  cursor: pointer;
+}
+.portfolio-card-fashion:hover {
+  border-color: #facc15;
+  box-shadow: 0 6px 24px 0 rgba(250,204,21,0.10);
+  transform: translateY(-2px) scale(1.01);
+}
+.portfolio-card-accent {
+  width: 6px;
+  height: 48px;
+  border-radius: 6px;
+  margin-right: 1.2rem;
+  flex-shrink: 0;
+}
+.portfolio-card-accent.project { background: linear-gradient(135deg, #1a73e8, #43e97b); }
+.portfolio-card-accent.achievement { background: linear-gradient(135deg, #facc15, #f59e42); }
+.portfolio-card-accent.other { background: linear-gradient(135deg, #a1a1aa, #e0e0e0); }
+.portfolio-card-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.portfolio-card-title {
+  font-size: 1.18rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  letter-spacing: -0.01em;
+  font-family: 'Montserrat', 'Manrope', 'Poppins', 'Inter', Arial, sans-serif;
+  margin-bottom: 0.1rem;
+}
+.portfolio-card-type {
+  font-size: 0.98rem;
+  color: #888;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+.portfolio-card-actions {
+  display: flex;
+  gap: 0.7rem;
+  align-items: center;
+}
+.portfolio-card-actions .btn {
+  font-size: 0.97rem;
+  padding: 0.5rem 1.2rem;
+  border-radius: 0.7rem;
+  font-weight: 500;
+  transition: background 0.18s, color 0.18s, border 0.18s;
+}
+.portfolio-card-actions .btn-primary {
+  background: #1a73e8;
+  color: #fff;
+  border: none;
+}
+.portfolio-card-actions .btn-primary:hover {
+  background: #166534;
+  color: #fff;
+}
+.portfolio-card-actions .btn-secondary {
+  background: #fff;
+  color: #1a73e8;
+  border: 1.5px solid #1a73e8;
+}
+.portfolio-card-actions .btn-secondary:hover {
+  background: #facc15;
+  color: #111;
+  border-color: #facc15;
+}
+.portfolio-card-actions .btn-danger {
+  background: #fff;
+  color: #ea4335;
+  border: 1.5px solid #ea4335;
+}
+.portfolio-card-actions .btn-danger:hover {
+  background: #ea4335;
+  color: #fff;
+}
+/* Modal Modern Styles */
+#portfolio-modal-content {
+  border-radius: 1.2rem !important;
+  box-shadow: 0 8px 32px 0 rgba(20, 85, 20, 0.13);
+  font-family: 'Montserrat', 'Manrope', 'Poppins', 'Inter', Arial, sans-serif;
+}
+#portfolio-modal-content h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 0.5rem;
+}
+#portfolio-modal-content label {
+  font-weight: 500;
+  color: #222;
+}
+#portfolio-modal-content .form-input, #portfolio-modal-content .form-select, #portfolio-modal-content .form-textarea {
+  border-radius: 0.7rem;
+  font-size: 1rem;
+  font-family: 'Montserrat', 'Manrope', 'Poppins', 'Inter', Arial, sans-serif;
+}
+#portfolio-modal-content .btn-primary {
+  background: #1a73e8;
+  color: #fff;
+  border-radius: 0.7rem;
+  font-weight: 600;
+}
+#portfolio-modal-content .btn-primary:hover {
+  background: #166534;
+  color: #fff;
+}
+#portfolio-modal-content .btn {
+  font-size: 1.05rem;
+  padding: 0.7rem 1.5rem;
+}
+#close-portfolio-modal {
+  font-size: 2rem !important;
+  color: #888;
+  transition: color 0.18s;
+}
+#close-portfolio-modal:hover {
+  color: #1a73e8;
+}
+@media (max-width: 700px) {
+  .portfolio-card-fashion {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.2rem 1rem;
+  }
+  .portfolio-card-actions {
+    width: 100%;
+    justify-content: flex-end;
+    margin-top: 0.7rem;
+  }
+}
+
+#drive-portfolio {
+  margin-top: 2.5rem;
+}
+
+#drive-thumbnails {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.7rem;
+  margin-top: 0.5rem;
+}
+
+.portfolio-thumb {
+  background: #fff;
+  border-radius: 1.1rem;
+  box-shadow: 0 2px 12px 0 rgba(20, 85, 20, 0.04);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.2rem 1rem 1rem 1rem;
+  transition: box-shadow 0.18s, transform 0.18s;
+  cursor: pointer;
+  border: 1.5px solid #e5e7ea;
+  min-width: 0;
+}
+
+.portfolio-thumb:hover {
+  box-shadow: 0 6px 24px 0 rgba(250,204,21,0.10);
+  border-color: #facc15;
+  transform: translateY(-2px) scale(1.03);
+}
+
+.portfolio-thumb img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 0.7rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  margin-bottom: 0.7rem;
+  background: #f3f3f3;
+}
+
+.portfolio-thumb .thumb-title {
+  font-size: 1.02rem;
+  color: #222;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 150px;
+  font-weight: 500;
+}
+
+.portfolio-thumb {
+  background: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.3rem 0.1rem 0.2rem 0.1rem;
+  cursor: pointer;
+  border: 1px solid #e5e7ea;
+  min-width: 0;
+  border-radius: 0;
+  box-shadow: none;
+  transition: border-color 0.18s;
+}
+
+.portfolio-thumb img {
+  width: 140px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 0;
+  box-shadow: none;
+  margin-bottom: 0.3rem;
+  background: #f3f3f3;
+}
+
+        /* Edit Portfolio Folder Modal Styles */
+        .edit-portfolio-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .edit-portfolio-modal-content {
+            background: #fff;
+            border-radius: 1.2rem;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+        }
+
+        .edit-portfolio-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .edit-portfolio-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin: 0;
+        }
+
+        .close-edit-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #888;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: background 0.2s;
+        }
+
+        .close-edit-modal:hover {
+            background: #f5f5f5;
+        }
+
+        .edit-portfolio-form {
+            margin-bottom: 1.5rem;
+        }
+
+        .edit-portfolio-form input[type="url"] {
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+
+        .edit-portfolio-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        .cancel-edit-btn, .update-drive-folder-btn {
+            padding: 0.75rem 1.5rem;
+        }
+
+        #edit-portfolio-modal { display: none !important; }
     </style>
 </head>
 <body>
@@ -995,7 +1302,7 @@
             <button class="tab-btn active" id="profile-tab-btn">Profile Details</button>
             <button class="tab-btn" id="portfolio-tab-btn">Portfolio</button>
         </div>
-        <div id="profile-tab" class="tab-content active">
+        <div id="profile-tab" class="tab-content active" style="padding-bottom: 4.5rem;">
             <div class="form-header">
                 <h1 class="form-title">Student Profile Database</h1>
                 <p class="form-subtitle">Complete your profile information to get matched with the best opportunities</p>
@@ -1135,21 +1442,6 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label">GitHub Username</label>
-                                <input type="text" id="github" class="form-input" placeholder="github-username">
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">Codeforces Username</label>
-                                <input type="text" id="codeforces" class="form-input" placeholder="codeforces-username">
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">LeetCode Username</label>
-                                <input type="text" id="leetcode" class="form-input" placeholder="leetcode-username">
-                            </div>
-
-                            <div class="form-group">
                                 <label class="form-label">Portfolio Links</label>
                                 <textarea id="portfolio" class="form-textarea" placeholder="Add your portfolio, project links, or personal website URLs..."></textarea>
                             </div>
@@ -1174,44 +1466,86 @@
                 </form>
             </div>
         </div>
-        <div id="portfolio-tab" class="tab-content" style="display:none;">
-            <div class="portfolio-header">
-                <h2>Portfolio</h2>
-                <p>Share your work, achievements, and get endorsements to boost your profile!</p>
+        <!-- Social Accounts Section -->
+        <div id="social-tab" class="tab-content" style="display:none;">
+          <form id="social-accounts-form" style="max-width:480px;padding:0;margin:0;display:flex;flex-direction:column;gap:0.5rem;align-items:flex-start;">
+            <div class="form-group" style="display:flex;flex-direction:row;align-items:center;gap:0.7rem;width:100%;">
+              <span style="display:inline-flex;width:1.1rem;height:1.1rem;align-items:center;justify-content:center;">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1.1em" height="1.1em" fill="#888"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.761 0 5-2.239 5-5v-14c0-2.761-2.239-5-5-5zm-7 19c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8zm0-14c-3.313 0-6 2.687-6 6s2.687 6 6 6 6-2.687 6-6-2.687-6-6-6zm0 10c-2.209 0-4-1.791-4-4s1.791-4 4-4 4 1.791 4 4-1.791 4-4 4z"/></svg>
+              </span>
+              <input type="url" id="social-linkedin" class="form-input" placeholder="LinkedIn URL" style="flex:1;min-width:0;">
             </div>
-            
-            <!-- Create Post Section -->
-            <div class="create-post-section">
-                <div class="create-post-card">
-                    <div class="post-input-area">
-                        <textarea id="post-content" placeholder="What's on your mind? Share your work, achievements, or thoughts..." rows="3"></textarea>
-                        <div class="post-media-preview" id="post-media-preview" style="display: none;">
-                            <img id="preview-image" style="display: none; max-width: 200px; max-height: 200px; border-radius: 8px;">
-                            <video id="preview-video" style="display: none; max-width: 200px; max-height: 200px; border-radius: 8px;" controls></video>
-                        </div>
-                    </div>
-                    <div class="post-actions">
-                        <div class="media-buttons">
-                            <button type="button" class="media-btn" onclick="document.getElementById('image-upload').click()">
-                                <i class="fas fa-image"></i> Image
-                            </button>
-                            <button type="button" class="media-btn" onclick="document.getElementById('video-upload').click()">
-                                <i class="fas fa-video"></i> Video
-                            </button>
-                        </div>
-                        <button type="button" id="create-post-btn" class="create-post-btn">
-                            <i class="fas fa-paper-plane"></i> Post
-                        </button>
-                    </div>
-                    <input type="file" id="image-upload" accept="image/*" style="display: none;">
-                    <input type="file" id="video-upload" accept="video/*" style="display: none;">
-                </div>
+            <div class="form-group" style="display:flex;flex-direction:row;align-items:center;gap:0.7rem;width:100%;">
+              <span style="display:inline-flex;width:1.1rem;height:1.1rem;align-items:center;justify-content:center;">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1.1em" height="1.1em" fill="#888"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.416-4.042-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.084-.729.084-.729 1.205.084 1.84 1.236 1.84 1.236 1.07 1.834 2.809 1.304 3.495.997.108-.775.418-1.305.762-1.605-2.665-.305-5.466-1.334-5.466-5.931 0-1.31.469-2.381 1.236-3.221-.124-.303-.535-1.523.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.553 3.297-1.23 3.297-1.23.653 1.653.242 2.873.119 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.803 5.624-5.475 5.921.43.372.823 1.102.823 2.222 0 1.606-.014 2.898-.014 3.293 0 .322.216.694.825.576 4.765-1.588 8.199-6.084 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+              </span>
+              <input type="url" id="social-github" class="form-input" placeholder="GitHub URL" style="flex:1;min-width:0;">
             </div>
+            <div class="form-group" style="display:flex;flex-direction:row;align-items:center;gap:0.7rem;width:100%;">
+              <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/leetcode.svg" alt="LeetCode" style="width:1.1em;height:1.1em;filter:grayscale(1);">
+              <input type="url" id="social-leetcode" class="form-input" placeholder="LeetCode URL" style="flex:1;min-width:0;">
+            </div>
+            <div class="form-group" style="display:flex;flex-direction:row;align-items:center;gap:0.7rem;width:100%;">
+              <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/codeforces.svg" alt="Codeforces" style="width:1.1em;height:1.1em;filter:grayscale(1);">
+              <input type="url" id="social-codeforces" class="form-input" placeholder="Codeforces URL" style="flex:1;min-width:0;">
+            </div>
+            <div id="custom-social-links" style="display:flex;flex-direction:column;gap:0.5rem;width:100%;"></div>
+            <div class="form-actions" style="justify-content:flex-end;width:100%;margin-top:0.7rem;">
+              <button type="submit" class="btn btn-primary" id="save-social-btn" style="font-size:0.98rem;padding:0.5rem 1.2rem;">Save</button>
+            </div>
+          </form>
+        </div>
+        <!-- Portfolio Drive Thumbnails Section (now under Portfolio tab only) -->
+        <div id="portfolio-tab" class="tab-content" style="display:none; padding-bottom: 8.5rem;">
+          <div id="drive-portfolio" style="margin-top:3.5rem;">
+            <!-- Portfolio Synced Indicator and Edit Button (now above grid) -->
+            <div id="portfolio-synced-indicator" style="display:none; background:#e6f4ea; color:#137333; border-radius:1.2rem; padding:0.5rem 1.2rem 0.5rem 1rem; display:flex; align-items:center; gap:0.7rem; font-weight:500; box-shadow:0 1px 4px rgba(20,85,20,0.07); margin-bottom:1.2rem;">
+              <span style="display:inline-flex;align-items:center;justify-content:center;">
+                <svg width="1.3em" height="1.3em" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="10" fill="#43e97b"/><path d="M6 10.5l2.5 2.5L14 8" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              Portfolio Synced
+              <button id="edit-drive-folder-btn" class="btn btn-secondary" style="margin-left:1.2rem; font-size:0.95rem; padding:0.3rem 1.1rem; border-radius:0.7rem;">Edit</button>
+            </div>
+            <!-- Google Drive Portfolio Setup UI (for first-time setup) -->
+            <div id="drive-setup-container" style="display:none; max-width:520px; margin:0 auto 2.5rem auto; background:#fff; padding:2.5rem 2rem 2rem 2rem; border-radius:1.1rem; box-shadow:0 2px 12px 0 rgba(26,115,232,0.07); font-family:'Inter','Poppins',Arial,sans-serif;">
+              <h3 style="font-size:2rem; font-weight:700; color:#202124; margin-bottom:1.1rem; letter-spacing:-0.01em;">Add Your Google Drive Portfolio Folder</h3>
+              <div style="font-size:1.18rem; color:#444; margin-bottom:1.7rem; line-height:1.7; max-width:480px;">
+                Link your Google Drive folder to showcase your portfolio files. This folder should be public so others can view your work. Follow these steps:
+              </div>
+              <ol style="font-size:1.22rem; color:#222; margin-bottom:1.5rem; padding-left:1.5rem; line-height:2.1; font-family:'Poppins','Inter',Arial,sans-serif;">
+                <li style="margin-bottom:0.7rem;">Go to <b>Google Drive</b> and create a folder for your portfolio files.</li>
+                <li style="margin-bottom:0.7rem;">Right-click the folder, select <b>Share</b> → <b>Anyone with the link</b> can <b>View</b>.</li>
+                <li>Copy the folder link and paste it below.</li>
+              </ol>
+              <div style="display:flex; flex-direction:column; gap:1rem;">
+                <input type="url" id="drive-folder-link" class="form-input" placeholder="Paste your Google Drive folder link here" style="width:100%; font-size:1.18rem; padding:1.1rem 1.2rem; border-radius:0.7rem; border:1.5px solid #e0e0e0; font-family:'Inter','Poppins',Arial,sans-serif;">
+                <button id="save-drive-folder-btn" class="btn btn-primary" style="width:100%; font-size:1.18rem; padding:1.1rem 0; border-radius:0.7rem; font-weight:600; letter-spacing:0.01em; font-family:'Inter','Poppins',Arial,sans-serif;">Save Portfolio Folder</button>
+              </div>
+            </div>
+            <div id="drive-thumbnails"></div>
+          </div>
+        </div>
 
-            <!-- Portfolio Feed -->
-            <div id="portfolio-feed" class="portfolio-feed">
-                <!-- Posts will be dynamically loaded here -->
+        <!-- Edit Portfolio Folder Modal -->
+        <div id="edit-portfolio-modal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:9999; align-items:center; justify-content:center;">
+          <div style="background:#fff; border-radius:1.2rem; padding:2rem; max-width:500px; width:90%; max-height:90vh; overflow-y:auto; box-shadow:0 8px 32px rgba(0,0,0,0.15);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
+              <h3 style="font-size:1.25rem; font-weight:600; color:#1a1a1a; margin:0;">Edit Portfolio Folder</h3>
+              <button id="close-edit-modal" style="background:none; border:none; font-size:1.5rem; color:#888; cursor:pointer; padding:0.5rem; border-radius:50%; transition:background 0.2s;" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background='none'">×</button>
             </div>
+            <div style="margin-bottom:1.5rem;">
+              <ol style="font-size:0.95rem; color:#444; margin-bottom:1.2rem; padding-left:1.2rem; line-height:1.6;">
+                <li>1. Go to <b>Google Drive</b> and create a folder for your portfolio files.</li>
+                <li>2. Right-click the folder, select <b>Share</b> &rarr; <b>Anyone with the link</b> can <b>View</b>.</li>
+                <li>3. Copy the folder link and paste it below.</li>
+              </ol>
+              <input type="url" id="edit-drive-folder-link" class="form-input" placeholder="Paste your Google Drive folder link here" style="width:100%; margin-bottom:1rem;">
+            </div>
+            <div style="display:flex; gap:1rem; justify-content:flex-end;">
+              <button id="remove-portfolio-btn" class="btn btn-danger" style="padding:0.75rem 1.5rem;">Remove Portfolio</button>
+              <button id="update-drive-folder-btn" class="btn btn-primary" style="padding:0.75rem 1.5rem;">Update Folder</button>
+            </div>
+          </div>
         </div>
     </main>
 
@@ -1282,7 +1616,7 @@ document.addEventListener('DOMContentLoaded', () => {
         profileTabBtn.classList.remove('active');
         portfolioTab.style.display = 'block';
         profileTab.style.display = 'none';
-        loadPortfolioFeed(); // Load feed when switching to portfolio tab
+        loadDrivePortfolio();
     });
 
     // Check authentication state
@@ -1290,6 +1624,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (user) {
             currentUserId = user.uid;
             loadProfileData(user.uid);
+            // Attach the save folder event listener only after authentication
+            document.getElementById('save-drive-folder-btn').addEventListener('click', saveDriveFolderId);
         } else {
             setTimeout(() => {
                 alert("Please log in or sign up first.");
@@ -1335,11 +1671,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 },
                 skills: document.getElementById('skills').value,
                 experience: document.getElementById('experience').value,
-                profiles: {
-                    github: { username: document.getElementById('github').value },
-                    codeforces: { username: document.getElementById('codeforces').value },
-                    leetcode: { username: document.getElementById('leetcode').value }
-                },
                 portfolio: document.getElementById('portfolio').value.split('\n').filter(url => url.trim()),
                 roles: document.getElementById('roles').value
             };
@@ -1774,17 +2105,14 @@ async function loadProfileData(userId) {
             // Professional Information
             document.getElementById('skills').value = data.skills || '';
             document.getElementById('experience').value = data.experience || '';
-            document.getElementById('github').value = data.profiles?.github?.username || '';
-            document.getElementById('codeforces').value = data.profiles?.codeforces?.username || '';
-            document.getElementById('leetcode').value = data.profiles?.leetcode?.username || '';
             document.getElementById('portfolio').value = Array.isArray(data.portfolio) ? data.portfolio.join('\n') : '';
             document.getElementById('roles').value = data.roles || '';
 
         } else {
             // Set default values for empty profile
             ['name', 'email', 'whatsapp', 'location', 'linkedin', 'about', 'college', 
-             'branch', 'cgpa', 'graduation', 'achievements', 'skills', 'github', 
-             'codeforces', 'leetcode', 'portfolio', 'roles'].forEach(id => {
+             'branch', 'cgpa', 'graduation', 'achievements', 'skills', 'portfolio', 
+             'roles'].forEach(id => {
                 document.getElementById(id).value = '';
             });
             ['gender', 'degree', 'year', 'experience'].forEach(id => {
@@ -1974,6 +2302,227 @@ function hideLoadingOverlay() {
 function setLoadingBar(progress) {
     document.getElementById('loading-bar').style.width = `${progress}%`;
     }
+
+    // Social Accounts logic
+    function getSocialLinksFromForm() {
+        return {
+            linkedin: document.getElementById('social-linkedin').value.trim(),
+            github: document.getElementById('social-github').value.trim(),
+            leetcode: document.getElementById('social-leetcode').value.trim(),
+            codeforces: document.getElementById('social-codeforces').value.trim()
+        };
+    }
+
+    function setSocialLinksToForm(socials) {
+        document.getElementById('social-linkedin').value = socials?.linkedin || '';
+        document.getElementById('social-github').value = socials?.github || '';
+        document.getElementById('social-leetcode').value = socials?.leetcode || '';
+        document.getElementById('social-codeforces').value = socials?.codeforces || '';
+    }
+
+    document.getElementById('social-accounts-form').onsubmit = async (e) => {
+        e.preventDefault();
+        const socials = getSocialLinksFromForm();
+        try {
+            showLoadingOverlay('Saving social accounts...', 0);
+            await set(ref(db, `studentslist/${currentUserId}/socials`), socials);
+            setLoadingBar(100);
+            hideLoadingOverlay();
+            alert('Social accounts saved!');
+        } catch (err) {
+            hideLoadingOverlay();
+            alert('Failed to save social accounts: ' + err.message);
+        }
+    };
+
+    async function loadSocialLinks(userId) {
+        try {
+            const snapshot = await get(ref(db, `studentslist/${userId}/socials`));
+            setSocialLinksToForm(snapshot.exists() ? snapshot.val() : {});
+        } catch (err) {
+            setSocialLinksToForm({});
+        }
+    }
+
+    // === Google Drive Portfolio Thumbnails Integration (moved here for shared scope) ===
+    const API_KEY = 'AIzaSyCkrrOkjd6ilFJOR96-Wk-id6rFM_WPgHQ';
+    let USER_DRIVE_FOLDER_ID = null;
+
+    async function loadDrivePortfolio() {
+      // If no folder ID, show setup UI
+      if (!USER_DRIVE_FOLDER_ID) {
+        document.getElementById('portfolio-synced-indicator').style.display = 'none';
+        document.getElementById('drive-setup-container').style.display = 'block';
+        document.getElementById('drive-thumbnails').style.display = 'none';
+        return;
+      }
+      // Show synced indicator
+      document.getElementById('portfolio-synced-indicator').style.display = 'flex';
+      document.getElementById('drive-setup-container').style.display = 'none';
+      document.getElementById('drive-thumbnails').style.display = 'grid';
+      let files = [];
+      let pageToken = '';
+      do {
+        let url = `https://www.googleapis.com/drive/v3/files?q='${USER_DRIVE_FOLDER_ID}'+in+parents+and+trashed=false&fields=nextPageToken,files(id,name,thumbnailLink,webViewLink,mimeType)&key=${API_KEY}&pageSize=1000`;
+        if (pageToken) url += `&pageToken=${pageToken}`;
+        const response = await fetch(url);
+        const data = await response.json();
+        files = files.concat(data.files || []);
+        pageToken = data.nextPageToken;
+      } while (pageToken);
+
+      const container = document.getElementById('drive-thumbnails');
+      if (!container) return;
+      container.innerHTML = '';
+
+      if (files.length === 0) {
+        container.innerHTML = '<div style="color:#888;">No files found in portfolio.</div>';
+        return;
+      }
+
+      files.forEach(file => {
+        // Skip folders
+        if (file.mimeType === 'application/vnd.google-apps.folder') return;
+        const thumb = file.thumbnailLink || 'https://www.gstatic.com/images/branding/product/1x/drive_2020q4_48dp.png';
+        const fileDiv = document.createElement('a');
+        fileDiv.href = file.webViewLink;
+        fileDiv.target = '_blank';
+        fileDiv.className = 'portfolio-thumb';
+        fileDiv.innerHTML = `
+          <img src="${thumb}" alt="${file.name}">
+          <div class="thumb-title">${file.name}</div>
+        `;
+        container.appendChild(fileDiv);
+      });
+    }
+
+    // Edit button handler - show modal
+    document.getElementById('edit-drive-folder-btn').addEventListener('click', function() {
+      // Pre-fill the current folder link if available
+      if (USER_DRIVE_FOLDER_ID) {
+        document.getElementById('edit-drive-folder-link').value = `https://drive.google.com/drive/folders/${USER_DRIVE_FOLDER_ID}`;
+      }
+      document.getElementById('edit-portfolio-modal').style.display = 'flex';
+    });
+
+    // Close modal handlers
+    document.getElementById('close-edit-modal').addEventListener('click', function() {
+      document.getElementById('edit-portfolio-modal').style.display = 'none';
+    });
+
+    // Close modal when clicking backdrop
+    document.getElementById('edit-portfolio-modal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        this.style.display = 'none';
+      }
+    });
+
+    // Update folder handler
+    document.getElementById('update-drive-folder-btn').addEventListener('click', async function() {
+      if (!currentUserId) {
+        alert('You must be logged in to update your portfolio folder.');
+        return;
+      }
+      const link = document.getElementById('edit-drive-folder-link').value.trim();
+      const folderId = extractDriveFolderId(link);
+      if (!folderId) {
+        alert('Invalid Google Drive folder link.');
+        return;
+      }
+      try {
+        showLoadingOverlay('Updating portfolio folder...', 0);
+        await set(ref(db, `studentslist/${currentUserId}/driveFolderId`), folderId);
+        USER_DRIVE_FOLDER_ID = folderId;
+        setLoadingBar(100);
+        hideLoadingOverlay();
+        alert('Portfolio folder updated!');
+        // Close modal and refresh
+        document.getElementById('edit-portfolio-modal').style.display = 'none';
+        loadDrivePortfolio();
+      } catch (err) {
+        hideLoadingOverlay();
+        alert('Failed to update folder: ' + err.message);
+      }
+    });
+
+    // After saving, show indicator again
+    async function saveDriveFolderId() {
+      if (!currentUserId) {
+        alert('You must be logged in to save your portfolio folder.');
+        return;
+      }
+      const link = document.getElementById('drive-folder-link').value.trim();
+      const folderId = extractDriveFolderId(link);
+      if (!folderId) {
+        alert('Invalid Google Drive folder link.');
+        return;
+      }
+      try {
+        showLoadingOverlay('Saving portfolio folder...', 0);
+        await set(ref(db, `studentslist/${currentUserId}/driveFolderId`), folderId);
+        USER_DRIVE_FOLDER_ID = folderId;
+        setLoadingBar(100);
+        hideLoadingOverlay();
+        alert('Portfolio folder saved!');
+        // Show indicator after saving
+        document.getElementById('portfolio-synced-indicator').style.display = 'flex';
+        document.getElementById('drive-setup-container').style.display = 'none';
+        document.getElementById('drive-thumbnails').style.display = 'grid';
+        loadDrivePortfolio();
+      } catch (err) {
+        hideLoadingOverlay();
+        alert('Failed to save folder: ' + err.message);
+      }
+    }
+
+    // Extract folder ID from Google Drive link
+    function extractDriveFolderId(link) {
+      // Handles links like https://drive.google.com/drive/folders/{id} and sharing links
+      const match = link.match(/[-\w]{25,}/);
+      return match ? match[0] : null;
+    }
+
+    // On Portfolio tab show, load folder ID from Firebase if not loaded
+    async function ensureDriveFolderIdLoaded() {
+      if (typeof currentUserId === 'undefined' || !currentUserId) return;
+      try {
+        const snapshot = await get(ref(db, `studentslist/${currentUserId}/driveFolderId`));
+        USER_DRIVE_FOLDER_ID = snapshot.exists() ? snapshot.val() : null;
+        loadDrivePortfolio();
+      } catch (err) {
+        USER_DRIVE_FOLDER_ID = null;
+        loadDrivePortfolio();
+      }
+    }
+
+    document.getElementById('portfolio-tab-btn').addEventListener('click', ensureDriveFolderIdLoaded);
+    // === End Google Drive Portfolio Integration ===
+
+    // Remove the cancel event listener and add remove portfolio functionality
+    document.getElementById('remove-portfolio-btn').addEventListener('click', async function() {
+      if (!currentUserId) {
+        alert('You must be logged in to remove your portfolio folder.');
+        return;
+      }
+      if (confirm('Are you sure you want to remove your portfolio folder? This will unlink your Google Drive folder and hide your portfolio files.')) {
+        try {
+          showLoadingOverlay('Removing portfolio folder...', 0);
+          await set(ref(db, `studentslist/${currentUserId}/driveFolderId`), null);
+          USER_DRIVE_FOLDER_ID = null;
+          setLoadingBar(100);
+          hideLoadingOverlay();
+          alert('Portfolio folder removed!');
+          // Close modal and show setup UI
+          document.getElementById('edit-portfolio-modal').style.display = 'none';
+          document.getElementById('portfolio-synced-indicator').style.display = 'none';
+          document.getElementById('drive-setup-container').style.display = 'block';
+          document.getElementById('drive-thumbnails').style.display = 'none';
+        } catch (err) {
+          hideLoadingOverlay();
+          alert('Failed to remove folder: ' + err.message);
+        }
+      }
+    });
     </script>
 </body>
 </html>
