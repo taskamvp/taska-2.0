@@ -1959,34 +1959,173 @@ body {
         });
         });
     </script>
+    <!-- Fiverr-style Footer Start -->
     <footer class="footer">
+      <div class="footer-main">
         <div class="footer-container">
-            <div class="footer-section">
-                <p class="footer-desc">Connecting students with opportunities</p>
-            </div>
-            <div class="footer-section">
-                <h3 class="footer-title">About</h3>
-                <ul class="footer-links">
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Careers</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Terms of Service</a></li>
-                    </ul>
-                </div>
-            
-            <div class="footer-section">
-                <h3 class="footer-title">Contact</h3>
-                <ul class="footer-links">
-                    <li><a href="#">Email</a></li>
-                    <li><a href="#">Phone</a></li>
-                    <li><a href="#">Address</a></li>
-                </ul>
-            </div>
-            
-            </div>
-        <div class="footer-bottom">
-            <p>&copy; 2025 Taska. All rights reserved.</p>
+          <div class="footer-col">
+            <h3 class="footer-title">Categories</h3>
+            <ul class="footer-links">
+              <li><a href="#">Graphics & Design</a></li>
+              <li><a href="#">Digital Marketing</a></li>
+              <li><a href="#">Writing & Translation</a></li>
+              <li><a href="#">Video & Animation</a></li>
+              <li><a href="#">Music & Audio</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h3 class="footer-title">About</h3>
+            <ul class="footer-links">
+              <li><a href="#">About Us</a></li>
+              <li><a href="#">Careers</a></li>
+              <li><a href="#">Press & News</a></li>
+              <li><a href="#">Partnerships</a></li>
+              <li><a href="#">Privacy Policy</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h3 class="footer-title">Support</h3>
+            <ul class="footer-links">
+              <li><a href="#">Help & Support</a></li>
+              <li><a href="#">Trust & Safety</a></li>
+              <li><a href="#">Selling on Taska</a></li>
+              <li><a href="#">Buying on Taska</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h3 class="footer-title">Community</h3>
+            <ul class="footer-links">
+              <li><a href="#">Events</a></li>
+              <li><a href="#">Blog</a></li>
+              <li><a href="#">Forum</a></li>
+              <li><a href="#">Affiliates</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h3 class="footer-title">Contact</h3>
+            <ul class="footer-links">
+              <li><a href="#">Email</a></li>
+              <li><a href="#">Phone</a></li>
+              <li><a href="#">Address</a></li>
+            </ul>
+          </div>
         </div>
+        <hr class="footer-divider">
+        <div class="footer-bottom-bar">
+          <div class="footer-logo-bar">
+            
+            <span class="footer-copyright">&copy; 2025 Taska. All rights reserved.</span>
+          </div>
+          <div class="footer-socials">
+            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+            <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+          </div>
+        </div>
+      </div>
     </footer>
+    <!-- Fiverr-style Footer End -->
+
+    <style>
+    .footer {
+      background: #f7f9fa;
+      color: #404145;
+      font-family: 'Poppins', 'Inter', Arial, sans-serif;
+      padding: 0;
+      margin-top: 3rem;
+      border-top: 1px solid #e5e7ea;
+    }
+    .footer-main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 0 1.5rem;
+    }
+    .footer-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 2.5rem;
+      margin-bottom: 2rem;
+    }
+    .footer-col {
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+    .footer-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #404145;
+      margin-bottom: 0.7rem;
+      letter-spacing: 0.01em;
+    }
+    .footer-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .footer-links a {
+      color: #74767e;
+      text-decoration: none;
+      font-size: 0.97rem;
+      transition: color 0.18s;
+      font-weight: 500;
+    }
+    .footer-links a:hover {
+      color: #14532d;
+    }
+    .footer-divider {
+      border: none;
+      border-top: 1px solid #e5e7ea;
+      margin: 0 0 1.2rem 0;
+    }
+    .footer-bottom-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 0 1.5rem 0;
+      gap: 1.2rem;
+    }
+    .footer-logo-bar {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+    .footer-logo-text {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: #14532d;
+      letter-spacing: -0.5px;
+    }
+    .footer-socials {
+      display: flex;
+      gap: 1.1rem;
+    }
+    .footer-socials a {
+      color: #74767e;
+      font-size: 1.25rem;
+      transition: color 0.18s;
+    }
+    .footer-socials a:hover {
+      color: #14532d;
+    }
+    @media (max-width: 700px) {
+      .footer-main {
+        padding: 2rem 0.5rem 0 0.5rem;
+      }
+      .footer-container {
+        gap: 1.2rem;
+      }
+      .footer-bottom-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.7rem;
+      }
+    }
+    </style>
 </body>
 </html>
