@@ -1115,14 +1115,14 @@
   border-radius: 0;
   box-shadow: none;
   display: flex;
-  flex-direction: column;
+    flex-direction: column;
   align-items: center;
   padding: 0.3rem 0.1rem 0.2rem 0.1rem;
   cursor: pointer;
   border: 1px solid #dadce0;
   min-width: 0;
   transition: border-color 0.18s;
-}
+  }
 .portfolio-thumb:hover {
   border-color: #1a73e8;
   box-shadow: none;
@@ -1214,8 +1214,8 @@
             bottom: 0;
             background: rgba(0, 0, 0, 0.5);
             z-index: 9999;
-            display: flex;
-            align-items: center;
+  display: flex;
+  align-items: center;
             justify-content: center;
         }
 
@@ -1249,7 +1249,7 @@
             border: none;
             font-size: 1.5rem;
             color: #888;
-            cursor: pointer;
+  cursor: pointer;
             padding: 0.5rem;
             border-radius: 50%;
             transition: background 0.2s;
@@ -1289,8 +1289,8 @@
             padding: 0.08rem 0.02rem 0.08rem 0.02rem;
             border-radius: 0.2rem;
             min-width: 0;
-          }
-          .portfolio-thumb img {
+}
+.portfolio-thumb img {
             width: 60px;
             height: 60px;
             border-radius: 0.1rem;
@@ -1300,13 +1300,13 @@
             font-size: 0.72rem;
             max-width: 60px;
           }
-        }
-    </style>
+}
+</style>
 </head>
 <body>
     <nav class="navbar_classified">
         <a href="../index.html">
-            <div class="logo"><img src="../assets/logo.png" alt="Taska Logo" style="height:48px;vertical-align:middle;"></div>
+        <div class="logo"><img src="../assets/logo.png" alt="Taska Logo" style="height:48px;vertical-align:middle;"></div>
         </a>
         <ul class="nav-menu">
             <li><a href="tasks.html">Workplace</a></li>
@@ -1461,11 +1461,6 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label">Portfolio Links</label>
-                                <textarea id="portfolio" class="form-textarea" placeholder="Add your portfolio, project links, or personal website URLs..."></textarea>
-                            </div>
-
-                            <div class="form-group">
                                 <label class="form-label">Preferred Roles</label>
                                 <textarea id="roles" class="form-textarea" placeholder="What roles are you interested in? (e.g., Frontend Developer, Data Scientist)..."></textarea>
                             </div>
@@ -1569,7 +1564,7 @@
                     <i class="fas fa-sign-out-alt"></i>
                     Logout
                 </button>
-            </div>
+          </div>
         </div>
     </main>
 
@@ -1710,7 +1705,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 },
                 skills: document.getElementById('skills').value,
                 experience: document.getElementById('experience').value,
-                portfolio: document.getElementById('portfolio').value.split('\n').filter(url => url.trim()),
                 roles: document.getElementById('roles').value
             };
 
@@ -2144,13 +2138,12 @@ async function loadProfileData(userId) {
             // Professional Information
             document.getElementById('skills').value = data.skills || '';
             document.getElementById('experience').value = data.experience || '';
-            document.getElementById('portfolio').value = Array.isArray(data.portfolio) ? data.portfolio.join('\n') : '';
             document.getElementById('roles').value = data.roles || '';
 
         } else {
             // Set default values for empty profile
             ['name', 'email', 'whatsapp', 'location', 'linkedin', 'about', 'college', 
-             'branch', 'cgpa', 'graduation', 'achievements', 'skills', 'portfolio', 
+             'branch', 'cgpa', 'graduation', 'achievements', 'skills', 
              'roles'].forEach(id => {
                 document.getElementById(id).value = '';
             });
@@ -2384,10 +2377,10 @@ function setLoadingBar(progress) {
     }
 
     // === Google Drive Portfolio Thumbnails Integration (moved here for shared scope) ===
-    const API_KEY = 'AIzaSyCkrrOkjd6ilFJOR96-Wk-id6rFM_WPgHQ';
+const API_KEY = 'AIzaSyCkrrOkjd6ilFJOR96-Wk-id6rFM_WPgHQ';
     let USER_DRIVE_FOLDER_ID = null;
 
-    async function loadDrivePortfolio() {
+async function loadDrivePortfolio() {
       // If no folder ID, show setup UI
       if (!USER_DRIVE_FOLDER_ID) {
         document.getElementById('portfolio-synced-indicator').style.display = 'none';
@@ -2399,41 +2392,41 @@ function setLoadingBar(progress) {
       document.getElementById('portfolio-synced-indicator').style.display = 'flex';
       document.getElementById('drive-setup-container').style.display = 'none';
       document.getElementById('drive-thumbnails').style.display = 'grid';
-      let files = [];
-      let pageToken = '';
-      do {
+  let files = [];
+  let pageToken = '';
+  do {
         let url = `https://www.googleapis.com/drive/v3/files?q='${USER_DRIVE_FOLDER_ID}'+in+parents+and+trashed=false&fields=nextPageToken,files(id,name,thumbnailLink,webViewLink,mimeType)&key=${API_KEY}&pageSize=1000`;
-        if (pageToken) url += `&pageToken=${pageToken}`;
-        const response = await fetch(url);
-        const data = await response.json();
-        files = files.concat(data.files || []);
-        pageToken = data.nextPageToken;
-      } while (pageToken);
+    if (pageToken) url += `&pageToken=${pageToken}`;
+    const response = await fetch(url);
+    const data = await response.json();
+    files = files.concat(data.files || []);
+    pageToken = data.nextPageToken;
+  } while (pageToken);
 
-      const container = document.getElementById('drive-thumbnails');
-      if (!container) return;
-      container.innerHTML = '';
+  const container = document.getElementById('drive-thumbnails');
+  if (!container) return;
+  container.innerHTML = '';
 
-      if (files.length === 0) {
-        container.innerHTML = '<div style="color:#888;">No files found in portfolio.</div>';
-        return;
-      }
+  if (files.length === 0) {
+    container.innerHTML = '<div style="color:#888;">No files found in portfolio.</div>';
+    return;
+  }
 
-      files.forEach(file => {
-        // Skip folders
-        if (file.mimeType === 'application/vnd.google-apps.folder') return;
-        const thumb = file.thumbnailLink || 'https://www.gstatic.com/images/branding/product/1x/drive_2020q4_48dp.png';
-        const fileDiv = document.createElement('a');
-        fileDiv.href = file.webViewLink;
-        fileDiv.target = '_blank';
-        fileDiv.className = 'portfolio-thumb';
-        fileDiv.innerHTML = `
-          <img src="${thumb}" alt="${file.name}">
-          <div class="thumb-title">${file.name}</div>
-        `;
-        container.appendChild(fileDiv);
-      });
-    }
+  files.forEach(file => {
+    // Skip folders
+    if (file.mimeType === 'application/vnd.google-apps.folder') return;
+    const thumb = file.thumbnailLink || 'https://www.gstatic.com/images/branding/product/1x/drive_2020q4_48dp.png';
+    const fileDiv = document.createElement('a');
+    fileDiv.href = file.webViewLink;
+    fileDiv.target = '_blank';
+    fileDiv.className = 'portfolio-thumb';
+    fileDiv.innerHTML = `
+      <img src="${thumb}" alt="${file.name}">
+      <div class="thumb-title">${file.name}</div>
+    `;
+    container.appendChild(fileDiv);
+  });
+}
 
     // Edit button handler - show modal
     document.getElementById('edit-drive-folder-btn').addEventListener('click', function() {
@@ -2562,6 +2555,6 @@ function setLoadingBar(progress) {
         }
       }
     });
-    </script>
+</script>
 </body>
 </html>
