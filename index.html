@@ -1550,8 +1550,15 @@ body {
       margin-left: auto;
       margin-right: auto;
     }
+    .ai-text-card img {
+      border-radius: 0.6rem;
+      height: 220px;
+    }
+    .ai-text-card img {
+      border-radius: 0.35rem !important;
+      height: 220px;
+    }
 }
-
 @media (max-width: 700px) {
     .hero, .ai-students-section, .benefits-section, .categories-section, .experts-section, .startup-section, .services-section {
         padding: 1.5rem 1rem;
@@ -1637,6 +1644,14 @@ body {
       max-width: 90vw;
       margin-left: auto;
       margin-right: auto;
+    }
+    .ai-text-card img {
+      border-radius: 0.5rem;
+      height: 200px;
+    }
+    .ai-text-card img {
+      border-radius: 0.25rem !important;
+      height: 200px;
     }
 }
 
@@ -2124,6 +2139,10 @@ body {
         flex-direction: column;
         align-items: flex-start;
         gap: 0.7rem;
+      }
+      .footer-container .footer-col:nth-child(1),
+      .footer-container .footer-col:nth-child(3) {
+        display: none;
       }
     }
     </style>
