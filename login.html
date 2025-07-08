@@ -21,9 +21,10 @@
             min-height: 100vh;
             width: 100vw;
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: center;
             font-family: 'Montserrat', 'Manrope', 'Poppins', 'Inter', Arial, sans-serif;
+            padding-top: 2rem;
         }
 
         /* Simple navbar */
@@ -77,9 +78,9 @@
         /* Main container */
         .auth-container {
             background: #fff;
-            border: 1px solid rgba(0,0,0,0.08);
+            border: none;
             border-radius: 0;
-            box-shadow: 0 8px 32px 0 rgba(0,0,0,0.10);
+            box-shadow: none;
             padding: 2.5rem 2.5rem 2.5rem 2.5rem;
             max-width: 520px;
             min-width: 340px;
@@ -326,6 +327,21 @@
             font-size: 0.85rem;
         }
 
+        /* Sign up link */
+        .signup-link {
+            text-align: center;
+            color: #007bff;
+            font-size: 0.98rem;
+            text-decoration: none;
+            font-family: 'Montserrat', 'Manrope', 'Poppins', 'Inter', Arial, sans-serif;
+            transition: color 0.2s ease;
+        }
+
+        .signup-link:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+
         /* Responsive design */
         @media (max-width: 768px) {
             .navbar {
@@ -361,12 +377,14 @@
             }
 
             .tabs {
-                flex-direction: column;
-                gap: 0.25rem;
+                flex-direction: row;
+                gap: 1rem;
             }
 
             .tab-btn {
                 text-align: center;
+                font-size: 0.95rem;
+                padding: 0.6rem 1rem;
             }
         }
         @media (max-width: 700px) {
@@ -394,7 +412,7 @@
                         <div class="form-buttons" style="flex-direction: column; gap: 0.7rem; align-items: stretch;">
                             <button class="cta-button login-btn" onclick="login('employer')">Login</button>
                             <div style="text-align:center; color:#888; font-size:0.98rem; margin:0.5rem 0 0.2rem 0; font-family:'Montserrat','Manrope','Poppins','Inter',Arial,sans-serif;">Don't have an account in Taska?</div>
-                            <button class="cta-button signup-btn">Sign Up</button>
+                            <a href="signup.html" class="signup-link">Sign Up</a>
                         </div>
                     </div>
                 </div>
@@ -407,7 +425,7 @@
                         <div class="form-buttons" style="flex-direction: column; gap: 0.7rem; align-items: stretch;">
                             <button class="cta-button login-btn" onclick="login('student')">Login</button>
                             <div style="text-align:center; color:#888; font-size:0.98rem; margin:0.5rem 0 0.2rem 0; font-family:'Montserrat','Manrope','Poppins','Inter',Arial,sans-serif;">Don't have an account in Taska?</div>
-                            <button class="cta-button signup-btn">Sign Up</button>
+                            <a href="signup.html" class="signup-link">Sign Up</a>
                         </div>
                     </div>
                 </div>

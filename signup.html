@@ -340,21 +340,6 @@
       </div>
       <div class="signup-login-label">Already have an account?<a href="login.html">Login</a></div>
     </div>
-
-    <!-- Employer Signup Form -->
-    <div class="student-signup-form" id="employer-signup-form">
-      <button class="back-icon" onclick="goBack()">←</button>
-      <div class="signup-heading">Employer Sign Up</div>
-      <div class="form-container">
-        <input type="email" id="employer-email" placeholder="Enter your business email" required>
-        <input type="password" id="employer-password" placeholder="Password" required>
-        <input type="password" id="employer-confirm-password" placeholder="Confirm Password" required>
-        <div class="form-buttons">
-          <button class="cta-button signup-btn" id="employer-signup-btn">Sign Up</button>
-        </div>
-      </div>
-      <div class="signup-login-label">Already have an account?<a href="login.html">Login</a></div>
-    </div>
   </div>
   <script>
     // Card selection logic
@@ -363,9 +348,7 @@
     const continueBtn = document.getElementById('signup-continue-btn');
     const originalContent = document.querySelector('.signup-original-content');
     const studentForm = document.getElementById('student-signup-form');
-    const employerForm = document.getElementById('employer-signup-form');
     const studentSignupBtn = document.getElementById('student-signup-btn');
-    const employerSignupBtn = document.getElementById('employer-signup-btn');
     let selectedRole = null;
     
     cards.forEach((card, idx) => {
@@ -396,18 +379,16 @@
         console.log('Showing student signup form');
         originalContent.classList.add('hidden');
         studentForm.classList.add('active');
-      } else {
-        // Show employer signup form
-        console.log('Showing employer signup form');
-        originalContent.classList.add('hidden');
-        employerForm.classList.add('active');
+      } else if (selectedRole === 'employer') {
+        // Redirect to signuppro.html for employer signup
+        console.log('Redirecting to signuppro.html');
+        window.location.href = 'signuppro.html';
       }
     });
 
     function goBack() {
       originalContent.classList.remove('hidden');
       studentForm.classList.remove('active');
-      employerForm.classList.remove('active');
       selectedRole = null;
       continueBtn.disabled = true;
     }
@@ -437,34 +418,6 @@
       // Here you would typically call your signup function
       // For now, we'll just show a success message and redirect
       alert('Student account created successfully!');
-      window.location.href = 'login.html';
-    });
-
-    // Employer signup functionality
-    employerSignupBtn.addEventListener('click', () => {
-      const email = document.getElementById('employer-email').value;
-      const password = document.getElementById('employer-password').value;
-      const confirmPassword = document.getElementById('employer-confirm-password').value;
-      
-      // Basic validation
-      if (!email || !password || !confirmPassword) {
-        alert('Please fill in all fields');
-        return;
-      }
-      
-      if (password !== confirmPassword) {
-        alert('Passwords do not match');
-        return;
-      }
-      
-      if (password.length < 6) {
-        alert('Password must be at least 6 characters long');
-        return;
-      }
-      
-      // Here you would typically call your signup function
-      // For now, we'll just show a success message and redirect
-      alert('Employer account created successfully!');
       window.location.href = 'login.html';
     });
   </script>

@@ -93,24 +93,30 @@ export async function signup(userType) {
         localStorage.setItem('userId', user.uid);
         localStorage.setItem('userRole', userType);
 
+        // Store user profile data
         const list = userType === 'professional' ? 'professionalslist' : 'studentslist';
         const path = userType === 'professional' 
             ? `${list}/${user.uid}` 
             : `${list}/${user.uid}/personal`;
         const userRef = ref(database, path);
-        const initialData = userType === 'professional'
-            ? {
-                email: user.email,
-                coins: 500,
-                isHiring: true
-            }
-            : {
-                email: user.email
-            };
+        const initialData = {
+            email: user.email
+        };
 
         await set(userRef, initialData);
+
+        // Store loyalty score
+        const loyaltySection = userType === 'professional' ? 'loyalty_professional' : 'loyalty_students';
+        const loyaltyPath = `${loyaltySection}/${user.uid}`;
+        const loyaltyRef = ref(database, loyaltyPath);
+        const loyaltyData = {
+            score: 1000
+        };
+
+        await set(loyaltyRef, loyaltyData);
+
         toggleLoading(false);
-        window.location.href = userType === 'professional' ? 'professional/update-profile.html' : 'workplace/update-profile.html';
+        window.location.href = userType === 'professional' ? 'professional/update-profile.html' : 'workplace/profile.html';
     } catch (error) {
         toggleLoading(false);
         console.debug("Signup error:", error.code, error.message);
