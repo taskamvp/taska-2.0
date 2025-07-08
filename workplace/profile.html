@@ -1284,7 +1284,29 @@
             padding: 0.75rem 1.5rem;
         }
 
-        #edit-portfolio-modal { display: none !important; }
+        #edit-portfolio-modal { display: none; }
+
+        @media (max-width: 600px) {
+          #drive-thumbnails {
+            grid-template-columns: repeat(3, 1fr) !important;
+            gap: 0.4rem !important;
+          }
+          .portfolio-thumb {
+            padding: 0.08rem 0.02rem 0.08rem 0.02rem;
+            border-radius: 0.2rem;
+            min-width: 0;
+          }
+          .portfolio-thumb img {
+            width: 60px;
+            height: 60px;
+            border-radius: 0.1rem;
+            margin-bottom: 0.08rem;
+          }
+          .portfolio-thumb .thumb-title {
+            font-size: 0.72rem;
+            max-width: 60px;
+          }
+        }
     </style>
 </head>
 <body>
