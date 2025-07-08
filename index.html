@@ -1465,7 +1465,7 @@ body {
     .hamburger {
       display: flex;
       position: absolute;
-      top: 20px;
+      top: 24px;
       right: 12px;
       margin: 0;
       width: 36px;
@@ -1537,6 +1537,12 @@ body {
       left: 0;
       right: 0;
     }
+    .startup-offer {
+      font-size: clamp(1.2rem, 3.5vw, 1.5rem);
+    }
+    .startup-package {
+      font-size: clamp(1.1rem, 3vw, 1.2rem);
+    }
 }
 
 @media (max-width: 700px) {
@@ -1605,13 +1611,19 @@ body {
     .hamburger {
       width: 32px;
       height: 32px;
-      top: 16px;
+      top: 20px;
       right: 8px;
     }
     .hamburger span {
       width: 18px;
       height: 2.5px;
       margin: 2.5px 0;
+    }
+    .startup-offer {
+      font-size: clamp(1.1rem, 3vw, 1.3rem);
+    }
+    .startup-package {
+      font-size: clamp(1rem, 2.5vw, 1.1rem);
     }
 }
 
