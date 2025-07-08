@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up | Taska</title>
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: #fff;
+      min-height: 100vh;
+      width: 100vw;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Montserrat', 'Manrope', 'Poppins', 'Inter', Arial, sans-serif;
+      margin: 0;
+    }
+    .signup-main {
+      width: 100vw;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+      padding: 2.5rem 1rem 1.5rem 1rem;
+    }
+    .signup-heading {
+      font-size: 2.1rem;
+      font-weight: 500;
+      color: #111;
+      margin-bottom: 2.2rem;
+      text-align: center;
+      font-family: 'Montserrat', 'Manrope', 'Poppins', 'Inter', Arial, sans-serif;
+      letter-spacing: -0.01em;
+    }
+    .signup-cards-row {
+      display: flex;
+      gap: 2.5rem;
+      justify-content: center;
+      align-items: stretch;
+      width: 100%;
+      max-width: 700px;
+      margin-bottom: 2.5rem;
+      flex-wrap: wrap;
+    }
+    .signup-card {
+      background: #fff;
+      border-radius: 0;
+      box-shadow: none;
+      border: 1.5px solid #e5e7ea;
+      padding: 2.2rem 2rem 2rem 2rem;
+      flex: 1 1 260px;
+      min-width: 240px;
+      max-width: 320px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      transition: border 0.18s, box-shadow 0.18s, background 0.18s;
+      cursor: pointer;
+      position: relative;
+      outline: none;
+    }
+    .signup-card.selected, .signup-card:focus {
+      border: 2.5px solid #facc15;
+      background: #fffbe7;
+    }
+    .signup-card:hover {
+      border: 2.5px solid #facc15;
+      background: #fffde7;
+    }
+    .signup-card-icon {
+      font-size: 2.3rem;
+      margin-bottom: 1.1rem;
+      color: #facc15;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.8rem;
+      height: 2.8rem;
+    }
+    .signup-card-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #111;
+      margin-bottom: 0.7rem;
+      font-family: 'Montserrat', 'Manrope', 'Poppins', 'Inter', Arial, sans-serif;
+      letter-spacing: -0.01em;
+    }
+    .signup-card-desc {
+      font-size: 1.05rem;
+      font-weight: 400;
+      color: #444;
+      font-family: 'Montserrat', 'Manrope', 'Poppins', 'Inter', Arial, sans-serif;
+      line-height: 1.5;
+    }
+    .signup-radio {
+      position: absolute;
+      top: 1.2rem;
+      right: 1.2rem;
+      width: 1.2rem;
+      height: 1.2rem;
+      accent-color: #facc15;
+      pointer-events: none;
+    }
+    .signup-continue-btn {
+      margin-top: 0.5rem;
+      padding: 1rem 2.5rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border-radius: 0.7rem;
+      background: #111;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-family: 'Montserrat', 'Manrope', 'Poppins', 'Inter', Arial, sans-serif;
+      box-shadow: 0 2px 8px 0 rgba(17,17,17,0.07);
+      transition: background 0.18s, color 0.18s;
+      display: block;
+      width: 100%;
+      max-width: 340px;
+      letter-spacing: 0.01em;
+    }
+    .signup-continue-btn:disabled {
+      background: #e5e7ea;
+      color: #aaa;
+      cursor: not-allowed;
+    }
+    .signup-login-label {
+      margin-top: 1.5rem;
+      text-align: center;
+      color: #888;
+      font-size: 1.02rem;
+      font-family: 'Montserrat', 'Manrope', 'Poppins', 'Inter', Arial, sans-serif;
+    }
+    .signup-login-label a {
+      color: #14532d;
+      text-decoration: underline;
+      font-weight: 500;
+      margin-left: 0.3em;
+      transition: color 0.18s;
+    }
+    .signup-login-label a:hover {
+      color: #facc15;
+    }
+    @media (max-width: 900px) {
+      .signup-cards-row {
+        flex-direction: column;
+        gap: 1.5rem;
+        align-items: center;
+        padding: 0;
+      }
+      .signup-card {
+        max-width: 98vw;
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="signup-main">
+    <div class="signup-heading">Sign up for Taska</div>
+    <div class="signup-cards-row">
+      <div class="signup-card" tabindex="0" data-role="student">
+        <input type="radio" name="role" class="signup-radio" tabindex="-1" aria-hidden="true">
+        <div class="signup-card-title">I'm a student looking to work part time</div>
+      </div>
+      <div class="signup-card" tabindex="0" data-role="employer">
+        <input type="radio" name="role" class="signup-radio" tabindex="-1" aria-hidden="true">
+        <div class="signup-card-title">I'm an employer looking for talented college students</div>
+      </div>
+    </div>
+    <button class="signup-continue-btn" id="signup-continue-btn" disabled>Continue</button>
+    <div class="signup-login-label">Already have an account?<a href="login.html">Login</a></div>
+  </div>
+  <script>
+    // Card selection logic
+    const cards = document.querySelectorAll('.signup-card');
+    const radios = document.querySelectorAll('.signup-radio');
+    const continueBtn = document.getElementById('signup-continue-btn');
+    let selectedRole = null;
+    cards.forEach((card, idx) => {
+      card.addEventListener('click', () => {
+        cards.forEach((c, i) => {
+          c.classList.remove('selected');
+          radios[i].checked = false;
+        });
+        card.classList.add('selected');
+        radios[idx].checked = true;
+        selectedRole = card.getAttribute('data-role');
+        continueBtn.disabled = false;
+      });
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          card.click();
+        }
+      });
+    });
+    continueBtn.addEventListener('click', () => {
+      if (!selectedRole) return;
+      // Redirect to the appropriate signup flow (replace with your actual URLs)
+      if (selectedRole === 'student') {
+        window.location.href = 'signup-student.html';
+      } else {
+        window.location.href = 'signup-employer.html';
+      }
+    });
+  </script>
+</body>
+</html> 
