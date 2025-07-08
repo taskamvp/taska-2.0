@@ -116,7 +116,7 @@ export async function signup(userType) {
         await set(loyaltyRef, loyaltyData);
 
         toggleLoading(false);
-        window.location.href = userType === 'professional' ? 'professional/update-profile.html' : 'workplace/profile.html';
+        window.location.href = userType === 'professional' ? 'professional/profile.html' : 'workplace/profile.html';
     } catch (error) {
         toggleLoading(false);
         console.debug("Signup error:", error.code, error.message);
