@@ -251,27 +251,25 @@
             align-items: center;
         }
         .student-card {
-            background: rgba(255,255,255,0.82);
-            backdrop-filter: blur(12px) saturate(1.1);
-            -webkit-backdrop-filter: blur(12px) saturate(1.1);
+            background: #ffffff;
             border-radius: 0;
-            border: 1px solid rgba(200,200,210,0.18);
-            box-shadow: none;
+            border: 1px solid #e8eaed;
+            box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
             width: 100%;
             max-width: 1200px;
             min-height: auto;
             display: flex;
             align-items: center;
             gap: 1rem;
-            transition: none;
+            transition: box-shadow 0.2s ease;
             margin-bottom: 18px;
             position: relative;
             padding: 0.7rem 1.2rem;
         }
         .student-card:hover {
-            background: rgba(255,255,255,0.95);
-            box-shadow: none;
-            border: 1.5px solid #e3e8f0;
+            background: #ffffff;
+            box-shadow: 0 1px 3px 0 rgba(60, 64, 67, 0.3), 0 4px 8px 3px rgba(60, 64, 67, 0.15);
+            border: 1px solid #e8eaed;
         }
         .student-card:last-child {
             margin-bottom: 0;
@@ -282,13 +280,13 @@
             border-radius: 0;
             object-fit: cover;
             flex-shrink: 0;
-            border: 1.5px solid #e0e0e0;
-            background: #f3f3f3;
+            border: 1px solid #e8eaed;
+            background: #f8f9fa;
             box-shadow: none;
         }
         .student-card .card-content {
             display: grid;
-            grid-template-columns: 1.2fr 1fr 1.5fr 0.8fr auto;
+            grid-template-columns: 1.2fr 1fr 1.5fr auto;
             align-items: center;
             gap: 0;
             width: 100%;
@@ -296,8 +294,7 @@
         }
         .student-card .basic-info,
         .student-card .education-info,
-        .student-card .skills-info,
-        .student-card .availability-info {
+        .student-card .skills-info {
             padding: 0 0.3rem;
             min-width: 0;
             max-width: 100%;
@@ -313,8 +310,7 @@
         .student-card .basic-info h3,
         .student-card .basic-info h4,
         .student-card .education-info p,
-        .student-card .skills-info p,
-        .student-card .availability-info p {
+        .student-card .skills-info p {
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
@@ -324,10 +320,11 @@
         }
         .student-card .actions {
             border-right: none;
+            display: flex;
             flex-direction: row;
             align-items: center;
-            gap: 0.5rem;
             justify-content: flex-end;
+            gap: 1.5rem;
             padding-left: 0.7rem;
             min-width: 120px;
         }
@@ -364,70 +361,50 @@
             text-decoration: underline;
         }
         .ai-intro-btn {
-            width: auto;
-            height: 38px;
-            min-width: 90px;
-            min-height: 38px;
-            max-width: 160px;
-            max-height: 38px;
-            padding: 0 1.2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 0;
-            background: linear-gradient(135deg, #4f8cff 0%, #007aff 100%);
-            color: #fff;
+            background: none;
+            color: #007aff;
             border: none;
-            box-shadow: 0 2px 8px 0 rgba(30,34,90,0.10);
-            font-size: 1.01rem;
-            font-weight: 600;
+            padding: 0;
+            font-size: 0.95rem;
+            font-weight: 500;
             cursor: pointer;
-            transition: background 0.18s, box-shadow 0.18s, color 0.18s;
+            transition: color 0.2s ease;
             font-family: inherit;
-            gap: 0.6rem;
-        }
-        .ai-intro-btn i {
-            color: #fff;
-            font-size: 1.1rem;
-            pointer-events: none;
-            margin-right: 0.3rem;
+            text-decoration: underline;
         }
         .ai-intro-btn:hover {
-            background: linear-gradient(135deg, #007aff 0%, #4f8cff 100%);
-            color: #fff;
-            box-shadow: 0 4px 16px 0 rgba(30,34,90,0.13);
+            color: #0056cc;
+            text-decoration: underline;
         }
         .ai-intro-btn.connected {
-            background: #e6f4ea;
+            background: none;
             color: #198754;
-            border: 1.5px solid #bfcad6;
-            box-shadow: none;
+            border: none;
             cursor: not-allowed;
-        }
-        .ai-intro-btn.connected i {
-            color: #198754;
+            text-decoration: none;
         }
         .ai-intro-btn.connected:hover {
-            background: #e6f4ea;
+            background: none;
             color: #198754;
-            border: 1.5px solid #bfcad6;
-            box-shadow: none;
+            border: none;
+            text-decoration: none;
         }
         .toggle-details {
             color: #007aff;
             font-size: 0.95rem;
             cursor: pointer;
             text-decoration: underline;
-            margin-top: 0.2rem;
+            margin-top: 0;
             display: inline-block;
             background: none;
             border: none;
-            padding: 0 0.7rem;
+            padding: 0;
             border-radius: 0;
             font-weight: 500;
         }
         .toggle-details:hover {
-            opacity: 0.7;
+            color: #0056cc;
+            text-decoration: underline;
         }
         .social-icons {
             display: none;
@@ -1227,8 +1204,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-const part1 = 'sk-proj-3F9d8rVuPthYn2jvKneznUYN-ZYaFSy0nKkKIJ5IOEVdjRQdGebYsRkkmJqn25YfZNDLUY12S6T3BlbkFJVBfH9b';
-const part2 = 'EfOVjVB3iRmikjAcyzHapDxOwLArvNo2eln91xFnjyR_D-Mo7XeXcjgcdjRiTueSh8MA';
+const part1 = 'sk-proj-iCVdFdzk4UH99F5gFZ3ZuwDaG7xqFWytjq3fxFx7E3UBLBiJrEKRJ';
+const part2 = 'MAwLEr9Z9QOswgjh8-7NMT3BlbkFJ6krKvkXKmgZ5NqUHAkglZQxm5Gw5l92xhyDGmOZz7gu3LsN1rN9T1MGenO3QjHszJohS8FlD8A';
 const apiKey = part1 + part2;
 
 let studentsData = [];
@@ -1298,10 +1275,11 @@ function getYearLabel(year) {
 async function aiSearch(query = '') {
     if (!query) {
         studentsList.innerHTML = '<p>Please enter a search query</p>';
+        searchInfo.style.display = 'block'; // Show help cards when no search
         return;
     }
     loadingOverlay.style.display = 'flex';
-    searchInfo.classList.add('hidden');
+    searchInfo.style.display = 'none'; // Hide help cards when searching
 
     const csvText = [
         ['id', 'personal.name', 'education.college', 'education.degree', 'education.branch', 'education.year', 'skills', 'personal.about'].join(','),
@@ -1345,7 +1323,7 @@ async function aiSearch(query = '') {
                 'Authorization': `Bearer ${apiKey}`
             },
             body: JSON.stringify({
-                model: 'gpt-4o',
+                model: 'gpt-4o-mini',
                 messages: [{ role: 'user', content: prompt }],
                 max_tokens: 2000,
                 temperature: 0.3
@@ -1393,7 +1371,7 @@ async function aiSearch(query = '') {
                 
                 return `
                     <div class="student-card">
-                        <img src="${personal.profilePic || '../assets/avatar/1.png'}" alt="Profile Picture" class="profile-pic">
+                        <img src="https://firebasestorage.googleapis.com/v0/b/taska-45011.appspot.com/o/profile%2F${student.id}.webp?alt=media" alt="Profile Picture" class="profile-pic" onerror="this.src='../assets/avatar/1.png'">
                         <div class="card-content">
                             <div class="basic-info">
                                 <h3>${personal.name || 'Unnamed'}</h3>
@@ -1408,16 +1386,13 @@ async function aiSearch(query = '') {
                                 <p><strong>Skills:</strong> ${student.skills || 'Not specified'}</p>
                                 ${personal.about ? `<p>${personal.about.substring(0, 80)}${personal.about.length > 80 ? '...' : ''}</p>` : ''}
                             </div>
-                            <div class="availability-info">
-                                <p><strong>Hours:</strong> ${availability.hours || 'N/A'}</p>
-                            </div>
                             <div class="actions">
-                                <button class="ai-intro-btn${isConnected ? ' connected' : ''}" 
-                                        onclick="${isConnected ? '' : `generateAIIntro('${student.id}')`}" 
-                                        ${isConnected ? 'disabled' : ''}>
-                                    Connect
-                                </button>
-                                <span class="toggle-details" onclick="showStudentDetailsPopup('${student.id}')">View</span>
+                                <span class="ai-intro-btn${isConnected ? ' connected' : ''}" 
+                                      onclick="${isConnected ? '' : `generateAIIntro('${student.id}')`}" 
+                                      ${isConnected ? 'style="cursor: not-allowed;"' : ''}>
+                                    ${isConnected ? 'Connected' : 'Connect'}
+                                </span>
+                                <span class="toggle-details" onclick="showStudentDetailsPopup('${student.id}')">View Profile</span>
                             </div>
                         </div>
                     </div>
@@ -1754,8 +1729,7 @@ function addTooltipListenersToCardCells() {
         '.student-card .basic-info h3',
         '.student-card .basic-info h4',
         '.student-card .education-info p',
-        '.student-card .skills-info p',
-        '.student-card .availability-info p'
+        '.student-card .skills-info p'
     ];
     document.querySelectorAll(selectors.join(',')).forEach(cell => {
         cell.onmouseenter = function(e) {
@@ -1786,5 +1760,4 @@ window.performSearch = function() {
 window.addEventListener('DOMContentLoaded', addTooltipListenersToCardCells);
 </script>
 </body>
-</html>
 </html>
