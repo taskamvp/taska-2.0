@@ -194,9 +194,9 @@
             background: rgba(255,255,255,0.82);
             backdrop-filter: blur(10px) saturate(1.1);
             -webkit-backdrop-filter: blur(10px) saturate(1.1);
-            border-radius: 16px;
+            border-radius: 0;
             border: 1.5px solid #e3e8f0;
-            box-shadow: 0 2px 12px 0 rgba(30,34,90,0.06);
+            box-shadow: none;
             padding: 2.1rem 1.6rem 1.5rem 1.6rem;
             flex: 1 1 260px;
             min-width: 240px;
@@ -206,18 +206,16 @@
             align-items: flex-start;
             gap: 1.1rem;
             margin-bottom: 1.2rem;
-            transition: box-shadow 0.18s, background 0.18s, border 0.18s;
+            transition: none;
             position: relative;
         }
         .search-info .help-card:hover {
             background: rgba(255,255,255,0.97);
-            box-shadow: 0 6px 24px 0 rgba(30,34,90,0.13);
-            border: 1.5px solid #bfcad6;
+            box-shadow: none;
+            border: 1.5px solid #e3e8f0;
         }
         .search-info .help-card .help-icon {
-            font-size: 2.3rem;
-            color: #007aff;
-            margin-bottom: 0.2rem;
+            display: none;
         }
         .search-info .help-card .help-title {
             font-size: 1.18rem;
@@ -256,24 +254,24 @@
             background: rgba(255,255,255,0.82);
             backdrop-filter: blur(12px) saturate(1.1);
             -webkit-backdrop-filter: blur(12px) saturate(1.1);
-            border-radius: 10px;
+            border-radius: 0;
             border: 1px solid rgba(200,200,210,0.18);
-            box-shadow: 0 1px 4px 0 rgba(30,34,90,0.04);
+            box-shadow: none;
             width: 100%;
             max-width: 1200px;
             min-height: auto;
             display: flex;
             align-items: center;
             gap: 1rem;
-            transition: background 0.2s, box-shadow 0.2s;
+            transition: none;
             margin-bottom: 18px;
             position: relative;
             padding: 0.7rem 1.2rem;
         }
         .student-card:hover {
             background: rgba(255,255,255,0.95);
-            box-shadow: 0 2px 12px 0 rgba(30,34,90,0.10);
-            border: 1.5px solid #bfcad6;
+            box-shadow: none;
+            border: 1.5px solid #e3e8f0;
         }
         .student-card:last-child {
             margin-bottom: 0;
@@ -281,12 +279,12 @@
         .student-card img.profile-pic {
             width: 40px;
             height: 40px;
-            border-radius: 8px;
+            border-radius: 0;
             object-fit: cover;
             flex-shrink: 0;
             border: 1.5px solid #e0e0e0;
             background: #f3f3f3;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+            box-shadow: none;
         }
         .student-card .card-content {
             display: grid;
@@ -432,17 +430,7 @@
             opacity: 0.7;
         }
         .social-icons {
-            display: flex;
-            gap: 0.5rem;
-        }
-        .social-icon {
-            font-size: 1.1rem;
-            color: #86868b;
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-        .social-icon:hover {
-            color: #007aff;
+            display: none;
         }
         .student-details {
             display: none;
@@ -1162,22 +1150,18 @@
             <div class="search-info" id="searchInfo">
                 <div class="help-cards-row">
                     <div class="help-card">
-                        <div class="help-icon"><i class="fas fa-robot"></i></div>
                         <div class="help-title">Automate Your Workflow</div>
                         <div class="help-desc">Our students can build custom AI tools, scripts, and bots to automate repetitive business tasks, saving you hours every week.</div>
                     </div>
                     <div class="help-card">
-                        <div class="help-icon"><i class="fas fa-chart-bar"></i></div>
                         <div class="help-title">Unlock Data Insights</div>
                         <div class="help-desc">Get dashboards, analytics, and reports tailored to your business. Students can turn your raw data into actionable insights and visualizations.</div>
                     </div>
                     <div class="help-card">
-                        <div class="help-icon"><i class="fas fa-mobile-alt"></i></div>
                         <div class="help-title">Delight Your Users</div>
                         <div class="help-desc">From mobile apps to web platforms, students design and develop user-friendly digital products that engage and retain your customers.</div>
                     </div>
                     <div class="help-card">
-                        <div class="help-icon"><i class="fas fa-lightbulb"></i></div>
                         <div class="help-title">Innovate & Research</div>
                         <div class="help-desc">Need a fresh perspective? Students can help you prototype new ideas, conduct research, and bring innovative solutions to your toughest problems.</div>
                     </div>
@@ -1431,12 +1415,9 @@ async function aiSearch(query = '') {
                                 <button class="ai-intro-btn${isConnected ? ' connected' : ''}" 
                                         onclick="${isConnected ? '' : `generateAIIntro('${student.id}')`}" 
                                         ${isConnected ? 'disabled' : ''}>
-                                    <i class="fas fa-plus"></i>Connect
+                                    Connect
                                 </button>
                                 <span class="toggle-details" onclick="showStudentDetailsPopup('${student.id}')">View</span>
-                                <div class="social-icons">
-                                    ${hasLinkedIn ? `<i class='fab fa-linkedin social-icon linkedin' onclick="window.open('${personal.linkedin}', '_blank')"></i>` : ''}
-                                </div>
                             </div>
                         </div>
                     </div>

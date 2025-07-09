@@ -312,6 +312,18 @@ const elements = {
     commentContent: document.getElementById('comment-content')
 };
 
+// Function to load profile image from Firebase Storage
+async function loadProfileImage(userId) {
+    try {
+        const profilePhotoRef = storageRef(storage, `profile/${userId}.webp`);
+        const profilePhotoUrl = await getDownloadURL(profilePhotoRef);
+        return profilePhotoUrl;
+    } catch (error) {
+        console.log(`No profile photo found for user ${userId}, using default avatar`);
+        return "../assets/avatar/1.png";
+    }
+}
+
 async function fetchStudentData() {
     if (studentData) return studentData;
     try {
@@ -338,9 +350,10 @@ async function fetchCurrentUserProfile() {
     try {
         const snapshot = await get(ref(db, `professionalslist/${userId}`));
         const user = snapshot.val() || {};
+        const profilePic = await loadProfileImage(userId);
         currentUserProfile = {
             name: user.personal?.name || "Unnamed",
-            profilePic: user.personal?.profilePic || "../assets/avatar/1.png"
+            profilePic: profilePic
         };
         return currentUserProfile;
     } catch (error) {
@@ -615,7 +628,7 @@ async function loadConnections() {
                     hasConnections = true;
                     const student = students.find(s => s.id === studentId) || {};
                     const userName = student.personal?.name || "Unnamed";
-                    const profilePic = student.personal?.profilePic || "../assets/avatar/1.png";
+                    const profilePic = await loadProfileImage(studentId);
                     const chatId = [userId, studentId].sort().join("+");
                     const chatRef = ref(db, `chats/${chatId}/messages`);
                     let lastMessage = "No messages yet";
@@ -673,7 +686,7 @@ async function loadPendingRequests() {
                     hasPending = true;
                     const student = students.find(s => s.id === studentId) || {};
                     const userName = student.personal?.name || "Unnamed";
-                    const profilePic = student.personal?.profilePic || "../assets/avatar/1.png";
+                    const profilePic = await loadProfileImage(studentId);
                     const pendingItem = document.createElement('div');
                     pendingItem.className = 'pending-item user-item';
                     pendingItem.dataset.studentId = studentId;
@@ -812,15 +825,22 @@ async function selectStudent(studentId) {
 
 async function loadChatHeader() {
     if (!elements.chatHeader) return;
+    if (!selectedStudentId) {
+        console.error("No student selected");
+        return;
+    }
+    
     try {
         const students = await fetchStudentData();
         const student = students.find(s => s.id === selectedStudentId) || {};
         const userName = student.personal?.name || "Unnamed";
         const userTitle = student.education?.branch || "";
-        const profilePic = student.personal?.profilePic || "../assets/avatar/1.png";
+        const profilePic = await loadProfileImage(selectedStudentId);
         elements.chatHeader.innerHTML = `
             <div style="display: flex; align-items: center; gap: 1rem;">
-                <img src="${profilePic}" alt="${userName}" class="profile-pic">
+                <a href="../workplace/view-profile.html?studentId=${encodeURIComponent(selectedStudentId)}" style="text-decoration: none; cursor: pointer;" title="View ${userName}'s profile">
+                    <img src="${profilePic}" alt="${userName}" class="profile-pic" style="cursor: pointer;">
+                </a>
                 <div>
                     <div class="name">${userName}</div>
                     <div class="title">${userTitle}</div>
@@ -842,7 +862,9 @@ async function loadChatHeader() {
         console.error("Error loading chat header:", error);
         elements.chatHeader.innerHTML = `
             <div style="display: flex; align-items: center; gap: 1rem;">
-                <img src="../assets/avatar/1.png" alt="Unnamed" class="profile-pic">
+                <a href="../workplace/view-profile.html?studentId=${encodeURIComponent(selectedStudentId)}" style="text-decoration: none; cursor: pointer;" title="View student's profile">
+                    <img src="../assets/avatar/1.png" alt="Unnamed" class="profile-pic" style="cursor: pointer;">
+                </a>
                 <div>
                     <div class="name">Unnamed</div>
                     <div class="title"></div>
@@ -906,12 +928,12 @@ async function loadChat() {
                     }
                 }
                 let lastDate = null;
-                messages.forEach(msg => {
+                for (const msg of messages) {
                     const isSent = msg.senderId === userId;
                     const senderName = isSent ? currentUser.name : (student.personal?.name || "Unnamed");
                     const profilePic = isSent 
                         ? currentUser.profilePic
-                        : student.personal?.profilePic || "../assets/avatar/1.png";
+                        : await loadProfileImage(selectedStudentId);
                     const time = new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
                     const date = formatMessageDate(msg.timestamp);
                     if (date !== lastDate) {
@@ -988,7 +1010,7 @@ async function loadChat() {
                         `;
                     }
                     elements.chatMessages.appendChild(messageDiv);
-                });
+                }
                 elements.chatMessages.scrollTop = elements.chatMessages.scrollHeight;
                 messages.forEach(msg => {
                     if (msg.senderId !== userId && !msg.read) {

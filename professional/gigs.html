@@ -1594,18 +1594,6 @@
                     <input type="date" id="task-deadline">
                 </div>
                 <div class="form-group">
-                    <label for="task-category">Category</label>
-                    <select id="task-category">
-                        <option value="web-development">Web Development</option>
-                        <option value="mobile-development">Mobile Development</option>
-                        <option value="design">Design</option>
-                        <option value="writing">Writing</option>
-                        <option value="marketing">Marketing</option>
-                        <option value="data-analysis">Data Analysis</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
-                <div class="form-group">
                     <label for="task-files">Attach Files</label>
                     <input type="file" id="task-files" multiple>
                     <div id="task-files-list"></div>
@@ -1770,18 +1758,6 @@
                 <div class="form-group">
                     <label for="edit-task-deadline">Deadline</label>
                     <input type="date" id="edit-task-deadline">
-                </div>
-                <div class="form-group">
-                    <label for="edit-task-category">Category</label>
-                    <select id="edit-task-category">
-                        <option value="web-development">Web Development</option>
-                        <option value="mobile-development">Mobile Development</option>
-                        <option value="design">Design</option>
-                        <option value="writing">Writing</option>
-                        <option value="marketing">Marketing</option>
-                        <option value="data-analysis">Data Analysis</option>
-                        <option value="other">Other</option>
-                    </select>
                 </div>
                 <div class="form-group">
                     <label>Student Priority Management</label>
@@ -2045,7 +2021,6 @@ function resetTaskForm() {
     document.getElementById('task-title').value = '';
     document.getElementById('task-description').value = '';
     document.getElementById('task-deadline').value = '';
-    document.getElementById('task-category').value = 'web-development';
     document.getElementById('task-files').value = '';
     document.getElementById('task-files-list').innerHTML = '';
     document.getElementById('primary-student-list').innerHTML = '';
@@ -2237,7 +2212,6 @@ async function createTask() {
     const title = document.getElementById('task-title').value.trim();
     const description = document.getElementById('task-description').value.trim();
     const deadline = document.getElementById('task-deadline').value;
-    const category = document.getElementById('task-category').value;
 
     if (!title || !deadline) {
         alert('Please fill in the task title and deadline.');
@@ -2254,7 +2228,6 @@ async function createTask() {
             title,
             description,
             deadline,
-            category,
             professionalId: userId,
             professionalName: currentUserProfile.name,
             status: 'assigned',
@@ -2304,7 +2277,6 @@ async function createTask() {
                 title,
                 description,
                 deadline,
-                category,
                 professionalId: userId,
                 professionalName: currentUserProfile.name,
                 status: 'pending',
@@ -2323,7 +2295,6 @@ async function createTask() {
                 title,
                 description,
                 deadline,
-                category,
                 professionalId: userId,
                 professionalName: currentUserProfile.name,
                 status: 'waitlisted',
@@ -2464,7 +2435,6 @@ async function createTaskCard(task, taskId) {
                 <h4>${task.title}</h4>
                 <p class="gig-description">${task.description}</p>
                 <div class="gig-meta">
-                    <span class="gig-category">${task.category.replace('-', ' ')}</span>
                     <span class="deadline-info ${daysLeft <= 3 ? 'urgent' : daysLeft <= 7 ? 'warning' : 'normal'}">
                         ${daysLeft} days left
                     </span>
@@ -2600,9 +2570,6 @@ function viewTaskDetails(taskId) {
                                 <strong>Description:</strong> ${task.description}
                             </div>
                             <div class="detail-item">
-                                <strong>Category:</strong> ${task.category.replace('-', ' ')}
-                            </div>
-                            <div class="detail-item">
                                 <strong>Deadline:</strong> ${new Date(task.deadline).toLocaleDateString()}
                             </div>
                             <div class="detail-item">
@@ -2686,7 +2653,6 @@ function editCurrentTask() {
     document.getElementById('edit-task-title').value = currentEditTask.title;
     document.getElementById('edit-task-description').value = currentEditTask.description;
     document.getElementById('edit-task-deadline').value = currentEditTask.deadline;
-    document.getElementById('edit-task-category').value = currentEditTask.category;
     
     // Populate student assignments
     updateEditStudentAssignments();
@@ -2708,7 +2674,6 @@ function editTaskFromCard(taskId) {
                 document.getElementById('edit-task-title').value = currentEditTask.title;
                 document.getElementById('edit-task-description').value = currentEditTask.description;
                 document.getElementById('edit-task-deadline').value = currentEditTask.deadline;
-                document.getElementById('edit-task-category').value = currentEditTask.category;
                 
                 // Populate student assignments
                 updateEditStudentAssignments();
@@ -3029,7 +2994,6 @@ async function saveTaskChanges() {
             title: document.getElementById('edit-task-title').value,
             description: document.getElementById('edit-task-description').value,
             deadline: document.getElementById('edit-task-deadline').value,
-            category: document.getElementById('edit-task-category').value,
             updatedAt: new Date().toISOString()
         };
         
@@ -3083,7 +3047,6 @@ async function updateStudentAssignments(taskId, updatedTaskData) {
                     title: updatedTaskData.title,
                     description: updatedTaskData.description,
                     deadline: updatedTaskData.deadline,
-                    category: updatedTaskData.category,
                     professionalId: userId,
                     professionalName: currentUserProfile.name,
                     status: 'pending',
@@ -3115,7 +3078,6 @@ async function updateStudentAssignments(taskId, updatedTaskData) {
                     title: updatedTaskData.title,
                     description: updatedTaskData.description,
                     deadline: updatedTaskData.deadline,
-                    category: updatedTaskData.category,
                     professionalId: userId,
                     professionalName: currentUserProfile.name,
                     status: 'waitlisted',
@@ -3136,8 +3098,7 @@ async function updateStudentAssignments(taskId, updatedTaskData) {
                     waitlistPosition: i + 1,
                     title: updatedTaskData.title,
                     description: updatedTaskData.description,
-                    deadline: updatedTaskData.deadline,
-                    category: updatedTaskData.category
+                    deadline: updatedTaskData.deadline
                 });
             }
         }
