@@ -478,7 +478,7 @@
                     <img id="profile-avatar" class="profile-avatar" src="../assets/avatar/1.png" alt="Profile Picture">
                     <div class="profile-info">
                         <h1 id="profile-name" class="profile-name">Student Name</h1>
-                        <p id="profile-title" class="profile-title">Aspiring Machine Learning Engineer | Student</p>
+                        <p id="profile-title" class="profile-title"></p>
                         <div class="profile-location">
                             <span id="profile-location">Location</span>
                         </div>
@@ -710,7 +710,7 @@
 
             // Profile header
             document.getElementById('profile-name').textContent = personal.name || 'Student';
-            document.getElementById('profile-title').textContent = data.headline || 'Aspiring Machine Learning Engineer | Student';
+            document.getElementById('profile-title').textContent = data.headline || '';
             document.getElementById('profile-location').textContent = personal.location || '';
             hideIfBlank(document.getElementById('profile-location'), personal.location);
 

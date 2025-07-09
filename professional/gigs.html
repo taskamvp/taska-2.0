@@ -736,7 +736,7 @@
         }
 
         .waitlist-section h4 i {
-            color: #000080;
+            color: #007aff !important;
         }
 
         .student-item {
@@ -763,23 +763,24 @@
         /* Remove drag-related styles and add up/down arrow styles */
         .reorder-controls {
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             gap: 0.25rem;
             margin-left: auto;
+            align-items: center;
         }
 
         .reorder-btn {
             background: #f1f3f4;
             color: #666;
             border: 1px solid #e0e0e0;
-            width: 24px;
-            height: 24px;
+            width: 28px;
+            height: 28px;
             border-radius: 4px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.7rem;
+            font-size: 0.8rem;
             transition: all 0.2s;
         }
 
@@ -798,6 +799,28 @@
             background: #f1f3f4;
             color: #666;
             border-color: #e0e0e0;
+        }
+
+        /* Remove button styles */
+        .remove-btn {
+            background: #ff3b30;
+            color: #ffffff;
+            border: none;
+            padding: 0;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: background 0.2s ease;
+            margin-left: 0;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .remove-btn:hover {
+            background: #d70015;
         }
 
         .student-avatar {
@@ -1533,6 +1556,287 @@
         .waitlist-section h4 i {
             color: #007aff !important;
         }
+
+        /* Remove button styles */
+        .remove-btn {
+            background: #ff3b30;
+            color: #ffffff;
+            border: none;
+            padding: 0;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: background 0.2s ease;
+            margin-left: 0;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .remove-btn:hover {
+            background: #d70015;
+        }
+
+        /* Assign waitlist button styles */
+        .assign-waitlist-section {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .assign-waitlist-btn {
+            background: #007aff;
+            color: #ffffff;
+            border: none;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .assign-waitlist-btn:hover {
+            background: #0056cc;
+            transform: translateY(-1px);
+        }
+
+        /* Assign waitlist modal styles */
+        .available-students-section,
+        .selected-students-section {
+            flex: 1;
+            padding: 1rem;
+        }
+
+        .available-students-section h4,
+        .selected-students-section h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin: 0 0 1rem 0;
+        }
+
+        .search-section {
+            margin-bottom: 1rem;
+            width: 100%;
+        }
+
+        .search-section input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.2s ease;
+            box-sizing: border-box;
+        }
+
+        .search-section input:focus {
+            border-color: #007aff;
+        }
+
+        .students-results {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            background: #f8f9fa;
+            width: 100%;
+        }
+
+        .student-result {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            border-bottom: 1px solid #e9ecef;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            width: 100%;
+        }
+
+        .student-result:last-child {
+            border-bottom: none;
+        }
+
+        .student-result:hover {
+            background: #e9ecef;
+        }
+
+        .student-result.selected {
+            background: #e3f2fd;
+            border-left: 3px solid #007aff;
+        }
+
+        .student-checkbox {
+            margin-right: 0.75rem;
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .student-checkbox input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .student-info {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            cursor: pointer;
+            min-width: 0;
+        }
+
+        .student-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 0.75rem;
+            flex-shrink: 0;
+        }
+
+        .student-details {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .student-details h4 {
+            margin: 0 0 0.25rem 0;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #1d1d1f;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .student-headline {
+            margin: 0 0 0.25rem 0;
+            font-size: 0.85rem;
+            color: #1d1d1f;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .student-education {
+            margin: 0 0 0.25rem 0;
+            font-size: 0.8rem;
+            color: #86868b;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .student-details p {
+            margin: 0 0 0.25rem 0;
+            font-size: 0.85rem;
+            color: #86868b;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .student-skills {
+            font-size: 0.8rem;
+            color: #007aff;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .assignment-badge {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-top: 0.25rem;
+            flex-shrink: 0;
+        }
+
+        .primary-badge {
+            background: #34c759;
+            color: #ffffff;
+        }
+
+        .waitlist-badge {
+            background: #007aff;
+            color: #ffffff;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 2rem;
+            color: #86868b;
+            font-style: italic;
+        }
+
+        .student-actions {
+            display: flex;
+            align-items: center;
+            margin-left: 0.75rem;
+            flex-shrink: 0;
+        }
+
+        .view-profile-link {
+            color: #007aff;
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 500;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .view-profile-link:hover {
+            background: #e3f2fd;
+            color: #0056cc;
+            text-decoration: underline;
+        }
+
+        /* Extra large modal for profile popup */
+        .extra-large-modal {
+            width: 85%;
+            max-width: 900px;
+            height: 80vh;
+        }
+
+        .extra-large-modal .modal-body {
+            height: calc(80vh - 20px);
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .extra-large-modal iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Medium modal for select students */
+        .medium-modal {
+            width: 80%;
+            max-width: 600px;
+        }
+
+        .medium-modal .modal-body {
+            max-height: 500px;
+            overflow-y: auto;
+        }
     </style>
 </head>
 <body>
@@ -1593,7 +1897,7 @@
                     <label for="task-deadline">Deadline</label>
                     <input type="date" id="task-deadline">
                 </div>
-                <div class="form-group">
+                <div class="form-group" style="display: none;">
                     <label for="task-files">Attach Files</label>
                     <input type="file" id="task-files" multiple>
                     <div id="task-files-list"></div>
@@ -1631,7 +1935,7 @@
 
     <!-- Student Search Modal -->
     <div class="gig-modal" id="student-search-modal">
-        <div class="modal-content large-modal">
+        <div class="modal-content medium-modal">
             <div class="modal-header">
                 <h3>Select Students</h3>
                 <button onclick="closeStudentSearchModal()">
@@ -1640,41 +1944,10 @@
             </div>
             <div class="modal-body">
                 <div class="search-section">
-                    <div class="ai-search-container">
-                        <div class="search-input">
-                            <input type="text" id="student-search" placeholder="Search students by name, skills, education, or describe what you're looking for...">
-                            <button onclick="searchStudents()">
-                                <i class="fas fa-search"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="search-filters">
-                        <select id="skill-filter">
-                            <option value="">All Skills</option>
-                            <option value="web-development">Web Development</option>
-                            <option value="mobile-development">Mobile Development</option>
-                            <option value="design">Design</option>
-                            <option value="writing">Writing</option>
-                            <option value="marketing">Marketing</option>
-                            <option value="data-analysis">Data Analysis</option>
-                        </select>
-                        <select id="education-filter">
-                            <option value="">All Education</option>
-                            <option value="computer-science">Computer Science</option>
-                            <option value="engineering">Engineering</option>
-                            <option value="design">Design</option>
-                            <option value="business">Business</option>
-                            <option value="arts">Arts</option>
-                        </select>
-                    </div>
+                    <input type="text" id="student-search" placeholder="Search students by name, skills, or education..." onkeyup="filterStudents()">
                 </div>
-                <div class="search-results-container">
-                    <div class="students-results" id="students-results">
-                        <!-- Search results will be populated here -->
-                    </div>
-                    <div class="student-profile-panel" id="student-profile-panel">
-                        <!-- Student profile will be shown here -->
-                    </div>
+                <div class="students-results" id="students-results">
+                    <!-- Search results will be populated here -->
                 </div>
             </div>
             <div class="modal-actions">
@@ -1829,6 +2102,58 @@
             <div class="modal-actions">
                 <button class="cancel-btn" onclick="closePriorityChangeModal()">Cancel</button>
                 <button class="confirm-btn" onclick="confirmPriorityChanges()">Confirm Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Assign Waitlist Modal -->
+    <div class="gig-modal" id="assign-waitlist-modal">
+        <div class="modal-content large-modal">
+            <div class="modal-header">
+                <h3>Assign Students to Waitlist</h3>
+                <button onclick="closeAssignWaitlistModal()">
+                    ×
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="available-students-section">
+                    <h4>Available Students</h4>
+                    <div class="search-section">
+                        <input type="text" id="student-search" placeholder="Search students..." onkeyup="filterAvailableStudents()">
+                    </div>
+                    <div id="available-students-list" class="students-list">
+                        <!-- Available students will be populated here -->
+                    </div>
+                </div>
+                <div class="selected-students-section">
+                    <h4>Selected Students (<span id="selected-count">0</span>/<span id="max-slots">5</span>)</h4>
+                    <div id="selected-students-list" class="students-list">
+                        <!-- Selected students will be shown here -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="cancel-btn" onclick="closeAssignWaitlistModal()">Cancel</button>
+                <button class="confirm-btn" onclick="confirmAssignWaitlist()">Assign to Waitlist</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Popup Modal -->
+    <div class="gig-modal" id="profile-popup-modal">
+        <div class="modal-content extra-large-modal">
+            <div class="modal-header">
+                <h3 id="profile-popup-title">Student Profile</h3>
+                <button onclick="closeProfilePopup()">
+                    ×
+                </button>
+            </div>
+            <div class="modal-body">
+                <iframe id="profile-iframe" 
+                        src="" 
+                        frameborder="0" 
+                        style="width: 100%; height: 600px; border: none;">
+                </iframe>
             </div>
         </div>
     </div>
@@ -2048,40 +2373,33 @@ function openStudentSearchModal(type) {
 
 async function searchStudents() {
     const searchTerm = document.getElementById('student-search').value.toLowerCase();
-    const skillFilter = document.getElementById('skill-filter').value;
-    const educationFilter = document.getElementById('education-filter').value;
     
     let filteredStudents = allStudents.filter(student => {
-        const name = student.personal?.name?.toLowerCase() || '';
+        // Filter out students with no names or empty names
+        const studentName = student.personal?.name?.trim();
+        if (!studentName || studentName === '') {
+            return false;
+        }
+        
+        const name = studentName.toLowerCase();
         const skills = student.skills?.toLowerCase() || '';
         const education = student.education?.branch?.toLowerCase() || '';
         const bio = student.personal?.bio?.toLowerCase() || '';
         const interests = student.personal?.interests?.toLowerCase() || '';
         
-        // AI-powered search: check if search term matches any relevant field
-        const matchesSearch = name.includes(searchTerm) || 
-                            skills.includes(searchTerm) || 
-                            education.includes(searchTerm) ||
-                            bio.includes(searchTerm) ||
-                            interests.includes(searchTerm) ||
-                            // Check for skill combinations
-                            (searchTerm.includes('web') && skills.includes('web')) ||
-                            (searchTerm.includes('design') && (skills.includes('design') || education.includes('design'))) ||
-                            (searchTerm.includes('react') && skills.includes('react')) ||
-                            (searchTerm.includes('python') && skills.includes('python')) ||
-                            (searchTerm.includes('ui') && skills.includes('ui')) ||
-                            (searchTerm.includes('ux') && skills.includes('ux')) ||
-                            (searchTerm.includes('data') && (skills.includes('data') || education.includes('data'))) ||
-                            (searchTerm.includes('writer') && (skills.includes('writing') || education.includes('writing'))) ||
-                            (searchTerm.includes('developer') && skills.includes('development'));
-        
-        const matchesSkill = !skillFilter || skills.includes(skillFilter);
-        const matchesEducation = !educationFilter || education.includes(educationFilter);
-        
-        return matchesSearch && matchesSkill && matchesEducation;
+        // Simple search: check if search term matches any relevant field
+        return name.includes(searchTerm) || 
+               skills.includes(searchTerm) || 
+               education.includes(searchTerm) ||
+               bio.includes(searchTerm) ||
+               interests.includes(searchTerm);
     });
     
     displayStudentResults(filteredStudents);
+}
+
+function filterStudents() {
+    searchStudents();
 }
 
 function useSuggestion(suggestion) {
@@ -2102,32 +2420,49 @@ function displayStudentResults(students) {
         const isWaitlisted = waitlistStudents.some(s => s.id === student.id);
         const isSelected = isPrimary || isWaitlisted;
         
+        // Build education info string
+        let educationInfo = '';
+        if (student.education?.branch && student.education?.institution) {
+            educationInfo = `${student.education.branch} at ${student.education.institution}`;
+        } else if (student.education?.branch) {
+            educationInfo = student.education.branch;
+        } else if (student.education?.institution) {
+            educationInfo = student.education.institution;
+        }
+        
         return `
             <div class="student-result ${isSelected ? 'selected' : ''}">
-                <div class="student-info" onclick="toggleStudentSelection('${student.id}')">
+                <div class="student-checkbox">
+                    <input type="checkbox" 
+                           id="student-${student.id}" 
+                           ${isSelected ? 'checked' : ''} 
+                           onchange="toggleStudentCheckbox('${student.id}')">
+                    <label for="student-${student.id}"></label>
+                </div>
+                <div class="student-info" onclick="toggleStudentCheckbox('${student.id}')">
                     <img src="${student.personal?.profilePic || '../assets/avatar/1.png'}" alt="${student.personal?.name || 'Unnamed'}" class="student-avatar">
                     <div class="student-details">
                         <h4>${student.personal?.name || 'Unnamed'}</h4>
-                        <p>${student.education?.branch || 'No education info'}</p>
-                        <p class="student-skills">${student.skills || 'No skills listed'}</p>
+                        ${student.personal?.headline ? `<p class="student-headline">${student.personal.headline}</p>` : ''}
+                        ${educationInfo ? `<p class="student-education">${educationInfo}</p>` : ''}
+                        ${student.skills ? `<p class="student-skills">${student.skills}</p>` : ''}
                         ${isPrimary ? '<span class="assignment-badge primary-badge">Primary</span>' : ''}
                         ${isWaitlisted ? '<span class="assignment-badge waitlist-badge">Waitlisted</span>' : ''}
                     </div>
                 </div>
                 <div class="student-actions">
-                    <div class="selection-indicator">
-                        <i class="fas fa-check"></i>
-                    </div>
-                    <button class="show-profile-btn" onclick="showStudentProfile('${student.id}')">
-                        <i class="fas fa-user"></i> Show Profile
-                    </button>
+                    <a href="#" 
+                       class="view-profile-link" 
+                       onclick="openProfilePopup('${student.id}'); event.stopPropagation(); return false;">
+                        View Profile
+                    </a>
                 </div>
             </div>
         `;
     }).join('');
 }
 
-function toggleStudentSelection(studentId) {
+function toggleStudentCheckbox(studentId) {
     const student = allStudents.find(s => s.id === studentId);
     if (!student) return;
     
@@ -2152,6 +2487,9 @@ function toggleStudentSelection(studentId) {
                 });
             } else {
                 alert('Waitlist is full (maximum 5 students)');
+                // Uncheck the checkbox
+                document.getElementById(`student-${studentId}`).checked = false;
+                return;
             }
         }
     }
@@ -2392,6 +2730,7 @@ async function loadAssignedTasks() {
 async function createTaskCard(task, taskId) {
     const card = document.createElement('div');
     card.className = 'gig-card';
+    card.setAttribute('data-task-id', taskId); // Add data attribute for identification
     
     const primaryStudentName = task.primaryStudent ? allStudents.find(s => s.id === task.primaryStudent)?.personal?.name || 'Unknown' : 'None';
     const waitlistCount = task.waitlistStudents ? task.waitlistStudents.length : 0;
@@ -2661,6 +3000,12 @@ function editCurrentTask() {
 }
 
 function editTaskFromCard(taskId) {
+    if (!taskId) {
+        console.error('No taskId provided to editTaskFromCard');
+        alert('Invalid task ID. Please try again.');
+        return;
+    }
+    
     try {
         const taskRef = ref(db, `assignedTasks/${taskId}`);
         get(taskRef).then(snapshot => {
@@ -2669,20 +3014,36 @@ function editTaskFromCard(taskId) {
                 currentEditTask = { ...task, id: taskId };
                 
                 // Populate edit form
-                document.getElementById('edit-task-title').value = currentEditTask.title;
-                document.getElementById('edit-task-description').value = currentEditTask.description;
-                document.getElementById('edit-task-deadline').value = currentEditTask.deadline;
+                const titleInput = document.getElementById('edit-task-title');
+                const descriptionInput = document.getElementById('edit-task-description');
+                const deadlineInput = document.getElementById('edit-task-deadline');
+                
+                if (titleInput) titleInput.value = currentEditTask.title || '';
+                if (descriptionInput) descriptionInput.value = currentEditTask.description || '';
+                if (deadlineInput) deadlineInput.value = currentEditTask.deadline || '';
                 
                 // Populate student assignments
                 updateEditStudentAssignments();
                 
                 // Open edit modal
-                document.getElementById('edit-task-modal').classList.add('active');
+                const editModal = document.getElementById('edit-task-modal');
+                if (editModal) {
+                    editModal.classList.add('active');
+                } else {
+                    console.error('Edit modal not found');
+                    alert('Error opening edit modal. Please try again.');
+                }
+            } else {
+                console.error('Task not found:', taskId);
+                alert('Task not found. Please try again.');
             }
+        }).catch(error => {
+            console.error('Error loading task for editing:', error);
+            alert('Failed to load task for editing. Please try again.');
         });
     } catch (error) {
-        console.error('Error loading task for editing:', error);
-        alert('Failed to load task for editing.');
+        console.error('Error in editTaskFromCard:', error);
+        alert('Failed to load task for editing. Please try again.');
     }
 }
 
@@ -2692,13 +3053,21 @@ function closeEditTaskModal() {
 }
 
 function updateEditStudentAssignments() {
-    if (!currentEditTask) return;
+    if (!currentEditTask) {
+        console.error('currentEditTask is null in updateEditStudentAssignments');
+        return;
+    }
     
     // Clean up any duplicate students
     cleanupStudentArrays();
     
     // Update primary student display
     const primaryContainer = document.getElementById('edit-primary-student');
+    if (!primaryContainer) {
+        console.error('edit-primary-student container not found');
+        return;
+    }
+    
     if (currentEditTask.primaryStudent) {
         const student = allStudents.find(s => s.id === currentEditTask.primaryStudent);
         const hasWaitlist = currentEditTask.waitlistStudents && currentEditTask.waitlistStudents.length > 0;
@@ -2717,6 +3086,9 @@ function updateEditStudentAssignments() {
                     <button class="reorder-btn" onclick="window.demotePrimaryToWaitlist()" ${!hasWaitlist ? 'disabled' : ''} title="Demote to Waitlist">
                         <i class="fas fa-chevron-down"></i>
                     </button>
+                    <button class="remove-btn" onclick="window.removePrimaryStudent()" title="Remove Primary Student">
+                        <i class="fas fa-times"></i>
+                    </button>
                 </div>
             </div>
         `;
@@ -2726,6 +3098,11 @@ function updateEditStudentAssignments() {
     
     // Update waitlist students display with up/down arrow controls
     const waitlistContainer = document.getElementById('edit-waitlist-students');
+    if (!waitlistContainer) {
+        console.error('edit-waitlist-students container not found');
+        return;
+    }
+    
     if (currentEditTask.waitlistStudents && currentEditTask.waitlistStudents.length > 0) {
         waitlistContainer.innerHTML = currentEditTask.waitlistStudents.map((studentId, index) => {
             const student = allStudents.find(s => s.id === studentId);
@@ -2749,12 +3126,34 @@ function updateEditStudentAssignments() {
                         <button class="reorder-btn" onclick="window.promoteWaitlistToPrimary(${index})" title="Promote to Primary">
                             <i class="fas fa-arrow-up"></i>
                         </button>
+                        <button class="remove-btn" onclick="window.removeWaitlistStudent(${index})" title="Remove from Waitlist">
+                            <i class="fas fa-times"></i>
+                        </button>
                     </div>
                 </div>
             `;
         }).join('');
+        
+        // Add assign waitlist button if less than 5 students
+        const waitlistCount = currentEditTask.waitlistStudents.length;
+        if (waitlistCount < 5) {
+            waitlistContainer.innerHTML += `
+                <div class="assign-waitlist-section">
+                    <button class="assign-waitlist-btn" onclick="window.openAssignWaitlistModal()">
+                        <i class="fas fa-plus"></i> Assign More Students to Waitlist (${waitlistCount}/5)
+                    </button>
+                </div>
+            `;
+        }
     } else {
-        waitlistContainer.innerHTML = '<div class="empty-state">No waitlist students</div>';
+        waitlistContainer.innerHTML = `
+            <div class="empty-state">No waitlist students</div>
+            <div class="assign-waitlist-section">
+                <button class="assign-waitlist-btn" onclick="window.openAssignWaitlistModal()">
+                    <i class="fas fa-plus"></i> Assign Students to Waitlist (0/5)
+                </button>
+            </div>
+        `;
     }
 }
 
@@ -2798,7 +3197,10 @@ window.demotePrimaryToWaitlist = function() {
 };
 
 function cleanupStudentArrays() {
-    if (!currentEditTask) return;
+    if (!currentEditTask) {
+        console.error('currentEditTask is null in cleanupStudentArrays');
+        return;
+    }
     
     // Remove duplicates from waitlist
     if (currentEditTask.waitlistStudents) {
@@ -2980,11 +3382,39 @@ function confirmPriorityChanges() {
 }
 
 async function saveTaskChanges() {
-    if (!currentEditTask) return;
+    if (!currentEditTask) {
+        alert('No task selected for editing. Please try editing the task again.');
+        return;
+    }
     
     try {
         const taskId = currentEditTask.id;
+        if (!taskId) {
+            alert('Invalid task ID. Please try editing the task again.');
+            return;
+        }
+        
         const taskRef = ref(db, `assignedTasks/${taskId}`);
+        
+        // Check if there's no primary student but there are waitlist students
+        let wasPromoted = false;
+        let promotedStudentName = '';
+        
+        if (!currentEditTask.primaryStudent && currentEditTask.waitlistStudents && currentEditTask.waitlistStudents.length > 0) {
+            // Automatically promote the first waitlist student to primary
+            const promotedStudentId = currentEditTask.waitlistStudents.shift();
+            currentEditTask.primaryStudent = promotedStudentId;
+            
+            // Store promotion information for success message
+            wasPromoted = true;
+            const promotedStudent = allStudents.find(s => s.id === promotedStudentId);
+            promotedStudentName = promotedStudent?.personal?.name || 'Unknown';
+            
+            // Update the display to reflect the change
+            updateEditStudentAssignments();
+            
+            console.log(`Automatically promoted waitlist student ${promotedStudentId} to primary for task ${taskId}`);
+        }
         
         // Update task data
         const updatedTaskData = {
@@ -3001,22 +3431,29 @@ async function saveTaskChanges() {
         // Update student assignments
         await updateStudentAssignments(taskId, updatedTaskData);
         
+        // Refresh only the specific task card
+        await refreshTaskCard(taskId, updatedTaskData);
+        
+        // Close the modal after successful save and refresh
         closeEditTaskModal();
         
         // Show success message
         document.getElementById('success-title').textContent = 'Task Updated Successfully!';
-        document.getElementById('success-message').innerHTML = `
+        let successMessage = `
             <div class="success-content">
                 <i class="fas fa-check-circle"></i>
                 <h4>Task has been updated!</h4>
                 <p><strong>Task Title:</strong> ${updatedTaskData.title}</p>
-                <p>All changes have been applied and students have been notified.</p>
-            </div>
         `;
-        document.getElementById('success-modal').classList.add('active');
         
-        // Reload tasks
-        loadAssignedTasks();
+        // Add specific message if a student was automatically promoted
+        if (wasPromoted) {
+            successMessage += `<p><strong>Note:</strong> ${promotedStudentName} has been automatically promoted from waitlist to primary student.</p>`;
+        }
+        
+        successMessage += `<p>All changes have been applied and students have been notified.</p></div>`;
+        document.getElementById('success-message').innerHTML = successMessage;
+        document.getElementById('success-modal').classList.add('active');
         
     } catch (error) {
         console.error('Error updating task:', error);
@@ -3295,7 +3732,8 @@ window.closeStudentSearchModal = closeStudentSearchModal;
 window.closeSuccessModal = closeSuccessModal;
 window.createTask = createTask;
 window.searchStudents = searchStudents;
-window.toggleStudentSelection = toggleStudentSelection;
+window.filterStudents = filterStudents;
+window.toggleStudentCheckbox = toggleStudentCheckbox;
 window.removeSelectedStudent = removeSelectedStudent;
 window.confirmStudentSelection = confirmStudentSelection;
 window.viewTaskDetails = viewTaskDetails;
@@ -3315,6 +3753,8 @@ window.confirmAction = confirmAction;
 window.closeConfirmation = closeConfirmation;
 window.showSuccessModal = showSuccessModal;
 window.toggleDropdown = toggleDropdown;
+window.openProfilePopup = openProfilePopup;
+window.closeProfilePopup = closeProfilePopup;
 
 function toggleDropdown(taskId) {
     // Close all other dropdowns first
@@ -3344,6 +3784,243 @@ document.addEventListener('click', function(event) {
 
 // Initialize
 init();
+
+// Remove functions
+window.removePrimaryStudent = function() {
+    if (!currentEditTask.primaryStudent) return;
+    
+    if (confirm('Are you sure you want to remove the primary student from this task?')) {
+        currentEditTask.primaryStudent = null;
+        updateEditStudentAssignments();
+    }
+};
+
+window.removeWaitlistStudent = function(index) {
+    const i = parseInt(index);
+    if (i < 0 || i >= currentEditTask.waitlistStudents.length) return;
+    
+    const student = allStudents.find(s => s.id === currentEditTask.waitlistStudents[i]);
+    const studentName = student?.personal?.name || 'Unknown';
+    
+    if (confirm(`Are you sure you want to remove ${studentName} from the waitlist?`)) {
+        currentEditTask.waitlistStudents.splice(i, 1);
+        updateEditStudentAssignments();
+    }
+};
+
+// Assign waitlist modal functions
+let selectedStudentsForWaitlist = [];
+let maxWaitlistSlots = 5;
+
+window.openAssignWaitlistModal = function() {
+    if (!currentEditTask) return;
+    
+    const currentWaitlistCount = currentEditTask.waitlistStudents ? currentEditTask.waitlistStudents.length : 0;
+    const maxStudents = 5;
+    const availableSlots = maxStudents - currentWaitlistCount;
+    
+    if (availableSlots <= 0) {
+        alert('Waitlist is already full (5 students maximum)');
+        return;
+    }
+    
+    // Show available students for assignment
+    showAvailableStudentsForWaitlist(availableSlots);
+};
+
+function showAvailableStudentsForWaitlist(availableSlots) {
+    if (!currentEditTask) return;
+    
+    maxWaitlistSlots = availableSlots;
+    selectedStudentsForWaitlist = [];
+    
+    // Get current assigned students (primary + waitlist)
+    const currentAssignedStudents = new Set();
+    if (currentEditTask.primaryStudent) {
+        currentAssignedStudents.add(currentEditTask.primaryStudent);
+    }
+    if (currentEditTask.waitlistStudents) {
+        currentEditTask.waitlistStudents.forEach(id => currentAssignedStudents.add(id));
+    }
+    
+    // Filter out already assigned students
+    const availableStudents = allStudents.filter(student => 
+        !currentAssignedStudents.has(student.id)
+    );
+    
+    // Populate available students list
+    const availableList = document.getElementById('available-students-list');
+    availableList.innerHTML = availableStudents.map(student => `
+        <div class="student-item" data-student-id="${student.id}" onclick="toggleStudentSelection('${student.id}')">
+            <img src="${student?.personal?.profilePic || '../assets/avatar/1.png'}" alt="${student?.personal?.name || 'Unknown'}" class="student-avatar">
+            <div class="student-info">
+                <div class="student-name">${student?.personal?.name || 'Unknown'}</div>
+                <div class="student-details">${student?.education?.branch || 'No branch'} • ${student?.skills || 'No skills'}</div>
+            </div>
+            <div class="selection-indicator">
+                <i class="fas fa-plus"></i>
+            </div>
+        </div>
+    `).join('');
+    
+    // Update counters
+    document.getElementById('selected-count').textContent = '0';
+    document.getElementById('max-slots').textContent = availableSlots;
+    
+    // Show modal
+    document.getElementById('assign-waitlist-modal').classList.add('active');
+}
+
+window.toggleStudentSelection = function(studentId) {
+    const index = selectedStudentsForWaitlist.indexOf(studentId);
+    
+    if (index > -1) {
+        // Remove from selection
+        selectedStudentsForWaitlist.splice(index, 1);
+    } else {
+        // Add to selection if not at max
+        if (selectedStudentsForWaitlist.length < maxWaitlistSlots) {
+            selectedStudentsForWaitlist.push(studentId);
+        } else {
+            alert(`You can only select up to ${maxWaitlistSlots} students for the waitlist.`);
+            return;
+        }
+    }
+    
+    updateStudentSelectionDisplay();
+};
+
+function updateStudentSelectionDisplay() {
+    // Update available students display
+    const availableItems = document.querySelectorAll('#available-students-list .student-item');
+    availableItems.forEach(item => {
+        const studentId = item.dataset.studentId;
+        const isSelected = selectedStudentsForWaitlist.includes(studentId);
+        const indicator = item.querySelector('.selection-indicator');
+        
+        if (isSelected) {
+            indicator.innerHTML = '<i class="fas fa-check"></i>';
+            item.classList.add('selected');
+        } else {
+            indicator.innerHTML = '<i class="fas fa-plus"></i>';
+            item.classList.remove('selected');
+        }
+    });
+    
+    // Update selected students display
+    const selectedList = document.getElementById('selected-students-list');
+    selectedList.innerHTML = selectedStudentsForWaitlist.map(studentId => {
+        const student = allStudents.find(s => s.id === studentId);
+        return `
+            <div class="student-item selected">
+                <img src="${student?.personal?.profilePic || '../assets/avatar/1.png'}" alt="${student?.personal?.name || 'Unknown'}" class="student-avatar">
+                <div class="student-info">
+                    <div class="student-name">${student?.personal?.name || 'Unknown'}</div>
+                    <div class="student-details">${student?.education?.branch || 'No branch'}</div>
+                </div>
+                <button class="remove-selection-btn" onclick="toggleStudentSelection('${studentId}')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        `;
+    }).join('');
+    
+    // Update counter
+    document.getElementById('selected-count').textContent = selectedStudentsForWaitlist.length;
+}
+
+window.filterAvailableStudents = function() {
+    const searchTerm = document.getElementById('student-search').value.toLowerCase();
+    const availableItems = document.querySelectorAll('#available-students-list .student-item');
+    
+    availableItems.forEach(item => {
+        const studentName = item.querySelector('.student-name').textContent.toLowerCase();
+        const studentDetails = item.querySelector('.student-details').textContent.toLowerCase();
+        
+        if (studentName.includes(searchTerm) || studentDetails.includes(searchTerm)) {
+            item.style.display = 'flex';
+        } else {
+            item.style.display = 'none';
+        }
+    });
+};
+
+window.closeAssignWaitlistModal = function() {
+    document.getElementById('assign-waitlist-modal').classList.remove('active');
+    selectedStudentsForWaitlist = [];
+    document.getElementById('student-search').value = '';
+};
+
+window.confirmAssignWaitlist = function() {
+    if (selectedStudentsForWaitlist.length === 0) {
+        alert('Please select at least one student to add to the waitlist.');
+        return;
+    }
+    
+    // Add selected students to waitlist
+    if (!currentEditTask.waitlistStudents) {
+        currentEditTask.waitlistStudents = [];
+    }
+    
+    currentEditTask.waitlistStudents.push(...selectedStudentsForWaitlist);
+    
+    // Close modal and update display
+    closeAssignWaitlistModal();
+    updateEditStudentAssignments();
+    
+    alert(`${selectedStudentsForWaitlist.length} student(s) added to waitlist successfully!`);
+};
+
+// Refresh only the specific task card
+async function refreshTaskCard(taskId, updatedTaskData) {
+    try {
+        // Find the existing task card
+        const existingCard = document.querySelector(`[data-task-id="${taskId}"]`);
+        if (!existingCard) {
+            console.warn(`Task card with ID ${taskId} not found, reloading all tasks`);
+            loadAssignedTasks();
+            return;
+        }
+        
+        // Create new task card with updated data
+        const newCard = await createTaskCard(updatedTaskData, taskId);
+        
+        // Replace the old card with the new one
+        existingCard.parentNode.replaceChild(newCard, existingCard);
+        
+        console.log(`Task card ${taskId} refreshed successfully`);
+        
+    } catch (error) {
+        console.error('Error refreshing task card:', error);
+        // Fallback to reloading all tasks if refresh fails
+        loadAssignedTasks();
+    }
+}
+
+// Profile popup functions
+function openProfilePopup(studentId) {
+    const student = allStudents.find(s => s.id === studentId);
+    const studentName = student?.personal?.name || 'Student';
+    
+    // Update modal title
+    document.getElementById('profile-popup-title').textContent = `${studentName}'s Profile`;
+    
+    // Set iframe source
+    const iframe = document.getElementById('profile-iframe');
+    iframe.src = `../workplace/view-profile.html?studentId=${studentId}`;
+    
+    // Show modal
+    document.getElementById('profile-popup-modal').classList.add('active');
+}
+
+function closeProfilePopup() {
+    // Clear iframe source
+    const iframe = document.getElementById('profile-iframe');
+    iframe.src = '';
+    
+    // Hide modal
+    document.getElementById('profile-popup-modal').classList.remove('active');
+}
     </script>
 </body>
 </html> 

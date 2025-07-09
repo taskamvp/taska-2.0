@@ -723,6 +723,9 @@ let isDataLoaded = { connections: false, chats: false, tasks: false };
 let currentTaskId = null;
 let submissionFiles = [];
 
+// Add this variable at the top with other global variables
+let currentChatListener = null;
+
 const elements = {
     connectionsList: document.getElementById('connections-list'),
     pendingRequestsList: document.getElementById('pending-requests-list'),
@@ -1218,15 +1221,25 @@ function formatMessageDate(timestamp) {
 
 async function loadChat() {
     if (!elements.chatMessages) return;
+    
+    // Clean up previous listener if it exists
+    if (currentChatListener) {
+        currentChatListener();
+        currentChatListener = null;
+    }
+    
     elements.chatMessages.innerHTML = `
         <div class="skeleton-message"></div>
         <div class="skeleton-message"></div>
     `;
+    
     if (selectedProfessionalId) {
         const chatId = [userId, selectedProfessionalId].sort().join("+");
         const chatRef = ref(db, `chats/${chatId}/messages`);
         const currentUser = await fetchCurrentUserProfile();
-        onValue(chatRef, async (snapshot) => {
+        
+        // Store the listener reference so we can clean it up later
+        currentChatListener = onValue(chatRef, async (snapshot) => {
             elements.chatMessages.innerHTML = '';
             if (snapshot.exists()) {
                 const messages = Object.entries(snapshot.val())
@@ -1591,7 +1604,16 @@ function loadWorkflows() {
             });
         }
         if (!hasTasks) {
-            elements.workflowList.innerHTML = '<p>No tasks found.</p>';
+            elements.workflowList.innerHTML = `
+                <div class="no-tasks-message">
+                    <div class="no-tasks-icon">
+                        <i class="fas fa-clipboard-list"></i>
+                    </div>
+                    <h4>No tasks assigned now</h4>
+                    <p>Chat with employer to get started</p>
+                    
+                </div>
+            `;
         }
         isDataLoaded.tasks = true;
         checkAllDataLoaded();

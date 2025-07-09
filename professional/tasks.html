@@ -280,6 +280,7 @@ let currentUserProfile = null;
 let uploadedTaskFiles = [];
 let isDataLoaded = { connections: false, chats: false, tasks: false };
 let editingTaskId = null;
+let currentChatListener = null;
 
 const elements = {
     connectionsList: document.getElementById('connections-list'),
@@ -902,15 +903,25 @@ function formatMessageDate(timestamp) {
 
 async function loadChat() {
     if (!elements.chatMessages) return;
+    
+    // Clean up previous listener if it exists
+    if (currentChatListener) {
+        currentChatListener();
+        currentChatListener = null;
+    }
+    
     elements.chatMessages.innerHTML = `
         <div class="skeleton-message"></div>
         <div class="skeleton-message"></div>
     `;
+    
     if (selectedStudentId) {
         const chatId = [userId, selectedStudentId].sort().join("+");
         const chatRef = ref(db, `chats/${chatId}/messages`);
         const currentUser = await fetchCurrentUserProfile();
-        onValue(chatRef, async (snapshot) => {
+        
+        // Store the listener reference so we can clean it up later
+        currentChatListener = onValue(chatRef, async (snapshot) => {
             elements.chatMessages.innerHTML = '';
             if (snapshot.exists()) {
                 const messages = Object.entries(snapshot.val())
