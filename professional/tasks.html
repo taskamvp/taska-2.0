@@ -644,7 +644,7 @@ async function loadConnections() {
                     userItem.className = 'user-item';
                     userItem.dataset.studentId = studentId;
                     userItem.innerHTML = `
-                        <img src="${profilePic}" alt="${userName}" class="profile-pic">
+                        <img src="${profilePic}" class="profile-pic">
                         <div class="user-info">
                             <div class="name">${userName}</div>
                             <div class="last-message">${lastMessage}</div>
@@ -692,7 +692,7 @@ async function loadPendingRequests() {
                     pendingItem.dataset.studentId = studentId;
                     pendingItem.innerHTML = `
                         <div class="user-info">
-                            <img src="${profilePic}" alt="${userName}" class="profile-pic">
+                            <img src="${profilePic}" class="profile-pic">
                             <div class="name">${userName}</div>
                         </div>
                         <div class="actions">
@@ -839,7 +839,7 @@ async function loadChatHeader() {
         elements.chatHeader.innerHTML = `
             <div style="display: flex; align-items: center; gap: 1rem;">
                 <a href="../workplace/view-profile.html?studentId=${encodeURIComponent(selectedStudentId)}" style="text-decoration: none; cursor: pointer;" title="View ${userName}'s profile">
-                    <img src="${profilePic}" alt="${userName}" class="profile-pic" style="cursor: pointer;">
+                    <img src="${profilePic}" class="profile-pic" style="cursor: pointer;">
                 </a>
                 <div>
                     <div class="name">${userName}</div>
@@ -863,7 +863,7 @@ async function loadChatHeader() {
         elements.chatHeader.innerHTML = `
             <div style="display: flex; align-items: center; gap: 1rem;">
                 <a href="../workplace/view-profile.html?studentId=${encodeURIComponent(selectedStudentId)}" style="text-decoration: none; cursor: pointer;" title="View student's profile">
-                    <img src="../assets/avatar/1.png" alt="Unnamed" class="profile-pic" style="cursor: pointer;">
+                    <img src="../assets/avatar/1.png" class="profile-pic" style="cursor: pointer;">
                 </a>
                 <div>
                     <div class="name">Unnamed</div>
@@ -959,7 +959,7 @@ async function loadChat() {
                         const fileSize = msg.file.size ? (msg.file.size / 1024).toFixed(2) + ' KB' : 'Unknown size';
                         messageDiv.innerHTML = `
                             <div class="message-header">
-                                <img src="${profilePic}" alt="${senderName}" class="profile-pic">
+                                <img src="${profilePic}" class="profile-pic">
                                 <div class="name">${senderName}</div>
                                 <div class="time">${time}</div>
                             </div>
@@ -989,7 +989,7 @@ async function loadChat() {
                     } else {
                         messageDiv.innerHTML = `
                             <div class="message-header">
-                                <img src="${profilePic}" alt="${senderName}" class="profile-pic">
+                                <img src="${profilePic}" class="profile-pic">
                                 <div class="name">${senderName}</div>
                                 <div class="time">${time}</div>
                             </div>
@@ -1367,7 +1367,27 @@ function loadWorkflows() {
                 }
             }
             if (!hasTasks) {
-                elements.workflowList.innerHTML = '<p>No tasks found.</p>';
+                elements.workflowList.innerHTML = `
+                    <div class="empty-tasks-state">
+                        
+                        <h3>Ready to Collaborate?</h3>
+                        <p>Start working together creating your first task. Define clear objectives, set deadlines, and watch amazing results unfold!</p>
+                        <div class="empty-tasks-actions">
+                            <button class="create-task-btn" onclick="openTaskPopup()">
+                                <i class="fas fa-plus"></i> Create Your First Task
+                            </button>
+                        </div>
+                        <div class="empty-tasks-tips">
+                            <h4>💡 Quick Tips:</h4>
+                            <ul>
+                                <li>Be specific about what you need</li>
+                                <li>Set realistic deadlines</li>
+                                <li>Provide clear instructions</li>
+                                <li>Stay engaged with regular feedback</li>
+                            </ul>
+                        </div>
+                    </div>
+                `;
             }
             isDataLoaded.tasks = true;
             checkAllDataLoaded();

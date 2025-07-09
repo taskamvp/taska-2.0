@@ -771,7 +771,8 @@
             .message-popup .send-btn { font-size: 0.9rem; }
             .connection-request-popup {
                 padding: 1.2rem;
-                max-width: 90%;
+                max-width: 95%;
+                width: 95%;
             }
             .connection-request-popup h2 {
                 font-size: 1.25rem;
@@ -781,6 +782,31 @@
             }
             .connection-request-popup .ok-btn {
                 font-size: 0.9rem;
+            }
+            .mobile-message {
+                display: flex;
+            }
+            .dashboard-content,
+            .navbar_classified,
+            footer {
+                display: none;
+            }
+            .connection-request-popup {
+                max-width: 95%;
+                width: 95%;
+            }
+            .connection-request-content {
+                padding: 1.2rem 1.2rem 1.2rem 1.2rem;
+            }
+            .connection-request-content h2 {
+                font-size: 1rem;
+            }
+            .connection-request-content p {
+                font-size: 0.85rem;
+            }
+            .connection-request-content .ok-btn {
+                font-size: 0.85rem;
+                padding: 0.6rem 1.5rem;
             }
         }
         @media (min-width: 768px) {
@@ -858,43 +884,102 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: #FFFFFF;
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-            z-index: 1000;
-            max-width: 500px;
-            width: 90%;
-            text-align: center;
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(18px) saturate(1.1);
+            -webkit-backdrop-filter: blur(18px) saturate(1.1);
+            border-radius: 16px;
+            width: 480px;
+            max-width: 98vw;
+            max-height: 90vh;
+            overflow-y: auto;
+            z-index: 2001;
+            border: 1.5px solid rgba(180,180,180,0.22);
+            box-shadow: 0 8px 32px 0 rgba(30,34,90,0.13);
+            font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, Arial, sans-serif;
+            padding: 0;
+            transition: box-shadow 0.18s, background 0.18s;
         }
         .connection-request-popup.active { display: block; }
-        .connection-request-popup h2 {
-            margin-bottom: 1rem;
-            color: #374151;
+        .connection-request-popup .macos-close {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            left: auto;
+            width: 36px;
+            height: 36px;
+            background: #ededed;
+            border-radius: 50%;
+            border: 1.5px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.18s, box-shadow 0.18s;
+            z-index: 10;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+            font-size: 1.3rem;
+            color: #ff5f57;
+            outline: none;
         }
-        .connection-request-popup p {
-            margin-bottom: 1.5rem;
-            color: #6B7280;
+        .connection-request-popup .macos-close:focus {
+            box-shadow: 0 0 0 2px #007aff44;
+        }
+        .connection-request-popup .macos-close:hover {
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+        }
+        .connection-request-popup .macos-close i {
+            color: #ff5f57;
+            font-size: 1.3rem;
+            font-weight: bold;
+            pointer-events: none;
+        }
+        .connection-request-content {
+            padding: 1.5rem 1.5rem 1.5rem 1.5rem;
+            font-size: 0.9rem;
+            color: #222;
+            display: flex;
+            flex-direction: column;
+            gap: 1.1rem;
+            text-align: center;
+        }
+        .connection-request-content h2 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.01em;
+        }
+        .connection-request-content p {
+            color: #444;
+            font-size: 0.9rem;
             line-height: 1.5;
+            margin-bottom: 1.5rem;
         }
-        .connection-request-popup .ok-btn {
-            background: #2B6CB0;
-            color: #FFFFFF;
+        .connection-request-content .ok-btn {
+            background: #007aff;
+            color: #ffffff;
             border: none;
             padding: 0.75rem 2rem;
             border-radius: 8px;
             cursor: pointer;
             font-weight: 500;
+            font-size: 0.9rem;
+            transition: background 0.18s;
+            align-self: center;
         }
-        .connection-request-popup .ok-btn:hover {
-            background: #2C5282;
+        .connection-request-content .ok-btn:hover {
+            background: #0056cc;
         }
-        .connection-request-popup .manage-connections {
-            color: #2B6CB0;
+        .connection-request-content .manage-connections {
+            color: #007aff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.18s;
+        }
+        .connection-request-content .manage-connections:hover {
+            color: #0056cc;
             text-decoration: underline;
-        }
-        .connection-request-popup .manage-connections:hover {
-            color: #2C5282;
         }
         .close-btn {
             position: absolute;
@@ -1162,10 +1247,12 @@
         <button class="send-btn" onclick="sendMessage()">Send via WhatsApp</button>
     </div>
     <div class="connection-request-popup" id="connectionRequestPopup">
-        <button class="close-btn" onclick="closeConnectionRequestPopup()">×</button>
-        <h2>Connection Request Sent</h2>
-        <p id="connectionRequestMessage"></p>
-        <button class="ok-btn" onclick="closeConnectionRequestPopup()">OK</button>
+        <div class="macos-close" onclick="closeConnectionRequestPopup()"><i class="fas fa-times"></i></div>
+        <div class="connection-request-content">
+            <h2>Connection Request Sent</h2>
+            <p id="connectionRequestMessage"></p>
+            <button class="ok-btn" onclick="closeConnectionRequestPopup()">OK</button>
+        </div>
     </div>
     <div class="student-details-popup" id="studentDetailsPopup">
         <div class="macos-close" onclick="closeStudentDetailsPopup()"><i class="fas fa-times"></i></div>

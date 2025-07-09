@@ -2313,9 +2313,7 @@ async function createTask() {
             <div class="success-content">
                 <i class="fas fa-check-circle"></i>
                 <h4>Task has been created and assigned!</h4>
-                <p><strong>Task Title:</strong> ${title}</p>
-                <p><strong>Primary Student:</strong> ${primaryStudent ? allStudents.find(s => s.id === primaryStudent).personal?.name : 'None'}</p>
-                <p><strong>Waitlist Students:</strong> ${waitlistStudents.length} student(s)</p>
+                
                 <p>Students will be notified and can accept the task to become connections.</p>
             </div>
         `;

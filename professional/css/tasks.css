@@ -747,7 +747,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem;
+    padding: 0.02rem 1rem 0.005rem 1rem;
     border-bottom: 1px solid #e0e0e0;
 }
 
@@ -2291,6 +2291,196 @@ body {
     
     .approval-modal .actions {
         flex-direction: column;
+    }
+}
+
+/* Empty Tasks State Styling */
+.empty-tasks-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 3rem 2rem;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 16px;
+    border: 2px dashed #dee2e6;
+    margin: 2rem;
+    min-height: 400px;
+    transition: all 0.3s ease;
+}
+
+.empty-tasks-state:hover {
+    border-color: #007aff;
+    background: linear-gradient(135deg, #f0f8ff 0%, #e6f3ff 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 122, 255, 0.1);
+}
+
+.empty-tasks-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #007aff 0%, #0056cc 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 20px rgba(0, 122, 255, 0.3);
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+.empty-tasks-icon i {
+    font-size: 2rem;
+    color: white;
+}
+
+.empty-tasks-state h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #1d1d1f;
+    margin-bottom: 1rem;
+    letter-spacing: -0.01em;
+}
+
+.empty-tasks-state p {
+    font-size: 1rem;
+    color: #6c757d;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    max-width: 500px;
+}
+
+.empty-tasks-actions {
+    margin-bottom: 2rem;
+}
+
+.create-task-btn {
+    background: linear-gradient(135deg, #007aff 0%, #0056cc 100%);
+    color: white;
+    border: none;
+    padding: 0.875rem 2rem;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.create-task-btn:hover {
+    background: linear-gradient(135deg, #0056cc 0%, #004499 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 122, 255, 0.4);
+}
+
+.create-task-btn:active {
+    transform: translateY(0);
+}
+
+.create-task-btn i {
+    font-size: 0.9rem;
+}
+
+.empty-tasks-tips {
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid #e9ecef;
+    max-width: 500px;
+    width: 100%;
+}
+
+.empty-tasks-tips h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1d1d1f;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.empty-tasks-tips ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+}
+
+.empty-tasks-tips li {
+    font-size: 0.9rem;
+    color: #6c757d;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #f1f3f5;
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+.empty-tasks-tips li:last-child {
+    border-bottom: none;
+}
+
+.empty-tasks-tips li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    top: 0.5rem;
+    color: #28a745;
+    font-weight: bold;
+    font-size: 0.8rem;
+}
+
+/* Mobile responsive for empty state */
+@media (max-width: 768px) {
+    .empty-tasks-state {
+        padding: 2rem 1rem;
+        margin: 1rem;
+        min-height: 300px;
+    }
+    
+    .empty-tasks-icon {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 1rem;
+    }
+    
+    .empty-tasks-icon i {
+        font-size: 1.5rem;
+    }
+    
+    .empty-tasks-state h3 {
+        font-size: 1.25rem;
+    }
+    
+    .empty-tasks-state p {
+        font-size: 0.9rem;
+    }
+    
+    .create-task-btn {
+        padding: 0.75rem 1.5rem;
+        font-size: 0.9rem;
+    }
+    
+    .empty-tasks-tips {
+        padding: 1rem;
+    }
+    
+    .empty-tasks-tips h4 {
+        font-size: 1rem;
+    }
+    
+    .empty-tasks-tips li {
+        font-size: 0.85rem;
+        padding: 0.4rem 0;
+        padding-left: 1.25rem;
     }
 }
 
