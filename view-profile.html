@@ -122,8 +122,8 @@
         .profile-header {
             background: #ffffff;
             border: 1px solid #dadce0;
-            padding: 1.2rem 1.2rem 1.2rem 1.2rem;
-            margin-bottom: 1.2rem;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
             position: relative;
             overflow: hidden;
         }
@@ -214,12 +214,6 @@
             font-family: 'Roboto', sans-serif;
         }
 
-        .stat-item .stat-value#stat-degree, .stat-item .stat-value#stat-college {
-            text-align: center;
-            width: 100%;
-            display: block;
-        }
-
         /* Profile Sections */
         .profile-sections {
             display: block;
@@ -228,8 +222,7 @@
         .profile-section {
             background: #ffffff;
             border: 1px solid #dadce0;
-            padding: 1.1rem 1.2rem;
-            margin-bottom: 1.2rem;
+            padding: 2rem;
         }
 
         .section-title {
@@ -311,8 +304,8 @@
         .portfolio-section {
             background: #ffffff;
             border: 1px solid #dadce0;
-            padding: 1.1rem 1.2rem;
-            margin-top: 1.2rem;
+            padding: 2rem;
+            margin-top: 2rem;
         }
 
         /* Drive Portfolio Thumbnails */
@@ -468,18 +461,31 @@
 </head>
 <body>
     <main class="main-container">
-        <!-- REMOVE Student ID Input Section -->
+        <!-- Student ID Input Section -->
+        <div class="student-id-section" id="student-id-section">
+            <h1>View Student Profile</h1>
+            <p>Enter a student ID to view their complete profile and portfolio</p>
+            <div class="id-input-container">
+                <input type="text" id="student-id-input" class="id-input" placeholder="Enter Student ID" maxlength="28">
+                <button id="view-profile-btn" class="view-btn">View Profile</button>
+            </div>
+        </div>
+
         <!-- Profile Display Section -->
-        <div class="profile-display active" id="profile-display">
-            <!-- REMOVE Back Button -->
+        <div class="profile-display" id="profile-display">
+            <button class="back-btn" id="back-btn" title="Back to ID Input">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+
             <!-- Profile Header -->
             <div class="profile-header">
                 <div class="profile-header-content">
                     <img id="profile-avatar" class="profile-avatar" src="../assets/avatar/1.png" alt="Profile Picture">
                     <div class="profile-info">
                         <h1 id="profile-name" class="profile-name">Student Name</h1>
-                        <p id="profile-title" class="profile-title">Aspiring Machine Learning Engineer | Student</p>
+                        <p id="profile-title" class="profile-title">Student at University</p>
                         <div class="profile-location">
+                            <i class="fas fa-map-marker-alt"></i>
                             <span id="profile-location">Location</span>
                         </div>
                         <div class="profile-stats">
@@ -488,10 +494,12 @@
                                 <div class="stat-label">CGPA</div>
                             </div>
                             <div class="stat-item">
-                                <div class="stat-value" id="stat-degree">-</div>
+                                <div class="stat-value" id="stat-year">-</div>
+                                <div class="stat-label">Year</div>
                             </div>
                             <div class="stat-item">
-                                <div class="stat-value" id="stat-college">-</div>
+                                <div class="stat-value" id="stat-experience">-</div>
+                                <div class="stat-label">Experience</div>
                             </div>
                         </div>
                     </div>
@@ -503,6 +511,7 @@
                 <!-- Main Content -->
                 <div class="profile-section">
                     <h2 class="section-title">
+                        <i class="fas fa-user"></i>
                         Personal Information
                     </h2>
                     <div class="info-grid">
@@ -533,6 +542,7 @@
                     </div>
 
                     <h2 class="section-title" style="margin-top: 2rem;">
+                        <i class="fas fa-graduation-cap"></i>
                         Education
                     </h2>
                     <div class="info-grid">
@@ -563,19 +573,22 @@
                     </div>
 
                     <h2 class="section-title" style="margin-top: 2rem;">
+                        <i class="fas fa-briefcase"></i>
                         Professional Information
                     </h2>
                     <div class="info-grid">
-                        <!-- Remove Headline and Experience fields -->
+                        <div class="info-item">
+                            <div class="info-label">Experience Level</div>
+                            <div class="info-value" id="info-experience">-</div>
+                        </div>
                         <div class="info-item">
                             <div class="info-label">Preferred Roles</div>
                             <div class="info-value" id="info-roles">-</div>
                         </div>
                     </div>
 
-                    <h2 class="section-title" style="margin-top: 2rem;">Work Experience</h2>
-                    <div class="about-text" id="info-work-experience">No work experience listed.</div>
                     <h2 class="section-title" style="margin-top: 2rem;">
+                        <i class="fas fa-code"></i>
                         Skills
                     </h2>
                     <div class="skills-container" id="skills-container">
@@ -583,11 +596,13 @@
                     </div>
 
                     <h2 class="section-title" style="margin-top: 2rem;">
+                        <i class="fas fa-trophy"></i>
                         Academic Achievements
                     </h2>
                     <div class="about-text" id="info-achievements">No achievements listed.</div>
 
                     <h2 class="section-title" style="margin-top: 2rem;">
+                        <i class="fas fa-info-circle"></i>
                         About Me
                     </h2>
                     <div class="about-text" id="info-about">No information provided.</div>
@@ -596,6 +611,7 @@
                 <!-- Portfolio Section -->
                 <div class="portfolio-section">
                     <h2 class="section-title">
+                        <i class="fas fa-folder-open"></i>
                         Portfolio
                     </h2>
                     <div id="portfolio-content">
@@ -628,47 +644,30 @@
         const db = getDatabase(app);
         const storage = getStorage(app);
 
-        // REMOVE DOM elements for input and back button
-        // const studentIdSection = document.getElementById('student-id-section');
+        // DOM Elements
+        const studentIdSection = document.getElementById('student-id-section');
         const profileDisplay = document.getElementById('profile-display');
-        // const studentIdInput = document.getElementById('student-id-input');
-        // const viewProfileBtn = document.getElementById('view-profile-btn');
-        // const backBtn = document.getElementById('back-btn');
+        const studentIdInput = document.getElementById('student-id-input');
+        const viewProfileBtn = document.getElementById('view-profile-btn');
+        const backBtn = document.getElementById('back-btn');
 
-        // REMOVE event listeners for input and back button
-        // viewProfileBtn.addEventListener('click', loadProfile);
-        // studentIdInput.addEventListener('keypress', (e) => {
-        //     if (e.key === 'Enter') loadProfile();
-        // });
-        // backBtn.addEventListener('click', showIdInput);
+        // Event Listeners
+        viewProfileBtn.addEventListener('click', loadProfile);
+        studentIdInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') loadProfile();
+        });
+        backBtn.addEventListener('click', showIdInput);
 
-        // Helper to get query param
-        function getQueryParam(name) {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get(name);
-        }
+        async function loadProfile() {
+            const studentId = studentIdInput.value.trim();
+            if (!studentId) {
+                alert('Please enter a student ID');
+                return;
+            }
 
-        // On page load, get studentId from query and load profile
-        const studentId = getQueryParam('studentId');
-        if (studentId) {
-            loadProfile(studentId);
-        } else {
-            // Show error if no studentId provided
-            document.getElementById('profile-name').textContent = 'No Student ID Provided';
-            document.getElementById('profile-title').textContent = '';
-            document.getElementById('profile-location').textContent = '';
-            document.getElementById('stat-cgpa').textContent = '-';
-            document.getElementById('stat-year').textContent = '-';
-            document.getElementById('stat-experience').textContent = '-';
-            document.getElementById('skills-container').innerHTML = '';
-            document.getElementById('info-about').textContent = '';
-            document.getElementById('info-achievements').textContent = '';
-            document.getElementById('portfolio-content').innerHTML = '<div class="error-message">No student ID provided in the URL.</div>';
-        }
-
-        // Update loadProfile to accept studentId as argument
-        async function loadProfile(studentId) {
+            showProfileDisplay();
             showLoading();
+
             try {
                 // Load profile data
                 const snapshot = await get(ref(db, `studentslist/${studentId}`));
@@ -676,8 +675,10 @@
                     showError('Student profile not found. Please check the ID and try again.');
                     return;
                 }
+
                 const data = snapshot.val();
                 populateProfile(data, studentId);
+
                 // Load profile photo
                 try {
                     const profilePhotoRef = storageRef(storage, `profile/${studentId}.webp`);
@@ -686,20 +687,13 @@
                 } catch (error) {
                     console.log('No profile photo found, using default');
                 }
+
                 // Load portfolio
                 await loadPortfolio(studentId);
+
             } catch (error) {
                 console.error('Error loading profile:', error);
                 showError('Failed to load profile. Please try again.');
-            }
-        }
-
-        // Helper to hide parent if value is blank
-        function hideIfBlank(elem, value) {
-            if (!value || value.trim() === '' || value === '-' || value === 'Not specified' || value === 'Not provided') {
-                elem.parentElement.style.display = 'none';
-            } else {
-                elem.parentElement.style.display = '';
             }
         }
 
@@ -710,98 +704,41 @@
 
             // Profile header
             document.getElementById('profile-name').textContent = personal.name || 'Student';
-            document.getElementById('profile-title').textContent = data.headline || 'Aspiring Machine Learning Engineer | Student';
-            document.getElementById('profile-location').textContent = personal.location || '';
-            hideIfBlank(document.getElementById('profile-location'), personal.location);
+            document.getElementById('profile-title').textContent = 
+                `${education.degree || 'Student'} at ${education.college || 'University'}`;
+            document.getElementById('profile-location').textContent = personal.location || 'Location not specified';
 
             // Stats
-            document.getElementById('stat-cgpa').textContent = education.cgpa || '';
-            hideIfBlank(document.getElementById('stat-cgpa'), education.cgpa);
-            document.getElementById('stat-degree').textContent = education.degree || '';
-            hideIfBlank(document.getElementById('stat-degree'), education.degree);
-            document.getElementById('stat-college').textContent = education.college || '';
-            hideIfBlank(document.getElementById('stat-college'), education.college);
+            document.getElementById('stat-cgpa').textContent = education.cgpa || '-';
+            document.getElementById('stat-year').textContent = education.year || '-';
+            document.getElementById('stat-experience').textContent = data.experience || '-';
 
             // Personal Information
-            const infoFields = [
-                ['info-name', personal.name],
-                ['info-email', personal.email],
-                ['info-whatsapp', personal.whatsapp],
-                ['info-gender', personal.gender],
-                ['info-location', personal.location],
-                ['info-linkedin', personal.linkedin],
-                ['info-college', education.college],
-                ['info-degree', education.degree],
-                ['info-branch', education.branch],
-                ['info-year', education.year],
-                ['info-cgpa', education.cgpa],
-                ['info-graduation', education.graduation],
-                ['info-roles', data.roles],
-            ];
-            infoFields.forEach(([id, value]) => {
-                const elem = document.getElementById(id);
-                if (elem) {
-                    elem.textContent = value || '';
-                    hideIfBlank(elem, value);
-                }
-            });
+            document.getElementById('info-name').textContent = personal.name || 'Not provided';
+            document.getElementById('info-email').textContent = personal.email || 'Not provided';
+            document.getElementById('info-whatsapp').textContent = personal.whatsapp || 'Not provided';
+            document.getElementById('info-gender').textContent = personal.gender || 'Not specified';
+            document.getElementById('info-location').textContent = personal.location || 'Not specified';
+            document.getElementById('info-linkedin').textContent = personal.linkedin || 'Not provided';
 
-            // About
-            const aboutElem = document.getElementById('info-about');
-            if (aboutElem) {
-                aboutElem.textContent = personal.about || '';
-                if (!personal.about || personal.about.trim() === '') {
-                    aboutElem.parentElement.style.display = 'none';
-                } else {
-                    aboutElem.parentElement.style.display = '';
-                }
-            }
+            // Education
+            document.getElementById('info-college').textContent = education.college || 'Not specified';
+            document.getElementById('info-degree').textContent = education.degree || 'Not specified';
+            document.getElementById('info-branch').textContent = education.branch || 'Not specified';
+            document.getElementById('info-year').textContent = education.year || 'Not specified';
+            document.getElementById('info-cgpa').textContent = education.cgpa || 'Not specified';
+            document.getElementById('info-graduation').textContent = education.graduation || 'Not specified';
 
-            // Academic Achievements
-            const achievementsElem = document.getElementById('info-achievements');
-            if (education.achievements) {
-                const achievementsArr = education.achievements.split(',').map(a => a.trim()).filter(a => a);
-                if (achievementsArr.length) {
-                    achievementsElem.innerHTML = '<ul style="margin:0 0 0 1.2em;padding:0;">' + achievementsArr.map(a => `<li>${a}</li>`).join('') + '</ul>';
-                    achievementsElem.parentElement.style.display = '';
-                } else {
-                    achievementsElem.parentElement.style.display = 'none';
-                }
-            } else {
-                achievementsElem.parentElement.style.display = 'none';
-            }
-
-            // Work Experience
-            const workExpElem = document.getElementById('info-work-experience');
-            if (workExpElem && data.experience) {
-                const expArr = data.experience.split(',').map(e => e.trim()).filter(e => e);
-                if (expArr.length) {
-                    workExpElem.innerHTML = '<ul style="margin:0 0 0 1.2em;padding:0;">' + expArr.map(e => `<li>${e}</li>`).join('') + '</ul>';
-                    workExpElem.parentElement.style.display = '';
-                } else {
-                    workExpElem.parentElement.style.display = 'none';
-                }
-            } else if (workExpElem) {
-                workExpElem.parentElement.style.display = 'none';
-            }
+            // Professional
+            document.getElementById('info-experience').textContent = data.experience || 'Not specified';
+            document.getElementById('info-roles').textContent = data.roles || 'Not specified';
 
             // Skills
-            const skillsContainer = document.getElementById('skills-container');
-            if (skillsContainer) {
-                if (!data.skills || !data.skills.trim()) {
-                    skillsContainer.innerHTML = '';
-                    skillsContainer.parentElement.style.display = 'none';
-                } else {
-                    const skillsList = data.skills.split(',').map(skill => skill.trim()).filter(skill => skill);
-                    if (skillsList.length === 0) {
-                        skillsContainer.innerHTML = '';
-                        skillsContainer.parentElement.style.display = 'none';
-                    } else {
-                        skillsContainer.innerHTML = skillsList.map(skill => `<div class="skill-tag">${skill}</div>`).join('');
-                        skillsContainer.parentElement.style.display = '';
-                    }
-                }
-            }
+            populateSkills(data.skills);
+
+            // About and Achievements
+            document.getElementById('info-about').textContent = personal.about || 'No information provided.';
+            document.getElementById('info-achievements').textContent = education.achievements || 'No achievements listed.';
         }
 
         function populateSkills(skills) {
@@ -907,7 +844,16 @@
             }
         }
 
-        // REMOVE showProfileDisplay and showIdInput functions
+        function showProfileDisplay() {
+            studentIdSection.style.display = 'none';
+            profileDisplay.classList.add('active');
+        }
+
+        function showIdInput() {
+            profileDisplay.classList.remove('active');
+            studentIdSection.style.display = 'block';
+            studentIdInput.value = '';
+        }
 
         function showLoading() {
             document.getElementById('portfolio-content').innerHTML = `

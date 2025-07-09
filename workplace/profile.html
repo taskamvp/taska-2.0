@@ -1325,6 +1325,12 @@
             <div class="form-header">
                 <h1 class="form-title">Student Profile Database</h1>
                 <p class="form-subtitle">Complete your profile information to get matched with the best opportunities</p>
+                <!-- View Profile Button INSIDE the card -->
+                <div style="display: flex; justify-content: flex-end; margin-top: 1rem;">
+                    <button id="view-own-profile-btn" class="btn btn-secondary" style="font-size:0.85rem; padding:0.35rem 1.1rem; height:2.1rem; min-width:unset;">
+                        <i class="fas fa-user"></i> View Profile
+                    </button>
+                </div>
             </div>
 
             <div class="form-container">
@@ -1363,8 +1369,8 @@
                                 <label class="form-label">Gender</label>
                                 <select id="gender" class="form-select">
                                     <option value="">Select gender</option>
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
                                     <option value="other">Other</option>
                                 </select>
         </div>
@@ -1398,10 +1404,10 @@
                                 <label class="form-label">Degree</label>
                                 <select id="degree" class="form-select">
                                     <option value="">Select degree</option>
-                                    <option value="bachelor">Bachelor's</option>
-                                    <option value="master">Master's</option>
-                                    <option value="phd">PhD</option>
-                                    <option value="diploma">Diploma</option>
+                                    <option value="B tech">B Tech</option>
+                                    <option value="M tech">M Tech</option>
+                                    <option value="PhD">PhD</option>
+                                    <option value="Diploma">Diploma</option>
                                     <option value="other">Other</option>
                                 </select>
         </div>
@@ -1443,23 +1449,19 @@
                         <!-- Professional Information Column -->
                         <div class="form-section">
                             <h2 class="section-title">Professional Information</h2>
-
+                            <!-- Headline input moved here -->
+                            <div class="form-group">
+                                <label class="form-label">Headline</label>
+                                <input type="text" id="headline" class="form-input" placeholder="e.g. Aspiring Machine Learning Engineer | Student">
+                            </div>
                             <div class="form-group">
                                 <label class="form-label">Skills</label>
-                                <textarea id="skills" class="form-textarea" placeholder="List your technical skills (e.g., Python, React, AWS)..."></textarea>
+                                <textarea id="skills" class="form-textarea" placeholder="List your technical skills, separated by commas (e.g., Python, React, AWS)"></textarea>
                             </div>
-
                             <div class="form-group">
-                                <label class="form-label">Experience Level</label>
-                                <select id="experience" class="form-select">
-                                    <option value="">Select experience</option>
-                                    <option value="beginner">Beginner (0-1 years)</option>
-                                    <option value="intermediate">Intermediate (1-3 years)</option>
-                                    <option value="advanced">Advanced (3-5 years)</option>
-                                    <option value="expert">Expert (5+ years)</option>
-                                </select>
+                                <label class="form-label">Work Experience</label>
+                                <textarea id="workExperience" class="form-textarea" placeholder="Briefly describe your work experience, internships, or relevant projects, separated by commas..."></textarea>
                             </div>
-
                             <div class="form-group">
                                 <label class="form-label">Preferred Roles</label>
                                 <textarea id="roles" class="form-textarea" placeholder="What roles are you interested in? (e.g., Frontend Developer, Data Scientist)..."></textarea>
@@ -1660,6 +1662,19 @@ document.addEventListener('DOMContentLoaded', () => {
             loadProfileData(user.uid);
             // Attach the save folder event listener only after authentication
             document.getElementById('save-drive-folder-btn').addEventListener('click', saveDriveFolderId);
+            // Attach the View Profile button event listener here
+            const viewProfileBtn = document.getElementById('view-own-profile-btn');
+            if (viewProfileBtn) {
+                viewProfileBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (currentUserId) {
+                        window.open('/workplace/view-profile.html?studentId=' + currentUserId, '_blank');
+                    } else {
+                        alert('User ID not found. Please log in again.');
+                    }
+                    return false;
+                });
+            }
         } else {
             setTimeout(() => {
                 alert("Please log in or sign up first.");
@@ -1684,6 +1699,14 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('save-profile-btn').addEventListener('click', async () => {
         showLoadingOverlay('Saving profile...', 0);
         try {
+            // Fetch current driveFolderId before saving
+            let driveFolderId = null;
+            try {
+                const snapshot = await get(ref(db, `studentslist/${currentUserId}/driveFolderId`));
+                driveFolderId = snapshot.exists() ? snapshot.val() : null;
+            } catch (e) {
+                driveFolderId = null;
+            }
             const profileData = {
                 personal: {
                     name: document.getElementById('name').value,
@@ -1703,9 +1726,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     graduation: document.getElementById('graduation').value,
                     achievements: document.getElementById('achievements').value
                 },
+                headline: document.getElementById('headline').value,
                 skills: document.getElementById('skills').value,
-                experience: document.getElementById('experience').value,
-                roles: document.getElementById('roles').value
+                experience: document.getElementById('workExperience').value,
+                roles: document.getElementById('roles').value,
+                driveFolderId: driveFolderId // Preserve driveFolderId
             };
 
             setLoadingBar(50);
@@ -1884,6 +1909,15 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (error) {
             hideLoadingOverlay();
             alert('Failed to create post: ' + error.message);
+        }
+    });
+
+    // Add event listener for View Profile button
+    document.getElementById('view-own-profile-btn').addEventListener('click', function() {
+        if (currentUserId) {
+            window.open(`workplace/view-profile.html?studentId=${currentUserId}`, '_blank');
+        } else {
+            alert('User ID not found. Please log in again.');
         }
     });
 });
@@ -2137,8 +2171,9 @@ async function loadProfileData(userId) {
 
             // Professional Information
             document.getElementById('skills').value = data.skills || '';
-            document.getElementById('experience').value = data.experience || '';
+            document.getElementById('workExperience').value = data.experience || '';
             document.getElementById('roles').value = data.roles || '';
+            document.getElementById('headline').value = data.headline || '';
 
         } else {
             // Set default values for empty profile
