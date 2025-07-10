@@ -38,8 +38,22 @@ function toggleLoading(show) {
 
 // Login function
 export function login(userType) {
-    const email = document.getElementById(userType === 'professional' ? 'prof-email' : 'stud-email').value;
-    const password = document.getElementById(userType === 'professional' ? 'prof-password' : 'stud-password').value;
+    // Map employer to professional for consistency
+    const mappedUserType = userType === 'employer' ? 'professional' : userType;
+    
+    // Get the correct email and password field IDs
+    let emailFieldId, passwordFieldId;
+    
+    if (mappedUserType === 'professional') {
+        emailFieldId = 'emp-email';
+        passwordFieldId = 'emp-password';
+    } else {
+        emailFieldId = 'stud-email';
+        passwordFieldId = 'stud-password';
+    }
+    
+    const email = document.getElementById(emailFieldId).value;
+    const password = document.getElementById(passwordFieldId).value;
 
     toggleLoading(true);
     setPersistence(auth, browserLocalPersistence)
@@ -48,11 +62,11 @@ export function login(userType) {
         })
         .then((userCredential) => {
             const user = userCredential.user;
-            console.log(`${userType} logged in: ${user.email}, UID: ${user.uid}`);
+            console.log(`${mappedUserType} logged in: ${user.email}, UID: ${user.uid}`);
             localStorage.setItem('userId', user.uid);
-            localStorage.setItem('userRole', userType);
+            localStorage.setItem('userRole', mappedUserType);
             toggleLoading(false);
-            window.location.href = userType === 'professional' ? 'professional/explore.html' : 'workplace/tasks.html';
+            window.location.href = mappedUserType === 'professional' ? 'professional/explore.html' : 'workplace/tasks.html';
         })
         .catch((error) => {
             toggleLoading(false);
@@ -67,8 +81,22 @@ export function login(userType) {
 
 // Signup function with validation
 export async function signup(userType) {
-    const email = document.getElementById(userType === 'professional' ? 'prof-email' : 'stud-email').value;
-    const password = document.getElementById(userType === 'professional' ? 'prof-password' : 'stud-password').value;
+    // Map employer to professional for consistency
+    const mappedUserType = userType === 'employer' ? 'professional' : userType;
+    
+    // Get the correct email and password field IDs
+    let emailFieldId, passwordFieldId;
+    
+    if (mappedUserType === 'professional') {
+        emailFieldId = 'prof-email';
+        passwordFieldId = 'prof-password';
+    } else {
+        emailFieldId = 'stud-email';
+        passwordFieldId = 'stud-password';
+    }
+    
+    const email = document.getElementById(emailFieldId).value;
+    const password = document.getElementById(passwordFieldId).value;
 
     // Password length validation
     if (password.length < 6) {
@@ -89,13 +117,13 @@ export async function signup(userType) {
 
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
-        console.log(`${userType} signed up: ${user.email}, UID: ${user.uid}`);
+        console.log(`${mappedUserType} signed up: ${user.email}, UID: ${user.uid}`);
         localStorage.setItem('userId', user.uid);
-        localStorage.setItem('userRole', userType);
+        localStorage.setItem('userRole', mappedUserType);
 
         // Store user profile data
-        const list = userType === 'professional' ? 'professionalslist' : 'studentslist';
-        const path = userType === 'professional' 
+        const list = mappedUserType === 'professional' ? 'professionalslist' : 'studentslist';
+        const path = mappedUserType === 'professional' 
             ? `${list}/${user.uid}` 
             : `${list}/${user.uid}/personal`;
         const userRef = ref(database, path);
@@ -106,7 +134,7 @@ export async function signup(userType) {
         await set(userRef, initialData);
 
         // Store loyalty score
-        const loyaltySection = userType === 'professional' ? 'loyalty_professional' : 'loyalty_students';
+        const loyaltySection = mappedUserType === 'professional' ? 'loyalty_professional' : 'loyalty_students';
         const loyaltyPath = `${loyaltySection}/${user.uid}`;
         const loyaltyRef = ref(database, loyaltyPath);
         const loyaltyData = {
@@ -116,7 +144,7 @@ export async function signup(userType) {
         await set(loyaltyRef, loyaltyData);
 
         toggleLoading(false);
-        window.location.href = userType === 'professional' ? 'professional/profile.html' : 'workplace/profile.html';
+        window.location.href = mappedUserType === 'professional' ? 'professional/profile.html' : 'workplace/profile.html';
     } catch (error) {
         toggleLoading(false);
         console.debug("Signup error:", error.code, error.message);
