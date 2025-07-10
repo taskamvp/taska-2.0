@@ -1811,17 +1811,14 @@ body {
                 Connect with skilled college students and get your work done from innovative and creative minds.
             </p>
             <div class="ai-search-container">
-                <form class="ai-search-box" onsubmit="event.preventDefault(); window.location='professional/explore.html';" autocomplete="off">
+                <form class="ai-search-box" onsubmit="handleSearchSubmit(event);" autocomplete="off">
                     <span class="ai-search-icon"><i class="fas fa-search"></i></span>
-                    <input id="ai-search-input" type="text" placeholder="Find the perfect student for your project&#10;(e.g. React dashboard, automate Excel, data science intern)">
+                    <input id="ai-search-input" type="text" placeholder="What do you need help with?">
                     <button type="submit"><i class="fas fa-arrow-right"></i></button>
                 </form>
                 <div class="ai-suggestions" id="ai-suggestions">
-                    <div class="ai-suggestion-item">Build a React dashboard for my startup</div>
-                    <div class="ai-suggestion-item">Automate my Excel reports with Python</div>
-                    <div class="ai-suggestion-item">Find a data science intern for summer</div>
-                    <div class="ai-suggestion-item">Create a modern UI/UX for my app</div>
-                    <div class="ai-suggestion-item">Research competitors in my industry</div>
+                    <div class="ai-suggestion-item">Find me a student to build website</div>
+                    <div class="ai-suggestion-item">Need help with data analysis project</div>
                 </div>
             </div>
             <div class="hero-cta-row">
@@ -1956,6 +1953,25 @@ body {
    
     
     <script>
+        // Handle search form submission - moved to global scope
+        function handleSearchSubmit(event) {
+          event.preventDefault();
+          console.log('Search form submitted!');
+          const searchInput = document.getElementById('ai-search-input');
+          const query = searchInput.value.trim();
+          
+          if (query) {
+            // Redirect to indexaisearch.html with the search query as URL parameter
+            const encodedQuery = encodeURIComponent(query);
+            console.log('Redirecting to:', `indexaisearch.html?q=${encodedQuery}`);
+            window.location.href = `indexaisearch.html?q=${encodedQuery}`;
+          } else {
+            // If no query, just redirect to the search page
+            console.log('No query, redirecting to indexaisearch.html');
+            window.location.href = 'indexaisearch.html';
+          }
+        }
+        
       document.addEventListener('DOMContentLoaded', function() {
         const tabs = document.querySelectorAll('.service-tab');
         const contents = {
@@ -1985,6 +2001,16 @@ body {
             mobileMenu.classList.remove('active');
             hamburger.setAttribute('aria-expanded', 'false');
           }
+        });
+        
+        // Add click handlers for suggestion items
+        const suggestionItems = document.querySelectorAll('.ai-suggestion-item');
+        suggestionItems.forEach(item => {
+          item.addEventListener('click', function() {
+            const searchInput = document.getElementById('ai-search-input');
+            searchInput.value = this.textContent;
+            handleSearchSubmit(new Event('submit'));
+          });
         });
         });
     </script>
