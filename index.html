@@ -517,9 +517,9 @@ body {
             border: 1.5px solid #e5e7ea;
             margin-top: 0.2rem;
             z-index: 10;
-            opacity: 0;
-            pointer-events: none;
-            transform: translateY(6px) scale(0.98);
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0) scale(1);
     transition: opacity 0.22s cubic-bezier(.4, 1.4, .6, 1), transform 0.22s cubic-bezier(.4, 1.4, .6, 1);
         }
 
@@ -536,10 +536,34 @@ body {
             color: #1a2a1a;
             cursor: pointer;
             transition: background 0.16s;
+            border-radius: 6px;
+            margin: 0.2rem 0.5rem;
+            position: relative;
+        }
+
+        .ai-suggestion-item::before {
+            content: '💡';
+            position: absolute;
+            left: 0.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.8rem;
+            opacity: 0.6;
+        }
+
+        .ai-suggestion-item {
+            padding-left: 2rem;
         }
 
         .ai-suggestion-item:hover {
             background: #f6fdf7;
+            color: #14532d;
+            transform: translateX(4px);
+        }
+
+        .ai-suggestion-item:active {
+            background: #e8f5e8;
+            transform: translateX(2px);
         }
 
         .hero-main-heading {
@@ -1966,9 +1990,17 @@ body {
             console.log('Redirecting to:', `indexaisearch.html?q=${encodedQuery}`);
             window.location.href = `indexaisearch.html?q=${encodedQuery}`;
           } else {
-            // If no query, just redirect to the search page
-            console.log('No query, redirecting to indexaisearch.html');
-            window.location.href = 'indexaisearch.html';
+            // If no query, show a message instead of redirecting
+            console.log('No query entered');
+            searchInput.focus();
+            searchInput.style.borderColor = '#dc3545';
+            searchInput.style.boxShadow = '0 0 0 0.2rem rgba(220, 53, 69, 0.25)';
+            
+            // Reset the styling after 2 seconds
+            setTimeout(() => {
+              searchInput.style.borderColor = '';
+              searchInput.style.boxShadow = '';
+            }, 2000);
           }
         }
         
@@ -2005,10 +2037,36 @@ body {
         
         // Add click handlers for suggestion items
         const suggestionItems = document.querySelectorAll('.ai-suggestion-item');
-        suggestionItems.forEach(item => {
-          item.addEventListener('click', function() {
+        console.log('Found suggestion items:', suggestionItems.length);
+        
+        suggestionItems.forEach((item, index) => {
+          console.log(`Adding click handler to suggestion ${index + 1}:`, item.textContent);
+          
+          item.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            console.log('Suggestion clicked:', this.textContent);
+            
             const searchInput = document.getElementById('ai-search-input');
-            searchInput.value = this.textContent;
+            const suggestionText = this.textContent;
+            
+            // Add visual feedback
+            this.style.background = '#e8f5e8';
+            this.style.color = '#14532d';
+            
+            // Set the search input value
+            searchInput.value = suggestionText;
+            console.log('Search input value set to:', suggestionText);
+            
+            // Reset the suggestion styling after a brief delay
+            setTimeout(() => {
+              this.style.background = '';
+              this.style.color = '';
+            }, 200);
+            
+            // Trigger the search
+            console.log('Triggering search with query:', suggestionText);
             handleSearchSubmit(new Event('submit'));
           });
         });
