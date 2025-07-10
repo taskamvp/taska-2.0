@@ -68,20 +68,28 @@ body {
         .nav-menu {
             display: flex;
             align-items: center;
-    gap: 0.5rem;
+    gap: 1.5rem;
             list-style: none;
             margin-left: auto;
         }
 
-        .nav-links {
-            display: flex;
-    gap: clamp(1rem, 3vw, 1.5rem);
+        .nav-menu li {
+            list-style: none;
         }
 
-        .auth-links {
-            display: flex;
-    gap: 0.8rem;
-    margin-left: 1.5rem;
+        .nav-menu li a {
+    text-decoration: none;
+    color: #222;
+    font-weight: 500;
+    font-size: clamp(0.85rem, 2.5vw, 0.95rem);
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    transition: color 0.18s;
+}
+
+.nav-menu li a:hover,
+.nav-menu li a.active {
+            color: var(--green);
         }
 
         .signup-btn {
@@ -104,21 +112,6 @@ body {
             border-color: var(--yellow);
             box-shadow: 0 6px 20px rgba(250, 204, 21, 0.4);
             transform: translateY(-2px);
-        }
-
-        .nav-menu li a {
-    text-decoration: none;
-    color: #222;
-    font-weight: 500;
-    font-size: clamp(0.85rem, 2.5vw, 0.95rem);
-    padding: 0.6rem 1rem;
-    border-radius: 8px;
-    transition: color 0.18s;
-}
-
-.nav-menu li a:hover,
-.nav-menu li a.active {
-            color: var(--green);
         }
 
         .hero {
@@ -1488,7 +1481,7 @@ body {
     .navbar {
       position: relative;
     }
-    .nav-menu, .auth-links {
+    .nav-menu {
       display: none !important;
     }
     .mobile-menu {
@@ -1502,13 +1495,15 @@ body {
       width: 100vw;
       height: 100vh;
       background: rgba(255,255,255,0.98);
-      box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
       z-index: 1200;
-      gap: 2rem;
+      gap: 1.5rem;
       transition: opacity 0.3s, transform 0.3s;
       opacity: 0;
       pointer-events: none;
       transform: translateY(-20px) scale(0.98);
+      padding: 2rem;
     }
     .mobile-menu.active {
       display: flex;
@@ -1517,33 +1512,41 @@ body {
       transform: translateY(0) scale(1);
     }
     .mobile-menu a {
-      font-size: 1.3rem;
-      padding: 1.1rem 2.5rem;
-      border-radius: 12px;
-      background: #f7f9fa;
-      color: #1a1a1a;
-      font-weight: 700;
-      box-shadow: 0 2px 12px rgba(20,83,45,0.07);
+      font-size: 1.2rem;
+      padding: 0.8rem 1rem;
+      border-radius: 0;
+      background: none;
+      color: #111;
+      font-weight: 500;
+      border: none;
+      box-shadow: none;
       margin-bottom: 0.5rem;
-      transition: all 0.3s ease;
+      transition: all 0.18s ease;
       text-decoration: none;
+      font-family: 'Montserrat', 'Manrope', 'Poppins', 'Inter', Arial, sans-serif;
+      min-width: auto;
+      text-align: center;
+      letter-spacing: -0.01em;
     }
     .mobile-menu a.signup-btn {
-      background: var(--yellow);
-      color: var(--dark-green);
-      box-shadow: 0 4px 18px rgba(250,204,21,0.13);
+      background: none;
+      color: #111;
+      border: none;
+      box-shadow: none;
     }
     .mobile-menu a:hover {
-      background: #f0f0f0;
-      color: #1a1a1a;
-      box-shadow: 0 4px 18px rgba(0,0,0,0.1);
-      transform: translateY(-2px);
+      background: none;
+      color: #facc15;
+      border: none;
+      box-shadow: none;
+      transform: none;
     }
     .mobile-menu a.signup-btn:hover {
-      background: #fef9c3;
-      color: var(--green);
-      box-shadow: 0 6px 20px rgba(250,204,21,0.2);
-      transform: translateY(-2px);
+      background: none;
+      color: #facc15;
+      border: none;
+      box-shadow: none;
+      transform: none;
     }
     .hamburger span {
       width: 22px;
@@ -1800,12 +1803,22 @@ body {
 <body>
     <nav class="navbar">
         <div class="logo"><img src="assets/logo.png" alt="Taska Logo"></div>
+        
+        <!-- Desktop Navigation -->
+        <ul class="nav-menu">
+            <li><a href="login.html">Login</a></li>
+            <li><a href="signup.html" class="signup-btn">Signup</a></li>
+        </ul>
+        
+        <!-- Mobile Menu Button -->
         <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
             <span></span>
             <span></span>
             <span></span>
         </button>
-        <div class="mobile-menu" id="mobile-menu">
+        
+        <!-- Mobile Menu -->
+        <div class="mobile-menu" id="mobile-menu" style="display:none;">
             <a href="login.html" class="active">Login</a>
             <a href="signup.html" class="signup-btn">Signup</a>
         </div>
@@ -2011,12 +2024,23 @@ body {
           e.stopPropagation();
           hamburger.classList.toggle('active');
           mobileMenu.classList.toggle('active');
+          
+          // Remove the inline display:none style when hamburger is clicked to open
+          if (mobileMenu.classList.contains('active')) {
+            mobileMenu.style.display = '';
+          } else {
+            // Add back the display:none style when hamburger is clicked to close
+            mobileMenu.style.display = 'none';
+          }
+          
           hamburger.setAttribute('aria-expanded', hamburger.classList.contains('active'));
         });
         document.addEventListener('click', function(event) {
           if (!hamburger.contains(event.target) && !mobileMenu.contains(event.target)) {
             hamburger.classList.remove('active');
             mobileMenu.classList.remove('active');
+            // Add back the display:none style when clicking outside
+            mobileMenu.style.display = 'none';
             hamburger.setAttribute('aria-expanded', 'false');
           }
         });

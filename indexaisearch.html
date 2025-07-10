@@ -744,7 +744,7 @@
         }
         
         .login-popup.active {
-            display: flex;
+                display: flex;
             opacity: 1;
         }
         
@@ -1101,7 +1101,7 @@ async function aiSearch(query = '') {
     
     // Add delay before next stage
     await new Promise(resolve => setTimeout(resolve, 600));
-    
+
     const csvText = [
         ['id', 'personal.name', 'education.college', 'education.degree', 'education.branch', 'education.year', 'skills', 'personal.about'].join(','),
         ...preFilteredStudents.map(student => [
