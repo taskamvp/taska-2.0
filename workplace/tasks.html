@@ -554,6 +554,160 @@
         .upload-btn:hover {
             background: #45a049;
         }
+
+        /* Task Rejection Modal Styles */
+        .task-rejection-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            backdrop-filter: blur(4px);
+        }
+
+        .task-rejection-modal.active {
+            display: flex;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .task-rejection-modal .modal-content {
+            background: #fff;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            border: 1px solid #e0e0e0;
+            animation: slideInUp 0.3s ease-out;
+        }
+
+        .task-rejection-modal .modal-header {
+            padding: 1.5rem 2rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .task-rejection-modal .modal-header h3 {
+            margin: 0;
+            color: #1a1a1a;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .task-rejection-modal .modal-header button {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: #666;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .task-rejection-modal .modal-body {
+            padding: 1.5rem 2rem;
+        }
+
+        .task-rejection-modal .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .task-rejection-modal .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #1a1a1a;
+        }
+
+        .task-rejection-modal .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .task-rejection-modal .form-group textarea:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        }
+
+        .task-rejection-modal .rejection-notice {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 1rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .task-rejection-modal .rejection-notice i {
+            color: #856404;
+            font-size: 1.1rem;
+            margin-top: 0.1rem;
+        }
+
+        .task-rejection-modal .rejection-notice p {
+            margin: 0;
+            color: #856404;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .task-rejection-modal .modal-actions {
+            padding: 0 2rem 1.5rem;
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        .task-rejection-modal .cancel-btn {
+            background: #f5f5f5;
+            color: #666;
+            border: 1px solid #e0e0e0;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .task-rejection-modal .cancel-btn:hover {
+            background: #e9ecef;
+            color: #333;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .task-rejection-modal .reject-btn {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .task-rejection-modal .reject-btn:hover {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
     </style>
 </head>
 <body>
@@ -815,6 +969,28 @@
         </div>
     </div>
 
+    <!-- Task Rejection Modal -->
+    <div class="task-rejection-modal" id="task-rejection-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Reject Task</h3>
+                <button onclick="closeTaskRejectionModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="rejection-reason">Reason for Rejection</label>
+                    <textarea id="rejection-reason" placeholder="Please provide a reason for rejecting this task. This helps us improve our task matching process..." rows="4" required></textarea>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="cancel-btn" onclick="closeTaskRejectionModal()">Cancel</button>
+                <button class="reject-btn" id="confirm-reject-btn" onclick="submitTaskRejection()">Submit Rejection</button>
+            </div>
+        </div>
+    </div>
+
     <audio id="message-ding" src="../assets/ding.mp3"></audio>
 
     <script type="module">
@@ -885,7 +1061,9 @@ const elements = {
     assignedTaskActions: document.getElementById('assigned-task-actions'),
     successModal: document.getElementById('success-modal'),
     successTitle: document.getElementById('success-title'),
-    successMessage: document.getElementById('success-message')
+    successMessage: document.getElementById('success-message'),
+    taskRejectionModal: document.getElementById('task-rejection-modal'),
+    rejectionReason: document.getElementById('rejection-reason')
 };
 
 // Function to load profile image from Firebase Storage
@@ -1179,7 +1357,7 @@ function setupEventListeners() {
             const action = e.target.dataset.action;
             const taskId = e.target.closest('.workflow-item').dataset.taskId;
             if (action === 'deleteTask') {
-                confirmAction('deleteTask', 'Delete Task', 'Are you sure you want to delete this task?', { taskId });
+                openTaskRejectionModal(taskId);
             }
         }
         // --- End fix ---
@@ -3431,6 +3609,85 @@ window.messageCache = messageCache;
 window.lastMessageTimestamps = lastMessageTimestamps;
 
 init();
+
+// Task Rejection Modal Functions
+function openTaskRejectionModal(taskId) {
+    // Store the task ID for the rejection process
+    window.currentRejectingTaskId = taskId;
+    
+    // Clear previous form data
+    elements.rejectionReason.value = '';
+    
+    // Show the task rejection modal
+    elements.taskRejectionModal.classList.add('active');
+}
+
+function closeTaskRejectionModal() {
+    elements.taskRejectionModal.classList.remove('active');
+    window.currentRejectingTaskId = null;
+}
+
+async function submitTaskRejection() {
+    try {
+        const taskId = window.currentRejectingTaskId;
+        if (!taskId) {
+            alert('No task selected for rejection.');
+            return;
+        }
+
+        // Get the rejection reason
+        const reason = elements.rejectionReason.value.trim();
+        if (!reason) {
+            alert('Please provide a reason for rejecting this task.');
+            return;
+        }
+
+        // Get the task details first
+        const taskSnapshot = await get(ref(db, `tasks/${taskId}`));
+        const task = taskSnapshot.val();
+        
+        if (!task) {
+            alert('Task not found.');
+            return;
+        }
+
+        // Store the rejection request in Firebase
+        const rejectionData = {
+            taskId: taskId,
+            userId: userId,
+            reason: reason,
+            taskTitle: task.title,
+            taskDescription: task.description,
+            professionalId: task.professionalId,
+            studentId: task.studentId,
+            submittedAt: new Date().toISOString(),
+            status: 'pending', // pending, approved, rejected
+            processedAt: null
+        };
+
+        // Add to rejected tasks collection
+        const rejectedTasksRef = ref(db, `rejectedTasks`);
+        await push(rejectedTasksRef, rejectionData);
+
+        // Close the rejection modal
+        closeTaskRejectionModal();
+        
+        // Show success message
+        showSuccessModal('Rejection Request Submitted!', 'Your task rejection request has been submitted successfully. It will be processed within 24 hours. The task will remain visible until the rejection is approved.');
+        
+    } catch (error) {
+        console.error('Error submitting task rejection:', error);
+        alert('Failed to submit rejection request. Please try again.');
+    }
+}
+
+window.confirmAcceptTask = confirmAcceptTask;
+window.closeTaskAcceptanceModal = closeTaskAcceptanceModal;
+
+// Task Rejection Modal Functions
+window.openTaskRejectionModal = openTaskRejectionModal;
+window.closeTaskRejectionModal = closeTaskRejectionModal;
+window.submitTaskRejection = submitTaskRejection;
 
 </script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93b153f5ba4ebd25',t:'MTc0NjQ1OTUzOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
