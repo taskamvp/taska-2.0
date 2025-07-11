@@ -313,6 +313,10 @@ let isDataLoaded = { connections: false, chats: false, tasks: false };
 let editingTaskId = null;
 let currentChatListener = null;
 
+// Add message cache
+let messageCache = new Map(); // Cache for messages by chatId
+let lastMessageTimestamps = new Map(); // Track last message timestamps by chatId
+
 const elements = {
     connectionsList: document.getElementById('connections-list'),
     pendingRequestsList: document.getElementById('pending-requests-list'),
@@ -453,6 +457,21 @@ async function init() {
         if (elements.workflowArea) {
             elements.workflowArea.style.display = 'none';
         }
+        
+        // Add page unload event listener for cache cleanup
+        window.addEventListener('beforeunload', () => {
+            clearMessageCache();
+            if (currentChatListener) {
+                currentChatListener();
+            }
+        });
+        
+        // Add visibility change listener to manage cache when tab becomes hidden
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                manageCacheSize();
+            }
+        });
         
         auth.onAuthStateChanged(user => {
             if (user) {
@@ -647,7 +666,8 @@ function setupEventListeners() {
         
         if (chatArea && chatArea.style.display === 'block' && 
             !e.target.closest('.chat-area') && 
-            !e.target.closest('.chat-toggle-btn')) {
+            !e.target.closest('.chat-toggle-btn') &&
+            !e.target.closest('.confirmation-dialog')) {
             hideChat();
         }
     });
@@ -844,6 +864,9 @@ async function deleteMessage({ messageId }) {
 }
 
 async function selectStudent(studentId) {
+    // Clear all chat data when switching students
+    clearAllChatData();
+    
     selectedStudentId = studentId;
     document.querySelectorAll('.user-item').forEach(item => {
         const isActive = item.dataset.studentId === studentId;
@@ -974,130 +997,332 @@ async function loadChat() {
         currentChatListener();
         currentChatListener = null;
     }
-    elements.chatMessages.innerHTML = `
-        <div class="skeleton-message"></div>
-        <div class="skeleton-message"></div>
-    `;
-    if (selectedStudentId) {
-        const chatId = [userId, selectedStudentId].sort().join("+");
-        const chatRef = ref(db, `chats/${chatId}/messages`);
-        const currentUser = await fetchCurrentUserProfile();
-        
-        // Store the listener reference so we can clean it up later
-        currentChatListener = onValue(chatRef, async (snapshot) => {
-            elements.chatMessages.innerHTML = '';
-            if (snapshot.exists()) {
-                const messages = Object.entries(snapshot.val())
-                    .map(([id, msg]) => ({ id, ...msg }))
-                    .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
-                const students = await fetchStudentData();
-                const student = students.find(s => s.id === selectedStudentId) || {};
-                const tasksRef = ref(db, `tasks`);
-                const tasksSnapshot = await get(tasksRef);
-                const tasks = tasksSnapshot.exists() ? tasksSnapshot.val() : {};
-                let taskTitles = [];
-                for (const taskId in tasks) {
-                    if (tasks[taskId].professionalId === userId && tasks[taskId].studentId === selectedStudentId) {
-                        taskTitles.push(tasks[taskId].title);
-                    }
-                }
-                let lastDate = null;
-                for (const msg of messages) {
-                    const isSent = msg.senderId === userId;
-                    const senderName = isSent ? currentUser.name : (student.personal?.name || "Unnamed");
-                    const profilePic = isSent 
-                        ? currentUser.profilePic
-                        : await loadProfileImage(selectedStudentId);
-                    const time = new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                    const date = formatMessageDate(msg.timestamp);
-                    if (date !== lastDate) {
-                        const dateDivider = document.createElement('div');
-                        dateDivider.className = 'date-divider';
-                        dateDivider.innerHTML = `<span>${date}</span>`;
-                        elements.chatMessages.appendChild(dateDivider);
-                        lastDate = date;
-                    }
-                    const messageDiv = document.createElement('div');
-                    messageDiv.className = `message ${isSent ? 'sent' : 'received'} ${msg.file ? 'file-message' : ''}`;
-                    messageDiv.dataset.messageId = msg.id;
-                    let content = msg.content || '';
-                    taskTitles.forEach(title => {
-                        const regex = new RegExp(`@${title.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&')}`, 'g');
-                        content = content.replace(regex, `<span class="mention">@${title}</span>`);
-                    });
-                    let reactionsHTML = '';
-                    if (msg.reactions && msg.reactions[userId]) {
-                        reactionsHTML = `<span class="reaction">${msg.reactions[userId]}</span>`;
-                    }
-                    if (msg.file) {
-                        const fileSize = msg.file.size ? (msg.file.size / 1024).toFixed(2) + ' KB' : 'Unknown size';
-                        messageDiv.innerHTML = `
-                            <div class="message-header">
-                                <img src="${profilePic}" class="profile-pic">
-                                <div class="name">${senderName}</div>
-                                <div class="time">${time}</div>
-                            </div>
-                            <a href="${msg.file.url}" download="${msg.file.name}" target="_blank">
-                                <div class="file-info">
-                                    <i class="${getFileIconClass(msg.file.type)} file-icon" style="color: ${getFileIconColor(msg.file.type)};"></i>
-                                    <div class="file-details">
-                                        <div class="file-name">${msg.file.name}</div>
-                                        <div class="file-size">${fileSize}</div>
-                                    </div>
-                                </div>
-                            </a>
-                            <div class="read-status">${msg.read ? 'Seen' : 'Sent'}</div>
-                            <div class="reactions">${reactionsHTML}</div>
-                            <div class="reaction-bar">
-                                <span class="reaction-icon" data-reaction="🤝">🤝</span>
-                                <span class="reaction-icon" data-reaction="👍">👍</span>
-                                <span class="reaction-icon" data-reaction="❤️">❤️</span>
-                                <div class="message-menu">
-                                    <i class="fas fa-ellipsis-h message-menu-icon"></i>
-                                    <div class="message-menu-dropdown">
-                                        <button data-action="deleteMessage">Delete Message</button>
-                                    </div>
-                                </div>
-                            </div>
-                        `;
-                    } else {
-                        messageDiv.innerHTML = `
-                            <div class="message-header">
-                                <img src="${profilePic}" class="profile-pic">
-                                <div class="name">${senderName}</div>
-                                <div class="time">${time}</div>
-                            </div>
-                            <div class="content">${content}</div>
-                            <div class="read-status">${msg.read ? 'Seen' : 'Sent'}</div>
-                            <div class="reactions">${reactionsHTML}</div>
-                            <div class="reaction-bar">
-                                <span class="reaction-icon" data-reaction="🤝">🤝</span>
-                                <span class="reaction-icon" data-reaction="👍">👍</span>
-                                <span class="reaction-icon" data-reaction="❤️">❤️</span>
-                                <div class="message-menu">
-                                    <i class="fas fa-ellipsis-h message-menu-icon"></i>
-                                    <div class="message-menu-dropdown">
-                                        <button data-action="deleteMessage">Delete Message</button>
-                                    </div>
-                                </div>
-                            </div>
-                        `;
-                    }
-                    elements.chatMessages.appendChild(messageDiv);
-                }
-                elements.chatMessages.scrollTop = elements.chatMessages.scrollHeight;
-                messages.forEach(msg => {
-                    if (msg.senderId !== userId && !msg.read) {
-                        update(ref(db, `chats/${chatId}/messages/${msg.id}`), { read: true });
-                    }
-                });
-            } else {
-                elements.chatMessages.innerHTML = '<div class="message">No messages yet</div>';
-            }
+    
+    if (!selectedStudentId) return;
+    
+    const chatId = [userId, selectedStudentId].sort().join("+");
+    
+    // Clear the chat messages area immediately when switching students
+    elements.chatMessages.innerHTML = '';
+    
+    // Manage cache size before loading new chat
+    manageCacheSize();
+    
+    // Show skeleton loading only if no cached messages
+    if (!messageCache.has(chatId) || messageCache.get(chatId).length === 0) {
+        elements.chatMessages.innerHTML = `
+            <div class="skeleton-message"></div>
+            <div class="skeleton-message"></div>
+        `;
+    }
+    
+    const currentUser = await fetchCurrentUserProfile();
+    
+    // Store the listener reference so we can clean it up later
+    currentChatListener = onValue(ref(db, `chats/${chatId}/messages`), async (snapshot) => {
+        if (!snapshot.exists()) {
+            elements.chatMessages.innerHTML = '<div class="message">No messages yet</div>';
+            messageCache.set(chatId, []);
+            lastMessageTimestamps.set(chatId, {});
             isDataLoaded.chats = true;
             checkAllDataLoaded();
+            return;
+        }
+
+        const newMessages = Object.entries(snapshot.val())
+            .map(([id, msg]) => ({ id, ...msg }))
+            .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+
+        const cachedMessages = messageCache.get(chatId) || [];
+        const lastTimestamps = lastMessageTimestamps.get(chatId) || {};
+        
+        // Check if we need to do a full render or incremental update
+        const needsFullRender = shouldDoFullRender(cachedMessages, newMessages, lastTimestamps);
+        
+        if (needsFullRender) {
+            // Full render - clear and rebuild everything
+            await renderAllMessages(newMessages, currentUser, chatId);
+        } else {
+            // Incremental update - only update changed messages
+            await updateChangedMessages(cachedMessages, newMessages, currentUser, chatId);
+        }
+        
+        // Update cache and timestamps
+        messageCache.set(chatId, newMessages);
+        const newTimestamps = {};
+        newMessages.forEach(msg => {
+            newTimestamps[msg.id] = msg.timestamp;
         });
+        lastMessageTimestamps.set(chatId, newTimestamps);
+        
+        // Mark messages as read
+        newMessages.forEach(msg => {
+            if (msg.senderId !== userId && !msg.read) {
+                update(ref(db, `chats/${chatId}/messages/${msg.id}`), { read: true });
+            }
+        });
+        
+        isDataLoaded.chats = true;
+        checkAllDataLoaded();
+    });
+}
+
+// Helper function to determine if full render is needed
+function shouldDoFullRender(cachedMessages, newMessages, lastTimestamps) {
+    // If cache is empty, do full render
+    if (cachedMessages.length === 0) return true;
+    
+    // If message count changed significantly, do full render
+    if (Math.abs(newMessages.length - cachedMessages.length) > 3) return true;
+    
+    // If any message timestamps changed, check if it's a major change
+    let changedCount = 0;
+    for (const msg of newMessages) {
+        const cachedTimestamp = lastTimestamps[msg.id];
+        if (!cachedTimestamp || cachedTimestamp !== msg.timestamp) {
+            changedCount++;
+        }
     }
+    
+    // If more than 20% of messages changed, do full render (more aggressive)
+    return changedCount > (newMessages.length * 0.2);
+}
+
+// Function to render all messages (full render)
+async function renderAllMessages(messages, currentUser, chatId) {
+    elements.chatMessages.innerHTML = '';
+    
+    if (messages.length === 0) {
+        elements.chatMessages.innerHTML = '<div class="message">No messages yet</div>';
+        return;
+    }
+    
+    const students = await fetchStudentData();
+    const student = students.find(s => s.id === selectedStudentId) || {};
+    const tasksRef = ref(db, `tasks`);
+    const tasksSnapshot = await get(tasksRef);
+    const tasks = tasksSnapshot.exists() ? tasksSnapshot.val() : {};
+    let taskTitles = [];
+    for (const taskId in tasks) {
+        if (tasks[taskId].professionalId === userId && tasks[taskId].studentId === selectedStudentId) {
+            taskTitles.push(tasks[taskId].title);
+        }
+    }
+    
+    let lastDate = null;
+    for (const msg of messages) {
+        const messageElement = await createMessageElement(msg, currentUser, student, taskTitles, chatId);
+        
+        // Add date divider if needed
+        const date = formatMessageDate(msg.timestamp);
+        if (date !== lastDate) {
+            const dateDivider = document.createElement('div');
+            dateDivider.className = 'date-divider';
+            dateDivider.innerHTML = `<span>${date}</span>`;
+            elements.chatMessages.appendChild(dateDivider);
+            lastDate = date;
+        }
+        
+        elements.chatMessages.appendChild(messageElement);
+    }
+    
+    elements.chatMessages.scrollTop = elements.chatMessages.scrollHeight;
+}
+
+// Function to update only changed messages (incremental update)
+async function updateChangedMessages(cachedMessages, newMessages, currentUser, chatId) {
+    const lastTimestamps = lastMessageTimestamps.get(chatId) || {};
+    const students = await fetchStudentData();
+    const student = students.find(s => s.id === selectedStudentId) || {};
+    const tasksRef = ref(db, `tasks`);
+    const tasksSnapshot = await get(tasksRef);
+    const tasks = tasksSnapshot.exists() ? tasksSnapshot.val() : {};
+    let taskTitles = [];
+    for (const taskId in tasks) {
+        if (tasks[taskId].professionalId === userId && tasks[taskId].studentId === selectedStudentId) {
+            taskTitles.push(tasks[taskId].title);
+        }
+    }
+    
+    // Find changed messages
+    const changedMessages = [];
+    const newMessageIds = new Set(newMessages.map(m => m.id));
+    const cachedMessageIds = new Set(cachedMessages.map(m => m.id));
+    
+    // Check for new messages
+    for (const msg of newMessages) {
+        if (!cachedMessageIds.has(msg.id)) {
+            changedMessages.push({ type: 'new', message: msg });
+        }
+    }
+    
+    // Check for updated messages
+    for (const msg of newMessages) {
+        const cachedTimestamp = lastTimestamps[msg.id];
+        if (cachedTimestamp && cachedTimestamp !== msg.timestamp) {
+            changedMessages.push({ type: 'updated', message: msg });
+        }
+    }
+    
+    // Check for deleted messages
+    for (const msg of cachedMessages) {
+        if (!newMessageIds.has(msg.id)) {
+            changedMessages.push({ type: 'deleted', message: msg });
+        }
+    }
+    
+    // Batch DOM updates to improve performance
+    const fragment = document.createDocumentFragment();
+    const elementsToRemove = [];
+    const elementsToAdd = [];
+    const elementsToUpdate = [];
+    
+    // Prepare all changes
+    for (const change of changedMessages) {
+        const existingElement = elements.chatMessages.querySelector(`[data-message-id="${change.message.id}"]`);
+        
+        if (change.type === 'new') {
+            // Prepare new message
+            const messageElement = await createMessageElement(change.message, currentUser, student, taskTitles, chatId);
+            
+            // Check if we need to add a date divider
+            const date = formatMessageDate(change.message.timestamp);
+            const prevMessage = newMessages.find(m => m.id === change.message.id);
+            const prevIndex = newMessages.indexOf(prevMessage);
+            const prevDate = prevIndex > 0 ? formatMessageDate(newMessages[prevIndex - 1].timestamp) : null;
+            
+            if (date !== prevDate) {
+                const dateDivider = document.createElement('div');
+                dateDivider.className = 'date-divider';
+                dateDivider.innerHTML = `<span>${date}</span>`;
+                elementsToAdd.push({ element: dateDivider, before: existingElement });
+            }
+            
+            elementsToAdd.push({ element: messageElement, before: existingElement });
+        } else if (change.type === 'updated') {
+            // Prepare updated message
+            const messageElement = await createMessageElement(change.message, currentUser, student, taskTitles, chatId);
+            elementsToUpdate.push({ oldElement: existingElement, newElement: messageElement });
+        } else if (change.type === 'deleted') {
+            // Prepare deleted message
+            if (existingElement) {
+                elementsToRemove.push(existingElement);
+            }
+        }
+    }
+    
+    // Apply all changes in batch
+    // Remove elements first
+    elementsToRemove.forEach(element => element.remove());
+    
+    // Update elements
+    elementsToUpdate.forEach(({ oldElement, newElement }) => {
+        if (oldElement) {
+            oldElement.replaceWith(newElement);
+        }
+    });
+    
+    // Add new elements
+    elementsToAdd.forEach(({ element, before }) => {
+        if (before) {
+            elements.chatMessages.insertBefore(element, before);
+        } else {
+            elements.chatMessages.appendChild(element);
+        }
+    });
+    
+    // Scroll to bottom if new messages were added
+    if (changedMessages.some(c => c.type === 'new')) {
+        elements.chatMessages.scrollTop = elements.chatMessages.scrollHeight;
+    }
+}
+
+// Function to create a single message element
+async function createMessageElement(msg, currentUser, student, taskTitles, chatId) {
+    const isSent = msg.senderId === userId;
+    const senderName = isSent ? currentUser.name : (student.personal?.name || "Unnamed");
+    const profilePic = isSent 
+        ? currentUser.profilePic
+        : await loadProfileImage(selectedStudentId);
+    const time = new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${isSent ? 'sent' : 'received'} ${msg.file ? 'file-message' : ''}`;
+    messageDiv.dataset.messageId = msg.id;
+    
+    let content = msg.content || '';
+    taskTitles.forEach(title => {
+        const regex = new RegExp(`@${title.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&')}`, 'g');
+        content = content.replace(regex, `<span class="mention">@${title}</span>`);
+    });
+    
+    let reactionsHTML = '';
+    if (msg.reactions && msg.reactions[userId]) {
+        reactionsHTML = `<span class="reaction">${msg.reactions[userId]}</span>`;
+    }
+    
+    if (msg.file) {
+        const fileSize = msg.file.size ? (msg.file.size / 1024).toFixed(2) + ' KB' : 'Unknown size';
+        const isImage = msg.file.type && msg.file.type.startsWith('image/');
+        const fileName = msg.file.name.length > 25 ? msg.file.name.substring(0, 25) + '...' : msg.file.name;
+        
+        messageDiv.innerHTML = `
+            <div class="message-header">
+                <img src="${profilePic}" class="profile-pic">
+                <div class="name">${senderName}</div>
+                <div class="time">${time}</div>
+            </div>
+            <a href="${msg.file.url}" download="${msg.file.name}" target="_blank">
+                <div class="file-info">
+                    ${isImage ? 
+                        `<img src="${msg.file.url}" alt="${msg.file.name}" class="file-thumbnail">` :
+                        `<i class="${getFileIconClass(msg.file.type)} file-icon" style="color: ${getFileIconColor(msg.file.type)};"></i>`
+                    }
+                    <div class="file-details">
+                        <div class="file-name">${fileName}</div>
+                        <div class="file-size">${fileSize}</div>
+                    </div>
+                </div>
+            </a>
+            <div class="read-status">${msg.read ? 'Seen' : 'Sent'}</div>
+            <div class="reactions">${reactionsHTML}</div>
+            <div class="reaction-bar" >
+                <span class="reaction-icon" data-reaction="🤝" style="display: none;">🤝</span>
+                <span class="reaction-icon" data-reaction="👍" style="display: none;">👍</span>
+                <span class="reaction-icon" data-reaction="❤️" style="display: none;">❤️</span>
+                <div class="message-menu">
+                    <i class="fas fa-ellipsis-h message-menu-icon"></i>
+                    <div class="message-menu-dropdown">
+                        <button data-action="deleteMessage">Delete Message</button>
+                    </div>
+                </div>
+            </div>
+        `;
+    } else {
+        messageDiv.innerHTML = `
+            <div class="message-header">
+                <img src="${profilePic}" class="profile-pic">
+                <div class="name">${senderName}</div>
+                <div class="time">${time}</div>
+            </div>
+            <div class="content">${content}</div>
+            <div class="read-status">${msg.read ? 'Seen' : 'Sent'}</div>
+            <div class="reactions">${reactionsHTML}</div>
+            <div class="reaction-bar" >
+                <span class="reaction-icon" data-reaction="🤝" style="display: none;">🤝</span>
+                <span class="reaction-icon" data-reaction="👍" style="display: none;">👍</span>
+                <span class="reaction-icon" data-reaction="❤️" style="display: none;">❤️</span>
+                <div class="message-menu">
+                    <i class="fas fa-ellipsis-h message-menu-icon"></i>
+                    <div class="message-menu-dropdown">
+                        <button data-action="deleteMessage">Delete Message</button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+    
+    return messageDiv;
 }
 
 async function toggleReaction(messageId, reaction) {
@@ -2095,6 +2320,14 @@ window.openApprovalModal = openApprovalModal;
 window.closeApprovalModal = closeApprovalModal;
 window.confirmApproval = confirmApproval;
 
+// Cache management functions for debugging
+window.clearMessageCache = clearMessageCache;
+window.clearChatCache = clearChatCache;
+window.clearAllChatData = clearAllChatData;
+window.manageCacheSize = manageCacheSize;
+window.messageCache = messageCache;
+window.lastMessageTimestamps = lastMessageTimestamps;
+
 // Mobile Sidebar Functions
 window.toggleSidebar = toggleSidebar;
 window.closeSidebar = closeSidebar;
@@ -2186,6 +2419,47 @@ async function confirmDeleteComment({ commentId, taskId }) {
     } catch (error) {
         console.error('Error deleting comment:', error);
         alert('Failed to delete comment. Please try again.');
+    }
+}
+
+// Add cache management functions
+function clearMessageCache() {
+    messageCache.clear();
+    lastMessageTimestamps.clear();
+}
+
+function clearChatCache(chatId) {
+    messageCache.delete(chatId);
+    lastMessageTimestamps.delete(chatId);
+}
+
+// Clear all chat data when switching students
+function clearAllChatData() {
+    // Clear all caches
+    messageCache.clear();
+    lastMessageTimestamps.clear();
+    
+    // Clear chat listener
+    if (currentChatListener) {
+        currentChatListener();
+        currentChatListener = null;
+    }
+    
+    // Clear chat messages area
+    if (elements.chatMessages) {
+        elements.chatMessages.innerHTML = '';
+    }
+}
+
+// Cache size management
+function manageCacheSize() {
+    const maxCacheSize = 10; // Maximum number of chat caches to keep
+    if (messageCache.size > maxCacheSize) {
+        const chatIds = Array.from(messageCache.keys());
+        const oldestChatIds = chatIds.slice(0, messageCache.size - maxCacheSize);
+        oldestChatIds.forEach(chatId => {
+            clearChatCache(chatId);
+        });
     }
 }
 
