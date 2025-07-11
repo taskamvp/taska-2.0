@@ -1840,9 +1840,7 @@
     </style>
 </head>
 <body>
-    <div class="mobile-message">
-        <p>Please use a desktop for a better experience.</p>
-    </div>
+    
     <nav class="navbar_classified">
         <a href="../index.html">
             <div class="logo"><img src="../assets/logo.png" alt="Taska Logo" style="height:48px;vertical-align:middle;"></div>
@@ -2193,6 +2191,13 @@ let pendingPriorityChanges = null;
 
 // Initialize the app
 async function init() {
+    // Setup hamburger menu
+    const hamburger = document.querySelector('.navbar_classified .hamburger');
+    const navMenu = document.querySelector('.navbar_classified .nav-menu');
+    if (hamburger && navMenu) {
+        hamburger.addEventListener('click', () => navMenu.classList.toggle('active'));
+    }
+
     auth.onAuthStateChanged(async user => {
         if (user) {
             userId = user.uid;

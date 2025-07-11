@@ -103,6 +103,13 @@ let currentTaskDetails = null;
 
 // Initialize the app
 async function init() {
+    // Setup hamburger menu
+    const hamburger = document.querySelector('.navbar .hamburger');
+    const navMenu = document.querySelector('.navbar .nav-menu');
+    if (hamburger && navMenu) {
+        hamburger.addEventListener('click', () => navMenu.classList.toggle('active'));
+    }
+
     auth.onAuthStateChanged(async user => {
         if (user) {
             userId = user.uid;
