@@ -403,6 +403,7 @@
             gap: 1.5rem;
             width: 100%;
             padding: 0;
+            min-width: 0;
         }
         
         .student-card .basic-info,
@@ -638,17 +639,47 @@
         
         @media (max-width: 900px) {
             .student-card .card-content {
-                flex-wrap: wrap;
+                display: flex;
+                flex-wrap: nowrap;
                 gap: 1rem;
+                overflow-x: auto;
+                scrollbar-width: thin;
+                scrollbar-color: #e9ecef transparent;
+                padding-bottom: 0.5rem;
             }
+            
+            .student-card .card-content::-webkit-scrollbar {
+                height: 4px;
+            }
+            
+            .student-card .card-content::-webkit-scrollbar-track {
+                background: transparent;
+            }
+            
+            .student-card .card-content::-webkit-scrollbar-thumb {
+                background: #e9ecef;
+                border-radius: 2px;
+            }
+            
+            .student-card .card-content::-webkit-scrollbar-thumb:hover {
+                background: #d1d5db;
+            }
+            
             .student-card .basic-info,
             .student-card .education-info,
-            .student-card .skills-info,
-            .student-card .availability-info,
-            .student-card .contact-info {
-                min-width: auto;
-                flex: 1;
-                min-width: 150px;
+            .student-card .skills-info {
+                min-width: 200px;
+                max-width: 250px;
+                flex-shrink: 0;
+                border-right: 1px solid #e9ecef;
+                padding-right: 1rem;
+            }
+            
+            .student-card .actions {
+                min-width: 120px;
+                flex-shrink: 0;
+                border-right: none;
+                padding-left: 0.5rem;
             }
         }
         
@@ -663,38 +694,103 @@
             .search-info { padding: 1.5rem; font-size: 0.9rem; }
             .search-info h3 { font-size: 1.2rem; }
             .search-info .ai-icon { font-size: 1.5rem; }
+            
             .student-card {
-                flex-direction: column;
-                align-items: stretch;
+                flex-direction: row;
+                align-items: center;
                 padding: 1rem;
                 max-width: 100%;
+                margin: 0 1rem 1rem 1rem;
+                width: calc(100% - 2rem);
             }
+            
             .student-card img.profile-pic {
-                width: 40px;
-                height: 40px;
-                margin-bottom: 0.5rem;
+                width: 50px;
+                height: 50px;
+                flex-shrink: 0;
             }
+            
             .student-card .card-content {
-                flex-direction: column;
-                gap: 0.75rem;
-            }
-            .student-card .basic-info,
-            .student-card .education-info,
-            .student-card .skills-info,
-            .student-card .availability-info,
-            .student-card .contact-info,
-            .student-card .actions {
-                min-width: auto;
+                display: flex;
+                flex-wrap: nowrap;
+                gap: 1rem;
+                overflow-x: auto;
+                scrollbar-width: thin;
+                scrollbar-color: #e9ecef transparent;
+                padding-bottom: 0.5rem;
                 width: 100%;
             }
+            
+            .student-card .card-content::-webkit-scrollbar {
+                height: 3px;
+            }
+            
+            .student-card .card-content::-webkit-scrollbar-track {
+                background: transparent;
+            }
+            
+            .student-card .card-content::-webkit-scrollbar-thumb {
+                background: #e9ecef;
+                border-radius: 2px;
+            }
+            
+            .student-card .basic-info,
+            .student-card .education-info,
+            .student-card .skills-info {
+                min-width: 180px;
+                max-width: 220px;
+                flex-shrink: 0;
+                border-right: 1px solid #e9ecef;
+                padding-right: 0.8rem;
+            }
+            
+            .student-card .actions {
+                min-width: 100px;
+                flex-shrink: 0;
+                border-right: none;
+                padding-left: 0.5rem;
+            }
+            
             .student-card h3 { font-size: 1rem; }
             .student-card h4 { font-size: 0.85rem; }
             .student-card .year-badge { font-size: 0.7rem; }
-            .student-card .actions { 
-                flex-direction: row; 
-                justify-content: space-between;
-                align-items: center;
+            .student-card p { font-size: 0.85rem; }
+        }
+        
+        @media (max-width: 480px) {
+            .student-card {
+                margin: 0 0.5rem 1rem 0.5rem;
+                width: calc(100% - 1rem);
+                padding: 0.8rem;
             }
+            
+            .student-card img.profile-pic {
+                width: 45px;
+                height: 45px;
+            }
+            
+            .student-card .card-content {
+                gap: 0.8rem;
+                padding-bottom: 0.3rem;
+            }
+            
+            .student-card .basic-info,
+            .student-card .education-info,
+            .student-card .skills-info {
+                min-width: 160px;
+                max-width: 200px;
+                padding-right: 0.6rem;
+            }
+            
+            .student-card .actions {
+                min-width: 90px;
+                padding-left: 0.3rem;
+            }
+            
+            .student-card h3 { font-size: 0.95rem; }
+            .student-card h4 { font-size: 0.8rem; }
+            .student-card .year-badge { font-size: 0.65rem; }
+            .student-card p { font-size: 0.8rem; }
         }
         
         @media (min-width: 768px) {

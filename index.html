@@ -510,17 +510,10 @@ body {
             border: 1.5px solid #e5e7ea;
             margin-top: 0.2rem;
             z-index: 10;
-            opacity: 0;
-            pointer-events: none;
-            transform: translateY(6px) scale(0.98);
-    transition: opacity 0.22s cubic-bezier(.4, 1.4, .6, 1), transform 0.22s cubic-bezier(.4, 1.4, .6, 1);
-        }
-
-        .ai-search-box:focus-within + .ai-suggestions,
-        .ai-suggestions.active {
             opacity: 1;
             pointer-events: auto;
             transform: translateY(0) scale(1);
+    transition: opacity 0.22s cubic-bezier(.4, 1.4, .6, 1), transform 0.22s cubic-bezier(.4, 1.4, .6, 1);
         }
 
         .ai-suggestion-item {
@@ -2049,6 +2042,11 @@ body {
         const suggestionItems = document.querySelectorAll('.ai-suggestion-item');
         console.log('Found suggestion items:', suggestionItems.length);
         
+        // Debug: Log each suggestion item
+        suggestionItems.forEach((item, index) => {
+          console.log(`Suggestion ${index + 1}:`, item.textContent, item);
+        });
+        
         suggestionItems.forEach((item, index) => {
           console.log(`Adding click handler to suggestion ${index + 1}:`, item.textContent);
           
@@ -2075,9 +2073,16 @@ body {
               this.style.color = '';
             }, 200);
             
-            // Trigger the search
+            // Trigger the search directly
             console.log('Triggering search with query:', suggestionText);
-            handleSearchSubmit(new Event('submit'));
+            const query = suggestionText.trim();
+            
+            if (query) {
+              // Redirect to indexaisearch.html with the search query as URL parameter
+              const encodedQuery = encodeURIComponent(query);
+              console.log('Redirecting to:', `indexaisearch.html?q=${encodedQuery}`);
+              window.location.href = `indexaisearch.html?q=${encodedQuery}`;
+            }
           });
         });
         });
