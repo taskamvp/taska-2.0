@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help & Support - Taska Elite</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/global.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+        }
+        
+        body {
+            background: #ffffff;
+            color: #1a1a1a;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+        
+        .navbar {
+            background: #ffffff;
+            border-bottom: 1px solid #e9ecef;
+            padding: 0.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            min-height: 56px;
+        }
+        
+        .navbar .logo {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #185abd;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .navbar .logo img {
+            height: 48px;
+            vertical-align: middle;
+        }
+        
+        .back-btn {
+            background: #f8f9fa;
+            color: #495057;
+            border: 1px solid #dee2e6;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .back-btn:hover {
+            background: #e9ecef;
+            color: #185abd;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 100px 2rem 3rem 2rem;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid #f8f9fa;
+        }
+        
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+        
+        .page-subtitle {
+            font-size: 1.1rem;
+            color: #666;
+            font-weight: 400;
+        }
+        
+        .search-section {
+            margin-bottom: 3rem;
+        }
+        
+        .search-box {
+            display: flex;
+            max-width: 600px;
+            margin: 0 auto;
+            background: #ffffff;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .search-box input {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+        }
+        
+        .search-box button {
+            background: #185abd;
+            color: white;
+            border: none;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .search-box button:hover {
+            background: #0d6efd;
+        }
+        
+        .quick-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        
+        .quick-link {
+            background: #ffffff;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid #e9ecef;
+            text-align: center;
+            text-decoration: none;
+            color: #1a1a1a;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .quick-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+            border-color: #185abd;
+        }
+        
+        .quick-link i {
+            font-size: 2rem;
+            color: #185abd;
+            margin-bottom: 1rem;
+        }
+        
+        .quick-link h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .quick-link p {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .faq-section {
+            margin-bottom: 3rem;
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .faq-item {
+            background: #ffffff;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+        
+        .faq-question {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 500;
+            transition: background 0.2s ease;
+        }
+        
+        .faq-question:hover {
+            background: #e9ecef;
+        }
+        
+        .faq-question.active {
+            background: #185abd;
+            color: white;
+        }
+        
+        .faq-answer {
+            padding: 0 1.5rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .faq-answer.active {
+            padding: 1.5rem;
+            max-height: 500px;
+        }
+        
+        .faq-answer p {
+            margin-bottom: 1rem;
+        }
+        
+        .faq-answer ul {
+            margin: 1rem 0;
+            padding-left: 1.5rem;
+        }
+        
+        .faq-answer li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .contact-section {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 3rem;
+        }
+        
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .contact-card {
+            background: #ffffff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #e9ecef;
+        }
+        
+        .contact-card i {
+            font-size: 2rem;
+            color: #185abd;
+            margin-bottom: 1rem;
+        }
+        
+        .contact-card h4 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .contact-card p {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+        
+        .contact-card a {
+            color: #185abd;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .contact-card a:hover {
+            text-decoration: underline;
+        }
+        
+        .troubleshooting {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+        
+        .troubleshooting h4 {
+            color: #856404;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .troubleshooting ul {
+            margin: 1rem 0;
+            padding-left: 1.5rem;
+        }
+        
+        .troubleshooting li {
+            margin-bottom: 0.5rem;
+            color: #856404;
+        }
+        
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0.5rem 1rem;
+            }
+            
+            .container {
+                padding: 80px 1rem 2rem 1rem;
+            }
+            
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .search-box {
+                flex-direction: column;
+            }
+            
+            .search-box input,
+            .search-box button {
+                width: 100%;
+            }
+            
+            .quick-links {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="../index.html" class="logo">
+            <img src="../assets/logo.png" alt="Taska Logo">
+        </a>
+        <a href="../index.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i> Back to Home
+        </a>
+    </nav>
+    
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">Help & Support</h1>
+            <p class="page-subtitle">Find answers to your questions and get the help you need</p>
+        </div>
+        
+        <div class="search-section">
+            <div class="search-box">
+                <input type="text" placeholder="Search for help articles, FAQs, or contact support...">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+        
+        <div class="quick-links">
+            <a href="#getting-started" class="quick-link">
+                <i class="fas fa-rocket"></i>
+                <h3>Getting Started</h3>
+                <p>Learn how to create your account and set up your profile</p>
+            </a>
+            <a href="#account-issues" class="quick-link">
+                <i class="fas fa-user-cog"></i>
+                <h3>Account Issues</h3>
+                <p>Reset password, update profile, or manage settings</p>
+            </a>
+            <a href="#connections" class="quick-link">
+                <i class="fas fa-handshake"></i>
+                <h3>Connections</h3>
+                <p>Learn about connecting with students and professionals</p>
+            </a>
+            <a href="#payments" class="quick-link">
+                <i class="fas fa-credit-card"></i>
+                <h3>Payments & Billing</h3>
+                <p>Information about payments, invoices, and billing</p>
+            </a>
+        </div>
+        
+        <div class="faq-section">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    How do I create an account on Taska Elite?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Creating an account is simple:</p>
+                    <ol>
+                        <li>Click the "Sign Up" button on the homepage</li>
+                        <li>Choose whether you're a student or professional</li>
+                        <li>Fill in your basic information (name, email, password)</li>
+                        <li>Verify your email address</li>
+                        <li>Complete your profile with additional details</li>
+                    </ol>
+                    <p>For students, you'll need to provide your educational institution details for verification.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    How does the AI-powered talent matching work?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Our AI system analyzes multiple factors to find the best matches:</p>
+                    <ul>
+                        <li><strong>Skills Match:</strong> Compares required skills with student capabilities</li>
+                        <li><strong>Educational Background:</strong> Considers relevant academic experience</li>
+                        <li><strong>Project Requirements:</strong> Matches project scope with student expertise</li>
+                        <li><strong>Availability:</strong> Checks student's time commitment and schedule</li>
+                        <li><strong>Previous Performance:</strong> Considers ratings and feedback from past projects</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    What happens after I connect with a student?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>After connecting with a student:</p>
+                    <ol>
+                        <li>You'll receive a confirmation email</li>
+                        <li>The student will be notified of your interest</li>
+                        <li>You can start communicating through our platform</li>
+                        <li>Discuss project details, timeline, and compensation</li>
+                        <li>Begin collaboration once terms are agreed upon</li>
+                    </ol>
+                    <p>We recommend having a clear project brief and timeline before starting discussions.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    How do I verify a student's credentials?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>All students on Taska Elite are pre-verified:</p>
+                    <ul>
+                        <li><strong>Educational Verification:</strong> We verify enrollment with their institutions</li>
+                        <li><strong>Profile Verification:</strong> Students must provide valid academic credentials</li>
+                        <li><strong>Skill Verification:</strong> Students can link their coding profiles (GitHub, LeetCode, etc.)</li>
+                        <li><strong>Portfolio Review:</strong> Students can showcase their previous work</li>
+                    </ul>
+                    <p>You can also check student ratings and reviews from previous collaborations.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    What if I have a dispute with a student?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>If you encounter any issues:</p>
+                    <ol>
+                        <li><strong>Direct Communication:</strong> First, try to resolve the issue directly with the student</li>
+                        <li><strong>Platform Support:</strong> Contact our support team for mediation</li>
+                        <li><strong>Documentation:</strong> Keep records of all communications and agreements</li>
+                        <li><strong>Review System:</strong> Provide honest feedback to help other users</li>
+                    </ol>
+                    <p>Our support team is available 24/7 to help resolve disputes fairly.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="troubleshooting">
+            <h4><i class="fas fa-tools"></i> Common Issues & Solutions</h4>
+            <ul>
+                <li><strong>Can't log in?</strong> Try resetting your password or check if your email is verified</li>
+                <li><strong>Profile not showing up?</strong> Make sure you've completed all required fields</li>
+                <li><strong>AI search not working?</strong> Try using more specific keywords or contact support</li>
+                <li><strong>Connection requests pending?</strong> Students may take 24-48 hours to respond</li>
+                <li><strong>Payment issues?</strong> Check your payment method and contact billing support</li>
+            </ul>
+        </div>
+        
+        <div class="contact-section">
+            <h2 class="section-title">Contact Support</h2>
+            <div class="contact-grid">
+                <div class="contact-card">
+                    <i class="fas fa-envelope"></i>
+                    <h4>Email Support</h4>
+                    <p>Get help via email</p>
+                    <a href="mailto:support@taskaelite.com">support@taskaelite.com</a>
+                </div>
+                <div class="contact-card">
+                    <i class="fas fa-phone"></i>
+                    <h4>Phone Support</h4>
+                    <p>Call us directly</p>
+                    <a href="tel:+919876543210">+91 98765 43210</a>
+                </div>
+                <div class="contact-card">
+                    <i class="fas fa-comments"></i>
+                    <h4>Live Chat</h4>
+                    <p>Chat with our team</p>
+                    <a href="#" onclick="openLiveChat()">Start Chat</a>
+                </div>
+                <div class="contact-card">
+                    <i class="fas fa-clock"></i>
+                    <h4>Response Time</h4>
+                    <p>We typically respond within</p>
+                    <strong>2-4 hours</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function toggleFAQ(element) {
+            const answer = element.nextElementSibling;
+            const icon = element.querySelector('i');
+            
+            // Close all other FAQs
+            document.querySelectorAll('.faq-question').forEach(q => {
+                if (q !== element) {
+                    q.classList.remove('active');
+                    q.nextElementSibling.classList.remove('active');
+                    q.querySelector('i').className = 'fas fa-chevron-down';
+                }
+            });
+            
+            // Toggle current FAQ
+            element.classList.toggle('active');
+            answer.classList.toggle('active');
+            
+            if (element.classList.contains('active')) {
+                icon.className = 'fas fa-chevron-up';
+            } else {
+                icon.className = 'fas fa-chevron-down';
+            }
+        }
+        
+        function openLiveChat() {
+            alert('Live chat feature coming soon! Please use email or phone support for now.');
+        }
+        
+        // Search functionality
+        document.querySelector('.search-box input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const query = this.value.toLowerCase();
+                const faqItems = document.querySelectorAll('.faq-item');
+                
+                faqItems.forEach(item => {
+                    const question = item.querySelector('.faq-question').textContent.toLowerCase();
+                    const answer = item.querySelector('.faq-answer').textContent.toLowerCase();
+                    
+                    if (question.includes(query) || answer.includes(query)) {
+                        item.style.display = 'block';
+                        // Auto-expand matching FAQ
+                        if (!item.querySelector('.faq-question').classList.contains('active')) {
+                            toggleFAQ(item.querySelector('.faq-question'));
+                        }
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html> 

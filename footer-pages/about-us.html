@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Taska Elite</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/global.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+        }
+        
+        body {
+            background: #ffffff;
+            color: #1a1a1a;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+        
+        .navbar {
+            background: #ffffff;
+            border-bottom: 1px solid #e9ecef;
+            padding: 0.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            min-height: 56px;
+        }
+        
+        .navbar .logo {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #185abd;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .navbar .logo img {
+            height: 48px;
+            vertical-align: middle;
+        }
+        
+        .back-btn {
+            background: #f8f9fa;
+            color: #495057;
+            border: 1px solid #dee2e6;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .back-btn:hover {
+            background: #e9ecef;
+            color: #185abd;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 100px 2rem 3rem 2rem;
+        }
+        
+        .hero-section {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding: 3rem 0;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 16px;
+        }
+        
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: #666;
+            font-weight: 400;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .content-section {
+            margin-bottom: 3rem;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .section-content {
+            font-size: 1.1rem;
+            color: #444;
+            line-height: 1.7;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .mission-vision-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .mission-card, .vision-card {
+            background: #ffffff;
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid #e9ecef;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .mission-card h3, .vision-card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #185abd;
+            margin-bottom: 1rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .stat-card {
+            background: #ffffff;
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid #e9ecef;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #185abd;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .team-member {
+            background: #ffffff;
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid #e9ecef;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .team-member img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1rem;
+            border: 3px solid #185abd;
+        }
+        
+        .team-member h4 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+        }
+        
+        .team-member p {
+            font-size: 0.9rem;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .value-card {
+            background: #ffffff;
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid #e9ecef;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .value-icon {
+            font-size: 2.5rem;
+            color: #185abd;
+            margin-bottom: 1rem;
+        }
+        
+        .value-card h4 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+        }
+        
+        .contact-section {
+            background: #f8f9fa;
+            padding: 3rem;
+            border-radius: 16px;
+            text-align: center;
+            margin: 3rem 0;
+        }
+        
+        .contact-section h3 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+        }
+        
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #666;
+        }
+        
+        .contact-item i {
+            color: #185abd;
+        }
+        
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0.5rem 1rem;
+            }
+            
+            .container {
+                padding: 80px 1rem 2rem 1rem;
+            }
+            
+            .hero-title {
+                font-size: 2.2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .mission-vision-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+            
+            .team-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .values-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .contact-section {
+                padding: 2rem 1rem;
+            }
+            
+            .contact-info {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="../index.html" class="logo">
+            <img src="../assets/logo.png" alt="Taska Logo">
+        </a>
+        <a href="../index.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i> Back to Home
+        </a>
+    </nav>
+    
+    <div class="container">
+        <div class="hero-section">
+            <h1 class="hero-title">About Taska Elite</h1>
+            <p class="hero-subtitle">Connecting top talent from India's premier institutions with innovative professionals worldwide</p>
+        </div>
+        
+        <div class="content-section">
+            <h2 class="section-title">Our Story</h2>
+            <div class="section-content">
+                <p>Founded in 2024, Taska Elite emerged from a simple yet powerful vision: to bridge the gap between exceptional student talent and professional opportunities. We recognized that India's top colleges produce brilliant minds, but many struggle to find meaningful projects and real-world experience.</p>
+                <p>Today, we're proud to serve as the premier platform connecting professionals with talented students from IITs, NITs, and other prestigious institutions across India.</p>
+            </div>
+        </div>
+        
+        <div class="mission-vision-grid">
+            <div class="mission-card">
+                <h3><i class="fas fa-bullseye"></i> Our Mission</h3>
+                <p>To democratize access to talent by connecting skilled students with professionals who need their expertise, fostering meaningful collaborations that benefit both parties.</p>
+            </div>
+            <div class="vision-card">
+                <h3><i class="fas fa-eye"></i> Our Vision</h3>
+                <p>To become the world's leading platform for student-professional collaboration, empowering the next generation of innovators and problem-solvers.</p>
+            </div>
+        </div>
+        
+        <div class="content-section">
+            <h2 class="section-title">Why Choose Taska Elite?</h2>
+            <div class="section-content">
+                <p>We combine cutting-edge AI technology with human expertise to create the most efficient and effective talent matching platform in India.</p>
+            </div>
+        </div>
+        
+        <div class="values-grid">
+            <div class="value-card">
+                <div class="value-icon">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <h4>AI-Powered Matching</h4>
+                <p>Our advanced algorithms analyze skills, experience, and project requirements to find the perfect match.</p>
+            </div>
+            <div class="value-card">
+                <div class="value-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h4>Verified Profiles</h4>
+                <p>All student profiles are verified through their educational institutions to ensure authenticity.</p>
+            </div>
+            <div class="value-card">
+                <div class="value-icon">
+                    <i class="fas fa-handshake"></i>
+                </div>
+                <h4>Secure Platform</h4>
+                <p>Your data and communications are protected with enterprise-grade security measures.</p>
+            </div>
+            <div class="value-card">
+                <div class="value-icon">
+                    <i class="fas fa-headset"></i>
+                </div>
+                <h4>24/7 Support</h4>
+                <p>Our dedicated support team is always ready to help you with any questions or issues.</p>
+            </div>
+        </div>
+        
+        <div class="content-section">
+            <h2 class="section-title">Our Impact</h2>
+            <div class="section-content">
+                <p>Since our launch, we've facilitated thousands of successful collaborations between students and professionals.</p>
+            </div>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">5000+</div>
+                <div class="stat-label">Students Connected</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">1000+</div>
+                <div class="stat-label">Projects Completed</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">50+</div>
+                <div class="stat-label">Partner Institutions</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">98%</div>
+                <div class="stat-label">Satisfaction Rate</div>
+            </div>
+        </div>
+        
+        <div class="content-section">
+            <h2 class="section-title">Our Team</h2>
+            <div class="section-content">
+                <p>Meet the passionate individuals behind Taska Elite who are committed to revolutionizing talent matching.</p>
+            </div>
+        </div>
+        
+        <div class="team-grid">
+            <div class="team-member">
+                <img src="../assets/avatar/1.png" alt="CEO">
+                <h4>Rahul Sharma</h4>
+                <p>CEO & Founder</p>
+            </div>
+            <div class="team-member">
+                <img src="../assets/avatar/2.png" alt="CTO">
+                <h4>Priya Patel</h4>
+                <p>CTO</p>
+            </div>
+            <div class="team-member">
+                <img src="../assets/avatar/3.png" alt="Head of Operations">
+                <h4>Arjun Kumar</h4>
+                <p>Head of Operations</p>
+            </div>
+            <div class="team-member">
+                <img src="../assets/avatar/4.png" alt="Head of Marketing">
+                <h4>Anjali Singh</h4>
+                <p>Head of Marketing</p>
+            </div>
+        </div>
+        
+        <div class="contact-section">
+            <h3>Get in Touch</h3>
+            <p>Have questions about Taska Elite? We'd love to hear from you!</p>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>hello@taskaelite.com</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <span>+91 98765 43210</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Mumbai, Maharashtra, India</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

@@ -2096,7 +2096,7 @@
     <div class="gig-modal" id="create-task-modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Create New Task</h3>
+                <h3 id="task-modal-title">Create New Task</h3>
                 <button onclick="closeCreateTaskModal()">
                     ×
                 </button>
@@ -2145,7 +2145,7 @@
             </div>
             <div class="modal-actions">
                 <button class="cancel-btn" onclick="closeCreateTaskModal()">Cancel</button>
-                <button class="create-btn" onclick="createTask()">Create Task</button>
+                <button class="create-btn" id="task-action-btn" onclick="createTask()">Create Task</button>
             </div>
         </div>
     </div>
@@ -2228,100 +2228,7 @@
     </div>
 
     <!-- Edit Task Modal -->
-    <div class="gig-modal" id="edit-task-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Edit Task</h3>
-                <button onclick="closeEditTaskModal()">
-                    ×
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="edit-task-title">Task Title</label>
-                    <input type="text" id="edit-task-title" placeholder="Enter task title">
-                </div>
-                <div class="form-group">
-                    <label for="edit-task-description">Description</label>
-                    <textarea id="edit-task-description" placeholder="Describe the task requirements"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="edit-task-deadline">Deadline</label>
-                    <input type="date" id="edit-task-deadline">
-                </div>
-                <div class="form-group">
-                    <label>Student Priority Management</label>
-                    <div class="priority-management">
-                        <div class="priority-list">
-                            <div class="priority-header">
-                                Assigned Students
-                            </div>
-                            <div class="primary-student-section">
-                                <h4><i class="fas fa-user-check"></i> Primary Student</h4>
-                                <div id="edit-primary-student">
-                                    <!-- Primary student will be shown here -->
-                                </div>
-                            </div>
-                            <div class="waitlist-section">
-                                <h4><i class="fas fa-user-clock"></i> Waitlist Students</h4>
-                                <div id="edit-waitlist-students">
-                                    <!-- Waitlist students will be shown here -->
-                                </div>
-                                <div class="priority-instructions">
-                                    <p><strong>Instructions:</strong> Use the up/down arrow buttons to reorder waitlist students. Click the arrows to move students up or down in the waitlist.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-actions">
-                <button class="cancel-btn" onclick="closeEditTaskModal()">Cancel</button>
-                <button class="save-btn" onclick="saveTaskChanges()">Save Changes</button>
-            </div>
-        </div>
-    </div>
-
     <!-- Priority Change Modal -->
-    <div class="gig-modal" id="priority-change-modal">
-        <div class="modal-content large-modal">
-            <div class="modal-header">
-                <h3 id="priority-change-title">Manage Student Priority</h3>
-                <button onclick="closePriorityChangeModal()">
-                    ×
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="priority-drag-container">
-                    <div class="priority-section">
-                        <h4>Primary Student</h4>
-                        <div id="primary-drop-zone" class="drop-zone">
-                            <div id="primary-student-display">
-                                <!-- Primary student will be shown here -->
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="priority-section">
-                        <h4>Waitlist Students</h4>
-                        <div id="waitlist-drop-zone" class="drop-zone">
-                            <div id="waitlist-students-display">
-                                <!-- Waitlist students will be shown here -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="priority-instructions">
-                    <p><strong>Instructions:</strong> Drag and drop students to reorder them. Move students between primary and waitlist positions.</p>
-                </div>
-            </div>
-            <div class="modal-actions">
-                <button class="cancel-btn" onclick="closePriorityChangeModal()">Cancel</button>
-                <button class="confirm-btn" onclick="confirmPriorityChanges()">Confirm Changes</button>
-            </div>
-        </div>
-    </div>
 
     <!-- Assign Waitlist Modal -->
     <div class="gig-modal" id="assign-waitlist-modal">
@@ -2553,6 +2460,11 @@ function openCreateTaskModal() {
 function closeCreateTaskModal() {
     document.getElementById('create-task-modal').classList.remove('active');
     resetTaskForm();
+    
+    // Reset modal title and button for create mode
+    document.getElementById('task-modal-title').textContent = 'Create New Task';
+    document.getElementById('task-action-btn').textContent = 'Create Task';
+    document.getElementById('task-action-btn').onclick = createTask;
 }
 
 function resetTaskForm() {
@@ -3199,17 +3111,38 @@ function editCurrentTask() {
     
     currentEditTask = { ...currentTaskDetails };
     
-    // Populate edit form
-    document.getElementById('edit-task-title').value = currentEditTask.title;
-    document.getElementById('edit-task-description').value = currentEditTask.description;
-    document.getElementById('edit-task-deadline').value = currentEditTask.deadline;
+    // Change modal title and button
+    document.getElementById('task-modal-title').textContent = 'Edit Task';
+    document.getElementById('task-action-btn').textContent = 'Save Changes';
+    document.getElementById('task-action-btn').onclick = saveTaskChanges;
+    
+    // Populate form with existing data
+    document.getElementById('task-title').value = currentEditTask.title || '';
+    document.getElementById('task-description').value = currentEditTask.description || '';
+    document.getElementById('task-deadline').value = currentEditTask.deadline || '';
     
     // Populate student assignments
-    updateEditStudentAssignments();
+    primaryStudent = currentEditTask.primaryStudent || null;
+    waitlistStudents = [];
     
-    // Close details modal and open edit modal
+    if (currentEditTask.waitlistStudents && currentEditTask.waitlistStudents.length > 0) {
+        for (const studentId of currentEditTask.waitlistStudents) {
+            const student = allStudents.find(s => s.id === studentId);
+            if (student) {
+                waitlistStudents.push({
+                    id: studentId,
+                    name: student.personal?.name || 'Unnamed',
+                    profilePic: student.personal?.profilePic || '../assets/avatar/1.png'
+                });
+            }
+        }
+    }
+    
+    updateSelectedStudentsList();
+    
+    // Close details modal and open create/edit modal
     closeTaskDetailsModal();
-    document.getElementById('edit-task-modal').classList.add('active');
+    document.getElementById('create-task-modal').classList.add('active');
 }
 
 function editTaskFromCard(taskId) {
@@ -3226,26 +3159,38 @@ function editTaskFromCard(taskId) {
                 const task = snapshot.val();
                 currentEditTask = { ...task, id: taskId };
                 
-                // Populate edit form
-                const titleInput = document.getElementById('edit-task-title');
-                const descriptionInput = document.getElementById('edit-task-description');
-                const deadlineInput = document.getElementById('edit-task-deadline');
+                // Change modal title and button
+                document.getElementById('task-modal-title').textContent = 'Edit Task';
+                document.getElementById('task-action-btn').textContent = 'Save Changes';
+                document.getElementById('task-action-btn').onclick = saveTaskChanges;
                 
-                if (titleInput) titleInput.value = currentEditTask.title || '';
-                if (descriptionInput) descriptionInput.value = currentEditTask.description || '';
-                if (deadlineInput) deadlineInput.value = currentEditTask.deadline || '';
+                // Populate form with existing data
+                document.getElementById('task-title').value = currentEditTask.title || '';
+                document.getElementById('task-description').value = currentEditTask.description || '';
+                document.getElementById('task-deadline').value = currentEditTask.deadline || '';
                 
                 // Populate student assignments
-                updateEditStudentAssignments();
+                primaryStudent = currentEditTask.primaryStudent || null;
+                waitlistStudents = [];
                 
-                // Open edit modal
-                const editModal = document.getElementById('edit-task-modal');
-                if (editModal) {
-                    editModal.classList.add('active');
-                } else {
-                    console.error('Edit modal not found');
-                    alert('Error opening edit modal. Please try again.');
+                if (currentEditTask.waitlistStudents && currentEditTask.waitlistStudents.length > 0) {
+                    for (const studentId of currentEditTask.waitlistStudents) {
+                        const student = allStudents.find(s => s.id === studentId);
+                        if (student) {
+                            waitlistStudents.push({
+                                id: studentId,
+                                name: student.personal?.name || 'Unnamed',
+                                profilePic: student.personal?.profilePic || '../assets/avatar/1.png'
+                            });
+                        }
+                    }
                 }
+                
+                updateSelectedStudentsList();
+                
+                // Open create/edit modal
+                document.getElementById('create-task-modal').classList.add('active');
+                
             } else {
                 console.error('Task not found:', taskId);
                 alert('Task not found. Please try again.');
@@ -3613,28 +3558,27 @@ async function saveTaskChanges() {
         let wasPromoted = false;
         let promotedStudentName = '';
         
-        if (!currentEditTask.primaryStudent && currentEditTask.waitlistStudents && currentEditTask.waitlistStudents.length > 0) {
+        if (!primaryStudent && waitlistStudents && waitlistStudents.length > 0) {
             // Automatically promote the first waitlist student to primary
-            const promotedStudentId = currentEditTask.waitlistStudents.shift();
-            currentEditTask.primaryStudent = promotedStudentId;
+            const promotedStudentId = waitlistStudents.shift().id;
+            primaryStudent = promotedStudentId;
             
             // Store promotion information for success message
             wasPromoted = true;
             const promotedStudent = allStudents.find(s => s.id === promotedStudentId);
             promotedStudentName = promotedStudent?.personal?.name || 'Unknown';
             
-            // Update the display to reflect the change
-            updateEditStudentAssignments();
-            
             console.log(`Automatically promoted waitlist student ${promotedStudentId} to primary for task ${taskId}`);
         }
         
-        // Update task data
+        // Update task data using create task modal form fields
         const updatedTaskData = {
             ...currentEditTask,
-            title: document.getElementById('edit-task-title').value,
-            description: document.getElementById('edit-task-description').value,
-            deadline: document.getElementById('edit-task-deadline').value,
+            title: document.getElementById('task-title').value,
+            description: document.getElementById('task-description').value,
+            deadline: document.getElementById('task-deadline').value,
+            primaryStudent: primaryStudent,
+            waitlistStudents: waitlistStudents.map(s => s.id),
             updatedAt: new Date().toISOString()
         };
         
@@ -3648,7 +3592,7 @@ async function saveTaskChanges() {
         await refreshTaskCard(taskId, updatedTaskData);
         
         // Close the modal after successful save and refresh
-        closeEditTaskModal();
+        closeCreateTaskModal();
         
         // Show success message
         document.getElementById('success-title').textContent = 'Task Updated Successfully!';
@@ -3953,10 +3897,6 @@ window.viewTaskDetails = viewTaskDetails;
 window.closeTaskDetailsModal = closeTaskDetailsModal;
 window.editCurrentTask = editCurrentTask;
 window.editTaskFromCard = editTaskFromCard;
-window.closeEditTaskModal = closeEditTaskModal;
-window.openPriorityChangeModal = openPriorityChangeModal;
-window.closePriorityChangeModal = closePriorityChangeModal;
-window.confirmPriorityChanges = confirmPriorityChanges;
 window.saveTaskChanges = saveTaskChanges;
 window.removeTaskFile = removeTaskFile;
 window.showStudentProfile = showStudentProfile;
@@ -3998,223 +3938,30 @@ document.addEventListener('click', function(event) {
 // Initialize
 init();
 
-// Remove functions
-window.removePrimaryStudent = function() {
-    if (!currentEditTask.primaryStudent) return;
+// Profile popup functions
+function openProfilePopup(studentId) {
+    const student = allStudents.find(s => s.id === studentId);
+    const studentName = student?.personal?.name || 'Student';
     
-    if (confirm('Are you sure you want to remove the primary student from this task?')) {
-        currentEditTask.primaryStudent = null;
-        updateEditStudentAssignments();
-    }
-};
-
-window.removeWaitlistStudent = function(index) {
-    const i = parseInt(index);
-    if (i < 0 || i >= currentEditTask.waitlistStudents.length) return;
+    // Update modal title
+    document.getElementById('profile-popup-title').textContent = `${studentName}'s Profile`;
     
-    const student = allStudents.find(s => s.id === currentEditTask.waitlistStudents[i]);
-    const studentName = student?.personal?.name || 'Unknown';
+    // Set iframe source
+    const iframe = document.getElementById('profile-iframe');
+    iframe.src = `../workplace/view-profile.html?studentId=${studentId}`;
     
-    if (confirm(`Are you sure you want to remove ${studentName} from the waitlist?`)) {
-        currentEditTask.waitlistStudents.splice(i, 1);
-        updateEditStudentAssignments();
-    }
-};
-
-// Assign waitlist modal functions
-let selectedStudentsForWaitlist = [];
-let maxWaitlistSlots = 5;
-
-// --- Assign Waitlist Modal Logic (FIXED GLOBAL SELECTION) ---
-window._assignWaitlistAvailableStudents = [];
-window._assignWaitlistSelected = [];
-
-window.openAssignWaitlistModal = function() {
-    if (!currentEditTask) return;
-    const assignedIds = new Set();
-    if (currentEditTask.primaryStudent) assignedIds.add(currentEditTask.primaryStudent);
-    if (currentEditTask.waitlistStudents) currentEditTask.waitlistStudents.forEach(id => assignedIds.add(id));
-    const availableStudents = allStudents.filter(s => !assignedIds.has(s.id));
-    window._assignWaitlistAvailableStudents = availableStudents;
-    window._assignWaitlistSelected = [];
-    renderAssignWaitlistResults(availableStudents);
-    document.getElementById('student-search-assign').value = '';
-    document.getElementById('assign-waitlist-modal').classList.add('active');
-};
-
-function renderAssignWaitlistResults(students) {
-    const container = document.getElementById('students-results-assign');
-    if (!container) return;
-    if (students.length === 0) {
-        container.innerHTML = '<div class="no-results">No students found</div>';
-        return;
-    }
-    container.innerHTML = students.map(student => {
-        const isSelected = window._assignWaitlistSelected.includes(student.id);
-        return `
-            <div class="student-result ${isSelected ? 'selected' : ''}" onclick="window.toggleAssignWaitlistStudent('${student.id}')">
-                <div class="student-info">
-                    <img src="${student.personal?.profilePic || '../assets/avatar/1.png'}" class="student-avatar" />
-                    <div class="student-details">
-                        <h4>${student.personal?.name || 'Unnamed'}</h4>
-                        ${student.education?.branch ? `<p class=\"student-education\">${student.education.branch}</p>` : ''}
-                        ${student.skills ? `<p class=\"student-skills\">${student.skills}</p>` : ''}
-                    </div>
-                </div>
-                <div class="student-checkbox">
-                    <input type="checkbox" ${isSelected ? 'checked' : ''} onclick="event.stopPropagation();">
-                </div>
-            </div>
-        `;
-    }).join('');
+    // Show modal
+    document.getElementById('profile-popup-modal').classList.add('active');
 }
 
-window.toggleAssignWaitlistStudent = function(studentId) {
-    const idx = window._assignWaitlistSelected.indexOf(studentId);
-    if (idx > -1) {
-        window._assignWaitlistSelected.splice(idx, 1);
-    } else {
-        const currentCount = (currentEditTask.waitlistStudents?.length || 0) + window._assignWaitlistSelected.length;
-        if (currentCount >= 5) {
-            alert('Waitlist is full (maximum 5 students)');
-            return;
-        }
-        window._assignWaitlistSelected.push(studentId);
-    }
-    renderAssignWaitlistResults(window._assignWaitlistAvailableStudents);
-};
-
-window.filterAvailableStudents = function() {
-    const searchTerm = document.getElementById('student-search-assign').value.toLowerCase();
-    const filtered = window._assignWaitlistAvailableStudents.filter(student => {
-        const name = student.personal?.name?.toLowerCase() || '';
-        const skills = student.skills?.toLowerCase() || '';
-        const education = student.education?.branch?.toLowerCase() || '';
-        return name.includes(searchTerm) || skills.includes(searchTerm) || education.includes(searchTerm);
-    });
-    renderAssignWaitlistResults(filtered);
-};
-
-window.confirmAssignWaitlist = function() {
-    console.log('Confirming with:', window._assignWaitlistSelected);
-    if (!window._assignWaitlistSelected || window._assignWaitlistSelected.length === 0) {
-        alert('Please select at least one student to add to the waitlist.');
-        return;
-    }
-    if (!currentEditTask.waitlistStudents) currentEditTask.waitlistStudents = [];
-    currentEditTask.waitlistStudents.push(...window._assignWaitlistSelected);
-    window.closeAssignWaitlistModal();
-    updateEditStudentAssignments();
-    alert(`${window._assignWaitlistSelected.length} student(s) added to waitlist successfully!`);
-};
-
-window.closeAssignWaitlistModal = function() {
-    document.getElementById('assign-waitlist-modal').classList.remove('active');
-    window._assignWaitlistAvailableStudents = [];
-    window._assignWaitlistSelected = [];
-    document.getElementById('student-search-assign').value = '';
-    document.getElementById('students-results-assign').innerHTML = '';
-};
-
-window.toggleStudentSelection = function(studentId) {
-    const index = selectedStudentsForWaitlist.indexOf(studentId);
+function closeProfilePopup() {
+    // Clear iframe source
+    const iframe = document.getElementById('profile-iframe');
+    iframe.src = '';
     
-    if (index > -1) {
-        // Remove from selection
-        selectedStudentsForWaitlist.splice(index, 1);
-    } else {
-        // Add to selection if not at max
-        if (selectedStudentsForWaitlist.length < maxWaitlistSlots) {
-            selectedStudentsForWaitlist.push(studentId);
-        } else {
-            alert(`You can only select up to ${maxWaitlistSlots} students for the waitlist.`);
-            return;
-        }
-    }
-    
-    updateStudentSelectionDisplay();
-};
-
-function updateStudentSelectionDisplay() {
-    // Update available students display
-    const availableItems = document.querySelectorAll('#available-students-list .student-item');
-    availableItems.forEach(item => {
-        const studentId = item.dataset.studentId;
-        const isSelected = selectedStudentsForWaitlist.includes(studentId);
-        const indicator = item.querySelector('.selection-indicator');
-        
-        if (isSelected) {
-            indicator.innerHTML = '<i class="fas fa-check"></i>';
-            item.classList.add('selected');
-        } else {
-            indicator.innerHTML = '<i class="fas fa-plus"></i>';
-            item.classList.remove('selected');
-        }
-    });
-    
-    // Update selected students display
-    const selectedList = document.getElementById('selected-students-list');
-    selectedList.innerHTML = selectedStudentsForWaitlist.map(studentId => {
-        const student = allStudents.find(s => s.id === studentId);
-        return `
-            <div class="student-item selected">
-                <img src="${student?.personal?.profilePic || '../assets/avatar/1.png'}" alt="${student?.personal?.name || 'Unknown'}" class="student-avatar">
-                <div class="student-info">
-                    <div class="student-name">${student?.personal?.name || 'Unknown'}</div>
-                    <div class="student-details">${student?.education?.branch || 'No branch'}</div>
-                </div>
-                <button class="remove-selection-btn" onclick="toggleStudentSelection('${studentId}')">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-        `;
-    }).join('');
-    
-    // Update counter
-    document.getElementById('selected-count').textContent = selectedStudentsForWaitlist.length;
+    // Hide modal
+    document.getElementById('profile-popup-modal').classList.remove('active');
 }
-
-window.filterAvailableStudents = function() {
-    const searchTerm = document.getElementById('student-search').value.toLowerCase();
-    const availableItems = document.querySelectorAll('#available-students-list .student-item');
-    
-    availableItems.forEach(item => {
-        const studentName = item.querySelector('.student-name').textContent.toLowerCase();
-        const studentDetails = item.querySelector('.student-details').textContent.toLowerCase();
-        
-        if (studentName.includes(searchTerm) || studentDetails.includes(searchTerm)) {
-            item.style.display = 'flex';
-        } else {
-            item.style.display = 'none';
-        }
-    });
-};
-
-window.closeAssignWaitlistModal = function() {
-    document.getElementById('assign-waitlist-modal').classList.remove('active');
-    selectedStudentsForWaitlist = [];
-    document.getElementById('student-search').value = '';
-};
-
-window.confirmAssignWaitlist = function() {
-    if (selectedStudentsForWaitlist.length === 0) {
-        alert('Please select at least one student to add to the waitlist.');
-        return;
-    }
-    
-    // Add selected students to waitlist
-    if (!currentEditTask.waitlistStudents) {
-        currentEditTask.waitlistStudents = [];
-    }
-    
-    currentEditTask.waitlistStudents.push(...selectedStudentsForWaitlist);
-    
-    // Close modal and update display
-    closeAssignWaitlistModal();
-    updateEditStudentAssignments();
-    
-    alert(`${selectedStudentsForWaitlist.length} student(s) added to waitlist successfully!`);
-};
 
 // Refresh only the specific task card
 async function refreshTaskCard(taskId, updatedTaskData) {
@@ -4241,31 +3988,6 @@ async function refreshTaskCard(taskId, updatedTaskData) {
         loadAssignedTasks();
     }
 }
-
-// Profile popup functions
-function openProfilePopup(studentId) {
-    const student = allStudents.find(s => s.id === studentId);
-    const studentName = student?.personal?.name || 'Student';
-    
-    // Update modal title
-    document.getElementById('profile-popup-title').textContent = `${studentName}'s Profile`;
-    
-    // Set iframe source
-    const iframe = document.getElementById('profile-iframe');
-    iframe.src = `../workplace/view-profile.html?studentId=${studentId}`;
-    
-    // Show modal
-    document.getElementById('profile-popup-modal').classList.add('active');
-}
-
-function closeProfilePopup() {
-    // Clear iframe source
-    const iframe = document.getElementById('profile-iframe');
-    iframe.src = '';
-    
-    // Hide modal
-    document.getElementById('profile-popup-modal').classList.remove('active');
-}
     </script>
 </body>
-</html> 
+</html>
