@@ -9,10 +9,26 @@
     <link rel="stylesheet" href="../css/dashboard.css">
     <link rel="stylesheet" href="../css/overview.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <<style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, Arial, sans-serif; }
-        body { background: #e9ecf1; min-height: 100vh; color: #495057; padding-bottom: 60px; }
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', 'Manrope', 'Poppins', 'Inter', Arial, sans-serif;
+        }
+        body {
+            background: #fff;
+            min-height: 100vh;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+            font-family: 'Montserrat', 'Manrope', 'Poppins', 'Inter', Arial, sans-serif;
+            padding-top: 2rem;
+        }
         .navbar_classified {
             background: #ffffff;
             border-bottom: 1px solid #e9ecef;
@@ -84,13 +100,28 @@
         }
         .dashboard-content { padding: 2rem 1rem; max-width: 1400px; margin: 0 auto; }
         .dashboard-section h1 {
-            font-size: 1.8rem;
-            color: #212529;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
+            font-size: 2.5rem;
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+            font-weight: 700;
             margin-top: 1.2rem;
+            text-align: center;
+            font-family: 'Playfair Display', 'Georgia', serif;
+            letter-spacing: -0.02em;
+            line-height: 1.3;
         }
-        .dashboard-section p { font-size: 0.95rem; margin-bottom: 1.5rem; color: #6c757d; }
+        .dashboard-section p { 
+            font-size: 1.2rem; 
+            margin-bottom: 2rem; 
+            color: #666; 
+            text-align: center;
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            font-weight: 400;
+            line-height: 1.6;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
         .search-container {
             background: #ffffff;
             padding: 1.5rem;
@@ -1144,7 +1175,297 @@
         .card-tooltip.active {
             opacity: 1;
         }
-    </style>>
+        .modern-search-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            margin: 3rem 0 2rem 0;
+            background: none;
+            box-shadow: none;
+            border: none;
+            padding: 0;
+        }
+        .modern-search-box {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            background: #fff;
+            border-radius: 24px;
+            box-shadow: 0 1px 6px rgba(32,33,36,0.28);
+            border: 1px solid #dfe1e5;
+            padding: 8px 8px 8px 20px;
+            gap: 8px;
+            width: 90vw;
+            max-width: 584px;
+            min-width: 220px;
+            transition: box-shadow 0.2s ease;
+        }
+        .modern-search-box:hover {
+            box-shadow: 0 1px 6px rgba(32,33,36,0.28), 0 1px 3px rgba(32,33,36,0.12);
+        }
+        .modern-search-box:focus-within {
+            box-shadow: 0 2px 8px rgba(32,33,36,0.28), 0 1px 3px rgba(32,33,36,0.12);
+            border-color: #4285f4;
+        }
+        .modern-search-input-wrapper {
+            display: flex;
+            align-items: center;
+            background: transparent;
+            border-radius: 0;
+            flex: 1;
+            padding: 0;
+            border: none;
+            transition: none;
+        }
+        .modern-search-input-wrapper:focus-within {
+            border-color: transparent;
+        }
+        .modern-search-icon {
+            color: #9aa0a6;
+            font-size: 20px;
+            margin-right: 13px;
+            display: flex;
+            align-items: center;
+        }
+        .modern-search-input {
+            border: none;
+            background: transparent;
+            font-size: 16px;
+            color: rgba(0,0,0,0.87);
+            outline: none;
+            width: 100%;
+            padding: 0;
+            font-family: 'Google Sans', 'Roboto', Arial, sans-serif;
+            line-height: 34px;
+            font-weight: 400;
+        }
+        .modern-search-input::placeholder {
+            color: #9aa0a6;
+            font-weight: 400;
+            font-size: 16px;
+        }
+        .modern-search-btn {
+            background: #f8f9fa;
+            color: #3c4043;
+            border: 1px solid #f8f9fa;
+            border-radius: 4px;
+            padding: 0 16px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+            transition: box-shadow 0.2s ease, border 0.2s ease;
+            font-family: 'Google Sans', 'Roboto', Arial, sans-serif;
+            line-height: 27px;
+            min-height: 36px;
+        }
+        .modern-search-btn:hover {
+            background: #f8f9fa;
+            color: #3c4043;
+            box-shadow: 0 1px 1px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.12);
+            border-color: #dadce0;
+        }
+        .modern-search-btn:active {
+            background: #f1f3f4;
+            box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+        }
+        @media (max-width: 768px) {
+            .modern-search-box {
+                width: 95vw;
+                max-width: 95vw;
+                padding: 6px 6px 6px 16px;
+                border-radius: 20px;
+            }
+            .modern-search-btn {
+                padding: 0 12px;
+                font-size: 13px;
+                min-height: 32px;
+            }
+            .modern-search-icon {
+                font-size: 18px;
+                margin-right: 10px;
+            }
+            .modern-search-input {
+                font-size: 15px;
+                line-height: 30px;
+            }
+        }
+        @media (max-width: 480px) {
+            .modern-search-box {
+                flex-direction: column;
+                gap: 12px;
+                padding: 12px 16px;
+                border-radius: 16px;
+            }
+            .modern-search-btn {
+                width: 100%;
+                justify-content: center;
+                font-size: 14px;
+                padding: 8px 16px;
+                min-height: 40px;
+            }
+            .modern-search-input-wrapper {
+                width: 100%;
+            }
+        }
+        /* --- AI Search Box (from index.html) --- */
+        .ai-search-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            margin: 2.5rem 0 2rem 0;
+        }
+        .ai-search-box {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            max-width: 700px;
+            background: #fff;
+            border-radius: 999px;
+            box-shadow: 0 4px 32px 0 rgba(20, 85, 20, 0.10);
+            border: 1.5px solid #e5e7ea;
+            padding: 0.8rem 0.8rem 0.8rem 1.8rem;
+            transition: box-shadow 0.32s cubic-bezier(.4, 1.4, .6, 1), border 0.22s cubic-bezier(.4, 1.4, .6, 1);
+        }
+        .ai-search-icon {
+            color: #166534;
+            font-size: 1.6rem;
+            margin-right: 1rem;
+            opacity: 0.92;
+        }
+        .ai-search-box input {
+            flex: 1;
+            border: none;
+            outline: none;
+            background: transparent;
+            font-size: 1.1rem;
+            color: #1a1a1a;
+            padding: 1.2rem 0.8rem;
+            font-weight: 500;
+            transition: color 0.22s, box-shadow 0.22s;
+            line-height: 1.4;
+        }
+        .ai-search-box input::placeholder {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        .ai-search-box button {
+            background: #166534;
+            color: #fff;
+            border: none;
+            border-radius: 999px;
+            padding: 1.2rem 2rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-left: 0.8rem;
+            cursor: pointer;
+            box-shadow: 0 2px 8px 0 rgba(20, 85, 20, 0.10);
+            transition: background 0.18s, box-shadow 0.18s, transform 0.18s;
+        }
+        .ai-search-box button:active {
+            animation: ai-btn-pop 0.18s cubic-bezier(.4, 1.4, .6, 1);
+        }
+        @keyframes ai-btn-pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.09); }
+            100% { transform: scale(1); }
+        }
+        @media (max-width: 700px) {
+            .ai-search-box {
+                max-width: 95vw;
+                padding: 0.6rem 0.6rem 0.6rem 1.2rem;
+            }
+            .ai-search-box button {
+                font-size: 1.1rem;
+                padding: 1rem 1.5rem;
+            }
+            .ai-search-box input {
+                font-size: 1rem;
+                padding: 1rem 0.6rem;
+            }
+            .ai-search-box input::placeholder {
+                font-size: 1rem;
+            }
+        }
+        /* --- End AI Search Box --- */
+        .ai-search-explanation {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0.2rem 0;
+        }
+        .explanation-header {
+            text-align: center;
+            margin-bottom: 0.8rem;
+        }
+        .explanation-header h2 {
+            font-family: 'Playfair Display', 'Georgia', serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            letter-spacing: -0.02em;
+        }
+        .explanation-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        .step-line {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f0f0f0;
+            max-width: 600px;
+            width: 100%;
+            justify-content: center;
+        }
+        .step-line:last-child {
+            border-bottom: none;
+        }
+        .step-number {
+            background: linear-gradient(135deg, #166534, #22c55e);
+            color: #fff;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+            margin-top: 0.1rem;
+        }
+        .step-text {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            color: #666;
+            line-height: 1.5;
+            font-weight: 400;
+            text-align: left;
+        }
+        .step-text strong {
+            color: #1a1a1a;
+            font-weight: 600;
+        }
+        @media (max-width: 768px) {
+            .explanation-header h2 {
+                font-size: 1.5rem;
+            }
+            .step-text {
+                font-size: 0.9rem;
+            }
+            .step-line {
+                gap: 0.8rem;
+                padding: 0.4rem 0;
+            }
+        }
+    </style>
 </head>
 <body>
     
@@ -1164,37 +1485,20 @@
         <section class="dashboard-section">
             <br><br>
             <h1>Explore Talents from Top Colleges in India</h1>
-            <p>Find and connect with top students using AI powered search.</p>
-            <div class="search-box">
-                <i class="fas fa-search search-icon"></i>
-                <input type="text" class="search-input" id="ai-search-input" 
-                       placeholder="e.g., IIT Delhi B.Tech Applied Mechanics student with Python skill">
-                <button class="search-btn" onclick="performSearch()">
-                    <span class="btn-text">Search Talent</span>
-                    <i class="fas fa-arrow-right btn-icon"></i>
-                </button>
+            <p>Find and connect with skilled students using AI powered search.</p>
+            <!-- Modern Responsive Search Box -->
+            <div class="ai-search-container">
+                <form class="ai-search-box" onsubmit="event.preventDefault(); performSearch();">
+                    <span class="ai-search-icon"><i class="fas fa-search"></i></span>
+                    <input type="text" id="ai-search-input" placeholder="Explain your project needs...">
+                    <button type="submit"><i class="fas fa-arrow-right"></i></button>
+                </form>
             </div>
+            <!-- End AI Search Box -->
             <br>
             <br>
             <div class="search-info" id="searchInfo">
-                <div class="help-cards-row">
-                    <div class="help-card">
-                        <div class="help-title">Automate Your Workflow</div>
-                        <div class="help-desc">Our students can build custom AI tools, scripts, and bots to automate repetitive business tasks, saving you hours every week.</div>
-                    </div>
-                    <div class="help-card">
-                        <div class="help-title">Unlock Data Insights</div>
-                        <div class="help-desc">Get dashboards, analytics, and reports tailored to your business. Students can turn your raw data into actionable insights and visualizations.</div>
-                    </div>
-                    <div class="help-card">
-                        <div class="help-title">Delight Your Users</div>
-                        <div class="help-desc">From mobile apps to web platforms, students design and develop user-friendly digital products that engage and retain your customers.</div>
-                    </div>
-                    <div class="help-card">
-                        <div class="help-title">Innovate & Research</div>
-                        <div class="help-desc">Need a fresh perspective? Students can help you prototype new ideas, conduct research, and bring innovative solutions to your toughest problems.</div>
-                    </div>
-                </div>
+                
             </div>
             <div class="loading-overlay" id="loadingOverlay">
                 <div class="loader"></div>
@@ -1726,11 +2030,14 @@ window.showStudentDetailsPopup = (studentId) => {
     const closeBtn = document.querySelector('.student-details-popup .macos-close');
     if (closeBtn) closeBtn.focus();
 };
+
 window.closeStudentDetailsPopup = () => {
     document.getElementById('studentDetailsPopup').classList.remove('active');
     document.getElementById('studentDetailsOverlay').classList.remove('active');
 };
+
 document.getElementById('studentDetailsOverlay').onclick = closeStudentDetailsPopup;
+
 // Keyboard accessibility for close button and Escape
 const closeBtn = document.querySelector('.student-details-popup .macos-close');
 if (closeBtn) {
@@ -1742,6 +2049,7 @@ if (closeBtn) {
         }
     });
 }
+
 document.addEventListener('keydown', function(e) {
     if (document.getElementById('studentDetailsPopup').classList.contains('active') && e.key === 'Escape') {
         closeStudentDetailsPopup();
@@ -1771,12 +2079,15 @@ function showCardTooltip(e, text) {
         cardTooltip.style.top = y + 'px';
     }, 0);
 }
+
 function hideCardTooltip() {
     if (cardTooltip) cardTooltip.classList.remove('active');
 }
+
 function isTruncated(el) {
     return el.scrollWidth > el.clientWidth;
 }
+
 function addTooltipListenersToCardCells() {
     // Select all card content cells that may overflow
     const selectors = [
@@ -1789,9 +2100,6 @@ function addTooltipListenersToCardCells() {
         cell.onmouseenter = function(e) {
             if (isTruncated(this)) {
                 showCardTooltip(e, this.textContent);
-                console.log('Tooltip shown for:', this.textContent);
-            } else {
-                console.log('Not truncated:', this.textContent);
             }
         };
         cell.onmousemove = function(e) {
@@ -1803,14 +2111,15 @@ function addTooltipListenersToCardCells() {
             hideCardTooltip();
         };
     });
-    console.log('Tooltip listeners attached to card cells');
 }
+
 // Re-apply listeners after cards are rendered
 const origPerformSearch = window.performSearch;
 window.performSearch = function() {
     origPerformSearch.apply(this, arguments);
     setTimeout(addTooltipListenersToCardCells, 0);
 };
+
 window.addEventListener('DOMContentLoaded', addTooltipListenersToCardCells);
 </script>
 </body>
