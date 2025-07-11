@@ -654,10 +654,11 @@
         </div>
         
         <!-- Chat Toggle Button (appears when chat is hidden) -->
-        <div class="chat-toggle-btn" id="chat-toggle-btn" style="display: none;">
-            <i class="fas fa-comments"></i>
-            <span>Chat</span>
-        </div>
+        
+    </div>
+    <div class="chat-toggle-btn" id="chat-toggle-btn" style="display: none;">
+        <i class="fas fa-comments"></i>
+        <span>Chat</span>
     </div>
 
     <div class="confirmation-dialog" id="confirmation-dialog">
@@ -975,6 +976,15 @@ function isImageFile(type) {
 
 function isVideoFile(type) {
     return type.startsWith('video/');
+}
+
+// Helper function to truncate file names
+function truncateFileName(fileName, maxLength = 25) {
+    if (fileName.length <= maxLength) return fileName;
+    const extension = fileName.split('.').pop();
+    const nameWithoutExt = fileName.substring(0, fileName.lastIndexOf('.'));
+    const maxNameLength = maxLength - extension.length - 4; // 4 for "..."
+    return nameWithoutExt.substring(0, maxNameLength) + '...' + extension;
 }
 
 function generateFileThumbnail(file) {
@@ -1547,53 +1557,68 @@ async function loadChat() {
                     }
                     if (msg.file) {
                         const fileSize = msg.file.size ? (msg.file.size / 1024).toFixed(2) + ' KB' : 'Unknown size';
+                        const hasThumbnail = isImageFile(msg.file.type) || isVideoFile(msg.file.type);
+                        const displayFileName = hasThumbnail ? '' : truncateFileName(msg.file.name);
+                        
                         messageDiv.innerHTML = `
-                            <div class=\"message-header\">
-                                <img src=\"${profilePic}\" alt=\"${senderName}\" class=\"profile-pic\">
-                                <div class=\"name\">${senderName}</div>
-                                <div class=\"time\">${time}</div>
+                            <div class="message-header">
+                                <img src="${profilePic}" class="profile-pic">
+                                <div class="name">${senderName}</div>
+                                <div class="time">${time}</div>
                             </div>
-                            <a href=\"${msg.file.url}\" download=\"${msg.file.name}\" target=\"_blank\">
-                                <div class=\"file-info\">
-                                    <i class=\"${getFileIconClass(msg.file.type)} file-icon\" style=\"color: ${getFileIconColor(msg.file.type)};\"></i>
-                                    <div class=\"file-details\">
-                                        <div class=\"file-name\">${msg.file.name}</div>
-                                        <div class=\"file-size\">${fileSize}</div>
-                                    </div>
+                            <div class="file-message-content">
+                                <div class="file-thumbnail-container">
+                                    ${generateFileThumbnail(msg.file)}
                                 </div>
-                            </a>
-                            <div class=\"read-status\">${msg.read ? 'Seen' : 'Sent'}</div>
-                            <div class=\"reactions\">${reactionsHTML}</div>
-                            <div class=\"reaction-bar\">
-                                <span class=\"reaction-icon\" data-reaction=\"🤝\">🤝</span>
-                                <span class=\"reaction-icon\" data-reaction=\"👍\">👍</span>
-                                <span class=\"reaction-icon\" data-reaction=\"❤️\">❤️</span>
-                                <div class=\"message-menu\">
-                                    <i class=\"fas fa-ellipsis-h message-menu-icon\"></i>
-                                    <div class=\"message-menu-dropdown\">
-                                        <button data-action=\"deleteMessage\">Delete Message</button>
+                                ${!hasThumbnail ? `
+                                    <div class="file-info">
+                                        <div class="file-name">${displayFileName}</div>
+                                        <div class="file-size">${fileSize}</div>
+                                    </div>
+                                ` : ''}
+                                <div class="file-actions">
+                                    <a href="${msg.file.url}" download="${msg.file.name}" class="download-btn" title="Download">
+                                        <i class="fas fa-download"></i>
+                                    </a>
+                                    ${isImageFile(msg.file.type) || isVideoFile(msg.file.type) ? `
+                                        <button class="view-btn" onclick="openFileViewer('${msg.file.url}', '${msg.file.type}', '${msg.file.name}')" title="View">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    ` : ''}
+                                </div>
+                            </div>
+                            <div class="read-status">${msg.read ? 'Seen' : 'Sent'}</div>
+                            <div class="reactions">${reactionsHTML}</div>
+                            <div class="reaction-bar">
+                                <span class="reaction-icon" data-reaction="🤝">🤝</span>
+                                <span class="reaction-icon" data-reaction="👍">👍</span>
+                                <span class="reaction-icon" data-reaction="❤️">❤️</span>
+                                <div class="message-menu">
+                                    <i class="fas fa-ellipsis-h message-menu-icon"></i>
+                                    <div class="message-menu-dropdown">
+                                        <button data-action="deleteMessage">Delete Message</button>
                                     </div>
                                 </div>
                             </div>
                         `;
                     } else {
                         messageDiv.innerHTML = `
-                            <div class=\"message-header\">
-                                <img src=\"${profilePic}\" alt=\"${senderName}\" class=\"profile-pic\">
-                                <div class=\"name\">${senderName}</div>
-                                <div class=\"time\">${time}</div>
+                            <div class="message-header">
+                                <img src="${profilePic}" alt="${senderName}" class="profile-pic">
+                                <div class="name">${senderName}</div>
+                                <div class="time">${time}</div>
                             </div>
-                            <div class=\"message-content\">${content}</div>
-                            <div class=\"read-status\">${msg.read ? 'Seen' : 'Sent'}</div>
-                            <div class=\"reactions\">${reactionsHTML}</div>
-                            <div class=\"reaction-bar\">
-                                <span class=\"reaction-icon\" data-reaction=\"🤝\">🤝</span>
-                                <span class=\"reaction-icon\" data-reaction=\"👍\">👍</span>
-                                <span class=\"reaction-icon\" data-reaction=\"❤️\">❤️</span>
-                                <div class=\"message-menu\">
-                                    <i class=\"fas fa-ellipsis-h message-menu-icon\"></i>
-                                    <div class=\"message-menu-dropdown\">
-                                        <button data-action=\"deleteMessage\">Delete Message</button>
+                            <div class="message-content">${content}</div>
+                            <div class="read-status">${msg.read ? 'Seen' : 'Sent'}</div>
+                            <div class="reactions">${reactionsHTML}</div>
+                            <div class="reaction-bar">
+                                <span class="reaction-icon" data-reaction="🤝">🤝</span>
+                                <span class="reaction-icon" data-reaction="👍">👍</span>
+                                <span class="reaction-icon" data-reaction="❤️">❤️</span>
+                                <div class="message-menu">
+                                    <i class="fas fa-ellipsis-h message-menu-icon"></i>
+                                    <div class="message-menu-dropdown">
+                                        <button data-action="deleteMessage">Delete Message</button>
                                     </div>
                                 </div>
                             </div>
@@ -1988,10 +2013,25 @@ function generateTimelineHTML(submissions, comments, taskId) {
                         ${item.files ? `
                             <div class="submission-files">
                                 ${Object.values(item.files).map(file => `
-                                    <a href="${file.url}" download="${file.name}" class="submission-file">
-                                        <i class="${getFileIconClass(file.type)}"></i>
-                                        <span>${file.name}</span>
-                                    </a>
+                                    <div class="submission-file">
+                                        <div class="file-thumbnail-container">
+                                            ${generateFileThumbnail(file)}
+                                        </div>
+                                        <div class="file-info">
+                                            <div class="file-name">${file.name}</div>
+                                            <div class="file-size">${file.size ? (file.size / 1024).toFixed(2) + ' KB' : 'Unknown size'}</div>
+                                        </div>
+                                        <div class="file-actions">
+                                            <a href="${file.url}" download="${file.name}" class="download-btn" title="Download">
+                                                <i class="fas fa-download"></i>
+                                            </a>
+                                            ${isImageFile(file.type) || isVideoFile(file.type) ? `
+                                                <button class="view-btn" onclick="openFileViewer('${file.url}', '${file.type}', '${file.name}')" title="View">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                            ` : ''}
+                                        </div>
+                                    </div>
                                 `).join('')}
                             </div>
                         ` : ''}

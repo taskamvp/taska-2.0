@@ -7,15 +7,12 @@
     <link rel="stylesheet" href="css/tasks.css">
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/global.css">
-    <link rel="stylesheet" href="../css/dashboard.css">
+  
     <link rel="stylesheet" href="../css/classified-navbar.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <div class="mobile-message">
-        <p>Please use a desktop for a better experience.</p>
-    </div>
     <nav class="navbar_classified">
         <a href="../index.html">
             <div class="logo"><img src="../assets/logo.png" alt="Taska Logo" style="height:48px;vertical-align:middle;"></div>
@@ -28,6 +25,14 @@
         </ul>
         <div class="hamburger">☰</div>
     </nav>
+
+    <!-- Mobile Sidebar Toggle Button -->
+    <button class="sidebar-toggle" id="sidebar-toggle" onclick="toggleSidebar()">
+        <i class="fas fa-chevron-right"></i>
+    </button>
+
+    <!-- Sidebar Overlay for Mobile -->
+    <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
 
     <div class="dashboard-content">
         <div class="sidebar-left">
@@ -42,6 +47,29 @@
                 <div id="pending-requests-list"></div>
             </div>
         </div>
+        
+        <!-- Choose Connection Message -->
+        <div class="sidebar-right" id="choose-connection-message">
+            <div class="choose-connection-content">
+                <h3>Choose a Connection</h3>
+                <p>Select a student from your connections to view and manage tasks together.</p>
+                <div class="connection-steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-text">Browse your student connections in the left sidebar</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-text">Click on a student to start collaborating</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-text">View tasks and chat with your selected student</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
         <div class="sidebar-right" id="workflow-area">
             <div class="tasks-header">
                 <h3>Tasks</h3>
@@ -57,9 +85,11 @@
         <div class="chat-area" id="chat-area">
             <div class="chat-header skeleton-loading" id="chat-header">
                 <div class="skeleton-header"></div>
-                <button class="hide-chat-btn" onclick="hideChat()">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
+                <div class="chat-actions">
+                    <button class="hide-chat-btn" onclick="hideChat()" title="Hide Chat">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
             </div>
             <div class="messages skeleton-loading" id="chat-messages">
                 <div class="skeleton-message"></div>
@@ -80,12 +110,13 @@
             </div>
         </div>
         
-        <!-- Chat Toggle Button (appears when chat is hidden) -->
-        <div class="chat-toggle-btn" id="chat-toggle-btn" onclick="showChat()">
-            <i class="fas fa-comments"></i>
-            <span>Chat</span>
-            </div>
+        
     </div>
+    <!-- Chat Toggle Button (appears when chat is hidden) -->
+    <div class="chat-toggle-btn" id="chat-toggle-btn" onclick="showChat()">
+        <i class="fas fa-comments"></i>
+        <span>Chat</span>
+        </div>
 
     <div class="confirmation-dialog" id="confirmation-dialog">
         <div class="dialog-box">
@@ -411,6 +442,18 @@ async function init() {
     document.addEventListener('DOMContentLoaded', async () => {
         await fetchStudentData();
         setupEventListeners();
+        
+        // Show choose connection message by default
+        const chooseConnectionMessage = document.getElementById('choose-connection-message');
+        if (chooseConnectionMessage) {
+            chooseConnectionMessage.style.display = 'flex';
+        }
+        
+        // Hide workflow area initially
+        if (elements.workflowArea) {
+            elements.workflowArea.style.display = 'none';
+        }
+        
         auth.onAuthStateChanged(user => {
             if (user) {
                 userId = user.uid;
@@ -596,6 +639,16 @@ function setupEventListeners() {
         }
         if (!e.target.closest('.input-container')) {
             elements.taskDropdown.classList.remove('active');
+        }
+        
+        // Close chat when clicking outside
+        const chatArea = document.getElementById('chat-area');
+        const chatToggleBtn = document.getElementById('chat-toggle-btn');
+        
+        if (chatArea && chatArea.style.display === 'block' && 
+            !e.target.closest('.chat-area') && 
+            !e.target.closest('.chat-toggle-btn')) {
+            hideChat();
         }
     });
 }
@@ -803,8 +856,16 @@ async function selectStudent(studentId) {
         }
     });
     
-    // Show only workflow area, keep chat hidden by default
-    if (elements.workflowArea) elements.workflowArea.style.display = 'block';
+    // Hide choose connection message and show workflow area
+    const chooseConnectionMessage = document.getElementById('choose-connection-message');
+    if (chooseConnectionMessage) {
+        chooseConnectionMessage.style.display = 'none';
+    }
+    
+    // Show workflow area
+    if (elements.workflowArea) {
+        elements.workflowArea.style.display = 'block';
+    }
     
     // Keep chat area hidden initially
     if (elements.chatArea) {
@@ -816,6 +877,11 @@ async function selectStudent(studentId) {
     const chatToggleBtn = document.getElementById('chat-toggle-btn');
     if (chatToggleBtn) {
         chatToggleBtn.style.display = 'flex';
+    }
+    
+    // Close sidebar in mobile view when student is selected
+    if (window.innerWidth <= 768) {
+        closeSidebar();
     }
     
     loadChatHeader();
@@ -903,18 +969,15 @@ function formatMessageDate(timestamp) {
 
 async function loadChat() {
     if (!elements.chatMessages) return;
-    
     // Clean up previous listener if it exists
     if (currentChatListener) {
         currentChatListener();
         currentChatListener = null;
     }
-    
     elements.chatMessages.innerHTML = `
         <div class="skeleton-message"></div>
         <div class="skeleton-message"></div>
     `;
-    
     if (selectedStudentId) {
         const chatId = [userId, selectedStudentId].sort().join("+");
         const chatRef = ref(db, `chats/${chatId}/messages`);
@@ -1369,7 +1432,7 @@ function loadWorkflows() {
                                     </div>
                                 </div>
                                 <div class="timeline-content" id="timeline-${taskId}">
-                                    ${generateTimelineHTML(task.submissions || {}, task.comments || {})}
+                                    ${generateTimelineHTML(task.submissions || {}, task.comments || {}, taskId)}
                                 </div>
                             </div>
                         `;
@@ -1389,7 +1452,7 @@ function loadWorkflows() {
                             </button>
                         </div>
                         <div class="empty-tasks-tips">
-                            <h4>💡 Quick Tips:</h4>
+                            <h4>Quick Tips:</h4>
                             <ul>
                                 <li>Be specific about what you need</li>
                                 <li>Set realistic deadlines</li>
@@ -1406,7 +1469,7 @@ function loadWorkflows() {
     }
 }
 
-function generateTimelineHTML(submissions, comments) {
+function generateTimelineHTML(submissions, comments, taskId) {
     const allItems = [];
     
     // Add submissions
@@ -1453,12 +1516,33 @@ function generateTimelineHTML(submissions, comments) {
                         ${item.comment ? `<div class="submission-comment">${item.comment}</div>` : ''}
                         ${item.files ? `
                             <div class="submission-files">
-                                ${Object.values(item.files).map(file => `
-                                    <a href="${file.url}" download="${file.name}" class="submission-file">
-                                        <i class="${getFileIconClass(file.type)}"></i>
-                                        <span>${file.name}</span>
-                                    </a>
-                                `).join('')}
+                                ${Object.values(item.files).map(file => {
+                                    const hasThumbnail = isImageFile(file.type) || isVideoFile(file.type);
+                                    const displayFileName = hasThumbnail ? '' : truncateFileName(file.name);
+                                    return `
+                                        <div class="submission-file">
+                                            <div class="file-thumbnail-container">
+                                                ${generateFileThumbnail(file)}
+                                            </div>
+                                            ${!hasThumbnail ? `
+                                                <div class="file-info">
+                                                    <div class="file-name">${displayFileName}</div>
+                                                    <div class="file-size">${file.size ? (file.size / 1024).toFixed(2) + ' KB' : 'Unknown size'}</div>
+                                                </div>
+                                            ` : ''}
+                                            <div class="file-actions">
+                                                <a href="${file.url}" download="${file.name}" class="download-btn" title="Download">
+                                                    <i class="fas fa-download"></i>
+                                                </a>
+                                                ${isImageFile(file.type) || isVideoFile(file.type) ? `
+                                                    <button class="view-btn" onclick="openFileViewer('${file.url}', '${file.type}', '${file.name}')" title="View">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                ` : ''}
+                                            </div>
+                                        </div>
+                                    `;
+                                }).join('')}
                             </div>
                         ` : ''}
                         <div class="submission-actions">
@@ -1501,7 +1585,17 @@ function generateTimelineHTML(submissions, comments) {
                     <div class="timeline-item-content">
                         <div class="timeline-header">
                             <span class="comment-author">${item.authorName}</span>
-                            <span class="comment-date">${formatSubmissionDate(item.timestamp)}</span>
+                            <div class="timeline-item-actions">
+                                <span class="comment-date">${formatSubmissionDate(item.timestamp)}</span>
+                                <div class="timeline-item-menu">
+                                    <i class="fas fa-ellipsis-v timeline-menu-icon" onclick="toggleTimelineMenu('comment-${item.id}')"></i>
+                                    <div class="timeline-menu-dropdown" id="comment-${item.id}">
+                                        <button onclick="deleteComment('${item.id}', '${taskId}')" class="delete-btn">
+                                            <i class="fas fa-trash"></i> Delete Comment
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="comment-content">${item.content}</div>
                     </div>
@@ -1561,6 +1655,15 @@ function isImageFile(type) {
 
 function isVideoFile(type) {
     return type.startsWith('video/');
+}
+
+// Helper function to truncate file names
+function truncateFileName(fileName, maxLength = 25) {
+    if (fileName.length <= maxLength) return fileName;
+    const extension = fileName.split('.').pop();
+    const nameWithoutExt = fileName.substring(0, fileName.lastIndexOf('.'));
+    const maxNameLength = maxLength - extension.length - 4; // 4 for "..."
+    return nameWithoutExt.substring(0, maxNameLength) + '...' + extension;
 }
 
 function toggleFilesPopup(taskId, event) {
@@ -1991,6 +2094,100 @@ window.approveSubmission = approveSubmission;
 window.openApprovalModal = openApprovalModal;
 window.closeApprovalModal = closeApprovalModal;
 window.confirmApproval = confirmApproval;
+
+// Mobile Sidebar Functions
+window.toggleSidebar = toggleSidebar;
+window.closeSidebar = closeSidebar;
+
+// Timeline Menu Functions
+window.toggleTimelineMenu = toggleTimelineMenu;
+window.deleteComment = deleteComment;
+window.confirmDeleteComment = confirmDeleteComment;
+
+function toggleSidebar() {
+    const sidebar = document.querySelector('.sidebar-left');
+    const toggle = document.getElementById('sidebar-toggle');
+    const overlay = document.getElementById('sidebar-overlay');
+    const dashboard = document.querySelector('.dashboard-content');
+    
+    if (sidebar.classList.contains('active')) {
+        closeSidebar();
+    } else {
+        sidebar.classList.add('active');
+        toggle.classList.add('active');
+        overlay.classList.add('active');
+        dashboard.classList.add('sidebar-open');
+    }
+}
+
+function closeSidebar() {
+    const sidebar = document.querySelector('.sidebar-left');
+    const toggle = document.getElementById('sidebar-toggle');
+    const overlay = document.getElementById('sidebar-overlay');
+    const dashboard = document.querySelector('.dashboard-content');
+    
+    sidebar.classList.remove('active');
+    toggle.classList.remove('active');
+    overlay.classList.remove('active');
+    dashboard.classList.remove('sidebar-open');
+}
+
+function toggleTimelineMenu(menuId) {
+    // Close all other menus first
+    document.querySelectorAll('.timeline-menu-dropdown.active').forEach(menu => {
+        if (menu.id !== menuId) {
+            menu.classList.remove('active');
+        }
+    });
+    
+    // Toggle the clicked menu
+    const menu = document.getElementById(menuId);
+    if (menu) {
+        menu.classList.toggle('active');
+    }
+}
+
+// Close timeline menus when clicking outside
+document.addEventListener('click', (e) => {
+    if (!e.target.closest('.timeline-item-menu')) {
+        document.querySelectorAll('.timeline-menu-dropdown.active').forEach(menu => {
+            menu.classList.remove('active');
+        });
+    }
+});
+
+async function deleteComment(commentId, taskId) {
+    try {
+        // Show confirmation dialog
+        confirmAction('confirmDeleteComment', 'Delete Comment', 'Are you sure you want to delete this comment? This action cannot be undone.', { commentId, taskId });
+    } catch (error) {
+        console.error('Error showing delete confirmation:', error);
+        alert('Failed to show confirmation dialog.');
+    }
+}
+
+async function confirmDeleteComment({ commentId, taskId }) {
+    try {
+        if (!taskId) {
+            alert('No task selected.');
+            return;
+        }
+        
+        // Delete the comment from Firebase
+        const commentRef = ref(db, `tasks/${taskId}/comments/${commentId}`);
+        await remove(commentRef);
+        
+        // Refresh the timeline
+        loadWorkflows();
+        
+        // Show success message
+        alert('Comment deleted successfully!');
+        
+    } catch (error) {
+        console.error('Error deleting comment:', error);
+        alert('Failed to delete comment. Please try again.');
+    }
+}
 
 init();
     </script>

@@ -363,33 +363,88 @@ h3.fashion-minimal {
     flex-direction: column;
 }
 
-.message.file-message .file-info {
+.file-message-content {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    padding: 0.5rem;
+    gap: 0.75rem;
+    padding: 0.75rem;
     background: #fff;
+    border: 1px solid #e0e0e0;
     border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    margin: 0.5rem 0;
+    transition: all 0.3s ease;
 }
 
-.message.file-message .file-icon {
-    font-size: 2rem;
+.file-message-content:hover {
+    border-color: #4CAF50;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
-.message.file-message .file-details {
+.file-message-content .file-thumbnail-container {
+    width: 50px;
+    height: 50px;
+    flex-shrink: 0;
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+}
+
+.file-message-content .file-info {
     flex: 1;
+    min-width: 0;
 }
 
-.message.file-message .file-name {
-    font-size: 0.95rem;
+.file-message-content .file-name {
+    font-size: 0.85rem;
     color: #1a1a1a;
     font-weight: 500;
+    margin-bottom: 0.2rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
 }
 
-.message.file-message .file-size {
-    font-size: 0.8rem;
+.file-message-content .file-size {
+    font-size: 0.75rem;
     color: #6c757d;
+}
+
+.file-message-content .file-actions {
+    display: flex;
+    gap: 0.4rem;
+    flex-shrink: 0;
+}
+
+.file-message-content .download-btn,
+.file-message-content .view-btn {
+    background: #4CAF50;
+    color: #fff;
+    border: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.file-message-content .download-btn:hover,
+.file-message-content .view-btn:hover {
+    background: #45a049;
+    transform: scale(1.1);
+}
+
+.file-message-content .view-btn {
+    background: #2196F3;
+}
+
+.file-message-content .view-btn:hover {
+    background: #1976D2;
 }
 
 .message .message-header { 
@@ -413,7 +468,7 @@ h3.fashion-minimal {
 }
 
 .message .message-header .time { 
-    font-size: 0.75rem; 
+    font-size: 0.7rem; 
     color: #6c757d; 
     margin-left: auto; 
     font-style: italic;
@@ -1172,42 +1227,93 @@ h3.fashion-minimal {
 
 .submission-files {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
+    flex-direction: column;
+    gap: 0.75rem;
     margin-top: 0.75rem;
 }
 
 .submission-file {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 0.75rem;
+    gap: 0.75rem;
+    padding: 0.75rem;
     background: #f8f9fa;
-    border: 1px solid #e9ecef;
-    border-radius: 6px;
-    text-decoration: none;
-    color: #495057;
-    font-size: 0.8rem;
-    transition: all 0.2s ease;
-    max-width: 100%;
-    overflow: hidden;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    transition: all 0.3s ease;
 }
 
 .submission-file:hover {
     background: #e9ecef;
-    color: #1a1a1a;
-    text-decoration: none;
+    border-color: #4CAF50;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
-.submission-file i {
-    font-size: 1rem;
+.submission-file .file-thumbnail-container {
+    width: 60px;
+    height: 60px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+}
+
+.submission-file .file-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.submission-file .file-name {
+    font-size: 0.9rem;
+    color: #1a1a1a;
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.submission-file .file-size {
+    font-size: 0.8rem;
+    color: #6c757d;
+}
+
+.submission-file .file-actions {
+    display: flex;
+    gap: 0.5rem;
     flex-shrink: 0;
 }
 
-.submission-file span {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+.submission-file .download-btn,
+.submission-file .view-btn {
+    background: #4CAF50;
+    color: #fff;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.submission-file .download-btn:hover,
+.submission-file .view-btn:hover {
+    background: #45a049;
+    transform: scale(1.1);
+}
+
+.submission-file .view-btn {
+    background: #2196F3;
+}
+
+.submission-file .view-btn:hover {
+    background: #1976D2;
 }
 
 /* Submission Modal Styles */
@@ -3712,4 +3818,127 @@ h3.fashion-minimal {
     .message .message-header .time {
         font-size: 0.7rem;
     }
+    
+    .file-message-content .file-name {
+        max-width: 120px;
+    }
+}
+
+.file-thumbnail-container .file-icon {
+    font-size: 1.5rem;
+}
+
+/* Enhanced File Thumbnail Styles for Submissions and Chat */
+.file-thumbnail-container .file-thumbnail {
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.file-thumbnail-container .file-thumbnail:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.file-thumbnail-container .file-thumbnail img,
+.file-thumbnail-container .file-thumbnail video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: inherit;
+}
+
+.file-thumbnail-container .file-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s;
+    border-radius: inherit;
+}
+
+.file-thumbnail-container .file-thumbnail:hover .file-overlay {
+    opacity: 1;
+}
+
+.file-thumbnail-container .file-overlay i {
+    color: #fff;
+    font-size: 1.2rem;
+}
+
+.file-thumbnail-container .file-icon-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fa;
+    border-radius: inherit;
+    border: 1px solid #e0e0e0;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.file-thumbnail-container .file-icon-container:hover {
+    background: #e9ecef;
+    transform: scale(1.05);
+}
+
+.submission-file i {
+    font-size: 0.8rem;
+}
+
+.submission-file .file-thumbnail-container {
+    width: 45px;
+    height: 45px;
+}
+
+.submission-file .file-name {
+    font-size: 0.8rem;
+}
+
+.submission-file .file-size {
+    font-size: 0.7rem;
+}
+
+.submission-file .download-btn,
+.submission-file .view-btn {
+    width: 26px;
+    height: 26px;
+    font-size: 0.75rem;
+}
+
+.file-message-content {
+    padding: 0.5rem;
+    gap: 0.5rem;
+}
+
+.file-message-content .file-thumbnail-container {
+    width: 40px;
+    height: 40px;
+}
+
+.file-message-content .file-name {
+    font-size: 0.75rem;
+    max-width: 150px;
+}
+
+.file-message-content .file-size {
+    font-size: 0.65rem;
+}
+
+.file-message-content .download-btn,
+.file-message-content .view-btn {
+    width: 24px;
+    height: 24px;
+    font-size: 0.7rem;
 }
