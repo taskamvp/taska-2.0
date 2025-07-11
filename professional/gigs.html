@@ -63,8 +63,7 @@
 
         /* Create Task Button - macOS Style */
         .gigs-actions {
-            position: sticky;
-            top: 2rem;
+            /* position: fixed; */
             background: transparent;
             padding: 0;
             border: none;
@@ -147,7 +146,7 @@
             padding: 1.5rem;
             border-bottom: 1px solid #e9ecef;
             position: relative;
-            background: #f8f9fa;
+            background: #ffffff;
         }
 
         .gig-title-section {
@@ -159,6 +158,7 @@
 
         .gig-info {
             flex: 1;
+            min-width: 0; /* Allow text to wrap */
         }
 
         .gig-info h4 {
@@ -168,6 +168,8 @@
             margin: 0 0 0.5rem 0;
             letter-spacing: -0.025em;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
 
         .gig-description {
@@ -177,6 +179,8 @@
             margin: 0 0 1rem 0;
             font-weight: 400;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
 
         .gig-meta {
@@ -206,6 +210,7 @@
             border-radius: 6px !important;
             border: none;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+            white-space: nowrap;
         }
 
         .deadline-info.urgent {
@@ -228,9 +233,12 @@
 
         .gig-actions {
             position: absolute;
-            top: 1rem;
-            right: 1rem;
-            z-index: 10;
+            top: 0.75rem;
+            right: 0.75rem;
+            z-index: 15;
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-start;
         }
 
         .assignment-info {
@@ -474,31 +482,35 @@
 
         /* Three Dot Menu - macOS Style */
         .three-dot-menu {
-            position: relative;
-            display: inline-block;
+            margin-left: auto;
         }
 
         .three-dot-btn {
-            background: #f1f3f4;
+            background: none;
             border: none;
             color: #5f6368;
             padding: 0.5rem;
             font-size: 1rem;
             cursor: pointer;
-            border-radius: 50% !important;
-            transition: all 0.2s ease;
-            width: 40px;
-            height: 40px;
+            border-radius: 0;
+            transition: color 0.2s ease, transform 0.2s ease;
+            width: 36px;
+            height: 36px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+            flex-shrink: 0;
+            box-shadow: none;
+            position: relative;
+            right: 0;
         }
 
         .three-dot-btn:hover {
-            background: #e8eaed;
+            background: none;
             color: #1d1d1f;
-            transform: scale(1.05);
+            transform: scale(1.15);
+            box-shadow: none;
         }
 
         .dropdown-menu {
@@ -941,53 +953,201 @@
 
         /* Responsive Design */
         @media (max-width: 768px) {
-            .navbar {
+            .navbar_classified {
                 padding: 1rem 2rem;
             }
 
-            .navbar .logo {
+            .navbar_classified .logo {
                 font-size: 1.5rem;
             }
 
-            .navbar .nav-menu {
+            .navbar_classified .nav-menu {
                 display: none;
             }
 
-            .navbar .hamburger {
+            .navbar_classified .hamburger {
                 display: block;
             }
 
             .gigs-container {
-                grid-template-columns: 1fr;
-                gap: 1rem;
+                display: flex;
+                flex-direction: column;
+                grid-template-columns: none;
+            }
+
+            .gigs-actions {
+                order: 0;
+                margin-bottom: 1rem;
+            }
+
+            .active-gigs {
+                order: 1;
+            }
+
+            .gig-header {
                 padding: 1rem;
-                margin-top: 90px; /* Keep same margin as desktop */
+                position: relative;
+            }
+
+            .gig-info h4 {
+                font-size: 1.1rem;
+                margin-right: 3rem; /* Make space for three dots */
+                padding-right: 0.5rem;
+            }
+
+            .gig-description {
+                font-size: 0.9rem;
+                margin-right: 3rem; /* Make space for three dots */
+                padding-right: 0.5rem;
+            }
+
+            .gig-meta {
+                gap: 0.5rem;
+                margin-right: 3rem; /* Make space for three dots */
+                padding-right: 0.5rem;
             }
 
             .gig-actions {
+                position: absolute;
                 top: 0.75rem;
                 right: 0.75rem;
+                z-index: 15;
+                display: flex;
+                justify-content: flex-end;
+                align-items: flex-start;
             }
 
             .three-dot-btn {
                 width: 36px;
                 height: 36px;
                 font-size: 0.9rem;
+                background: #ffffff;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+                position: relative;
+                right: 0;
             }
 
             .dropdown-menu {
                 right: 0;
                 left: auto;
                 min-width: 140px;
+                z-index: 1001;
+            }
+
+            .gig-details {
+                padding: 1rem;
             }
 
             .details-grid {
                 grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .detail-section {
+                padding: 0.75rem;
+            }
+
+            .student-detail {
+                padding: 0.5rem;
+                gap: 0.5rem;
+            }
+
+            .student-avatar {
+                width: 32px;
+                height: 32px;
+            }
+
+            .student-name {
+                font-size: 0.85rem;
+            }
+
+            .student-status {
+                font-size: 0.75rem;
             }
 
             .modal-content {
                 width: 95%;
                 margin: 1rem;
+            }
+
+            .files-list {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .file-item {
+                padding: 0.5rem;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .gigs-container {
+                padding: 0.75rem;
+            }
+
+            .gig-header {
+                padding: 0.75rem;
+                position: relative;
+            }
+
+            .gig-info h4 {
+                font-size: 1rem;
+                margin-right: 2.5rem;
+                padding-right: 0.25rem;
+            }
+
+            .gig-description {
+                font-size: 0.85rem;
+                margin-right: 2.5rem;
+                padding-right: 0.25rem;
+            }
+
+            .gig-meta {
+                margin-right: 2.5rem;
+                padding-right: 0.25rem;
+            }
+
+            .gig-actions {
+                position: absolute;
+                top: 0.5rem;
+                right: 0.5rem;
+                z-index: 15;
+            }
+
+            .three-dot-btn {
+                width: 32px;
+                height: 32px;
+                font-size: 0.8rem;
+                background: #ffffff;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+                position: relative;
+                right: 0;
+            }
+
+            .gig-details {
+                padding: 0.75rem;
+            }
+
+            .detail-section {
+                padding: 0.5rem;
+            }
+
+            .student-detail {
+                padding: 0.4rem;
+            }
+
+            .student-avatar {
+                width: 28px;
+                height: 28px;
+            }
+
+            .student-name {
+                font-size: 0.8rem;
+            }
+
+            .student-status {
+                font-size: 0.7rem;
             }
         }
 
@@ -1837,6 +1997,65 @@
             max-height: 500px;
             overflow-y: auto;
         }
+
+        @media (max-width: 768px) {
+            /* ...existing mobile styles... */
+
+            .student-result, .student-item {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 0.5rem !important;
+                padding: 0.75rem 0.5rem !important;
+                min-width: 0;
+                word-break: break-word;
+            }
+            .student-info {
+                flex-direction: row;
+                align-items: center;
+                gap: 0.5rem;
+                width: 100%;
+            }
+            .student-avatar {
+                width: 32px !important;
+                height: 32px !important;
+                margin-bottom: 0 !important;
+            }
+            .student-details {
+                min-width: 0;
+                width: 100%;
+                word-break: break-word;
+            }
+            .student-name, .student-headline, .student-education, .student-skills {
+                font-size: 0.9rem !important;
+                white-space: normal !important;
+                overflow: visible !important;
+                text-overflow: unset !important;
+            }
+            .student-checkbox {
+                align-self: flex-end;
+                margin-top: 0.25rem;
+            }
+            .student-actions {
+                width: 100%;
+                justify-content: flex-end;
+                margin-left: 0;
+                margin-top: 0.25rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .student-result, .student-item {
+                padding: 0.5rem 0.25rem !important;
+                gap: 0.25rem !important;
+            }
+            .student-avatar {
+                width: 24px !important;
+                height: 24px !important;
+            }
+            .student-name, .student-headline, .student-education, .student-skills {
+                font-size: 0.8rem !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -2106,35 +2325,24 @@
 
     <!-- Assign Waitlist Modal -->
     <div class="gig-modal" id="assign-waitlist-modal">
-        <div class="modal-content large-modal">
-            <div class="modal-header">
-                <h3>Assign Students to Waitlist</h3>
-                <button onclick="closeAssignWaitlistModal()">
-                    ×
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="available-students-section">
-                    <h4>Available Students</h4>
-                    <div class="search-section">
-                        <input type="text" id="student-search" placeholder="Search students..." onkeyup="filterAvailableStudents()">
-                    </div>
-                    <div id="available-students-list" class="students-list">
-                        <!-- Available students will be populated here -->
-                    </div>
-                </div>
-                <div class="selected-students-section">
-                    <h4>Selected Students (<span id="selected-count">0</span>/<span id="max-slots">5</span>)</h4>
-                    <div id="selected-students-list" class="students-list">
-                        <!-- Selected students will be shown here -->
-                    </div>
-                </div>
-            </div>
-            <div class="modal-actions">
-                <button class="cancel-btn" onclick="closeAssignWaitlistModal()">Cancel</button>
-                <button class="confirm-btn" onclick="confirmAssignWaitlist()">Assign to Waitlist</button>
-            </div>
+      <div class="modal-content medium-modal">
+        <div class="modal-header">
+          <h3>Assign Students to Waitlist</h3>
+          <button onclick="closeAssignWaitlistModal()">×</button>
         </div>
+        <div class="modal-body">
+          <div class="search-section">
+            <input type="text" id="student-search-assign" placeholder="Search students by name, skills, or education..." onkeyup="filterAvailableStudents()">
+          </div>
+          <div class="students-results" id="students-results-assign">
+            <!-- Search results will be populated here -->
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button class="cancel-btn" onclick="closeAssignWaitlistModal()">Cancel</button>
+          <button class="confirm-btn" onclick="confirmAssignWaitlist()">Assign to Waitlist</button>
+        </div>
+      </div>
     </div>
 
     <!-- Profile Popup Modal -->
@@ -3817,64 +4025,96 @@ window.removeWaitlistStudent = function(index) {
 let selectedStudentsForWaitlist = [];
 let maxWaitlistSlots = 5;
 
+// --- Assign Waitlist Modal Logic (FIXED GLOBAL SELECTION) ---
+window._assignWaitlistAvailableStudents = [];
+window._assignWaitlistSelected = [];
+
 window.openAssignWaitlistModal = function() {
     if (!currentEditTask) return;
-    
-    const currentWaitlistCount = currentEditTask.waitlistStudents ? currentEditTask.waitlistStudents.length : 0;
-    const maxStudents = 5;
-    const availableSlots = maxStudents - currentWaitlistCount;
-    
-    if (availableSlots <= 0) {
-        alert('Waitlist is already full (5 students maximum)');
-        return;
-    }
-    
-    // Show available students for assignment
-    showAvailableStudentsForWaitlist(availableSlots);
+    const assignedIds = new Set();
+    if (currentEditTask.primaryStudent) assignedIds.add(currentEditTask.primaryStudent);
+    if (currentEditTask.waitlistStudents) currentEditTask.waitlistStudents.forEach(id => assignedIds.add(id));
+    const availableStudents = allStudents.filter(s => !assignedIds.has(s.id));
+    window._assignWaitlistAvailableStudents = availableStudents;
+    window._assignWaitlistSelected = [];
+    renderAssignWaitlistResults(availableStudents);
+    document.getElementById('student-search-assign').value = '';
+    document.getElementById('assign-waitlist-modal').classList.add('active');
 };
 
-function showAvailableStudentsForWaitlist(availableSlots) {
-    if (!currentEditTask) return;
-    
-    maxWaitlistSlots = availableSlots;
-    selectedStudentsForWaitlist = [];
-    
-    // Get current assigned students (primary + waitlist)
-    const currentAssignedStudents = new Set();
-    if (currentEditTask.primaryStudent) {
-        currentAssignedStudents.add(currentEditTask.primaryStudent);
+function renderAssignWaitlistResults(students) {
+    const container = document.getElementById('students-results-assign');
+    if (!container) return;
+    if (students.length === 0) {
+        container.innerHTML = '<div class="no-results">No students found</div>';
+        return;
     }
-    if (currentEditTask.waitlistStudents) {
-        currentEditTask.waitlistStudents.forEach(id => currentAssignedStudents.add(id));
-    }
-    
-    // Filter out already assigned students
-    const availableStudents = allStudents.filter(student => 
-        !currentAssignedStudents.has(student.id)
-    );
-    
-    // Populate available students list
-    const availableList = document.getElementById('available-students-list');
-    availableList.innerHTML = availableStudents.map(student => `
-        <div class="student-item" data-student-id="${student.id}" onclick="toggleStudentSelection('${student.id}')">
-            <img src="${student?.personal?.profilePic || '../assets/avatar/1.png'}" alt="${student?.personal?.name || 'Unknown'}" class="student-avatar">
-            <div class="student-info">
-                <div class="student-name">${student?.personal?.name || 'Unknown'}</div>
-                <div class="student-details">${student?.education?.branch || 'No branch'} • ${student?.skills || 'No skills'}</div>
+    container.innerHTML = students.map(student => {
+        const isSelected = window._assignWaitlistSelected.includes(student.id);
+        return `
+            <div class="student-result ${isSelected ? 'selected' : ''}" onclick="window.toggleAssignWaitlistStudent('${student.id}')">
+                <div class="student-info">
+                    <img src="${student.personal?.profilePic || '../assets/avatar/1.png'}" class="student-avatar" />
+                    <div class="student-details">
+                        <h4>${student.personal?.name || 'Unnamed'}</h4>
+                        ${student.education?.branch ? `<p class=\"student-education\">${student.education.branch}</p>` : ''}
+                        ${student.skills ? `<p class=\"student-skills\">${student.skills}</p>` : ''}
+                    </div>
+                </div>
+                <div class="student-checkbox">
+                    <input type="checkbox" ${isSelected ? 'checked' : ''} onclick="event.stopPropagation();">
+                </div>
             </div>
-            <div class="selection-indicator">
-                <i class="fas fa-plus"></i>
-            </div>
-        </div>
-    `).join('');
-    
-    // Update counters
-    document.getElementById('selected-count').textContent = '0';
-    document.getElementById('max-slots').textContent = availableSlots;
-    
-    // Show modal
-    document.getElementById('assign-waitlist-modal').classList.add('active');
+        `;
+    }).join('');
 }
+
+window.toggleAssignWaitlistStudent = function(studentId) {
+    const idx = window._assignWaitlistSelected.indexOf(studentId);
+    if (idx > -1) {
+        window._assignWaitlistSelected.splice(idx, 1);
+    } else {
+        const currentCount = (currentEditTask.waitlistStudents?.length || 0) + window._assignWaitlistSelected.length;
+        if (currentCount >= 5) {
+            alert('Waitlist is full (maximum 5 students)');
+            return;
+        }
+        window._assignWaitlistSelected.push(studentId);
+    }
+    renderAssignWaitlistResults(window._assignWaitlistAvailableStudents);
+};
+
+window.filterAvailableStudents = function() {
+    const searchTerm = document.getElementById('student-search-assign').value.toLowerCase();
+    const filtered = window._assignWaitlistAvailableStudents.filter(student => {
+        const name = student.personal?.name?.toLowerCase() || '';
+        const skills = student.skills?.toLowerCase() || '';
+        const education = student.education?.branch?.toLowerCase() || '';
+        return name.includes(searchTerm) || skills.includes(searchTerm) || education.includes(searchTerm);
+    });
+    renderAssignWaitlistResults(filtered);
+};
+
+window.confirmAssignWaitlist = function() {
+    console.log('Confirming with:', window._assignWaitlistSelected);
+    if (!window._assignWaitlistSelected || window._assignWaitlistSelected.length === 0) {
+        alert('Please select at least one student to add to the waitlist.');
+        return;
+    }
+    if (!currentEditTask.waitlistStudents) currentEditTask.waitlistStudents = [];
+    currentEditTask.waitlistStudents.push(...window._assignWaitlistSelected);
+    window.closeAssignWaitlistModal();
+    updateEditStudentAssignments();
+    alert(`${window._assignWaitlistSelected.length} student(s) added to waitlist successfully!`);
+};
+
+window.closeAssignWaitlistModal = function() {
+    document.getElementById('assign-waitlist-modal').classList.remove('active');
+    window._assignWaitlistAvailableStudents = [];
+    window._assignWaitlistSelected = [];
+    document.getElementById('student-search-assign').value = '';
+    document.getElementById('students-results-assign').innerHTML = '';
+};
 
 window.toggleStudentSelection = function(studentId) {
     const index = selectedStudentsForWaitlist.indexOf(studentId);
