@@ -53,7 +53,7 @@ h3.fashion-minimal {
     text-transform: uppercase;
 }
 
-.navbar { 
+.navbar_classified { 
     background: #fff; 
     padding: 1rem 2rem; 
     position: fixed; 
@@ -67,33 +67,33 @@ h3.fashion-minimal {
     box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
 }
 
-.navbar .logo { 
+.navbar_classified .logo { 
     font-size: 1.5rem; 
     color: #1a1a1a; 
 }
 
-.navbar .nav-menu { 
+.navbar_classified .nav-menu { 
     display: flex; 
     gap: 1.5rem; 
     list-style: none; 
 }
 
-.navbar .nav-menu li a { 
+.navbar_classified .nav-menu li a { 
     color: #1a1a1a; 
     text-decoration: none; 
     font-size: 1rem; 
     transition: color 0.3s; 
 }
 
-.navbar .nav-menu li a.active { 
+.navbar_classified .nav-menu li a.active { 
     color: #0000ff; 
 }
 
-.navbar .nav-menu li a:hover { 
+.navbar_classified .nav-menu li a:hover { 
     color: #4CAF50; 
 }
 
-.navbar .hamburger { 
+.navbar_classified .hamburger { 
     display: none; 
     font-size: 1.5rem; 
     cursor: pointer; 
@@ -2152,7 +2152,7 @@ h3.fashion-minimal {
 
 /* Responsive adjustments for AI apps panel */
 @media (max-width: 768px) {
-    .navbar .nav-menu {
+    .navbar_classified .nav-menu {
         display: none;
         position: absolute;
         top: 60px;
@@ -2164,11 +2164,11 @@ h3.fashion-minimal {
         border-bottom: 1px solid #e0e0e0;
     }
 
-    .navbar .nav-menu.active {
+    .navbar_classified .nav-menu.active {
         display: flex;
     }
 
-    .navbar .hamburger {
+    .navbar_classified .hamburger {
         display: block;
     }
 

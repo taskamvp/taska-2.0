@@ -1112,6 +1112,13 @@ function showPromotionNotification(task) {
 }
 
 function setupEventListeners() {
+    // Setup hamburger menu
+    const hamburger = document.querySelector('.navbar_classified .hamburger');
+    const navMenu = document.querySelector('.navbar_classified .nav-menu');
+    if (hamburger && navMenu) {
+        hamburger.addEventListener('click', () => navMenu.classList.toggle('active'));
+    }
+
     // Setup event listeners for the workplace
     document.addEventListener('click', (e) => {
         // Handle task menu dropdowns
