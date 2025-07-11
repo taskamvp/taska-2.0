@@ -510,10 +510,17 @@ body {
             border: 1.5px solid #e5e7ea;
             margin-top: 0.2rem;
             z-index: 10;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(6px) scale(0.98);
+    transition: opacity 0.22s cubic-bezier(.4, 1.4, .6, 1), transform 0.22s cubic-bezier(.4, 1.4, .6, 1);
+        }
+
+        .ai-search-box:focus-within + .ai-suggestions,
+        .ai-suggestions.active {
             opacity: 1;
             pointer-events: auto;
             transform: translateY(0) scale(1);
-    transition: opacity 0.22s cubic-bezier(.4, 1.4, .6, 1), transform 0.22s cubic-bezier(.4, 1.4, .6, 1);
         }
 
         .ai-suggestion-item {
@@ -2040,11 +2047,36 @@ body {
         
         // Add click handlers for suggestion items
         const suggestionItems = document.querySelectorAll('.ai-suggestion-item');
+        const searchInput = document.getElementById('ai-search-input');
+        const suggestionsContainer = document.getElementById('ai-suggestions');
+        
         console.log('Found suggestion items:', suggestionItems.length);
         
         // Debug: Log each suggestion item
         suggestionItems.forEach((item, index) => {
           console.log(`Suggestion ${index + 1}:`, item.textContent, item);
+        });
+        
+        // Show suggestions when search box is focused
+        searchInput.addEventListener('focus', function() {
+          suggestionsContainer.classList.add('active');
+        });
+        
+        // Hide suggestions when clicking outside
+        document.addEventListener('click', function(event) {
+          const searchContainer = document.querySelector('.ai-search-container');
+          if (!searchContainer.contains(event.target)) {
+            suggestionsContainer.classList.remove('active');
+          }
+        });
+        
+        // Hide suggestions when search box loses focus (with a small delay to allow for clicks)
+        searchInput.addEventListener('blur', function() {
+          setTimeout(() => {
+            if (!suggestionsContainer.contains(document.activeElement)) {
+              suggestionsContainer.classList.remove('active');
+            }
+          }, 150);
         });
         
         suggestionItems.forEach((item, index) => {
@@ -2056,7 +2088,6 @@ body {
             
             console.log('Suggestion clicked:', this.textContent);
             
-            const searchInput = document.getElementById('ai-search-input');
             const suggestionText = this.textContent;
             
             // Add visual feedback
@@ -2066,6 +2097,9 @@ body {
             // Set the search input value
             searchInput.value = suggestionText;
             console.log('Search input value set to:', suggestionText);
+            
+            // Hide suggestions after selection
+            suggestionsContainer.classList.remove('active');
             
             // Reset the suggestion styling after a brief delay
             setTimeout(() => {
