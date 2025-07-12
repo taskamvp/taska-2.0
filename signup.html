@@ -375,10 +375,9 @@
       console.log('Continue button clicked, selected role:', selectedRole);
       
       if (selectedRole === 'student') {
-        // Show student signup form
-        console.log('Showing student signup form');
-        originalContent.classList.add('hidden');
-        studentForm.classList.add('active');
+        // Redirect to signuppro.html for employer signup
+        console.log('Redirecting to signuppro.html');
+        window.location.href = 'signupstu.html';
       } else if (selectedRole === 'employer') {
         // Redirect to signuppro.html for employer signup
         console.log('Redirecting to signuppro.html');

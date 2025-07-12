@@ -1966,7 +1966,7 @@ body {
         <div class="startup-package">Complete Package</div>
         <div class="startup-price">₹14,999/-</div>
         <div class="startup-roles">For Developer, Marketing & Designing roles</div>
-        <button class="startup-cta" onclick="window.location='professional/explore.html'">Hire Now</button>
+        <button class="startup-cta" onclick="openWhatsAppHire()">Hire Now</button>
         </div>
     
     <div class="ai-text-card" style="padding: 0; overflow: hidden; display: flex; align-items: stretch; justify-content: stretch;">
@@ -1976,6 +1976,14 @@ body {
    
     
     <script>
+        // WhatsApp integration for Hire Now button
+        function openWhatsAppHire() {
+            const phoneNumber = '+919266124039';
+            const message = encodeURIComponent(`Hi! I'm interested in hiring expert AI Trained student assistants for my business. I'd like to know more about the complete package for Developer, Marketing & Designing roles.`);
+            const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
+            window.open(whatsappUrl, '_blank');
+        }
+        
         // Handle search form submission - moved to global scope
         function handleSearchSubmit(event) {
           event.preventDefault();
