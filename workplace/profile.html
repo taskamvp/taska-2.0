@@ -2662,110 +2662,174 @@ async function loadDrivePortfolio() {
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(0, 0, 0, 0.5);
+        background: rgba(0, 0, 0, 0.4);
         display: none;
         justify-content: center;
         align-items: center;
         z-index: 10000;
-        font-family: 'Google Sans', 'Roboto', 'Inter', sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        backdrop-filter: blur(8px);
     `;
     
     inviteConnectModal.innerHTML = `
         <div style="
-            background: white;
+            background: rgba(255, 255, 255, 0.95);
             border-radius: 12px;
-            padding: 2rem;
-            max-width: 500px;
+            padding: 0;
+            max-width: 520px;
             width: 90%;
             max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 8px 25px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(20px);
         ">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                <h2 style="margin: 0; font-size: 1.5rem; font-weight: 600; color: #202124;">Invite to Connect</h2>
+            <!-- macOS-style title bar -->
+            <div style="
+                background: rgba(248, 249, 250, 0.8);
+                padding: 12px 20px;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                backdrop-filter: blur(10px);
+            ">
+                <h2 style="
+                    margin: 0;
+                    font-size: 16px;
+                    font-weight: 500;
+                    color: #1d1d1f;
+                    flex: 1;
+                    text-align: center;
+                ">Invite to Connect</h2>
+                
                 <button id="close-invite-modal" style="
                     background: none;
                     border: none;
-                    font-size: 1.5rem;
+                    font-size: 20px;
                     cursor: pointer;
-                    color: #5f6368;
-                    padding: 0.5rem;
-                    border-radius: 50%;
-                    transition: background-color 0.2s;
-                ">&times;</button>
+                    color: #6e6e73;
+                    padding: 4px 8px;
+                    border-radius: 6px;
+                    transition: all 0.2s;
+                    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 32px;
+                    height: 32px;
+                " onmouseover="this.style.background='rgba(0, 0, 0, 0.1)'; this.style.color='#1d1d1f'" onmouseout="this.style.background='none'; this.style.color='#6e6e73'" onclick="closeInviteModal()">×</button>
             </div>
             
-            <div style="text-align: center; margin-bottom: 2rem;">
-                <p style="color: #5f6368; margin-bottom: 1rem;">Share this QR code or link to connect with professionals on Taska</p>
-                
-                <div id="qr-code-container" style="
-                    display: inline-block;
-                    padding: 1.5rem;
-                    background: #f8f9fa;
-                    border-radius: 8px;
-                    margin-bottom: 1.5rem;
-                ">
-                    <div id="qr-code" style="width: 200px; height: 200px; margin: 0 auto;"></div>
-                </div>
-                
-                <div style="margin-bottom: 1.5rem;">
-                    <label style="display: block; text-align: left; font-weight: 500; color: #202124; margin-bottom: 0.5rem;">Invite Link</label>
-                    <div style="display: flex; gap: 0.5rem;">
-                        <input type="text" id="invite-link" readonly style="
-                            flex: 1;
-                            padding: 0.75rem;
-                            border: 1px solid #dadce0;
-                            border-radius: 6px;
-                            font-size: 0.875rem;
-                            background: #f8f9fa;
-                            color: #5f6368;
+            <!-- Modal content -->
+            <div style="padding: 32px;">
+                <div style="text-align: center; margin-bottom: 24px;">
+                    <p style="
+                        color: #6e6e73;
+                        margin-bottom: 24px;
+                        font-size: 15px;
+                        line-height: 1.5;
+                        font-weight: 400;
+                    ">Share this QR code or link to connect with Employers on Taska</p>
+                    
+                    <div id="qr-code-container" style="
+                        display: inline-block;
+                        padding: 24px;
+                        background: rgba(248, 249, 250, 0.8);
+                        border-radius: 16px;
+                        margin-bottom: 24px;
+                        border: 1px solid rgba(0, 0, 0, 0.08);
+                        backdrop-filter: blur(10px);
+                    ">
+                        <div id="qr-code" style="width: 200px; height: 200px; margin: 0 auto;"></div>
+                    </div>
+                    
+                    <div style="margin-bottom: 24px;">
+                        <label style="
+                            display: block;
+                            text-align: left;
+                            font-weight: 500;
+                            color: #1d1d1f;
+                            margin-bottom: 8px;
+                            font-size: 14px;
+                        ">Invite Link</label>
+                        <div style="
+                            display: flex;
+                            gap: 8px;
+                            align-items: center;
                         ">
-                        <button id="copy-link-btn" style="
-                            padding: 0.75rem 1rem;
-                            background: #1a73e8;
+                            <input type="text" id="invite-link" readonly style="
+                                flex: 1;
+                                padding: 12px 16px;
+                                border: 1px solid rgba(0, 0, 0, 0.1);
+                                border-radius: 8px;
+                                font-size: 14px;
+                                background: rgba(248, 249, 250, 0.8);
+                                color: #6e6e73;
+                                font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+                                outline: none;
+                                transition: all 0.2s;
+                            " onfocus="this.style.borderColor='#007aff'; this.style.boxShadow='0 0 0 3px rgba(0, 122, 255, 0.1)'" onblur="this.style.borderColor='rgba(0, 0, 0, 0.1)'; this.style.boxShadow='none'">
+                            <button id="copy-link-btn" style="
+                                padding: 12px 20px;
+                                background: #007aff;
+                                color: white;
+                                border: none;
+                                border-radius: 8px;
+                                cursor: pointer;
+                                font-weight: 500;
+                                font-size: 14px;
+                                transition: all 0.2s;
+                                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                                white-space: nowrap;
+                            " onmouseover="this.style.background='#0056cc'" onmouseout="this.style.background='#007aff'">Copy</button>
+                        </div>
+                    </div>
+                    
+                    <div style="
+                        display: flex;
+                        gap: 12px;
+                        justify-content: center;
+                        flex-wrap: wrap;
+                    ">
+                        <button id="share-whatsapp-btn" style="
+                            padding: 12px 20px;
+                            background: #25d366;
                             color: white;
                             border: none;
-                            border-radius: 6px;
+                            border-radius: 8px;
                             cursor: pointer;
                             font-weight: 500;
-                            transition: background-color 0.2s;
-                        ">Copy</button>
+                            font-size: 14px;
+                            transition: all 0.2s;
+                            display: flex;
+                            align-items: center;
+                            gap: 8px;
+                            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                        " onmouseover="this.style.background='#128c7e'" onmouseout="this.style.background='#25d366'">
+                            <i class="fab fa-whatsapp" style="font-size: 16px;"></i>
+                            WhatsApp
+                        </button>
+                        
+                        <button id="share-email-btn" style="
+                            padding: 12px 20px;
+                            background: #007aff;
+                            color: white;
+                            border: none;
+                            border-radius: 8px;
+                            cursor: pointer;
+                            font-weight: 500;
+                            font-size: 14px;
+                            transition: all 0.2s;
+                            display: flex;
+                            align-items: center;
+                            gap: 8px;
+                            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                        " onmouseover="this.style.background='#0056cc'" onmouseout="this.style.background='#007aff'">
+                            <i class="fas fa-envelope" style="font-size: 14px;"></i>
+                            Email
+                        </button>
                     </div>
-                </div>
-                
-                <div style="display: flex; gap: 1rem; justify-content: center;">
-                    <button id="share-whatsapp-btn" style="
-                        padding: 0.75rem 1.5rem;
-                        background: #25d366;
-                        color: white;
-                        border: none;
-                        border-radius: 6px;
-                        cursor: pointer;
-                        font-weight: 500;
-                        display: flex;
-                        align-items: center;
-                        gap: 0.5rem;
-                        transition: background-color 0.2s;
-                    ">
-                        <i class="fab fa-whatsapp"></i>
-                        Share on WhatsApp
-                    </button>
-                    <button id="share-email-btn" style="
-                        padding: 0.75rem 1.5rem;
-                        background: #ea4335;
-                        color: white;
-                        border: none;
-                        border-radius: 6px;
-                        cursor: pointer;
-                        font-weight: 500;
-                        display: flex;
-                        align-items: center;
-                        gap: 0.5rem;
-                        transition: background-color 0.2s;
-                    ">
-                        <i class="fas fa-envelope"></i>
-                        Share via Email
-                    </button>
                 </div>
             </div>
         </div>
@@ -2778,6 +2842,7 @@ async function loadDrivePortfolio() {
         openInviteModal();
     });
     
+    // Add back the close button event listener
     document.getElementById('close-invite-modal').addEventListener('click', function() {
         closeInviteModal();
     });
@@ -2926,12 +2991,14 @@ async function loadDrivePortfolio() {
             document.execCommand('copy');
             const copyBtn = document.getElementById('copy-link-btn');
             const originalText = copyBtn.textContent;
+            const originalBackground = copyBtn.style.background;
+            
             copyBtn.textContent = 'Copied!';
-            copyBtn.style.background = '#34a853';
+            copyBtn.style.background = '#34c759';
             
             setTimeout(() => {
                 copyBtn.textContent = originalText;
-                copyBtn.style.background = '#1a73e8';
+                copyBtn.style.background = originalBackground || '#007aff';
             }, 2000);
         } catch (err) {
             alert('Failed to copy link. Please copy it manually.');
@@ -2941,7 +3008,11 @@ async function loadDrivePortfolio() {
     function shareViaWhatsApp() {
         const inviteLink = document.getElementById('invite-link').value;
         const message = `Hi! I'd like to connect with you on Taska. Here's my invite link: ${inviteLink}`;
+        
+        // Use WhatsApp Web API to open WhatsApp directly
         const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+        
+        // Open WhatsApp in a new window/tab
         window.open(whatsappUrl, '_blank');
     }
     

@@ -118,6 +118,62 @@
             display: block;
         }
 
+        /* Hide all sections initially */
+        .profile-section, .portfolio-section {
+            display: none;
+        }
+
+        .profile-section.loaded, .portfolio-section.loaded {
+            display: block;
+        }
+
+        /* Hide individual info items initially */
+        .info-item {
+            display: none;
+        }
+
+        .info-item.loaded {
+            display: flex;
+        }
+
+        /* Hide section titles initially */
+        .section-title {
+            display: none;
+        }
+
+        .section-title.loaded {
+            display: flex;
+        }
+
+        /* Loading overlay for entire profile */
+
+        /* Section-specific loading states */
+        .section-loading {
+            text-align: center;
+            padding: 2rem;
+            color: #5f6368;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .section-loading-spinner {
+            border: 3px solid #f1f3f4;
+            border-top: 3px solid #1a73e8;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        /* Fade-in animation for loaded sections */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .profile-section.loaded, .portfolio-section.loaded {
+            animation: fadeIn 0.3s ease-out;
+        }
+
         /* Profile Header */
         .profile-header {
             background: #ffffff;
@@ -501,106 +557,115 @@
             <!-- Profile Sections -->
             <div class="profile-sections">
                 <!-- Main Content -->
-                <div class="profile-section">
-                    <h2 class="section-title">
+                <div class="profile-section" id="personal-section">
+                    <h2 class="section-title" id="personal-title">
                         Personal Information
                     </h2>
                     <div class="info-grid">
-                        <div class="info-item">
+                        <div class="info-item" id="info-item-name">
                             <div class="info-label">Full Name</div>
                             <div class="info-value" id="info-name">-</div>
                         </div>
-                        <div class="info-item">
+                        <div class="info-item" id="info-item-email">
                             <div class="info-label">Email</div>
                             <div class="info-value" id="info-email">-</div>
                         </div>
-                        <div class="info-item">
-                            <div class="info-label">WhatsApp</div>
-                            <div class="info-value" id="info-whatsapp">-</div>
-                        </div>
-                        <div class="info-item">
+                        <div class="info-item" id="info-item-gender">
                             <div class="info-label">Gender</div>
                             <div class="info-value" id="info-gender">-</div>
                         </div>
-                        <div class="info-item">
+                        <div class="info-item" id="info-item-location">
                             <div class="info-label">Location</div>
                             <div class="info-value" id="info-location">-</div>
                         </div>
-                        <div class="info-item">
+                        <div class="info-item" id="info-item-linkedin">
                             <div class="info-label">LinkedIn</div>
                             <div class="info-value" id="info-linkedin">-</div>
                         </div>
                     </div>
+                </div>
 
-                    <h2 class="section-title" style="margin-top: 2rem;">
+                <div class="profile-section" id="education-section">
+                    <h2 class="section-title" id="education-title">
                         Education
                     </h2>
                     <div class="info-grid">
-                        <div class="info-item">
+                        <div class="info-item" id="info-item-college">
                             <div class="info-label">College/University</div>
                             <div class="info-value" id="info-college">-</div>
                         </div>
-                        <div class="info-item">
+                        <div class="info-item" id="info-item-degree">
                             <div class="info-label">Degree</div>
                             <div class="info-value" id="info-degree">-</div>
                         </div>
-                        <div class="info-item">
+                        <div class="info-item" id="info-item-branch">
                             <div class="info-label">Branch/Field</div>
                             <div class="info-value" id="info-branch">-</div>
                         </div>
-                        <div class="info-item">
+                        <div class="info-item" id="info-item-year">
                             <div class="info-label">Year of Study</div>
                             <div class="info-value" id="info-year">-</div>
                         </div>
-                        <div class="info-item">
+                        <div class="info-item" id="info-item-cgpa">
                             <div class="info-label">CGPA</div>
                             <div class="info-value" id="info-cgpa">-</div>
                         </div>
-                        <div class="info-item">
+                        <div class="info-item" id="info-item-graduation">
                             <div class="info-label">Expected Graduation</div>
                             <div class="info-value" id="info-graduation">-</div>
                         </div>
                     </div>
+                </div>
 
-                    <h2 class="section-title" style="margin-top: 2rem;">
+                <div class="profile-section" id="professional-section">
+                    <h2 class="section-title" id="professional-title">
                         Professional Information
                     </h2>
                     <div class="info-grid">
-                        <!-- Remove Headline and Experience fields -->
-                        <div class="info-item">
+                        <div class="info-item" id="info-item-roles">
                             <div class="info-label">Preferred Roles</div>
                             <div class="info-value" id="info-roles">-</div>
                         </div>
                     </div>
+                </div>
 
-                    <h2 class="section-title" style="margin-top: 2rem;">Work Experience</h2>
+                <div class="profile-section" id="experience-section">
+                    <h2 class="section-title" id="experience-title">Work Experience</h2>
                     <div class="about-text" id="info-work-experience">No work experience listed.</div>
-                    <h2 class="section-title" style="margin-top: 2rem;">
+                </div>
+
+                <div class="profile-section" id="skills-section">
+                    <h2 class="section-title" id="skills-title">
                         Skills
                     </h2>
                     <div class="skills-container" id="skills-container">
                         <!-- Skills will be populated here -->
                     </div>
+                </div>
 
-                    <h2 class="section-title" style="margin-top: 2rem;">
+                <div class="profile-section" id="achievements-section">
+                    <h2 class="section-title" id="achievements-title">
                         Academic Achievements
                     </h2>
                     <div class="about-text" id="info-achievements">No achievements listed.</div>
+                </div>
 
-                    <h2 class="section-title" style="margin-top: 2rem;">
+                <div class="profile-section" id="about-section">
+                    <h2 class="section-title" id="about-title">
                         About Me
                     </h2>
                     <div class="about-text" id="info-about">No information provided.</div>
                 </div>
+                </div>
 
                 <!-- Portfolio Section -->
-                <div class="portfolio-section">
-                    <h2 class="section-title">
+                <div class="portfolio-section" id="portfolio-section">
+                    <h2 class="section-title" id="portfolio-title">
                         Portfolio
                     </h2>
                     <div id="portfolio-content">
-                        <div class="loading">
-                            <div class="loading-spinner"></div>
+                        <div class="section-loading">
+                            <div class="section-loading-spinner"></div>
                             <p>Loading portfolio...</p>
                         </div>
                     </div>
@@ -678,6 +743,7 @@
                 }
                 const data = snapshot.val();
                 populateProfile(data, studentId);
+                
                 // Load profile photo
                 try {
                     const profilePhotoRef = storageRef(storage, `profile/${studentId}.webp`);
@@ -686,11 +752,16 @@
                 } catch (error) {
                     console.log('No profile photo found, using default');
                 }
+                
                 // Load portfolio
                 await loadPortfolio(studentId);
+                
+                // Hide loading overlay after everything is loaded
+                
             } catch (error) {
                 console.error('Error loading profile:', error);
                 showError('Failed to load profile. Please try again.');
+                
             }
         }
 
@@ -700,6 +771,31 @@
                 elem.parentElement.style.display = 'none';
             } else {
                 elem.parentElement.style.display = '';
+            }
+        }
+
+        // Helper to show section if it has data
+        function showSectionIfHasData(sectionId, hasData) {
+            const section = document.getElementById(sectionId);
+            const title = document.getElementById(sectionId.replace('-section', '-title'));
+            
+            if (hasData) {
+                section.classList.add('loaded');
+                if (title) title.classList.add('loaded');
+            } else {
+                section.style.display = 'none';
+            }
+        }
+
+        // Helper to show info item if it has data
+        function showInfoItemIfHasData(itemId, value) {
+            const item = document.getElementById(itemId);
+            if (item) {
+                if (value && value.trim() !== '' && value !== '-' && value !== 'Not specified' && value !== 'Not provided') {
+                    item.classList.add('loaded');
+                } else {
+                    item.style.display = 'none';
+                }
             }
         }
 
@@ -722,86 +818,117 @@
             document.getElementById('stat-college').textContent = education.college || '';
             hideIfBlank(document.getElementById('stat-college'), education.college);
 
-            // Personal Information
-            const infoFields = [
-                ['info-name', personal.name],
-                ['info-email', personal.email],
-                ['info-whatsapp', personal.whatsapp],
-                ['info-gender', personal.gender],
-                ['info-location', personal.location],
-                ['info-linkedin', personal.linkedin],
-                ['info-college', education.college],
-                ['info-degree', education.degree],
-                ['info-branch', education.branch],
-                ['info-year', education.year],
-                ['info-cgpa', education.cgpa],
-                ['info-graduation', education.graduation],
-                ['info-roles', data.roles],
+            // Personal Information Section
+            let personalHasData = false;
+            const personalFields = [
+                ['info-item-name', 'info-name', personal.name],
+                ['info-item-email', 'info-email', personal.email],
+                ['info-item-gender', 'info-gender', personal.gender],
+                ['info-item-location', 'info-location', personal.location],
+                ['info-item-linkedin', 'info-linkedin', personal.linkedin],
             ];
-            infoFields.forEach(([id, value]) => {
-                const elem = document.getElementById(id);
+            
+            personalFields.forEach(([itemId, valueId, value]) => {
+                const elem = document.getElementById(valueId);
                 if (elem) {
                     elem.textContent = value || '';
-                    hideIfBlank(elem, value);
+                    showInfoItemIfHasData(itemId, value);
+                    if (value && value.trim() !== '' && value !== '-' && value !== 'Not specified' && value !== 'Not provided') {
+                        personalHasData = true;
+                    }
                 }
             });
+            showSectionIfHasData('personal-section', personalHasData);
 
-            // About
-            const aboutElem = document.getElementById('info-about');
-            if (aboutElem) {
-                aboutElem.textContent = personal.about || '';
-                if (!personal.about || personal.about.trim() === '') {
-                    aboutElem.parentElement.style.display = 'none';
-                } else {
-                    aboutElem.parentElement.style.display = '';
+            // Education Section
+            let educationHasData = false;
+            const educationFields = [
+                ['info-item-college', 'info-college', education.college],
+                ['info-item-degree', 'info-degree', education.degree],
+                ['info-item-branch', 'info-branch', education.branch],
+                ['info-item-year', 'info-year', education.year],
+                ['info-item-cgpa', 'info-cgpa', education.cgpa],
+                ['info-item-graduation', 'info-graduation', education.graduation],
+            ];
+            
+            educationFields.forEach(([itemId, valueId, value]) => {
+                const elem = document.getElementById(valueId);
+                if (elem) {
+                    elem.textContent = value || '';
+                    showInfoItemIfHasData(itemId, value);
+                    if (value && value.trim() !== '' && value !== '-' && value !== 'Not specified' && value !== 'Not provided') {
+                        educationHasData = true;
+                    }
                 }
-            }
+            });
+            showSectionIfHasData('education-section', educationHasData);
 
-            // Academic Achievements
-            const achievementsElem = document.getElementById('info-achievements');
-            if (education.achievements) {
-                const achievementsArr = education.achievements.split(',').map(a => a.trim()).filter(a => a);
-                if (achievementsArr.length) {
-                    achievementsElem.innerHTML = '<ul style="margin:0 0 0 1.2em;padding:0;">' + achievementsArr.map(a => `<li>${a}</li>`).join('') + '</ul>';
-                    achievementsElem.parentElement.style.display = '';
-                } else {
-                    achievementsElem.parentElement.style.display = 'none';
+            // Professional Section
+            let professionalHasData = false;
+            const professionalFields = [
+                ['info-item-roles', 'info-roles', data.roles],
+            ];
+            
+            professionalFields.forEach(([itemId, valueId, value]) => {
+                const elem = document.getElementById(valueId);
+                if (elem) {
+                    elem.textContent = value || '';
+                    showInfoItemIfHasData(itemId, value);
+                    if (value && value.trim() !== '' && value !== '-' && value !== 'Not specified' && value !== 'Not provided') {
+                        professionalHasData = true;
+                    }
                 }
-            } else {
-                achievementsElem.parentElement.style.display = 'none';
-            }
+            });
+            showSectionIfHasData('professional-section', professionalHasData);
 
-            // Work Experience
+            // Work Experience Section
             const workExpElem = document.getElementById('info-work-experience');
+            let experienceHasData = false;
             if (workExpElem && data.experience) {
                 const expArr = data.experience.split(',').map(e => e.trim()).filter(e => e);
                 if (expArr.length) {
                     workExpElem.innerHTML = '<ul style="margin:0 0 0 1.2em;padding:0;">' + expArr.map(e => `<li>${e}</li>`).join('') + '</ul>';
-                    workExpElem.parentElement.style.display = '';
-                } else {
-                    workExpElem.parentElement.style.display = 'none';
+                    experienceHasData = true;
                 }
-            } else if (workExpElem) {
-                workExpElem.parentElement.style.display = 'none';
             }
+            showSectionIfHasData('experience-section', experienceHasData);
 
-            // Skills
+            // Skills Section
             const skillsContainer = document.getElementById('skills-container');
+            let skillsHasData = false;
             if (skillsContainer) {
-                if (!data.skills || !data.skills.trim()) {
-                    skillsContainer.innerHTML = '';
-                    skillsContainer.parentElement.style.display = 'none';
-                } else {
+                if (data.skills && data.skills.trim()) {
                     const skillsList = data.skills.split(',').map(skill => skill.trim()).filter(skill => skill);
-                    if (skillsList.length === 0) {
-                        skillsContainer.innerHTML = '';
-                        skillsContainer.parentElement.style.display = 'none';
-                    } else {
+                    if (skillsList.length > 0) {
                         skillsContainer.innerHTML = skillsList.map(skill => `<div class="skill-tag">${skill}</div>`).join('');
-                        skillsContainer.parentElement.style.display = '';
+                        skillsHasData = true;
                     }
                 }
             }
+            showSectionIfHasData('skills-section', skillsHasData);
+
+            // Academic Achievements Section
+            const achievementsElem = document.getElementById('info-achievements');
+            let achievementsHasData = false;
+            if (education.achievements) {
+                const achievementsArr = education.achievements.split(',').map(a => a.trim()).filter(a => a);
+                if (achievementsArr.length) {
+                    achievementsElem.innerHTML = '<ul style="margin:0 0 0 1.2em;padding:0;">' + achievementsArr.map(a => `<li>${a}</li>`).join('') + '</ul>';
+                    achievementsHasData = true;
+                }
+            }
+            showSectionIfHasData('achievements-section', achievementsHasData);
+
+            // About Section
+            const aboutElem = document.getElementById('info-about');
+            let aboutHasData = false;
+            if (aboutElem) {
+                aboutElem.textContent = personal.about || '';
+                if (personal.about && personal.about.trim() !== '') {
+                    aboutHasData = true;
+                }
+            }
+            showSectionIfHasData('about-section', aboutHasData);
         }
 
         function populateSkills(skills) {
@@ -824,6 +951,8 @@
 
         async function loadPortfolio(studentId) {
             const portfolioContent = document.getElementById('portfolio-content');
+            const portfolioSection = document.getElementById('portfolio-section');
+            const portfolioTitle = document.getElementById('portfolio-title');
             
             try {
                 // Check for Google Drive folder
@@ -832,15 +961,12 @@
 
                 if (driveFolderId) {
                     await loadDrivePortfolio(driveFolderId, portfolioContent);
+                    // Show portfolio section if we have data
+                    portfolioSection.classList.add('loaded');
+                    portfolioTitle.classList.add('loaded');
                 } else {
-                    // Show portfolio links instead
-                    portfolioContent.innerHTML = `
-                        <div style="text-align: center; padding: 2rem; color: #6b7280;">
-                            <i class="fas fa-folder-open" style="font-size: 3rem; margin-bottom: 1rem; color: #d1d5db;"></i>
-                            <p>No Google Drive portfolio connected</p>
-                            <p style="font-size: 0.9rem;">Check the portfolio links in the sidebar for external portfolios</p>
-                        </div>
-                    `;
+                    // Hide portfolio section if no data
+                    portfolioSection.style.display = 'none';
                 }
             } catch (error) {
                 console.error('Error loading portfolio:', error);
@@ -849,6 +975,8 @@
                         Failed to load portfolio. Please try again later.
                     </div>
                 `;
+                // Hide portfolio section on error
+                portfolioSection.style.display = 'none';
             }
         }
 

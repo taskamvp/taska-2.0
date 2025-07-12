@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../css/classified-navbar.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
         /* Confirmation Dialog Styles */
         .confirmation-dialog {
@@ -768,6 +769,7 @@
                 
                 <h3>Choose a Connection</h3>
                 <p>Select a professional from your connections to view and work on tasks together.</p>
+                
                 <div class="connection-steps">
                     <div class="step">
                         <div class="step-number">1</div>
@@ -781,6 +783,27 @@
                         <div class="step-number">3</div>
                         <div class="step-text">View tasks and chat with your selected connection</div>
                     </div>
+                </div>
+                
+                <!-- Invite to Connect Button - moved to bottom -->
+                <div style="text-align: center; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #e0e0e0;">
+                    <button id="invite-connect-btn-tasks" style="
+                        font-size: 14px; 
+                        padding: 10px 20px; 
+                        background: #f8f9fa; 
+                        border: 1px solid #dee2e6; 
+                        color: #495057;
+                        border-radius: 6px;
+                        font-weight: 400;
+                        cursor: pointer;
+                        transition: all 0.2s;
+                        font-family: 'Poppins', sans-serif;
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 8px;
+                    " onmouseover="this.style.background='#e9ecef'; this.style.borderColor='#adb5bd'" onmouseout="this.style.background='#f8f9fa'; this.style.borderColor='#dee2e6'">
+                        <i class="fas fa-share-alt" style="font-size: 12px;"></i> Invite to Connect
+                    </button>
                 </div>
             </div>
         </div>
@@ -3999,6 +4022,398 @@ async function acceptConnection(inviteId, inviterRole) {
 }
 
 // === End Invite Connection Functions ===
+
+// === Invite to Connect Modal for Tasks Page ===
+// Create the invite modal dynamically
+const inviteConnectModalTasks = document.createElement('div');
+inviteConnectModalTasks.id = 'invite-connect-modal-tasks';
+inviteConnectModalTasks.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    backdrop-filter: blur(8px);
+`;
+
+inviteConnectModalTasks.innerHTML = `
+    <div style="
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 12px;
+        padding: 0;
+        max-width: 520px;
+        width: 90%;
+        max-height: 90vh;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 8px 25px rgba(0, 0, 0, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(20px);
+    ">
+        <!-- macOS-style title bar -->
+        <div style="
+            background: rgba(248, 249, 250, 0.8);
+            padding: 12px 20px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            backdrop-filter: blur(10px);
+        ">
+            <h2 style="
+                margin: 0;
+                font-size: 16px;
+                font-weight: 500;
+                color: #1d1d1f;
+                flex: 1;
+                text-align: center;
+            ">Invite to Connect</h2>
+            
+            <button id="close-invite-modal-tasks" style="
+                background: none;
+                border: none;
+                font-size: 20px;
+                cursor: pointer;
+                color: #6e6e73;
+                padding: 4px 8px;
+                border-radius: 6px;
+                transition: all 0.2s;
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 32px;
+                height: 32px;
+            " onmouseover="this.style.background='rgba(0, 0, 0, 0.1)'; this.style.color='#1d1d1f'" onmouseout="this.style.background='none'; this.style.color='#6e6e73'" onclick="closeInviteModalTasks()">×</button>
+        </div>
+        
+        <!-- Modal content -->
+        <div style="padding: 32px;">
+            <div style="text-align: center; margin-bottom: 24px;">
+                <p style="
+                    color: #6e6e73;
+                    margin-bottom: 24px;
+                    font-size: 15px;
+                    line-height: 1.5;
+                    font-weight: 400;
+                ">Share this QR code or link to connect with Employers on Taska</p>
+                
+                <div id="qr-code-container-tasks" style="
+                    display: inline-block;
+                    padding: 24px;
+                    background: rgba(248, 249, 250, 0.8);
+                    border-radius: 16px;
+                    margin-bottom: 24px;
+                    border: 1px solid rgba(0, 0, 0, 0.08);
+                    backdrop-filter: blur(10px);
+                ">
+                    <div id="qr-code-tasks" style="width: 200px; height: 200px; margin: 0 auto;"></div>
+                </div>
+                
+                <div style="margin-bottom: 24px;">
+                    <label style="
+                        display: block;
+                        text-align: left;
+                        font-weight: 500;
+                        color: #1d1d1f;
+                        margin-bottom: 8px;
+                        font-size: 14px;
+                    ">Invite Link</label>
+                    <div style="
+                        display: flex;
+                        gap: 8px;
+                        align-items: center;
+                    ">
+                        <input type="text" id="invite-link-tasks" readonly style="
+                            flex: 1;
+                            padding: 12px 16px;
+                            border: 1px solid rgba(0, 0, 0, 0.1);
+                            border-radius: 8px;
+                            font-size: 14px;
+                            background: rgba(248, 249, 250, 0.8);
+                            color: #6e6e73;
+                            font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+                            outline: none;
+                            transition: all 0.2s;
+                        " onfocus="this.style.borderColor='#007aff'; this.style.boxShadow='0 0 0 3px rgba(0, 122, 255, 0.1)'" onblur="this.style.borderColor='rgba(0, 0, 0, 0.1)'; this.style.boxShadow='none'">
+                        <button id="copy-link-btn-tasks" style="
+                            padding: 12px 20px;
+                            background: #007aff;
+                            color: white;
+                            border: none;
+                            border-radius: 8px;
+                            cursor: pointer;
+                            font-weight: 500;
+                            font-size: 14px;
+                            transition: all 0.2s;
+                            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                            white-space: nowrap;
+                        " onmouseover="this.style.background='#0056cc'" onmouseout="this.style.background='#007aff'">Copy</button>
+                    </div>
+                </div>
+                
+                <div style="
+                    display: flex;
+                    gap: 12px;
+                    justify-content: center;
+                    flex-wrap: wrap;
+                ">
+                    <button id="share-whatsapp-btn-tasks" style="
+                        padding: 12px 20px;
+                        background: #25d366;
+                        color: white;
+                        border: none;
+                        border-radius: 8px;
+                        cursor: pointer;
+                        font-weight: 500;
+                        font-size: 14px;
+                        transition: all 0.2s;
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                    " onmouseover="this.style.background='#128c7e'" onmouseout="this.style.background='#25d366'">
+                        <i class="fab fa-whatsapp" style="font-size: 16px;"></i>
+                        WhatsApp
+                    </button>
+                    
+                    <button id="share-email-btn-tasks" style="
+                        padding: 12px 20px;
+                        background: #007aff;
+                        color: white;
+                        border: none;
+                        border-radius: 8px;
+                        cursor: pointer;
+                        font-weight: 500;
+                        font-size: 14px;
+                        transition: all 0.2s;
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                    " onmouseover="this.style.background='#0056cc'" onmouseout="this.style.background='#007aff'">
+                        <i class="fas fa-envelope" style="font-size: 14px;"></i>
+                        Email
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+`;
+
+document.body.appendChild(inviteConnectModalTasks);
+
+// Add event listeners for the tasks page invite modal
+document.addEventListener('DOMContentLoaded', function() {
+    // Add event listener for the invite button in tasks page
+    const inviteBtnTasks = document.getElementById('invite-connect-btn-tasks');
+    if (inviteBtnTasks) {
+        inviteBtnTasks.addEventListener('click', function() {
+            openInviteModalTasks();
+        });
+    }
+    
+    // Add event listener for the close button
+    const closeBtnTasks = document.getElementById('close-invite-modal-tasks');
+    if (closeBtnTasks) {
+        closeBtnTasks.addEventListener('click', function() {
+            closeInviteModalTasks();
+        });
+    }
+    
+    // Add event listener for modal backdrop
+    inviteConnectModalTasks.addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeInviteModalTasks();
+        }
+    });
+    
+    // Add event listeners for share buttons
+    const copyBtnTasks = document.getElementById('copy-link-btn-tasks');
+    if (copyBtnTasks) {
+        copyBtnTasks.addEventListener('click', function() {
+            copyInviteLinkTasks();
+        });
+    }
+    
+    const whatsappBtnTasks = document.getElementById('share-whatsapp-btn-tasks');
+    if (whatsappBtnTasks) {
+        whatsappBtnTasks.addEventListener('click', function() {
+            shareViaWhatsAppTasks();
+        });
+    }
+    
+    const emailBtnTasks = document.getElementById('share-email-btn-tasks');
+    if (emailBtnTasks) {
+        emailBtnTasks.addEventListener('click', function() {
+            shareViaEmailTasks();
+        });
+    }
+});
+
+// Functions for tasks page invite modal
+function openInviteModalTasks() {
+    if (!userId) {
+        alert('You must be logged in to generate an invite link.');
+        return;
+    }
+    
+    checkUserRoleAndGenerateLinkTasks();
+}
+
+async function checkUserRoleAndGenerateLinkTasks() {
+    try {
+        // Check if user exists in studentslist
+        const studentSnapshot = await get(ref(db, `studentslist/${userId}`));
+        const professionalSnapshot = await get(ref(db, `professionalslist/${userId}`));
+        
+        let inviteLink;
+        if (studentSnapshot.exists()) {
+            // User is a student - invite to checkinvite.html
+            inviteLink = `${window.location.origin}/checkinvite.html?invite=${userId}`;
+        } else if (professionalSnapshot.exists()) {
+            // User is a professional - invite to checkinvite.html
+            inviteLink = `${window.location.origin}/checkinvite.html?invite=${userId}`;
+        } else {
+            // User not found in either list
+            alert('User role not found. Please try again.');
+            return;
+        }
+        
+        document.getElementById('invite-link-tasks').value = inviteLink;
+        
+        // Show modal first
+        inviteConnectModalTasks.style.display = 'flex';
+        
+        // Generate QR code with a small delay to ensure library is loaded
+        setTimeout(() => {
+            generateQRCodeTasks(inviteLink);
+        }, 100);
+        
+    } catch (error) {
+        console.error('Error checking user role:', error);
+        alert('Failed to generate invite link. Please try again.');
+    }
+}
+
+function closeInviteModalTasks() {
+    inviteConnectModalTasks.style.display = 'none';
+}
+
+function generateQRCodeTasks(text) {
+    const qrContainer = document.getElementById('qr-code-tasks');
+    qrContainer.innerHTML = '';
+    
+    console.log('Generating QR code for tasks page:', text);
+    console.log('QRCode library available:', typeof QRCode !== 'undefined');
+    
+    // Check if QRCode library is available
+    if (typeof QRCode === 'undefined') {
+        console.warn('QRCode library not loaded, showing fallback');
+        qrContainer.innerHTML = `
+            <div style="
+                width: 200px; 
+                height: 200px; 
+                background: #f8f9fa; 
+                border: 2px dashed #dadce0; 
+                display: flex; 
+                align-items: center; 
+                justify-content: center; 
+                color: #5f6368; 
+                font-size: 0.875rem; 
+                text-align: center;
+                padding: 1rem;
+            ">
+                QR Code not available<br>
+                Please use the invite link below
+            </div>
+        `;
+        return;
+    }
+    
+    try {
+        // Create QR code using qrcodejs library
+        new QRCode(qrContainer, {
+            text: text,
+            width: 200,
+            height: 200,
+            colorDark: '#000000',
+            colorLight: '#FFFFFF',
+            correctLevel: QRCode.CorrectLevel.H
+        });
+        
+        console.log('QR code generated successfully for tasks page');
+    } catch (error) {
+        console.error('Exception in QR code generation for tasks page:', error);
+        qrContainer.innerHTML = `
+            <div style="
+                width: 200px; 
+                height: 200px; 
+                background: #f8f9fa; 
+                border: 2px dashed #dadce0; 
+                display: flex; 
+                align-items: center; 
+                justify-content: center; 
+                color: #5f6368; 
+                font-size: 0.875rem; 
+                text-align: center;
+                padding: 1rem;
+            ">
+                QR Code generation failed<br>
+                Please use the invite link below
+            </div>
+        `;
+    }
+}
+
+function copyInviteLinkTasks() {
+    const inviteLink = document.getElementById('invite-link-tasks');
+    inviteLink.select();
+    inviteLink.setSelectionRange(0, 99999);
+    
+    try {
+        document.execCommand('copy');
+        const copyBtn = document.getElementById('copy-link-btn-tasks');
+        const originalText = copyBtn.textContent;
+        const originalBackground = copyBtn.style.background;
+        
+        copyBtn.textContent = 'Copied!';
+        copyBtn.style.background = '#34c759';
+        
+        setTimeout(() => {
+            copyBtn.textContent = originalText;
+            copyBtn.style.background = originalBackground || '#007aff';
+        }, 2000);
+    } catch (err) {
+        alert('Failed to copy link. Please copy it manually.');
+    }
+}
+
+function shareViaWhatsAppTasks() {
+    const inviteLink = document.getElementById('invite-link-tasks').value;
+    const message = `Hi! I'd like to connect with you on Taska. Here's my invite link: ${inviteLink}`;
+    
+    // Use WhatsApp Web API to open WhatsApp directly
+    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+    
+    // Open WhatsApp in a new window/tab
+    window.open(whatsappUrl, '_blank');
+}
+
+function shareViaEmailTasks() {
+    const inviteLink = document.getElementById('invite-link-tasks').value;
+    const subject = 'Connect with me on Taska';
+    const body = `Hi! I'd like to connect with you on Taska. Here's my invite link: ${inviteLink}`;
+    const emailUrl = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.open(emailUrl);
+}
+
+// === End Invite to Connect Modal for Tasks Page ===
 </script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93b153f5ba4ebd25',t:'MTc0NjQ1OTUzOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>

@@ -1799,6 +1799,24 @@ body {
             }
         }
     </style>
+    <!-- Firebase App (the core Firebase SDK) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <!-- Firebase Auth -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script>
+      var firebaseConfig = {
+        apiKey: "AIzaSyDZIDlEtaNRxODoFhRw0xF2yYFBqqBexqo",
+        authDomain: "taska-45011.firebaseapp.com",
+        databaseURL: "https://taska-45011-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "taska-45011",
+        storageBucket: "taska-45011.appspot.com",
+        messagingSenderId: "205487498813",
+        appId: "1:205487498813:web:0de2c9eab567482781ec54"
+      };
+      if (!window.firebase || !firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+      }
+    </script>
 </head>
 <body>
     <nav class="navbar">
