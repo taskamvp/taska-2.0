@@ -584,8 +584,13 @@
             
             // Update inviter details
             if (inviterData) {
-                document.getElementById('inviter-name').textContent = inviterData.personal?.name || 'A user';
+                const inviterName = inviterData.personal?.name || 'A user';
+                document.getElementById('inviter-name').textContent = inviterName;
                 document.getElementById('inviter-role').textContent = inviterData.role || 'user';
+                
+                // Update the subtitle with the inviter's name
+                document.querySelector('#login-state .invite-subtitle').textContent = 
+                    `${inviterName} wants to connect with you on Taska. Please log in or sign up to accept this invitation.`;
                 
                 // Show/hide avatar based on profile picture availability
                 const avatarElement = document.getElementById('inviter-avatar');
