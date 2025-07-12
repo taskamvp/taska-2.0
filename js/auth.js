@@ -123,8 +123,52 @@ export async function signup(userType) {
         const signInMethods = await fetchSignInMethodsForEmail(auth, email);
         if (signInMethods.length > 0) {
             toggleLoading(false);
-            showWarning("Account already exists. Please login.");
+            if (mappedUserType === 'student') {
+                showWarning("Email already registered. Please login.");
+            } else {
+                showWarning("Account already exists. Please login.");
+            }
             return;
+        }
+
+        // For students, also check if email exists in students database
+        if (mappedUserType === 'student') {
+            const { get } = await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js');
+            const studentsRef = ref(database, 'studentslist');
+            const snapshot = await get(studentsRef);
+            
+            if (snapshot.exists()) {
+                const students = snapshot.val();
+                const emailExists = Object.values(students).some(student => 
+                    student.personal && student.personal.email === email
+                );
+                
+                if (emailExists) {
+                    toggleLoading(false);
+                    showWarning("Email already registered. Please login.");
+                    return;
+                }
+            }
+        }
+
+        // For professionals, also check if email exists in professionals database
+        if (mappedUserType === 'professional') {
+            const { get } = await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js');
+            const professionalsRef = ref(database, 'professionalslist');
+            const snapshot = await get(professionalsRef);
+            
+            if (snapshot.exists()) {
+                const professionals = snapshot.val();
+                const emailExists = Object.values(professionals).some(professional => 
+                    professional.email === email
+                );
+                
+                if (emailExists) {
+                    toggleLoading(false);
+                    showWarning("Email already registered. Please login.");
+                    return;
+                }
+            }
         }
 
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -160,7 +204,15 @@ export async function signup(userType) {
     } catch (error) {
         toggleLoading(false);
         console.debug("Signup error:", error.code, error.message);
-        showWarning("Signup failed. Please try again!");
+        if (error.code === 'auth/email-already-in-use') {
+            if (mappedUserType === 'student') {
+                showWarning("Email already registered. Please login.");
+            } else {
+                showWarning("Account already exists. Please login.");
+            }
+        } else {
+            showWarning("Signup failed. Please try again!");
+        }
     }
 }
 
