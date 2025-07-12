@@ -65,6 +65,7 @@ export function login(userType) {
             console.log(`${mappedUserType} logged in: ${user.email}, UID: ${user.uid}`);
             localStorage.setItem('userId', user.uid);
             localStorage.setItem('userRole', mappedUserType);
+            localStorage.setItem('userEmail', user.email);
             toggleLoading(false);
             
             // Check if there's an invite parameter and redirect parameter
@@ -176,6 +177,7 @@ export async function signup(userType) {
         console.log(`${mappedUserType} signed up: ${user.email}, UID: ${user.uid}`);
         localStorage.setItem('userId', user.uid);
         localStorage.setItem('userRole', mappedUserType);
+        localStorage.setItem('userEmail', user.email);
 
         // Store user profile data
         const list = mappedUserType === 'professional' ? 'professionalslist' : 'studentslist';

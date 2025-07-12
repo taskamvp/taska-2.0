@@ -37,6 +37,185 @@
             padding: 2rem;
             margin-bottom: 2rem;
             text-align: center;
+            position: relative;
+        }
+
+        .profile-menu {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+        }
+
+        .menu-button {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: #5f6368;
+            cursor: pointer;
+            padding: 0.25rem;
+            border-radius: 50%;
+            transition: background-color 0.2s ease;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu-button:hover {
+            background-color: #f1f3f4;
+        }
+
+        .menu-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: #ffffff;
+            border: 1px solid #dadce0;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            min-width: 160px;
+            z-index: 1000;
+            display: none;
+        }
+
+        .menu-dropdown.show {
+            display: block;
+        }
+
+        .menu-item {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #202124;
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: background-color 0.2s ease;
+        }
+
+        .menu-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .menu-item.logout {
+            color: #ea4335;
+            border-top: 1px solid #dadce0;
+        }
+
+        .menu-item.logout:hover {
+            background-color: #fce8e6;
+        }
+
+        /* Profile View Modal */
+        .profile-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .profile-modal-content {
+            background: #ffffff;
+            border: 1px solid #dadce0;
+            border-radius: 8px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15), 0 8px 32px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .profile-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #dadce0;
+        }
+
+        .profile-modal-title {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: #202124;
+            font-family: 'Google Sans', 'Roboto', sans-serif;
+        }
+
+        .profile-modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #5f6368;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: background-color 0.2s ease;
+        }
+
+        .profile-modal-close:hover {
+            background-color: #f1f3f4;
+        }
+
+        .profile-view-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .profile-view-section {
+            background: #f8f9fa;
+            border: 1px solid #dadce0;
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .profile-view-section-title {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #202124;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #dadce0;
+            font-family: 'Google Sans', 'Roboto', sans-serif;
+        }
+
+        .profile-view-item {
+            margin-bottom: 1rem;
+        }
+
+        .profile-view-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #5f6368;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.25rem;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .profile-view-value {
+            font-size: 1rem;
+            color: #202124;
+            font-weight: 400;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .profile-view-value.empty {
+            color: #9aa0a6;
+            font-style: italic;
         }
 
         .form-title {
@@ -419,8 +598,19 @@
 
     <main class="main-container">
         <div class="form-header">
+            <div class="profile-menu">
+                <button class="menu-button" onclick="toggleMenu()">
+                    <i class="fas fa-ellipsis-v"></i>
+                </button>
+                <div class="menu-dropdown" id="profile-menu">
+                    <a href="#" class="menu-item logout" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </a>
+                </div>
+            </div>
             <h1 class="form-title">Employer Profile</h1>
-            <p class="form-subtitle">Complete your profile information to get matched with the best opportunities</p>
+            <p class="form-subtitle">Complete your profile information to get matched with the best Talent</p>
         </div>
 
         <div class="form-container">
@@ -446,12 +636,18 @@
 
                     <div class="form-group">
                         <label class="form-label">Email Address</label>
-                        <input type="email" id="email" class="form-input" placeholder="your.email@example.com">
+                        <input type="email" id="email" class="form-input" placeholder="Enter email address" disabled>
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">Phone Number</label>
-                        <input type="tel" id="phone" class="form-input" placeholder="+1234567890">
+                        <label class="form-label">WhatsApp Number</label>
+                        <div style="position: relative;">
+                            <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #5f6368; font-size: 0.875rem; z-index: 1;">+91</span>
+                            <input type="tel" id="phone" class="form-input" placeholder="Enter WhatsApp number" style="padding-left: 3rem;">
+                        </div>
+                        <small style="color: #5f6368; font-size: 0.75rem; margin-top: 0.25rem;">
+                             Your WhatsApp number will not be exposed to other users
+                        </small>
                     </div>
 
                     <div class="form-group">
@@ -510,9 +706,6 @@
                 <button type="button" id="save-btn" class="btn btn-primary">
                     <i class="fas fa-save"></i> Save Changes
                 </button>
-                <a href="#" id="logout-btn" class="btn btn-danger">
-                    <i class="fas fa-sign-out-alt"></i> Logout
-                </a>
             </div>
         </div>
     </main>
@@ -529,6 +722,75 @@
                 <button type="button" class="cropper-btn rotate"><i class="fas fa-redo"></i></button>
                 <button type="button" class="cropper-btn save">Save</button>
                 <button type="button" class="cropper-btn cancel">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile View Modal -->
+    <div class="profile-modal" id="profile-modal">
+        <div class="profile-modal-content">
+            <div class="profile-modal-header">
+                <h2 class="profile-modal-title">My Profile</h2>
+                <button class="profile-modal-close" onclick="closeProfileModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="profile-view-grid">
+                <div class="profile-view-section">
+                    <h3 class="profile-view-section-title">Personal Information</h3>
+                    <div class="profile-view-item">
+                        <div class="profile-view-label">Full Name</div>
+                        <div class="profile-view-value" id="view-name">-</div>
+                    </div>
+                    <div class="profile-view-item">
+                        <div class="profile-view-label">Email Address</div>
+                        <div class="profile-view-value" id="view-email">-</div>
+                    </div>
+                    <div class="profile-view-item">
+                        <div class="profile-view-label">WhatsApp Number</div>
+                        <div class="profile-view-value" id="view-phone">-</div>
+                    </div>
+                    <div class="profile-view-item">
+                        <div class="profile-view-label">Location</div>
+                        <div class="profile-view-value" id="view-location">-</div>
+                    </div>
+                    <div class="profile-view-item">
+                        <div class="profile-view-label">Bio</div>
+                        <div class="profile-view-value" id="view-bio">-</div>
+                    </div>
+                </div>
+
+                <div class="profile-view-section">
+                    <h3 class="profile-view-section-title">Professional Information</h3>
+                    <div class="profile-view-item">
+                        <div class="profile-view-label">Job Role</div>
+                        <div class="profile-view-value" id="view-jobRole">-</div>
+                    </div>
+                    <div class="profile-view-item">
+                        <div class="profile-view-label">Company</div>
+                        <div class="profile-view-value" id="view-company">-</div>
+                    </div>
+                    <div class="profile-view-item">
+                        <div class="profile-view-label">Experience</div>
+                        <div class="profile-view-value" id="view-experience">-</div>
+                    </div>
+                </div>
+
+                <div class="profile-view-section">
+                    <h3 class="profile-view-section-title">Educational Information</h3>
+                    <div class="profile-view-item">
+                        <div class="profile-view-label">College/University</div>
+                        <div class="profile-view-value" id="view-college">-</div>
+                    </div>
+                    <div class="profile-view-item">
+                        <div class="profile-view-label">Degree</div>
+                        <div class="profile-view-value" id="view-degree">-</div>
+                    </div>
+                    <div class="profile-view-item">
+                        <div class="profile-view-label">Area of Study</div>
+                        <div class="profile-view-value" id="view-areaOfStudy">-</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -782,19 +1044,23 @@
             try {
                 const userRef = ref(database, `professionalslist/${userId}`);
                 const snapshot = await get(userRef);
+                
+                // Get signed-up email from localStorage
+                const signedUpEmail = localStorage.getItem('userEmail');
+                document.getElementById('email').value = signedUpEmail || '';
+                
                 if (snapshot.exists()) {
                     const data = snapshot.val();
-                    document.getElementById('name').value = data.personal?.name || 'Not set';
-                    document.getElementById('email').value = data.personal?.email || 'Not set';
-                    document.getElementById('phone').value = data.personal?.phone || 'Not set';
-                    document.getElementById('location').value = data.personal?.location || 'Not set';
-                    document.getElementById('bio').value = data.personal?.bio || 'Not set';
-                    document.getElementById('jobRole').value = data.professional?.jobRole || 'Not set';
-                    document.getElementById('company').value = data.professional?.company || 'Not set';
-                    document.getElementById('experience').value = data.professional?.experience || 'Not set';
-                    document.getElementById('college').value = data.education?.college || 'Not set';
-                    document.getElementById('degree').value = data.education?.degree || 'Not set';
-                    document.getElementById('areaOfStudy').value = data.education?.areaOfStudy || 'Not set';
+                    document.getElementById('name').value = data.personal?.name || '';
+                    document.getElementById('phone').value = data.personal?.phone || '';
+                    document.getElementById('location').value = data.personal?.location || '';
+                    document.getElementById('bio').value = data.personal?.bio || '';
+                    document.getElementById('jobRole').value = data.professional?.jobRole || '';
+                    document.getElementById('company').value = data.professional?.company || '';
+                    document.getElementById('experience').value = data.professional?.experience || '';
+                    document.getElementById('college').value = data.education?.college || '';
+                    document.getElementById('degree').value = data.education?.degree || '';
+                    document.getElementById('areaOfStudy').value = data.education?.areaOfStudy || '';
                     profileImagePreview.src = data.personal?.profilePic || '../assets/avatar/1.png';
                 } else {
                     alert("No profile data found. Please update your profile.");
@@ -824,6 +1090,78 @@
     <script type="module">
         import { signOut } from '../js/auth.js';
         window.signOut = signOut;
+    </script>
+
+    <!-- Menu functionality -->
+    <script>
+        // Menu functionality
+        function toggleMenu() {
+            const menu = document.getElementById('profile-menu');
+            menu.classList.toggle('show');
+        }
+
+        function viewMyProfile() {
+            // Close menu if open
+            document.getElementById('profile-menu').classList.remove('show');
+            
+            // Populate the modal with current form data
+            document.getElementById('view-name').textContent = document.getElementById('name').value || 'Not provided';
+            document.getElementById('view-email').textContent = document.getElementById('email').value || 'Not provided';
+            document.getElementById('view-phone').textContent = document.getElementById('phone').value || 'Not provided';
+            document.getElementById('view-location').textContent = document.getElementById('location').value || 'Not provided';
+            document.getElementById('view-bio').textContent = document.getElementById('bio').value || 'Not provided';
+            document.getElementById('view-jobRole').textContent = document.getElementById('jobRole').value || 'Not provided';
+            document.getElementById('view-company').textContent = document.getElementById('company').value || 'Not provided';
+            document.getElementById('view-experience').textContent = document.getElementById('experience').value || 'Not provided';
+            document.getElementById('view-college').textContent = document.getElementById('college').value || 'Not provided';
+            document.getElementById('view-degree').textContent = document.getElementById('degree').value || 'Not provided';
+            document.getElementById('view-areaOfStudy').textContent = document.getElementById('areaOfStudy').value || 'Not provided';
+            
+            // Show the modal
+            document.getElementById('profile-modal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeProfileModal() {
+            document.getElementById('profile-modal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function logout() {
+            // Show confirmation dialog
+            if (confirm('Are you sure you want to logout?')) {
+                // Clear all localStorage data
+                localStorage.clear();
+                
+                // Sign out from Firebase
+                if (typeof signOut === 'function') {
+                    signOut();
+                } else {
+                    // Fallback: redirect to index page
+                    window.location.href = '../index.html';
+                }
+            }
+        }
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('profile-menu');
+            const menuButton = document.querySelector('.menu-button');
+            
+            if (menu && menuButton && !menu.contains(event.target) && !menuButton.contains(event.target)) {
+                menu.classList.remove('show');
+            }
+        });
+
+        // Close profile modal when clicking outside
+        document.addEventListener('click', function(event) {
+            const modal = document.getElementById('profile-modal');
+            const modalContent = document.querySelector('.profile-modal-content');
+            
+            if (modal && modalContent && event.target === modal) {
+                closeProfileModal();
+            }
+        });
     </script>
 </body>
 </html>
