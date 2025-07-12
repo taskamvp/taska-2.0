@@ -1272,6 +1272,29 @@ function startRealTimeMonitoring() {
             }
         }
     });
+    
+    // Start real-time monitoring for pending connection requests
+    const connectionsRef = ref(db, `users/${userId}/connections`);
+    onValue(connectionsRef, (snapshot) => {
+        if (snapshot.exists()) {
+            const connections = snapshot.val();
+            // Check for new pending requests
+            for (const requesterId in connections) {
+                const connection = connections[requesterId];
+                if (connection.status === 'pending' && connection.timestamp) {
+                    // Check if this is a new request (within last 5 seconds)
+                    const requestTime = new Date(connection.timestamp);
+                    const now = new Date();
+                    const timeDiff = (now - requestTime) / 1000; // in seconds
+                    
+                    if (timeDiff < 5) {
+                        // This is a new request, show notification
+                        showConnectionRequestNotification(requesterId, connection);
+                    }
+                }
+            }
+        }
+    });
 }
 
 // Show notification when student is promoted from waitlist to primary
@@ -1304,6 +1327,63 @@ function showPromotionNotification(task) {
     
     // Reload assigned tasks to show the new primary assignment
     loadAssignedTasks();
+}
+
+// Show notification when new connection request arrives
+async function showConnectionRequestNotification(requesterId, connection) {
+    try {
+        // Fetch requester details
+        const professionals = await fetchProfessionalData();
+        const studentsRef = ref(db, 'studentslist');
+        const studentsSnapshot = await get(studentsRef);
+        const students = studentsSnapshot.exists() ? studentsSnapshot.val() : {};
+        
+        const professional = professionals.find(p => p.id === requesterId);
+        const student = students[requesterId];
+        
+        let userName = "Someone";
+        let userRole = "user";
+        
+        if (professional) {
+            userName = professional.personal?.name || "A Professional";
+            userRole = "professional";
+        } else if (student) {
+            userName = student.personal?.name || "A Student";
+            userRole = "student";
+        }
+        
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = 'promotion-notification';
+        notification.innerHTML = `
+            <div class="notification-content">
+                <i class="fas fa-user-plus"></i>
+                <div class="notification-text">
+                    <strong>New Connection Request!</strong>
+                    <p>${userName} (${userRole}) wants to connect with you on Taska. Would you like to accept this connection request?</p>
+                </div>
+                <button class="notification-close" onclick="this.parentElement.parentElement.remove()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        `;
+        
+        // Add to page
+        document.body.appendChild(notification);
+        
+        // Auto-remove after 10 seconds
+        setTimeout(() => {
+            if (notification.parentElement) {
+                notification.remove();
+            }
+        }, 10000);
+        
+        // Reload pending requests to show the new request
+        loadPendingRequests();
+        
+    } catch (error) {
+        console.error('Error showing connection request notification:', error);
+    }
 }
 
 function setupEventListeners() {
@@ -1366,11 +1446,17 @@ function setupEventListeners() {
         if (e.target.closest('.user-item')) {
             console.log('Connection item clicked');
             const userItem = e.target.closest('.user-item');
-            const professionalId = userItem.dataset.professionalId;
-            console.log('Professional ID from dataset:', professionalId);
-            if (professionalId) {
-                console.log('Calling selectProfessional with:', professionalId);
-                selectProfessional(professionalId);
+            const connectionId = userItem.dataset.connectionId;
+            const connectionType = userItem.dataset.connectionType;
+            console.log('Connection ID from dataset:', connectionId, 'Type:', connectionType);
+            if (connectionId) {
+                if (connectionType === 'professional') {
+                    console.log('Calling selectProfessional with:', connectionId);
+                    selectProfessional(connectionId);
+                } else if (connectionType === 'student') {
+                    console.log('Student connection clicked - not yet implemented for collaboration');
+                    alert('Student connections are not yet fully implemented for collaboration.');
+                }
             }
         }
         
@@ -1535,9 +1621,78 @@ function handleChatFileSelect(event) {
 }
 
 async function loadPendingRequests() {
-    // This function is not needed for the student workplace as students don't have pending requests
-    // It's kept for compatibility with the initialization
-    console.log('loadPendingRequests called - not needed for student workplace');
+    if (!elements.pendingRequestsList) return;
+    try {
+        const connectionsRef = ref(db, `users/${userId}/connections`);
+        const snapshot = await get(connectionsRef);
+        elements.pendingRequestsList.innerHTML = '';
+        const pendingRequestsSection = document.querySelector('.pending-requests');
+        
+        if (snapshot.exists()) {
+            const connections = snapshot.val();
+            let hasPending = false;
+            
+            // Fetch both professional and student data to handle requests from both
+            const professionals = await fetchProfessionalData();
+            const studentsRef = ref(db, 'studentslist');
+            const studentsSnapshot = await get(studentsRef);
+            const students = studentsSnapshot.exists() ? studentsSnapshot.val() : {};
+            
+            for (const requesterId in connections) {
+                if (connections[requesterId].status === "pending") {
+                    hasPending = true;
+                    
+                    // Determine if requester is a professional or student
+                    const professional = professionals.find(p => p.id === requesterId);
+                    const student = students[requesterId];
+                    
+                    let userName = "Unnamed";
+                    let userRole = "user";
+                    
+                    if (professional) {
+                        userName = professional.personal?.name || "Unnamed Employer";
+                        userRole = "professional";
+                    } else if (student) {
+                        userName = student.personal?.name || "Unnamed Student";
+                        userRole = "student";
+                    }
+                    
+                    const profilePic = await loadProfileImage(requesterId);
+                    
+                    const pendingItem = document.createElement('div');
+                    pendingItem.className = 'pending-item user-item';
+                    pendingItem.dataset.requesterId = requesterId;
+                    pendingItem.innerHTML = `
+                        <div class="user-info">
+                            <img src="${profilePic}" class="profile-pic" onerror="this.src='../assets/avatar/1.png'">
+                            <div class="user-details">
+                                <div class="name">${userName}</div>
+                                <div class="role">${userRole}</div>
+                            </div>
+                        </div>
+                        <div class="actions">
+                            <button class="accept-btn" onclick="acceptRequest('${requesterId}')">
+                                <i class="fas fa-check"></i> Accept
+                            </button>
+                            <button class="delete-btn" onclick="deleteRequest('${requesterId}')">
+                                <i class="fas fa-times"></i> Delete
+                            </button>
+                        </div>
+                    `;
+                    
+                    elements.pendingRequestsList.appendChild(pendingItem);
+                }
+            }
+            
+            pendingRequestsSection.style.display = hasPending ? 'block' : 'none';
+        } else {
+            pendingRequestsSection.style.display = 'none';
+        }
+    } catch (error) {
+        console.error("Error loading pending requests:", error);
+        elements.pendingRequestsList.innerHTML = '<p>Error loading pending requests.</p>';
+        document.querySelector('.pending-requests').style.display = 'none';
+    }
 }
 
 function checkAndShowWorkflowArea() {
@@ -1572,14 +1727,34 @@ async function loadConnections() {
         if (snapshot.exists()) {
             const connections = snapshot.val();
             let hasConnections = false;
+            
+            // Fetch both professional and student data
             const professionals = await fetchProfessionalData();
-            for (const professionalId in connections) {
-                if (connections[professionalId].status === "connected") {
+            const studentsRef = ref(db, 'studentslist');
+            const studentsSnapshot = await get(studentsRef);
+            const students = studentsSnapshot.exists() ? studentsSnapshot.val() : {};
+            
+            for (const connectionId in connections) {
+                if (connections[connectionId].status === "connected") {
                     hasConnections = true;
-                    const professional = professionals.find(p => p.id === professionalId) || {};
-                    const userName = professional.personal?.name || "Unnamed";
-                    const profilePic = await loadProfileImage(professionalId);
-                    const chatId = [userId, professionalId].sort().join("+");
+                    
+                    // Determine if connection is a professional or student
+                    const professional = professionals.find(p => p.id === connectionId);
+                    const student = students[connectionId];
+                    
+                    let userName = "Unnamed";
+                    let userRole = "user";
+                    
+                    if (professional) {
+                        userName = professional.personal?.name || "Unnamed Professional";
+                        userRole = "professional";
+                    } else if (student) {
+                        userName = student.personal?.name || "Unnamed Student";
+                        userRole = "student";
+                    }
+                    
+                    const profilePic = await loadProfileImage(connectionId);
+                    const chatId = [userId, connectionId].sort().join("+");
                     const chatRef = ref(db, `chats/${chatId}/messages`);
                     let lastMessage = "No messages yet";
                     let hasUnread = false;
@@ -1590,11 +1765,13 @@ async function loadConnections() {
                         lastMessage = lastMsg.file ? `[File] ${lastMsg.file.name}` : lastMsg.content || "No messages yet";
                         hasUnread = messages.some(msg => msg.senderId !== userId && !msg.read);
                     }
+                    
                     const userItem = document.createElement('div');
                     userItem.className = 'user-item';
-                    userItem.dataset.professionalId = professionalId;
+                    userItem.dataset.connectionId = connectionId;
+                    userItem.dataset.connectionType = professional ? 'professional' : 'student';
                     userItem.innerHTML = `
-                        <img src="${profilePic}" alt="${userName}" class="profile-pic">
+                        <img src="${profilePic}" alt="${userName}" class="profile-pic" onerror="this.src='../assets/avatar/1.png'">
                         <div class="user-info">
                             <div class="name">${userName}</div>
                             <div class="last-message">${lastMessage}</div>
@@ -1604,17 +1781,23 @@ async function loadConnections() {
                     
                     // Add click event listener to the user item
                     userItem.addEventListener('click', () => {
-                        selectProfessional(professionalId);
+                        if (professional) {
+                            selectProfessional(connectionId);
+                        } else {
+                            // For students, you might want to implement a different selection logic
+                            // For now, we'll just show a message
+                            alert('Student connections are not yet fully implemented for collaboration.');
+                        }
                     });
                     
                     elements.connectionsList.appendChild(userItem);
                 }
             }
             if (!hasConnections) {
-                elements.connectionsList.innerHTML = '<p>No connected professionals found.</p>';
+                elements.connectionsList.innerHTML = '<p>No connected users found.</p>';
             }
         } else {
-            elements.connectionsList.innerHTML = '<p>No connected professionals found.</p>';
+            elements.connectionsList.innerHTML = '<p>No connected users found.</p>';
         }
         isDataLoaded.connections = true;
         checkAllDataLoaded();
@@ -2973,30 +3156,42 @@ function closeSuccessModal() {
     elements.successModal.classList.remove('active');
 }
 
-async function acceptRequest({ professionalId }) {
+async function acceptRequest(requesterId) {
     try {
-        const studentConnectionRef = ref(db, `users/${userId}/connections/${professionalId}`);
-        const professionalConnectionRef = ref(db, `users/${professionalId}/connections/${userId}`);
+        // Handle both object parameter format and string parameter format
+        const id = typeof requesterId === 'object' ? requesterId.professionalId : requesterId;
+        
+        const studentConnectionRef = ref(db, `users/${userId}/connections/${id}`);
+        const requesterConnectionRef = ref(db, `users/${id}/connections/${userId}`);
         await update(studentConnectionRef, { status: "connected" });
-        await update(professionalConnectionRef, { status: "connected" });
+        await update(requesterConnectionRef, { status: "connected" });
         professionalData = null; // Clear cache
         await loadConnections();
         await loadPendingRequests();
+        
+        // Show success message
+        showSuccessModal('Connection Accepted!', 'The connection request has been accepted successfully.');
     } catch (error) {
         console.error("Error accepting request:", error);
         alert("Failed to accept request.");
     }
 }
 
-async function deleteRequest({ professionalId }) {
+async function deleteRequest(requesterId) {
     try {
-        const studentConnectionRef = ref(db, `users/${userId}/connections/${professionalId}`);
-        const professionalConnectionRef = ref(db, `users/${professionalId}/connections/${userId}`);
+        // Handle both object parameter format and string parameter format
+        const id = typeof requesterId === 'object' ? requesterId.professionalId : requesterId;
+        
+        const studentConnectionRef = ref(db, `users/${userId}/connections/${id}`);
+        const requesterConnectionRef = ref(db, `users/${id}/connections/${userId}`);
         await remove(studentConnectionRef);
-        await remove(professionalConnectionRef);
+        await remove(requesterConnectionRef);
         professionalData = null; // Clear cache to refresh professional data
         loadConnections();
         loadPendingRequests();
+        
+        // Show success message
+        showSuccessModal('Request Deleted!', 'The connection request has been deleted successfully.');
     } catch (error) {
         console.error("Error deleting request:", error);
         alert("Failed to delete request.");
@@ -3005,10 +3200,13 @@ async function deleteRequest({ professionalId }) {
 
 async function deleteConnection({ professionalId }) {
     try {
-        const studentConnectionRef = ref(db, `users/${userId}/connections/${professionalId}`);
-        const professionalConnectionRef = ref(db, `users/${professionalId}/connections/${userId}`);
+        // Handle both object parameter format and string parameter format
+        const id = typeof professionalId === 'object' ? professionalId.professionalId : professionalId;
+        
+        const studentConnectionRef = ref(db, `users/${userId}/connections/${id}`);
+        const requesterConnectionRef = ref(db, `users/${id}/connections/${userId}`);
         await remove(studentConnectionRef);
-        await remove(professionalConnectionRef);
+        await remove(requesterConnectionRef);
         professionalData = null; // Clear cache to refresh professional data
         loadConnections();
         loadPendingRequests();
@@ -3026,6 +3224,9 @@ async function deleteConnection({ professionalId }) {
         }
         
         selectedProfessionalId = null;
+        
+        // Show success message
+        showSuccessModal('Connection Deleted!', 'The connection has been deleted successfully.');
     } catch (error) {
         console.error("Error deleting connection:", error);
         alert("Failed to delete connection.");

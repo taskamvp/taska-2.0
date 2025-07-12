@@ -66,7 +66,19 @@ export function login(userType) {
             localStorage.setItem('userId', user.uid);
             localStorage.setItem('userRole', mappedUserType);
             toggleLoading(false);
-            window.location.href = mappedUserType === 'professional' ? 'professional/explore.html' : 'workplace/tasks.html';
+            
+            // Check if there's an invite parameter and redirect parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            const inviteId = urlParams.get('invite');
+            const redirect = urlParams.get('redirect');
+            
+            if (inviteId && redirect === 'checkinvite') {
+                // Redirect back to checkinvite.html with the invite parameter
+                window.location.href = `checkinvite.html?invite=${inviteId}`;
+            } else {
+                // Normal redirect based on user type
+                window.location.href = mappedUserType === 'professional' ? 'professional/explore.html' : 'workplace/tasks.html';
+            }
         })
         .catch((error) => {
             toggleLoading(false);
@@ -158,10 +170,9 @@ export function signOut() {
     auth.signOut()
         .then(() => {
             console.log("User signed out, clearing localStorage");
-            localStorage.removeItem('userId');
-            localStorage.removeItem('userRole');
+            localStorage.clear(); // Clear all localStorage data
             toggleLoading(false);
-            window.location.href = 'login.html';
+            window.location.href = 'index.html';
         })
         .catch((error) => {
             toggleLoading(false);

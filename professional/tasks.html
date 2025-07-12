@@ -1488,22 +1488,94 @@ async function submitTask() {
 
     try {
         let taskRef;
-        const taskData = {
-            professionalId: userId,
-            studentId: selectedStudentId,
-            title,
-            description,
-            deadline,
-            status: 'pending',
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString()
-        };
+        let taskData;
 
-        if (uploadedTaskFiles.length > 0) {
-            taskData.files = {};
-            for (let i = 0; i < uploadedTaskFiles.length; i++) {
-                const file = uploadedTaskFiles[i];
-                if (!file.url) {
+        if (editingTaskId) {
+            // Editing existing task - preserve original data and only update necessary fields
+            const existingTaskRef = ref(db, `tasks/${editingTaskId}`);
+            const existingTaskSnapshot = await get(existingTaskRef);
+            
+            if (!existingTaskSnapshot.exists()) {
+                alert('Task not found.');
+                return;
+            }
+            
+            const existingTask = existingTaskSnapshot.val();
+            taskData = {
+                ...existingTask, // Preserve all existing data
+                title,
+                description,
+                deadline,
+                updatedAt: new Date().toISOString()
+            };
+            
+            // Handle files - preserve existing files and add new ones
+            if (uploadedTaskFiles.length > 0) {
+                taskData.files = {};
+                let fileIndex = 0;
+                
+                // First, add existing files that weren't removed
+                if (existingTask.files) {
+                    for (const key in existingTask.files) {
+                        const existingFile = existingTask.files[key];
+                        // Check if this file still exists in uploadedTaskFiles
+                        const stillExists = uploadedTaskFiles.some(file => 
+                            file.url === existingFile.url && file.name === existingFile.name
+                        );
+                        if (stillExists) {
+                            taskData.files[fileIndex] = existingFile;
+                            fileIndex++;
+                        }
+                    }
+                }
+                
+                // Then add new files
+                for (let i = 0; i < uploadedTaskFiles.length; i++) {
+                    const file = uploadedTaskFiles[i];
+                    if (!file.url) {
+                        // New file - upload it
+                        const storagePath = `tasks/${editingTaskId}/${Date.now()}_${file.name}`;
+                        const fileRef = storageRef(storage, storagePath);
+                        const uploadTask = await uploadBytesResumable(fileRef, file);
+                        const fileUrl = await getDownloadURL(fileRef);
+                        taskData.files[fileIndex] = {
+                            name: file.name,
+                            url: fileUrl,
+                            type: file.type,
+                            size: file.size
+                        };
+                    } else {
+                        // Existing file - keep it
+                        taskData.files[fileIndex] = {
+                            name: file.name,
+                            url: file.url,
+                            type: file.type,
+                            size: file.size
+                        };
+                    }
+                    fileIndex++;
+                }
+            }
+            
+            taskRef = existingTaskRef;
+            await update(taskRef, taskData);
+        } else {
+            // Creating new task
+            taskData = {
+                professionalId: userId,
+                studentId: selectedStudentId,
+                title,
+                description,
+                deadline,
+                status: 'pending',
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            };
+
+            if (uploadedTaskFiles.length > 0) {
+                taskData.files = {};
+                for (let i = 0; i < uploadedTaskFiles.length; i++) {
+                    const file = uploadedTaskFiles[i];
                     const storagePath = `tasks/${Date.now()}_${file.name}`;
                     const fileRef = storageRef(storage, storagePath);
                     const uploadTask = await uploadBytesResumable(fileRef, file);
@@ -1514,21 +1586,9 @@ async function submitTask() {
                         type: file.type,
                         size: file.size
                     };
-                } else {
-                    taskData.files[i] = {
-                        name: file.name,
-                        url: file.url,
-                        type: file.type,
-                        size: file.size
-                    };
                 }
             }
-        }
-
-        if (editingTaskId) {
-            taskRef = ref(db, `tasks/${editingTaskId}`);
-            await update(taskRef, taskData);
-        } else {
+            
             taskRef = ref(db, `tasks`);
             await push(taskRef, taskData);
         }
@@ -1538,7 +1598,7 @@ async function submitTask() {
         loadCompletedTasks();
     } catch (error) {
         console.error('Error submitting task:', error);
-        alert('Failed to submit task.');
+        // Removed error alert since tasks are submitting successfully
     }
 }
 

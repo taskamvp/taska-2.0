@@ -8,6 +8,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script>
+        // Check if QR code library loaded
+        window.addEventListener('load', function() {
+            if (typeof QRCode !== 'undefined') {
+                console.log('QR Code library loaded successfully');
+            } else {
+                console.warn('QR Code library not loaded');
+            }
+        });
+    </script>
     <style>
         * {
             margin: 0;
@@ -1301,7 +1312,7 @@
             max-width: 60px;
           }
 }
-</style>
+    </style>
 </head>
 <body>
     <nav class="navbar_classified">
@@ -1326,7 +1337,10 @@
                 <h1 class="form-title">Student Profile</h1>
                 <p class="form-subtitle">Complete your profile information to get matched with the best opportunities</p>
                 <!-- View Profile Button INSIDE the card -->
-                <div style="display: flex; justify-content: flex-end; margin-top: 1rem;">
+                <div style="display: flex; justify-content: flex-end; margin-top: 1rem; gap: 0.8rem;">
+                    <button id="invite-connect-btn" class="btn btn-secondary" style="font-size:0.85rem; padding:0.35rem 1.1rem; height:2.1rem; min-width:unset; background: #34a853; border-color: #34a853; color: white;">
+                        <i class="fas fa-share-alt"></i> Invite to Connect
+                    </button>
                     <button id="view-own-profile-btn" class="btn btn-secondary" style="font-size:0.85rem; padding:0.35rem 1.1rem; height:2.1rem; min-width:unset;">
                         <i class="fas fa-user"></i> View Profile
                     </button>
@@ -1673,6 +1687,53 @@ document.addEventListener('DOMContentLoaded', () => {
                         alert('User ID not found. Please log in again.');
                     }
                     return false;
+                });
+            }
+            
+            // Attach invite modal event listeners
+            const inviteConnectBtn = document.getElementById('invite-connect-btn');
+            if (inviteConnectBtn) {
+                inviteConnectBtn.addEventListener('click', function() {
+                    console.log('Invite button clicked');
+                    openInviteModal();
+                });
+            }
+            
+            const closeInviteModalBtn = document.getElementById('close-invite-modal');
+            if (closeInviteModalBtn) {
+                closeInviteModalBtn.addEventListener('click', function() {
+                    closeInviteModal();
+                });
+            }
+            
+            const copyLinkBtn = document.getElementById('copy-link-btn');
+            if (copyLinkBtn) {
+                copyLinkBtn.addEventListener('click', function() {
+                    copyInviteLink();
+                });
+            }
+            
+            const shareWhatsappBtn = document.getElementById('share-whatsapp-btn');
+            if (shareWhatsappBtn) {
+                shareWhatsappBtn.addEventListener('click', function() {
+                    shareViaWhatsApp();
+                });
+            }
+            
+            const shareEmailBtn = document.getElementById('share-email-btn');
+            if (shareEmailBtn) {
+                shareEmailBtn.addEventListener('click', function() {
+                    shareViaEmail();
+                });
+            }
+            
+            // Add click event for modal backdrop
+            const inviteConnectModal = document.getElementById('invite-connect-modal');
+            if (inviteConnectModal) {
+                inviteConnectModal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        closeInviteModal();
+                    }
                 });
             }
         } else {
@@ -2590,6 +2651,361 @@ async function loadDrivePortfolio() {
         }
       }
     });
+
+    // === Invite to Connect Popup ===
+    // Invite Connect Popup Modal
+    const inviteConnectModal = document.createElement('div');
+    inviteConnectModal.id = 'invite-connect-modal';
+    inviteConnectModal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+        font-family: 'Google Sans', 'Roboto', 'Inter', sans-serif;
+    `;
+    
+    inviteConnectModal.innerHTML = `
+        <div style="
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        ">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h2 style="margin: 0; font-size: 1.5rem; font-weight: 600; color: #202124;">Invite to Connect</h2>
+                <button id="close-invite-modal" style="
+                    background: none;
+                    border: none;
+                    font-size: 1.5rem;
+                    cursor: pointer;
+                    color: #5f6368;
+                    padding: 0.5rem;
+                    border-radius: 50%;
+                    transition: background-color 0.2s;
+                ">&times;</button>
+            </div>
+            
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <p style="color: #5f6368; margin-bottom: 1rem;">Share this QR code or link to connect with professionals on Taska</p>
+                
+                <div id="qr-code-container" style="
+                    display: inline-block;
+                    padding: 1.5rem;
+                    background: #f8f9fa;
+                    border-radius: 8px;
+                    margin-bottom: 1.5rem;
+                ">
+                    <div id="qr-code" style="width: 200px; height: 200px; margin: 0 auto;"></div>
+                </div>
+                
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; text-align: left; font-weight: 500; color: #202124; margin-bottom: 0.5rem;">Invite Link</label>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <input type="text" id="invite-link" readonly style="
+                            flex: 1;
+                            padding: 0.75rem;
+                            border: 1px solid #dadce0;
+                            border-radius: 6px;
+                            font-size: 0.875rem;
+                            background: #f8f9fa;
+                            color: #5f6368;
+                        ">
+                        <button id="copy-link-btn" style="
+                            padding: 0.75rem 1rem;
+                            background: #1a73e8;
+                            color: white;
+                            border: none;
+                            border-radius: 6px;
+                            cursor: pointer;
+                            font-weight: 500;
+                            transition: background-color 0.2s;
+                        ">Copy</button>
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 1rem; justify-content: center;">
+                    <button id="share-whatsapp-btn" style="
+                        padding: 0.75rem 1.5rem;
+                        background: #25d366;
+                        color: white;
+                        border: none;
+                        border-radius: 6px;
+                        cursor: pointer;
+                        font-weight: 500;
+                        display: flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                        transition: background-color 0.2s;
+                    ">
+                        <i class="fab fa-whatsapp"></i>
+                        Share on WhatsApp
+                    </button>
+                    <button id="share-email-btn" style="
+                        padding: 0.75rem 1.5rem;
+                        background: #ea4335;
+                        color: white;
+                        border: none;
+                        border-radius: 6px;
+                        cursor: pointer;
+                        font-weight: 500;
+                        display: flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                        transition: background-color 0.2s;
+                    ">
+                        <i class="fas fa-envelope"></i>
+                        Share via Email
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(inviteConnectModal);
+    
+    // Event listeners for invite modal
+    document.getElementById('invite-connect-btn').addEventListener('click', function() {
+        openInviteModal();
+    });
+    
+    document.getElementById('close-invite-modal').addEventListener('click', function() {
+        closeInviteModal();
+    });
+    
+    inviteConnectModal.addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeInviteModal();
+        }
+    });
+    
+    document.getElementById('copy-link-btn').addEventListener('click', function() {
+        copyInviteLink();
+    });
+    
+    document.getElementById('share-whatsapp-btn').addEventListener('click', function() {
+        shareViaWhatsApp();
+    });
+    
+    document.getElementById('share-email-btn').addEventListener('click', function() {
+        shareViaEmail();
+    });
+    
+    function openInviteModal() {
+        console.log('openInviteModal called');
+        if (!currentUserId) {
+            alert('You must be logged in to generate an invite link.');
+            return;
+        }
+        
+        // Check if current user is a student or professional
+        // Students are in studentslist, professionals are in professionalslist
+        checkUserRoleAndGenerateLink();
+    }
+    
+    async function checkUserRoleAndGenerateLink() {
+        try {
+            // Check if user exists in studentslist
+            const studentSnapshot = await get(ref(db, `studentslist/${currentUserId}`));
+            const professionalSnapshot = await get(ref(db, `professionalslist/${currentUserId}`));
+            
+            let inviteLink;
+            if (studentSnapshot.exists()) {
+                // User is a student - invite to checkinvite.html
+                inviteLink = `${window.location.origin}/checkinvite.html?invite=${currentUserId}`;
+            } else if (professionalSnapshot.exists()) {
+                // User is a professional - invite to checkinvite.html
+                inviteLink = `${window.location.origin}/checkinvite.html?invite=${currentUserId}`;
+            } else {
+                // User not found in either list
+                alert('User role not found. Please try again.');
+                return;
+            }
+            
+            document.getElementById('invite-link').value = inviteLink;
+            
+            // Show modal first
+            inviteConnectModal.style.display = 'flex';
+            
+            // Generate QR code with a small delay to ensure library is loaded
+            setTimeout(() => {
+                generateQRCode(inviteLink);
+            }, 100);
+            
+        } catch (error) {
+            console.error('Error checking user role:', error);
+            alert('Failed to generate invite link. Please try again.');
+        }
+    }
+    
+    function closeInviteModal() {
+        inviteConnectModal.style.display = 'none';
+    }
+    
+    function generateQRCode(text) {
+        const qrContainer = document.getElementById('qr-code');
+        qrContainer.innerHTML = '';
+        
+        console.log('Generating QR code for:', text);
+        console.log('QRCode library available:', typeof QRCode !== 'undefined');
+        
+        // Check if QRCode library is available
+        if (typeof QRCode === 'undefined') {
+            console.warn('QRCode library not loaded, showing fallback');
+            qrContainer.innerHTML = `
+                <div style="
+                    width: 200px; 
+                    height: 200px; 
+                    background: #f8f9fa; 
+                    border: 2px dashed #dadce0; 
+                    display: flex; 
+                    align-items: center; 
+                    justify-content: center; 
+                    color: #5f6368; 
+                    font-size: 0.875rem; 
+                    text-align: center;
+                    padding: 1rem;
+                ">
+                    QR Code not available<br>
+                    Please use the invite link below
+                </div>
+            `;
+            return;
+        }
+        
+        try {
+            // Create QR code using qrcodejs library
+            new QRCode(qrContainer, {
+                text: text,
+                width: 200,
+                height: 200,
+                colorDark: '#000000',
+                colorLight: '#FFFFFF',
+                correctLevel: QRCode.CorrectLevel.H
+            });
+            
+            console.log('QR code generated successfully');
+        } catch (error) {
+            console.error('Exception in QR code generation:', error);
+            qrContainer.innerHTML = `
+                <div style="
+                    width: 200px; 
+                    height: 200px; 
+                    background: #f8f9fa; 
+                    border: 2px dashed #dadce0; 
+                    display: flex; 
+                    align-items: center; 
+                    justify-content: center; 
+                    color: #5f6368; 
+                    font-size: 0.875rem; 
+                    text-align: center;
+                    padding: 1rem;
+                ">
+                    QR Code generation failed<br>
+                    Please use the invite link below
+                </div>
+            `;
+        }
+    }
+    
+    function copyInviteLink() {
+        const inviteLink = document.getElementById('invite-link');
+        inviteLink.select();
+        inviteLink.setSelectionRange(0, 99999);
+        
+        try {
+            document.execCommand('copy');
+            const copyBtn = document.getElementById('copy-link-btn');
+            const originalText = copyBtn.textContent;
+            copyBtn.textContent = 'Copied!';
+            copyBtn.style.background = '#34a853';
+            
+            setTimeout(() => {
+                copyBtn.textContent = originalText;
+                copyBtn.style.background = '#1a73e8';
+            }, 2000);
+        } catch (err) {
+            alert('Failed to copy link. Please copy it manually.');
+        }
+    }
+    
+    function shareViaWhatsApp() {
+        const inviteLink = document.getElementById('invite-link').value;
+        const message = `Hi! I'd like to connect with you on Taska. Here's my invite link: ${inviteLink}`;
+        const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+        window.open(whatsappUrl, '_blank');
+    }
+    
+    function shareViaEmail() {
+        const inviteLink = document.getElementById('invite-link').value;
+        const subject = 'Connect with me on Taska';
+        const body = `Hi! I'd like to connect with you on Taska. Here's my invite link: ${inviteLink}`;
+        const emailUrl = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        window.open(emailUrl);
+    }
+    
+    // Check for invite parameter in URL when page loads
+    function checkForInvite() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const inviteId = urlParams.get('invite');
+        
+        if (inviteId && currentUserId && inviteId !== currentUserId) {
+            // Show connection request dialog
+            showConnectionRequest(inviteId);
+        }
+    }
+    
+    async function showConnectionRequest(inviteId) {
+        try {
+            // Get the inviter's profile data
+            const snapshot = await get(ref(db, `studentslist/${inviteId}`));
+            if (snapshot.exists()) {
+                const inviterData = snapshot.val();
+                const inviterName = inviterData.personal?.name || 'A student';
+                
+                if (confirm(`${inviterName} wants to connect with you on Taska. Would you like to accept this connection request?`)) {
+                    await sendConnectionRequest(inviteId);
+                    alert('Connection request sent! You can now collaborate on tasks together.');
+                }
+            }
+        } catch (error) {
+            console.error('Error processing invite:', error);
+        }
+    }
+    
+    async function sendConnectionRequest(inviteId) {
+        try {
+            // Create connection records for both users
+            const connectionData = {
+                status: 'connected',
+                timestamp: new Date().toISOString()
+            };
+            
+            await set(ref(db, `users/${currentUserId}/connections/${inviteId}`), connectionData);
+            await set(ref(db, `users/${inviteId}/connections/${currentUserId}`), connectionData);
+            
+        } catch (error) {
+            console.error('Error sending connection request:', error);
+            throw error;
+        }
+    }
+    
+    // Call checkForInvite when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        // This will be called after the page loads and currentUserId is set
+        setTimeout(checkForInvite, 1000);
+    });
+    
+    // === End Invite to Connect Popup ===
 </script>
 </body>
 </html>

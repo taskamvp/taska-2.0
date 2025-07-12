@@ -489,6 +489,25 @@
         // Initialize with Professional tab active
         document.addEventListener('DOMContentLoaded', () => {
             showTab('employer');
+            
+            // Check for invite parameter and show appropriate message
+            const urlParams = new URLSearchParams(window.location.search);
+            const inviteId = urlParams.get('invite');
+            const redirect = urlParams.get('redirect');
+            
+            if (inviteId && redirect === 'checkinvite') {
+                // Show a message that they're logging in to accept an invite
+                const title = document.querySelector('h1');
+                if (title) {
+                    title.innerHTML = 'Login to Accept Invite';
+                }
+                
+                // Add a subtitle
+                const subtitle = document.createElement('p');
+                subtitle.style.cssText = 'text-align: center; color: #666; margin-bottom: 1.5rem; font-size: 0.9rem;';
+                subtitle.textContent = 'Complete your login to accept the connection invitation';
+                title.parentNode.insertBefore(subtitle, title.nextSibling);
+            }
         });
 
         // Dynamic email placeholder

@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Check your Taska invite link and connect with other users">
+    <title>Taska | Check Invite</title>
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', 'Manrope', 'Poppins', 'Inter', Arial, sans-serif;
+        }
+        
+        body {
+            background: #fff;
+            min-height: 100vh;
+            width: 100vw;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            font-family: 'Montserrat', 'Manrope', 'Poppins', 'Inter', Arial, sans-serif;
+            padding-top: 2rem;
+        }
+
+        /* Main container */
+        .invite-container {
+            background: #fff;
+            border: none;
+            border-radius: 0;
+            box-shadow: none;
+            padding: 2.5rem 2.5rem 2.5rem 2.5rem;
+            max-width: 520px;
+            min-width: 340px;
+            width: 96vw;
+            min-height: 420px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            color: #111;
+            margin: 0 auto;
+        }
+
+        .invite-container h1 {
+            font-size: 1.7rem;
+            font-weight: 500;
+            color: #111;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            letter-spacing: -0.01em;
+            font-family: 'Montserrat', 'Manrope', 'Poppins', 'Inter', Arial, sans-serif;
+        }
+
+        .invite-subtitle {
+            color: #5f6368;
+            font-size: 0.875rem;
+            font-family: 'Roboto', sans-serif;
+            text-align: center;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .invite-icon {
+            width: 60px;
+            height: 60px;
+            background: #facc15;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            color: #111;
+            font-size: 1.5rem;
+        }
+
+        .inviter-info {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 0.7rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .inviter-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 1rem;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .inviter-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #111;
+            margin-bottom: 0.5rem;
+            font-family: 'Montserrat', 'Manrope', 'Poppins', 'Inter', Arial, sans-serif;
+        }
+
+        .inviter-role {
+            font-size: 0.875rem;
+            color: #5f6368;
+            text-transform: capitalize;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.9rem 1.5rem;
+            font-size: 1.05rem;
+            font-weight: 500;
+            border-radius: 0.7rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.18s;
+            border: none;
+            min-width: 100px;
+            font-family: 'Montserrat', 'Manrope', 'Poppins', 'Inter', Arial, sans-serif;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: #111;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #facc15;
+            color: #111;
+        }
+
+        .btn-secondary {
+            background: none;
+            color: #111;
+            border: 1.5px solid #111;
+        }
+
+        .btn-secondary:hover {
+            background: #facc15;
+            color: #111;
+            border-color: #facc15;
+        }
+
+        .loading {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            text-align: center;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #facc15;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            background: #fee;
+            color: #c33;
+            padding: 1rem;
+            border-radius: 0.7rem;
+            margin-bottom: 1rem;
+            border: 1px solid #fcc;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .success-message {
+            background: #efe;
+            color: #363;
+            padding: 1rem;
+            border-radius: 0.7rem;
+            margin-bottom: 1rem;
+            border: 1px solid #cfc;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .loading-text {
+            color: #5f6368;
+            font-size: 0.9rem;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        /* Footer */
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #fff;
+            color: #666;
+            text-align: center;
+            padding: 1rem 2rem;
+            border-top: 1px solid #e9ecef;
+            font-size: 0.85rem;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .invite-container {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+
+            .invite-container h1 {
+                font-size: 1.8rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .invite-container {
+                padding: 1rem;
+            }
+
+            .invite-container h1 {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .invite-container {
+                max-width: 98vw;
+                min-width: unset;
+                padding: 1.2rem 0.7rem 1.2rem 0.7rem;
+            }
+        }
+
+        /* Connection Confirmation Popup Styles */
+        .connection-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            backdrop-filter: blur(4px);
+        }
+
+        .connection-popup.active {
+            display: flex;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .connection-popup-content {
+            background: #fff;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 450px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            border: 1px solid #e0e0e0;
+            animation: slideInUp 0.3s ease-out;
+            overflow: hidden;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .connection-popup-header {
+            background: linear-gradient(135deg, #facc15, #eab308);
+            padding: 1.5rem 2rem;
+            text-align: center;
+            color: #111;
+        }
+
+        .connection-popup-header h3 {
+            margin: 0;
+            font-size: 1.3rem;
+            font-weight: 600;
+            font-family: 'Montserrat', 'Manrope', 'Poppins', 'Inter', Arial, sans-serif;
+        }
+
+        .connection-popup-body {
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .connection-user-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border: 1px solid #e9ecef;
+        }
+
+        .connection-user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .connection-user-details {
+            text-align: left;
+        }
+
+        .connection-user-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #111;
+            margin-bottom: 0.25rem;
+            font-family: 'Montserrat', 'Manrope', 'Poppins', 'Inter', Arial, sans-serif;
+        }
+
+        .connection-user-role {
+            font-size: 0.875rem;
+            color: #5f6368;
+            text-transform: capitalize;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .connection-message {
+            color: #5f6368;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 0;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .connection-popup-actions {
+            padding: 0 2rem 2rem;
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .connection-popup-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 100px;
+            font-family: 'Montserrat', 'Manrope', 'Poppins', 'Inter', Arial, sans-serif;
+        }
+
+        .connection-popup-btn.cancel {
+            background: #f5f5f5;
+            color: #666;
+            border: 1px solid #e0e0e0;
+        }
+
+        .connection-popup-btn.cancel:hover {
+            background: #e9ecef;
+            color: #333;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .connection-popup-btn.confirm {
+            background: #111;
+            color: #fff;
+        }
+
+        .connection-popup-btn.confirm:hover {
+            background: #facc15;
+            color: #111;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(17, 17, 17, 0.3);
+        }
+
+        @media (max-width: 480px) {
+            .connection-popup-content {
+                width: 95%;
+                margin: 1rem;
+            }
+
+            .connection-popup-actions {
+                flex-direction: column;
+            }
+
+            .connection-popup-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <section class="invite-container">
+            <div id="loading-state" class="loading">
+                <div class="spinner"></div>
+                <p class="loading-text">Checking your invite...</p>
+            </div>
+
+            <div id="error-state" style="display: none;">
+                <div class="error-message">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span id="error-text">Invalid invite link</span>
+                </div>
+                <div class="action-buttons">
+                    <a href="index.html" class="btn btn-primary">
+                        <i class="fas fa-home"></i>
+                        Go to Home
+                    </a>
+                </div>
+            </div>
+
+            <div id="login-state" style="display: none;">
+                <div class="invite-icon">
+                    <i class="fas fa-link"></i>
+                </div>
+                <h1>You're Invited!</h1>
+                <p class="invite-subtitle">Someone wants to connect with you on Taska. Please log in or sign up to accept this invitation.</p>
+                
+                <div id="inviter-details" class="inviter-info">
+                    <img id="inviter-avatar" class="inviter-avatar" src="assets/default-avatar.png" alt="Inviter">
+                    <div id="inviter-name" class="inviter-name">Loading...</div>
+                    <div id="inviter-role" class="inviter-role">Loading...</div>
+                </div>
+
+                <div class="action-buttons">
+                    <a href="login.html" class="btn btn-primary">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Login
+                    </a>
+                    <a href="signup.html" class="btn btn-secondary">
+                        <i class="fas fa-user-plus"></i>
+                        Sign Up
+                    </a>
+                </div>
+            </div>
+
+            <div id="success-state" style="display: none;">
+                <div class="invite-icon">
+                    <i class="fas fa-check"></i>
+                </div>
+                <h1>Connection Established!</h1>
+                <div class="success-message">
+                    <i class="fas fa-check-circle"></i>
+                    <span id="success-text">Connection established successfully!</span>
+                </div>
+                <div class="action-buttons">
+                    <a id="redirect-btn" href="#" class="btn btn-primary">
+                        <i class="fas fa-arrow-right"></i>
+                        Continue to Taska
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Connection Confirmation Popup -->
+    <div class="connection-popup" id="connection-popup">
+        <div class="connection-popup-content">
+            <div class="connection-popup-header">
+                <h3>Connection Request</h3>
+            </div>
+            <div class="connection-popup-body">
+                <div class="connection-user-info">
+                    <img id="popup-user-avatar" class="connection-user-avatar" src="assets/default-avatar.png" alt="User">
+                    <div class="connection-user-details">
+                        <div id="popup-user-name" class="connection-user-name">Loading...</div>
+                        <div id="popup-user-role" class="connection-user-role">Loading...</div>
+                    </div>
+                </div>
+                <p class="connection-message">This will allow you to collaborate on tasks together.</p>
+            </div>
+            <div class="connection-popup-actions">
+                <button class="connection-popup-btn cancel" id="popup-cancel-btn">Cancel</button>
+                <button class="connection-popup-btn confirm" id="popup-confirm-btn">Connect</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 Taska. All rights reserved.</p>
+    </footer>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getDatabase, ref, get, set, onValue } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+        import { getAuth, onAuthStateChanged, signInAnonymously } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDZIDlEtaNRxODoFhRw0xF2yYFBqqBexqo",
+            authDomain: "taska-45011.firebaseapp.com",
+            databaseURL: "https://taska-45011-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "taska-45011",
+            storageBucket: "taska-45011.firebasestorage.app",
+            messagingSenderId: "205487498813",
+            appId: "1:205487498813:web:0de2c9eab567482781ec54",
+            measurementId: "G-G0G1F6GQ9B"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const auth = getAuth(app);
+
+        // Get invite ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const inviteId = urlParams.get('invite');
+
+        // State management
+        let currentUser = null;
+        let userType = null; // 'student' or 'professional'
+
+        // Show loading state
+        function showLoading() {
+            document.getElementById('loading-state').style.display = 'flex';
+            document.getElementById('error-state').style.display = 'none';
+            document.getElementById('login-state').style.display = 'none';
+            document.getElementById('success-state').style.display = 'none';
+        }
+
+        // Show error state
+        function showError(message) {
+            document.getElementById('loading-state').style.display = 'none';
+            document.getElementById('error-state').style.display = 'block';
+            document.getElementById('login-state').style.display = 'none';
+            document.getElementById('success-state').style.display = 'none';
+            document.getElementById('error-text').textContent = message;
+        }
+
+        // Show login state
+        function showLogin(inviterData) {
+            document.getElementById('loading-state').style.display = 'none';
+            document.getElementById('error-state').style.display = 'none';
+            document.getElementById('login-state').style.display = 'block';
+            document.getElementById('success-state').style.display = 'none';
+            
+            // Update inviter details
+            if (inviterData) {
+                document.getElementById('inviter-name').textContent = inviterData.personal?.name || 'A user';
+                document.getElementById('inviter-role').textContent = inviterData.role || 'user';
+                
+                // Show/hide avatar based on profile picture availability
+                const avatarElement = document.getElementById('inviter-avatar');
+                if (inviterData.personal?.profilePic && inviterData.personal.profilePic !== 'assets/default-avatar.png') {
+                    avatarElement.src = inviterData.personal.profilePic;
+                    avatarElement.style.display = 'block';
+                } else {
+                    avatarElement.style.display = 'none';
+                }
+            }
+            
+            // Update login and signup links with invite parameters
+            const loginLink = document.querySelector('#login-state .btn-primary');
+            const signupLink = document.querySelector('#login-state .btn-secondary');
+            
+            if (loginLink) {
+                loginLink.href = `login.html?invite=${inviteId}&redirect=checkinvite`;
+            }
+            if (signupLink) {
+                signupLink.href = `signup.html?invite=${inviteId}&redirect=checkinvite`;
+            }
+        }
+
+        // Show success state
+        function showSuccess(message, redirectUrl) {
+            document.getElementById('loading-state').style.display = 'none';
+            document.getElementById('error-state').style.display = 'none';
+            document.getElementById('login-state').style.display = 'none';
+            document.getElementById('success-state').style.display = 'block';
+            
+            document.getElementById('success-text').textContent = message;
+            document.getElementById('redirect-btn').href = redirectUrl;
+        }
+
+        // Get inviter data
+        async function getInviterData(inviterId) {
+            try {
+                // Check if inviter is a student
+                const studentSnapshot = await get(ref(db, `studentslist/${inviterId}`));
+                if (studentSnapshot.exists()) {
+                    const data = studentSnapshot.val();
+                    return { ...data, role: 'student' };
+                }
+
+                // Check if inviter is a professional
+                const professionalSnapshot = await get(ref(db, `professionalslist/${inviterId}`));
+                if (professionalSnapshot.exists()) {
+                    const data = professionalSnapshot.val();
+                    return { ...data, role: 'professional' };
+                }
+
+                return null;
+            } catch (error) {
+                console.error('Error fetching inviter data:', error);
+                return null;
+            }
+        }
+
+        // Check if users are already connected
+        async function checkExistingConnection(userId, inviterId) {
+            try {
+                const connectionRef = ref(db, `users/${userId}/connections/${inviterId}`);
+                const snapshot = await get(connectionRef);
+                return snapshot.exists();
+            } catch (error) {
+                console.error('Error checking existing connection:', error);
+                return false;
+            }
+        }
+
+        // Create connection between users
+        async function createConnection(userId, inviterId, inviterData) {
+            try {
+                // Show styled confirmation popup
+                const inviterName = inviterData.personal?.name || 'this user';
+                const inviterRole = inviterData.role || 'user';
+                
+                // Update popup content
+                document.getElementById('popup-user-name').textContent = inviterName;
+                document.getElementById('popup-user-role').textContent = inviterRole;
+                
+                // Show/hide avatar based on profile picture availability
+                const avatarElement = document.getElementById('popup-user-avatar');
+                if (inviterData.personal?.profilePic && inviterData.personal.profilePic !== 'assets/default-avatar.png') {
+                    avatarElement.src = inviterData.personal.profilePic;
+                    avatarElement.style.display = 'block';
+                } else {
+                    avatarElement.style.display = 'none';
+                }
+                
+                // Show popup
+                showConnectionPopup();
+                
+                // Return a promise that resolves when user makes a choice
+                return new Promise((resolve) => {
+                    // Store resolve function globally so popup buttons can access it
+                    window.connectionPopupResolve = resolve;
+                    window.connectionPopupData = { userId, inviterId, inviterData };
+                });
+                
+            } catch (error) {
+                console.error('Error creating connection:', error);
+                return false;
+            }
+        }
+
+        // Show connection popup
+        function showConnectionPopup() {
+            document.getElementById('connection-popup').classList.add('active');
+        }
+
+        // Hide connection popup
+        function hideConnectionPopup() {
+            document.getElementById('connection-popup').classList.remove('active');
+        }
+
+        // Handle popup confirm button click
+        async function handleConnectionConfirm() {
+            try {
+                const { userId, inviterId, inviterData } = window.connectionPopupData;
+                
+                const timestamp = new Date().toISOString();
+                const connectionData = {
+                    status: 'connected',
+                    timestamp: timestamp,
+                    inviterRole: inviterData.role
+                };
+
+                // Create connection for current user
+                await set(ref(db, `users/${userId}/connections/${inviterId}`), connectionData);
+                
+                // Create connection for inviter
+                await set(ref(db, `users/${inviterId}/connections/${userId}`), {
+                    status: 'connected',
+                    timestamp: timestamp,
+                    inviterRole: userType
+                });
+
+                hideConnectionPopup();
+                window.connectionPopupResolve(true);
+                
+            } catch (error) {
+                console.error('Error creating connection:', error);
+                hideConnectionPopup();
+                window.connectionPopupResolve(false);
+            }
+        }
+
+        // Handle popup cancel button click
+        function handleConnectionCancel() {
+            hideConnectionPopup();
+            window.connectionPopupResolve(false);
+        }
+
+        // Determine user type
+        async function determineUserType(userId) {
+            try {
+                // Check if user is a student
+                const studentSnapshot = await get(ref(db, `studentslist/${userId}`));
+                if (studentSnapshot.exists()) {
+                    return 'student';
+                }
+
+                // Check if user is a professional
+                const professionalSnapshot = await get(ref(db, `professionalslist/${userId}`));
+                if (professionalSnapshot.exists()) {
+                    return 'professional';
+                }
+
+                return null;
+            } catch (error) {
+                console.error('Error determining user type:', error);
+                return null;
+            }
+        }
+
+        // Get redirect URL based on user type
+        function getRedirectUrl(userType) {
+            if (userType === 'professional') {
+                return 'professional/tasks.html';
+            } else {
+                return 'workplace/tasks.html';
+            }
+        }
+
+        // Main processing function
+        async function processInvite() {
+            showLoading();
+
+            // Check if invite ID exists
+            if (!inviteId) {
+                showError('Invalid invite link. No invite ID found.');
+                return;
+            }
+
+            // Get inviter data
+            const inviterData = await getInviterData(inviteId);
+            if (!inviterData) {
+                showError('Invalid invite link. Inviter not found.');
+                return;
+            }
+
+            // Listen for auth state changes
+            onAuthStateChanged(auth, async (user) => {
+                // Also check localStorage to ensure user is properly logged in
+                const storedUserId = localStorage.getItem('userId');
+                const storedUserRole = localStorage.getItem('userRole');
+                
+                if (user && storedUserId && storedUserRole) {
+                    // User is properly logged in with both Firebase and localStorage
+                    currentUser = user;
+                    
+                    // Verify that the stored userId matches the Firebase user
+                    if (user.uid !== storedUserId) {
+                        // Mismatch - clear localStorage and show login
+                        localStorage.clear();
+                        showLogin(inviterData);
+                        return;
+                    }
+                    
+                    // Determine user type
+                    userType = await determineUserType(user.uid);
+                    if (!userType) {
+                        showError('User type not found. Please contact support.');
+                        return;
+                    }
+
+                    // Check if trying to connect with self
+                    if (user.uid === inviteId) {
+                        showError('You cannot connect with yourself. This invite link is for connecting with other users.');
+                        return;
+                    }
+
+                    // Check if already connected
+                    const alreadyConnected = await checkExistingConnection(user.uid, inviteId);
+                    if (alreadyConnected) {
+                        const redirectUrl = getRedirectUrl(userType);
+                        showSuccess('You are already connected with this user!', redirectUrl);
+                        return;
+                    }
+
+                    // Create connection
+                    const connectionCreated = await createConnection(user.uid, inviteId, inviterData);
+                    if (connectionCreated) {
+                        const redirectUrl = getRedirectUrl(userType);
+                        showSuccess(`Successfully connected with ${inviterData.personal?.name || 'the user'}!`, redirectUrl);
+                    } else {
+                        // User cancelled the connection
+                        const redirectUrl = getRedirectUrl(userType);
+                        showSuccess('Connection cancelled. You can connect later from your profile.', redirectUrl);
+                    }
+                } else {
+                    // User is not logged in or localStorage is cleared
+                    // Clear any remaining Firebase auth state
+                    if (user) {
+                        try {
+                            await auth.signOut();
+                        } catch (error) {
+                            console.log('User already signed out');
+                        }
+                    }
+                    
+                    // Clear localStorage to ensure clean state
+                    localStorage.clear();
+                    
+                    // Show login state
+                    showLogin(inviterData);
+                }
+            });
+        }
+
+        // Start processing when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add event listeners for popup buttons
+            document.getElementById('popup-confirm-btn').addEventListener('click', handleConnectionConfirm);
+            document.getElementById('popup-cancel-btn').addEventListener('click', handleConnectionCancel);
+            
+            // Start processing invite
+            processInvite();
+        });
+    </script>
+</body>
+</html>
