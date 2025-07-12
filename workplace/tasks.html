@@ -2380,8 +2380,8 @@ function toggleFilesPopup(taskId, event) {
             if (task.files) {
                 const filesHTML = Object.values(task.files).map(file => `
                     <div class="popup-file-item">
-                        <div class="file-thumbnail-container">
-                            ${generateFileThumbnail(file)}
+                        <div class="file-icon-container">
+                            <i class="${getFileIconClass(file.type)} file-icon" style="color: ${getFileIconColor(file.type)};"></i>
                         </div>
                         <div class="file-info">
                             <div class="file-name">${file.name}</div>
@@ -3689,6 +3689,115 @@ window.openTaskRejectionModal = openTaskRejectionModal;
 window.closeTaskRejectionModal = closeTaskRejectionModal;
 window.submitTaskRejection = submitTaskRejection;
 
+// === Invite Connection Functions ===
+// Check for invite parameter in URL when page loads
+function checkForInvite() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const inviteId = urlParams.get('invite');
+    
+    if (inviteId && userId && inviteId !== userId) {
+        // Check if already connected
+        checkIfAlreadyConnected(inviteId);
+    }
+}
+
+async function checkIfAlreadyConnected(inviteId) {
+    try {
+        // Check if there's already a connection
+        const connectionSnapshot = await get(ref(db, `students/${userId}/connections/${inviteId}`));
+        if (connectionSnapshot.exists()) {
+            console.log('Already connected with this user');
+            return;
+        }
+        
+        // If not connected, show connection request
+        showConnectionRequest(inviteId);
+    } catch (error) {
+        console.error('Error checking connection status:', error);
+    }
+}
+
+async function showConnectionRequest(inviteId) {
+    try {
+        // Check if inviter is a student or professional
+        const studentSnapshot = await get(ref(db, `studentslist/${inviteId}`));
+        const professionalSnapshot = await get(ref(db, `professionalslist/${inviteId}`));
+        
+        let inviterName = 'A user';
+        let inviterRole = 'user';
+        
+        if (studentSnapshot.exists()) {
+            const inviterData = studentSnapshot.val();
+            inviterName = inviterData.personal?.name || 'A student';
+            inviterRole = 'student';
+        } else if (professionalSnapshot.exists()) {
+            const inviterData = professionalSnapshot.val();
+            inviterName = inviterData.personal?.name || 'A professional';
+            inviterRole = 'professional';
+        }
+        
+        // Create a custom modal for connection request
+        const modal = document.createElement('div');
+        modal.className = 'confirmation-dialog active';
+        modal.innerHTML = `
+            <div class="dialog-box">
+                <h3>Connection Request</h3>
+                <p>${inviterName} (${inviterRole}) wants to connect with you on Taska. Would you like to accept this connection request?</p>
+                <div class="dialog-actions">
+                    <button class="cancel" onclick="closeConnectionModal()">Decline</button>
+                    <button class="confirm" onclick="acceptConnection('${inviteId}', '${inviterRole}')">Accept</button>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(modal);
+    } catch (error) {
+        console.error('Error processing invite:', error);
+    }
+}
+
+function closeConnectionModal() {
+    const modal = document.querySelector('.confirmation-dialog');
+    if (modal) {
+        modal.remove();
+    }
+}
+
+async function acceptConnection(inviteId, inviterRole) {
+    try {
+        // Create connection records for both users
+        const connectionData = {
+            status: 'connected',
+            timestamp: new Date().toISOString(),
+            connectedAt: new Date().toISOString()
+        };
+        
+        // Add connection for current user (student)
+        await set(ref(db, `students/${userId}/connections/${inviteId}`), connectionData);
+        
+        // Add connection for the inviter (could be student or professional)
+        if (inviterRole === 'student') {
+            await set(ref(db, `students/${inviteId}/connections/${userId}`), connectionData);
+        } else if (inviterRole === 'professional') {
+            await set(ref(db, `professionals/${inviteId}/connections/${userId}`), connectionData);
+        }
+        
+        // Close the modal
+        closeConnectionModal();
+        
+        // Show success message
+        showSuccessModal('Connection Established!', `You are now connected with this ${inviterRole}. You can now collaborate on tasks together.`);
+        
+        // Reload connections to show the new connection
+        loadConnections();
+        
+    } catch (error) {
+        console.error('Error accepting connection:', error);
+        alert('Failed to establish connection. Please try again.');
+    }
+}
+
+// === End Invite Connection Functions ===
 </script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93b153f5ba4ebd25',t:'MTc0NjQ1OTUzOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
