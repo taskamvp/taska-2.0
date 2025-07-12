@@ -4,875 +4,465 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Taska Elite - Explore IIT Talent</title>
-    <link rel="stylesheet" href="../css/reset.css">
-    <link rel="stylesheet" href="../css/global.css">
-    <link rel="stylesheet" href="../css/dashboard.css">
-    <link rel="stylesheet" href="../css/overview.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/classified-navbar.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        :root {
+            --primary-color: #1a73e8;
+            --primary-dark: #1557b0;
+            --primary-light: #e8f0fe;
+            --secondary-color: #34a853;
+            --accent-color: #fbbc04;
+            --text-primary: #202124;
+            --text-secondary: #5f6368;
+            --text-muted: #9aa0a6;
+            --background-primary: #ffffff;
+            --background-secondary: #f8f9fa;
+            --border-color: #dadce0;
+            --border-light: #e8eaed;
+            --shadow-sm: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+            --shadow-md: 0 4px 8px 3px rgba(60, 64, 67, 0.15);
+            --shadow-lg: 0 8px 16px 6px rgba(60, 64, 67, 0.15);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 1rem;
+            --spacing-md: 1.5rem;
+            --spacing-lg: 2rem;
+            --spacing-xl: 3rem;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Montserrat', 'Manrope', 'Poppins', 'Inter', Arial, sans-serif;
         }
+
         body {
-            background: #fff;
-            min-height: 100vh;
-            width: 100vw;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            justify-content: center;
-            font-family: 'Montserrat', 'Manrope', 'Poppins', 'Inter', Arial, sans-serif;
-            padding-top: 2rem;
-        }
-        .navbar_classified {
-            background: #ffffff;
-            border-bottom: 1px solid #e9ecef;
-            padding: 0.5rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-family: 'Inter', sans-serif;
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-            min-height: 56px;
-        }
-        .navbar_classified .logo {
-            font-size: 1.6rem;
-            font-weight: 700;
-            color: #185abd;
-            letter-spacing: 0.5px;
-            display: flex;
-            align-items: center;
-            user-select: none;
-            font-family: 'Inter', sans-serif;
-        }
-        .navbar_classified .nav-menu {
-            display: flex;
-            gap: 1.5rem;
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', sans-serif;
-        }
-        .navbar_classified .nav-menu li {
-            display: flex;
-            font-family: 'Inter', sans-serif;
-        }
-        .navbar_classified .nav-menu li a {
-            color: #495057;
-            text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 500;
-            padding: 0.5rem 1.25rem;
-            border-radius: 0;
-            border: 1px solid transparent;
-            background: transparent;
-            transition: background 0.15s, color 0.15s, border 0.15s;
-            position: relative;
-            outline: none;
-            box-shadow: none;
-            font-family: 'Inter', sans-serif;
-        }
-        .navbar_classified .nav-menu li a:hover,
-        .navbar_classified .nav-menu li a.active {
-            background: #e9ecef;
-            color: #185abd;
-            border-bottom: 2px solid #185abd;
-            border-radius: 0;
-        }
-        .navbar_classified .hamburger {
-            display: none;
-            font-size: 1.7rem;
-            color: #185abd;
-            cursor: pointer;
-            margin-left: 1.5rem;
-            background: none;
-            border: none;
-            outline: none;
-            font-family: 'Inter', sans-serif;
-        }
-        .dashboard-content { padding: 2rem 1rem; max-width: 1400px; margin: 0 auto; }
-        .dashboard-section h1 {
-            font-size: 2.5rem;
-            color: #1a1a1a;
-            margin-bottom: 1rem;
-            font-weight: 700;
-            margin-top: 1.2rem;
-            text-align: center;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
-            letter-spacing: -0.02em;
-            line-height: 1.3;
-        }
-        .dashboard-section p { 
-            font-size: 1.2rem; 
-            margin-bottom: 2rem; 
-            color: #666; 
-            text-align: center;
-            font-family: 'Inter', 'Segoe UI', sans-serif;
-            font-weight: 400;
+            font-family: 'Google Sans', 'Roboto', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--background-primary);
+            color: var(--text-primary);
             line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        
+        /* Main Content */
+        .dashboard-content {
+            padding: calc(80px + var(--spacing-lg)) var(--spacing-lg) var(--spacing-xl);
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .dashboard-section {
+            text-align: center;
+        }
+
+        .dashboard-section h1 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-md);
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+
+        .dashboard-section p { 
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-xl);
             max-width: 600px;
             margin-left: auto;
             margin-right: auto;
+            line-height: 1.6;
         }
-        @media (max-width: 768px) {
-            .dashboard-section h1 {
-                font-size: 1.4rem;
-                margin-bottom: 0.8rem;
-                margin-top: 1rem;
-            }
-            .dashboard-section p {
-                font-size: 1rem;
-                margin-bottom: 1.5rem;
-            }
+
+        /* AI Search Container */
+        .ai-search-container {
+            margin: var(--spacing-xs) 0;
+            display: flex;
+            justify-content: center;
         }
-        .search-container {
-            background: #ffffff;
-            padding: 1.5rem;
-            border-radius: 8px;
-            border: 1px solid #e9ecef;
-            margin: 2rem 0;
+
+        .ai-search-box {
+            display: flex;
+            align-items: center;
+            background: var(--background-primary);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-sm) var(--spacing-md);
+            width: 100%;
+            max-width: 600px;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .ai-search-box:focus-within {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px var(--primary-light);
+        }
+
+        .ai-search-icon {
+            color: var(--text-muted);
+            font-size: 1.25rem;
+            margin-right: var(--spacing-sm);
+        }
+
+        .ai-search-box input {
+            flex: 1;
+            border: none;
+            outline: none;
+            background: transparent;
+            font-size: 1.25rem;
+            color: var(--text-primary);
+            padding: var(--spacing-sm) 0;
+            font-family: inherit;
+        }
+
+        .ai-search-box input::placeholder {
+            color: var(--text-muted);
+            font-size: 1.25rem;
+        }
+
+        .ai-search-box button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--radius-sm);
+            padding: var(--spacing-sm) var(--spacing-md);
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        .ai-search-box button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        /* Hiring Ad Section */
+        .hiring-ad-section {
+            background: linear-gradient(135deg, var(--primary-light) 0%, #f0f4ff 100%);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            margin: var(--spacing-sm) 0;
+            text-align: center;
             position: relative;
             overflow: hidden;
         }
-        .search-container::before {
+
+        .hiring-ad-section::before {
             content: '';
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(43, 108, 176, 0.05) 0%, transparent 70%);
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="%23ffffff" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="%23ffffff" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="%23ffffff" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
             pointer-events: none;
         }
-        .search-box {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            background: #ffffff;
-            padding: 0.5rem;
-            border-radius: 6px;
-            border: 1px solid #dee2e6;
-            transition: all 0.3s ease;
+
+        .hiring-ad-text {
             position: relative;
             z-index: 1;
-            width: calc(100% - 50px);
-            max-width: 1500px;
-            min-width: 220px;
-            margin: 0 auto;
         }
-        .search-box:hover,
-        .search-box:focus-within {
-            border-color: #185abd;
-        }
-        .search-icon {
-            color: #6c757d;
-            font-size: 1.2rem;
-            margin-left: 1rem;
-        }
-        .search-input {
-            flex: 1;
-            border: none;
-            background: transparent;
-            padding: 0.75rem 0.5rem;
-            font-size: 1rem;
-            color: #495057;
-            outline: none;
-            font-weight: 400;
-            font-family: 'Inter', sans-serif;
-        }
-        .search-input::placeholder {
-            color: #adb5bd;
-            font-style: normal;
-        }
-        .search-btn {
-            padding: 0.75rem 1.5rem;
-            background: #185abd;
-            color: #ffffff;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
+
+        .hiring-ad-text h3 {
+            font-size: 2rem;
             font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: background 0.3s ease;
-            font-family: 'Inter', sans-serif;
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-md);
+            letter-spacing: -0.01em;
         }
-        .search-btn:hover {
-            background: #0d6efd;
-        }
-        .btn-text {
-            font-size: 0.95rem;
-        }
-        .btn-icon {
-            font-size: 0.9rem;
-        }
-        .search-info {
-            margin-top: 0.5rem;
-            padding: 1.5rem 0;
-            background: none;
-            border: none;
-            box-shadow: none;
-            max-width: 1200px;
+
+        .hiring-ad-text p {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-lg);
+            max-width: 500px;
             margin-left: auto;
             margin-right: auto;
         }
-        .search-info .help-cards-row {
-            display: flex;
-            gap: 2.2rem;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: stretch;
-        }
-        .search-info .help-card {
-            background: rgba(255,255,255,0.82);
-            backdrop-filter: blur(10px) saturate(1.1);
-            -webkit-backdrop-filter: blur(10px) saturate(1.1);
-            border-radius: 0;
-            border: 1.5px solid #e3e8f0;
-            box-shadow: none;
-            padding: 2.1rem 1.6rem 1.5rem 1.6rem;
-            flex: 1 1 260px;
-            min-width: 240px;
-            max-width: 340px;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 1.1rem;
-            margin-bottom: 1.2rem;
-            transition: none;
-            position: relative;
-        }
-        .search-info .help-card:hover {
-            background: rgba(255,255,255,0.97);
-            box-shadow: none;
-            border: 1.5px solid #e3e8f0;
-        }
-        .search-info .help-card .help-icon {
-            display: none;
-        }
-        .search-info .help-card .help-title {
-            font-size: 1.18rem;
-            font-weight: 700;
-            color: #1d1d1f;
-            margin-bottom: 0.2rem;
-        }
-        .search-info .help-card .help-desc {
-            font-size: 1.01rem;
-            color: #444;
-            line-height: 1.6;
+
+        .hiring-ad-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--radius-sm);
+            padding: var(--spacing-sm) var(--spacing-lg);
+            font-size: 1rem;
             font-weight: 500;
-        }
-        @media (max-width: 900px) {
-            .search-info .help-cards-row {
-                gap: 1.2rem;
-            }
-            .search-info .help-card {
-                min-width: 180px;
-                max-width: 100%;
-                padding: 1.3rem 1rem 1.1rem 1rem;
-            }
-        }
-        .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(248, 249, 250, 0.9); display: none; justify-content: center; align-items: center; z-index: 1001; }
-        .loader { width: 200px; height: 4px; background: #e9ecef; position: relative; overflow: hidden; border-radius: 2px; }
-        .loader::before { content: ''; position: absolute; left: -50%; height: 100%; width: 50%; background: #495057; animation: lineLoading 1.5s infinite ease-in-out; }
-        @keyframes lineLoading { 0% { left: -50%; } 50% { left: 50%; } 100% { left: 150%; } }
-        .students-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0;
-            margin-top: 2rem;
-            margin-bottom: 3rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
             align-items: center;
+            gap: var(--spacing-xs);
         }
-        
+
+        .hiring-ad-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Search Results */
         .search-results-header {
-            width: 100%;
-            max-width: 1200px;
+            margin: var(--spacing-md) 0 var(--spacing-md);
             text-align: center;
-            margin-bottom: 2rem;
-            padding: 0 1rem;
         }
         
         .search-results-header h2 {
             font-size: 1.5rem;
-            font-weight: 600;
-            color: #1a1a1a;
-            margin: 0;
-            letter-spacing: -0.01em;
-            line-height: 1.4;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-sm);
         }
-        
-        @media (max-width: 768px) {
-            .search-results-header h2 {
-                font-size: 1.3rem;
-            }
+
+        /* Student Cards */
+        .students-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-sm);
         }
         
         .student-card {
-            background: #ffffff;
-            border-radius: 0;
-            border: 1px solid #e8eaed;
-            box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
-            width: 100%;
-            max-width: 1200px;
-            min-height: auto;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            transition: box-shadow 0.2s ease;
-            margin-bottom: 18px;
+            background: var(--background-primary);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-lg);
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
             position: relative;
-            padding: 0.7rem 1.2rem;
+            overflow: hidden;
         }
+
+        .student-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+
         .student-card:hover {
-            background: #ffffff;
-            box-shadow: 0 1px 3px 0 rgba(60, 64, 67, 0.3), 0 4px 8px 3px rgba(60, 64, 67, 0.15);
-            border: 1px solid #e8eaed;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-color);
         }
-        .student-card:last-child {
-            margin-bottom: 0;
-        }
-        .student-card img.profile-pic {
-            width: 40px;
-            height: 40px;
-            border-radius: 0;
-            object-fit: cover;
-            flex-shrink: 0;
-            border: 1px solid #e8eaed;
-            background: #f8f9fa;
-            box-shadow: none;
-        }
+
         .student-card .card-content {
             display: grid;
-            grid-template-columns: 1.2fr 1fr 1.5fr auto;
+            grid-template-columns: 80px 1fr;
+            gap: var(--spacing-lg);
             align-items: center;
-            gap: 0;
-            width: 100%;
-            padding: 0;
         }
-        .student-card .basic-info,
-        .student-card .education-info,
-        .student-card .skills-info {
-            padding: 0 0.3rem;
+
+        .student-card .profile-pic {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--border-light);
+            transition: all 0.3s ease;
+        }
+
+        .student-card:hover .profile-pic {
+            border-color: var(--primary-color);
+        }
+
+        .student-card .basic-info {
+            display: grid;
+            grid-template-columns: 30% 30% 40%;
+            gap: var(--spacing-md);
+            align-items: center;
+            width: 100%;
             min-width: 0;
-            max-width: 100%;
+        }
+
+        .student-card .basic-info > div {
+            min-width: 0;
             overflow: hidden;
+        }
+
+        .student-card .basic-info h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-xs);
             white-space: nowrap;
+            overflow: hidden;
             text-overflow: ellipsis;
-            border-right: 1px solid #e5e7ea;
-            height: 100%;
+            max-width: 100%;
+        }
+
+        .student-card .basic-info h4 {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+
+        .student-card .year-badge {
+            background: var(--primary-light);
+            color: var(--primary-color);
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.75rem;
+            font-weight: 500;
+            flex-shrink: 0;
+        }
+
+        .student-card .actions {
             display: flex;
             flex-direction: column;
+            gap: var(--spacing-xs);
+            align-items: flex-end;
+            justify-content: center;
+            flex-shrink: 0;
+            min-width: 0;
+            width: 100%;
+        }
+
+        .ai-intro-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--radius-sm);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            white-space: nowrap;
+            width: 100%;
+            text-align: center;
+        }
+
+        .ai-intro-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        .ai-intro-btn.connected {
+            background: var(--secondary-color);
+            cursor: not-allowed;
+        }
+
+        .ai-intro-btn.connected:hover {
+            background: var(--secondary-color);
+            transform: none;
+        }
+
+        .toggle-details {
+            color: var(--primary-color);
+            background: none;
+            border: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: underline;
+            transition: color 0.2s ease;
+            white-space: nowrap;
+            width: 100%;
+            text-align: center;
+        }
+
+        .toggle-details:hover {
+            color: var(--primary-dark);
+        }
+
+        /* Loading Overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1001;
+            backdrop-filter: blur(4px);
+        }
+
+        .loading-content {
+            text-align: center;
+            max-width: 400px;
+            padding: var(--spacing-lg);
+        }
+
+        .loading-text {
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-lg);
+            min-height: 2rem;
+            display: flex;
+            align-items: center;
             justify-content: center;
         }
-        .student-card .basic-info h3,
-        .student-card .basic-info h4,
-        .student-card .education-info p,
-        .student-card .skills-info p {
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            display: block;
-            max-width: 100%;
-            cursor: pointer;
-        }
-        .student-card .actions {
-            border-right: none;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: flex-end;
-            gap: 1.5rem;
-            padding-left: 0.7rem;
-            min-width: 120px;
-        }
-        .student-card h3 {
-            font-size: 1.01rem;
-            color: #1d1d1f;
-            font-weight: 600;
-            margin: 0;
-            letter-spacing: -0.01em;
-        }
-        .student-card h4 {
-            font-size: 0.85rem;
-            color: #86868b;
-            font-weight: 400;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .student-card .year-badge {
-            background: #e9ecef;
-            color: #495057;
-            padding: 0.13rem 0.5rem;
-            border-radius: 4px;
-            font-size: 0.7rem;
-            font-weight: 500;
-        }
-        .student-card .contact-info a {
-            color: #007aff;
-            text-decoration: none;
-            font-size: 0.81rem;
-        }
-        .student-card .contact-info a:hover {
-            text-decoration: underline;
-        }
-        .ai-intro-btn {
-            background: none;
-            color: #007aff;
-            border: none;
-            padding: 0;
-            font-size: 0.95rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: color 0.2s ease;
-            font-family: inherit;
-            text-decoration: underline;
-        }
-        .ai-intro-btn:hover {
-            color: #0056cc;
-            text-decoration: underline;
-        }
-        .ai-intro-btn.connected {
-            background: none;
-            color: #198754;
-            border: none;
-            cursor: not-allowed;
-            text-decoration: none;
-        }
-        .ai-intro-btn.connected:hover {
-            background: none;
-            color: #198754;
-            border: none;
-            text-decoration: none;
-        }
-        .toggle-details {
-            color: #007aff;
-            font-size: 0.95rem;
-            cursor: pointer;
-            text-decoration: underline;
-            margin-top: 0;
-            display: inline-block;
-            background: none;
-            border: none;
-            padding: 0;
-            border-radius: 0;
-            font-weight: 500;
-        }
-        .toggle-details:hover {
-            color: #0056cc;
-            text-decoration: underline;
-        }
-        .social-icons {
-            display: none;
-        }
-        .student-details {
-            display: none;
+
+        .progress-bar-container {
             width: 100%;
-            padding: 1rem 0 0 0;
-            border-top: 1px solid #e5e7ea;
-            margin-top: 1rem;
+            height: 8px;
+            background: var(--border-light);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            margin-bottom: var(--spacing-md);
         }
-        .student-details.expanded {
-            display: block;
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border-radius: var(--radius-sm);
+            width: 0%;
+            transition: width 0.5s ease;
+            animation: progress-animation 3s ease-in-out infinite;
         }
-        .detail-section {
-            margin-bottom: 0.75rem;
+
+        @keyframes progress-animation {
+            0% { width: 0%; }
+            25% { width: 25%; }
+            50% { width: 60%; }
+            75% { width: 85%; }
+            100% { width: 100%; }
         }
-        .detail-section h5 {
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: #495057;
-            margin-bottom: 0.25rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .detail-section p {
-            font-size: 0.75rem;
-            color: #6c757d;
-            margin-bottom: 0.15rem;
-            line-height: 1.3;
-        }
-        .detail-section p strong {
-            color: #495057;
-            font-weight: 500;
-        }
-        .detail-section ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .detail-section li {
-            font-size: 0.75rem;
-            color: #6c757d;
-            margin-bottom: 0.15rem;
-            padding-left: 0;
-        }
-        .detail-section a {
-            color: #007aff;
-            text-decoration: none;
-        }
-        .detail-section a:hover {
-            text-decoration: underline;
-        }
-        .pagination { display: none; }
-        .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.3); z-index: 999; }
-        .overlay.active { display: block; }
-        .profile-popup {
+
+        /* Popups */
+        .overlay {
             display: none;
             position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(255,255,255,0.72);
-            backdrop-filter: blur(28px) saturate(1.1);
-            -webkit-backdrop-filter: blur(28px) saturate(1.1);
-            border-radius: 0;
-            width: 96vw;
-            max-width: 540px;
-            max-height: 88vh;
-            overflow-y: auto;
+            top: 0;
+            left: 0;
+                width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
             z-index: 1000;
-            border: 1.5px solid rgba(180,180,180,0.22);
-            box-shadow: 0 4px 24px 0 rgba(30,34,90,0.08);
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
-            padding: 0;
-            scrollbar-width: thin;
-            scrollbar-color: #b0b0b0 #eaeaea;
+            backdrop-filter: blur(4px);
         }
-        .profile-popup::-webkit-scrollbar {
-            width: 7px;
-            background: #eaeaea;
+
+        .overlay.active {
+            display: block;
         }
-        .profile-popup::-webkit-scrollbar-thumb {
-            background: #b0b0b0;
-            border-radius: 6px;
-        }
-        .profile-popup.active { display: block; }
-        .profile-popup .macos-close {
-            position: absolute;
-            top: 12px;
-            left: 12px;
-            width: 28px;
-            height: 28px;
-            background: #ededed;
-            border-radius: 50%;
-            border: 1.5px solid #e0e0e0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: background 0.18s, box-shadow 0.18s;
-            z-index: 10;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
-        }
-        .profile-popup .macos-close:hover {
-            background: #fff;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.10);
-        }
-        .profile-popup .macos-close i {
-            color: #ff5f57;
-            font-size: 1.1rem;
-            font-weight: bold;
-            pointer-events: none;
-        }
-        .profile-header-macos {
-            display: flex;
-            align-items: center;
-            gap: 1.2rem;
-            padding: 2.2rem 2.2rem 1.1rem 2.2rem;
-            border-bottom: 1px solid #e5e5e7;
-            background: transparent;
-        }
-        .profile-header-macos .profile-avatar {
-            width: 72px;
-            height: 72px;
-            border-radius: 16px;
-            object-fit: cover;
-            background: #f3f3f3;
-            border: 1.5px solid #e0e0e0;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
-        }
-        .profile-header-macos .profile-info {
-            flex: 1;
-            min-width: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 0.2rem;
-        }
-        .profile-header-macos .profile-name {
-            font-size: 1.18rem;
-            font-weight: 600;
-            color: #1d1d1f;
-            margin-bottom: 0.1rem;
-            letter-spacing: -0.01em;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .profile-header-macos .profile-title {
-            font-size: 0.98rem;
-            color: #86868b;
-            font-weight: 400;
-            margin-bottom: 0.2rem;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .profile-header-macos .profile-links {
-            display: flex;
-            gap: 0.7rem;
-            margin-top: 0.2rem;
-        }
-        .profile-header-macos .profile-link {
-            color: #007aff;
-            font-size: 0.93rem;
-            text-decoration: none;
-            background: rgba(0,122,255,0.07);
-            padding: 0.18rem 0.7rem;
-            border-radius: 7px;
-            transition: background 0.18s, color 0.18s;
-            font-weight: 500;
-        }
-        .profile-header-macos .profile-link:hover {
-            background: #e5f1fb;
-            color: #0056cc;
-        }
-        .profile-content-macos {
-            padding: 1.2rem 2.2rem 2.2rem 2.2rem;
-            font-size: 0.98rem;
-            color: #222;
-            display: flex;
-            flex-direction: column;
-            gap: 1.1rem;
-        }
-        .profile-section-macos {
-            margin-bottom: 0.2rem;
-            padding-bottom: 0.7rem;
-            border-bottom: 1px solid #ececec;
-        }
-        .profile-section-macos:last-child {
-            border-bottom: none;
-        }
-        .profile-section-macos h2 {
-            font-size: 1.01rem;
-            font-weight: 600;
-            color: #1d1d1f;
-            margin-bottom: 0.3rem;
-            letter-spacing: -0.01em;
-        }
-        .profile-section-macos p, .profile-section-macos ul {
-            margin: 0.1rem 0 0.2rem 0;
-            color: #444;
-            font-size: 0.97rem;
-            line-height: 1.5;
-        }
-        .profile-section-macos ul {
-            padding-left: 1.1em;
-            margin-bottom: 0.2rem;
-        }
-        .profile-section-macos li {
-            margin-bottom: 0.1rem;
-        }
-        .profile-section-macos a {
-            color: #007aff;
-            text-decoration: none;
-            transition: color 0.18s;
-        }
-        .profile-section-macos a:hover {
-            color: #0056cc;
-            text-decoration: underline;
-        }
-        @media (max-width: 600px) {
-            .profile-popup {
-                max-width: 99vw;
-                padding: 0;
-            }
-            .profile-header-macos, .profile-content-macos {
-                padding-left: 0.7rem;
-                padding-right: 0.7rem;
-            }
-            .profile-header-macos {
-                padding-top: 1.1rem;
-                padding-bottom: 0.7rem;
-            }
-            .profile-header-macos .profile-avatar {
-                width: 54px;
-                height: 54px;
-                border-radius: 10px;
-            }
-            .profile-header-macos .profile-name {
-                font-size: 1rem;
-            }
-            .profile-header-macos .profile-title {
-                font-size: 0.89rem;
-            }
-            .profile-header-macos .profile-link {
-                font-size: 0.85rem;
-                padding: 0.12rem 0.5rem;
-            }
-            .profile-content-macos {
-                font-size: 0.93rem;
-                gap: 0.7rem;
-                padding-bottom: 1.1rem;
-            }
-            .profile-section-macos h2 {
-                font-size: 0.93rem;
-            }
-            .profile-section-macos p, .profile-section-macos ul {
-                font-size: 0.91rem;
-            }
-        }
-        footer { background: #FFFFFF; padding: 1rem; text-align: center; position: fixed; bottom: 0; width: 100%; box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05); }
-        @media (max-width: 900px) {
-            .navbar_classified {
-                padding: 0.5rem 1rem;
-            }
-            .navbar_classified .logo {
-                font-size: 1.2rem;
-            }
-            .student-card .card-content {
-                flex-wrap: wrap;
-                gap: 1rem;
-            }
-            .student-card .basic-info,
-            .student-card .education-info,
-            .student-card .skills-info,
-            .student-card .availability-info,
-            .student-card .contact-info {
-                min-width: auto;
-                flex: 1;
-                min-width: 150px;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .navbar_classified {
-                flex-direction: column;
-                align-items: flex-start;
-                padding: 0.5rem 0.5rem;
-                min-height: 48px;
-            }
-            .navbar_classified .nav-menu {
-                flex-direction: column;
-                width: 100%;
-                background: #ffffff;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-                position: absolute;
-                top: 56px;
-                left: 0;
-                display: none;
-                border-top: 1px solid #e9ecef;
-                z-index: 1001;
-            }
-            .navbar_classified .nav-menu.active {
-                display: flex;
-            }
-            .navbar_classified .nav-menu li a {
-                padding: 1rem 2rem;
-                border-radius: 0;
-                border: none;
-                font-size: 1.1rem;
-            }
-            .navbar_classified .hamburger {
-                display: block;
-                position: absolute;
-                right: 1rem;
-                top: 0.7rem;
-            }
-            .search-container { padding: 1rem; margin: 1.5rem 0; border-radius: 8px; }
-            .search-box { flex-direction: row; gap: 0.5rem; padding: 0.8rem; }
-            .search-icon { font-size: 1.2rem; margin-left: 0.5rem; }
-            .search-input { padding: 0.8rem 0.4rem; font-size: 0.95rem; }
-            .search-btn { padding: 0.8rem 1.5rem; border-radius: 6px; }
-            .btn-text { font-size: 0.95rem; }
-            .btn-icon { font-size: 0.9rem; }
-            .search-info { padding: 1.5rem; font-size: 0.9rem; }
-            .search-info h3 { font-size: 1.2rem; }
-            .search-info .ai-icon { font-size: 1.5rem; }
-            .student-card {
-                flex-direction: column;
-                align-items: stretch;
-                padding: 1rem;
-                max-width: 100%;
-            }
-            .student-card img.profile-pic {
-                width: 40px;
-                height: 40px;
-                margin-bottom: 0.5rem;
-            }
-            .student-card .card-content {
-                flex-direction: column;
-                gap: 0.75rem;
-            }
-            .student-card .basic-info,
-            .student-card .education-info,
-            .student-card .skills-info,
-            .student-card .availability-info,
-            .student-card .contact-info,
-            .student-card .actions {
-                min-width: auto;
-                width: 100%;
-            }
-            .student-card h3 { font-size: 1rem; }
-            .student-card h4 { font-size: 0.85rem; }
-            .student-card .year-badge { font-size: 0.7rem; }
-            .student-card .actions { 
-                flex-direction: row; 
-                justify-content: space-between;
-                align-items: center;
-            }
-            .message-popup { padding: 1.2rem; max-width: 90%; height: 65vh; }
-            .message-popup h2 { font-size: 1.25rem; margin-bottom: 1rem; }
-            .message-popup textarea { font-size: 0.9rem; }
-            .message-popup .send-btn { font-size: 0.9rem; }
-            .connection-request-popup {
-                padding: 1.2rem;
-                max-width: 95%;
-                width: 95%;
-            }
-            .connection-request-popup h2 {
-                font-size: 1.25rem;
-            }
-            .connection-request-popup p {
-                font-size: 0.9rem;
-            }
-            .connection-request-popup .ok-btn {
-                font-size: 0.9rem;
-            }
-           
-            .connection-request-popup {
-                max-width: 95%;
-                width: 95%;
-            }
-            .connection-request-content {
-                padding: 1.2rem 1.2rem 1.2rem 1.2rem;
-            }
-            .connection-request-content h2 {
-                font-size: 1rem;
-            }
-            .connection-request-content p {
-                font-size: 0.85rem;
-            }
-            .connection-request-content .ok-btn {
-                font-size: 0.85rem;
-                padding: 0.6rem 1.5rem;
-            }
-        }
-        @media (min-width: 768px) {
-            .students-list { align-items: center; }
-        }
-        
        
         .message-popup {
             display: none;
@@ -880,54 +470,194 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: #FFFFFF;
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-            z-index: 1000;
+            background: var(--background-primary);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            z-index: 1001;
             max-width: 500px;
             width: 90%;
+            border: 1px solid var(--border-light);
         }
-        .message-popup.active { display: block; }
+
+        .message-popup.active {
+            display: block;
+        }
+
         .message-popup h2 {
-            margin-bottom: 1rem;
-            color: #374151;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-md);
+            padding: var(--spacing-lg) var(--spacing-lg) 0 var(--spacing-lg);
         }
+
         .message-popup textarea {
             width: 100%;
             height: 120px;
-            padding: 0.75rem;
-            border: 1px solid #D1D5DB;
-            border-radius: 8px;
-            margin-bottom: 1rem;
+            padding: var(--spacing-sm);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            margin: 0 var(--spacing-lg) var(--spacing-md) var(--spacing-lg);
             resize: vertical;
+            font-family: inherit;
+            font-size: 0.875rem;
+            color: var(--text-primary);
+            background: var(--background-primary);
+            transition: border-color 0.2s ease;
         }
+
+        .message-popup textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px var(--primary-light);
+        }
+
         .message-popup .send-btn {
-            background: #2B6CB0;
-            color: #FFFFFF;
+            background: var(--primary-color);
+            color: white;
             border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            cursor: pointer;
+            border-radius: var(--radius-sm);
+            padding: var(--spacing-sm) var(--spacing-lg);
+            font-size: 0.875rem;
             font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin: 0 var(--spacing-lg) var(--spacing-lg) var(--spacing-lg);
+            display: block;
+            width: calc(100% - 2 * var(--spacing-lg));
         }
+
         .message-popup .send-btn:hover {
-            background: #2C5282;
+            background: var(--primary-dark);
+            transform: translateY(-1px);
         }
-        .connection-request-popup {
+
+        .close-btn {
+            position: absolute;
+            top: var(--spacing-md);
+            right: var(--spacing-md);
+            background: var(--background-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+        }
+
+        .close-btn:hover {
+            background: var(--border-light);
+            color: var(--text-primary);
+        }
+
+        .connection-request-popup,
+        .student-details-popup {
             display: none;
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
+            background: var(--background-primary);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            z-index: 1001;
+            max-width: 90vw;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .connection-request-popup.active,
+        .student-details-popup.active {
+            display: block;
+        }
+
+        .macos-close {
+            position: absolute;
+            top: var(--spacing-md);
+            right: var(--spacing-md);
+            width: 32px;
+            height: 32px;
+            background: var(--background-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            z-index: 10;
+        }
+
+        .macos-close:hover {
+            background: var(--border-light);
+        }
+
+        .macos-close i {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .connection-request-content,
+        .student-details-content {
+            padding: var(--spacing-xl);
+        }
+
+        .connection-request-content h2,
+        .student-details-content h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .connection-request-content p {
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-lg);
+            line-height: 1.6;
+        }
+
+        .ok-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--radius-sm);
+            padding: var(--spacing-sm) var(--spacing-lg);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .ok-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .manage-connections {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .manage-connections:hover {
+            text-decoration: underline;
+        }
+
+        /* macOS Style Student Details Popup */
+        .student-details-popup {
             background: rgba(255,255,255,0.92);
             backdrop-filter: blur(18px) saturate(1.1);
             -webkit-backdrop-filter: blur(18px) saturate(1.1);
             border-radius: 16px;
-            width: 480px;
-            max-width: 98vw;
-            max-height: 90vh;
-            overflow-y: auto;
+            width: 90vw;
+            max-width: 1200px;
+            height: 85vh;
+            max-height: 85vh;
+            overflow: hidden;
             z-index: 2001;
             border: 1.5px solid rgba(180,180,180,0.22);
             box-shadow: 0 8px 32px 0 rgba(30,34,90,0.13);
@@ -935,131 +665,7 @@
             padding: 0;
             transition: box-shadow 0.18s, background 0.18s;
         }
-        .connection-request-popup.active { display: block; }
-        .connection-request-popup .macos-close {
-            position: absolute;
-            top: 18px;
-            right: 18px;
-            left: auto;
-            width: 36px;
-            height: 36px;
-            background: #ededed;
-            border-radius: 50%;
-            border: 1.5px solid #e0e0e0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: background 0.18s, box-shadow 0.18s;
-            z-index: 10;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
-            font-size: 1.3rem;
-            color: #ff5f57;
-            outline: none;
-        }
-        .connection-request-popup .macos-close:focus {
-            box-shadow: 0 0 0 2px #007aff44;
-        }
-        .connection-request-popup .macos-close:hover {
-            background: #fff;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.10);
-        }
-        .connection-request-popup .macos-close i {
-            color: #ff5f57;
-            font-size: 1.3rem;
-            font-weight: bold;
-            pointer-events: none;
-        }
-        .connection-request-content {
-            padding: 1.5rem 1.5rem 1.5rem 1.5rem;
-            font-size: 0.9rem;
-            color: #222;
-            display: flex;
-            flex-direction: column;
-            gap: 1.1rem;
-            text-align: center;
-        }
-        .connection-request-content h2 {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #1d1d1f;
-            margin-bottom: 0.5rem;
-            letter-spacing: -0.01em;
-        }
-        .connection-request-content p {
-            color: #444;
-            font-size: 0.9rem;
-            line-height: 1.5;
-            margin-bottom: 1.5rem;
-        }
-        .connection-request-content .ok-btn {
-            background: #007aff;
-            color: #ffffff;
-            border: none;
-            padding: 0.75rem 2rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 500;
-            font-size: 0.9rem;
-            transition: background 0.18s;
-            align-self: center;
-        }
-        .connection-request-content .ok-btn:hover {
-            background: #0056cc;
-        }
-        .connection-request-content .manage-connections {
-            color: #007aff;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.18s;
-        }
-        .connection-request-content .manage-connections:hover {
-            color: #0056cc;
-            text-decoration: underline;
-        }
-        .close-btn {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #6B7280;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: background 0.2s ease;
-        }
-        .close-btn:hover {
-            background: #F3F4F6;
-            color: #374151;
-        }
-        .student-details-popup {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(255,255,255,0.92);
-            backdrop-filter: blur(18px) saturate(1.1);
-            -webkit-backdrop-filter: blur(18px) saturate(1.1);
-            border-radius: 16px;
-            width: 680px;
-            max-width: 98vw;
-            max-height: 90vh;
-            overflow-y: auto;
-            z-index: 2001;
-            border: 1.5px solid rgba(180,180,180,0.22);
-            box-shadow: 0 8px 32px 0 rgba(30,34,90,0.13);
-            font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, Arial, sans-serif;
-            padding: 0 0 2.2rem 0;
-            transition: box-shadow 0.18s, background 0.18s;
-        }
-        .student-details-popup.active { display: block; }
+
         .student-details-popup .macos-close {
             position: absolute;
             top: 18px;
@@ -1081,19 +687,23 @@
             color: #ff5f57;
             outline: none;
         }
+
         .student-details-popup .macos-close:focus {
             box-shadow: 0 0 0 2px #007aff44;
         }
+
         .student-details-popup .macos-close:hover {
             background: #fff;
             box-shadow: 0 2px 8px rgba(0,0,0,0.10);
         }
+
         .student-details-popup .macos-close i {
             color: #ff5f57;
             font-size: 1.3rem;
             font-weight: bold;
             pointer-events: none;
         }
+
         .student-details-content {
             padding: 2.2rem 2.2rem 1.2rem 2.2rem;
             font-size: 0.98rem;
@@ -1102,12 +712,14 @@
             flex-direction: column;
             gap: 1.1rem;
         }
+
         .popup-header-row {
             display: flex;
             align-items: center;
             gap: 1.2rem;
             margin-bottom: 1.1rem;
         }
+
         .popup-avatar {
             width: 72px;
             height: 72px;
@@ -1117,6 +729,7 @@
             border: 1.5px solid #e0e0e0;
             box-shadow: 0 1px 4px rgba(0,0,0,0.04);
         }
+
         .popup-header-info {
             flex: 1;
             min-width: 0;
@@ -1124,6 +737,7 @@
             flex-direction: column;
             gap: 0.2rem;
         }
+
         .popup-name {
             font-size: 1.18rem;
             font-weight: 600;
@@ -1134,6 +748,7 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
+
         .popup-title {
             font-size: 0.98rem;
             color: #86868b;
@@ -1143,14 +758,17 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
+
         .popup-section {
             margin-bottom: 0.2rem;
             padding-bottom: 0.7rem;
             border-bottom: 1px solid #ececec;
         }
+
         .popup-section:last-child {
             border-bottom: none;
         }
+
         .popup-section h5 {
             font-size: 1.01rem;
             font-weight: 600;
@@ -1158,28 +776,34 @@
             margin-bottom: 0.3rem;
             letter-spacing: -0.01em;
         }
+
         .popup-section p, .popup-section ul {
             margin: 0.1rem 0 0.2rem 0;
             color: #444;
             font-size: 0.97rem;
             line-height: 1.5;
         }
+
         .popup-section ul {
             padding-left: 1.1em;
             margin-bottom: 0.2rem;
         }
+
         .popup-section li {
             margin-bottom: 0.1rem;
         }
+
         .popup-section a {
             color: #007aff;
             text-decoration: none;
             transition: color 0.18s;
         }
+
         .popup-section a:hover {
             color: #0056cc;
             text-decoration: underline;
         }
+
         #studentDetailsOverlay {
             display: none;
             position: fixed;
@@ -1187,484 +811,228 @@
             background: rgba(0,0,0,0.18);
             z-index: 2000;
         }
-        #studentDetailsOverlay.active { display: block; }
-        .card-tooltip {
-            position: fixed;
-            z-index: 3000;
-            background: rgba(255,255,255,0.97);
-            backdrop-filter: blur(8px) saturate(1.1);
-            -webkit-backdrop-filter: blur(8px) saturate(1.1);
-            color: #222;
-            font-size: 0.97rem;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 16px 0 rgba(30,34,90,0.13);
-            border: 1px solid #e0e0e0;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.13s;
-            max-width: 420px;
-            min-width: 80px;
-            word-break: break-word;
-            white-space: pre-line;
+
+        #studentDetailsOverlay.active {
+            display: block;
         }
-        .card-tooltip.active {
-            opacity: 1;
+
+        /* Footer */
+        footer {
+            background: var(--background-secondary);
+            padding: var(--spacing-lg);
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            border-top: 1px solid var(--border-light);
         }
-        .modern-search-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            margin: 3rem 0 2rem 0;
-            background: none;
-            box-shadow: none;
-            border: none;
-            padding: 0;
-        }
-        .modern-search-box {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            background: #fff;
-            border-radius: 24px;
-            box-shadow: 0 1px 6px rgba(32,33,36,0.28);
-            border: 1px solid #dfe1e5;
-            padding: 8px 8px 8px 20px;
-            gap: 8px;
-            width: 90vw;
-            max-width: 584px;
-            min-width: 220px;
-            transition: box-shadow 0.2s ease;
-        }
-        .modern-search-box:hover {
-            box-shadow: 0 1px 6px rgba(32,33,36,0.28), 0 1px 3px rgba(32,33,36,0.12);
-        }
-        .modern-search-box:focus-within {
-            box-shadow: 0 2px 8px rgba(32,33,36,0.28), 0 1px 3px rgba(32,33,36,0.12);
-            border-color: #4285f4;
-        }
-        .modern-search-input-wrapper {
-            display: flex;
-            align-items: center;
-            background: transparent;
-            border-radius: 0;
-            flex: 1;
-            padding: 0;
-            border: none;
-            transition: none;
-        }
-        .modern-search-input-wrapper:focus-within {
-            border-color: transparent;
-        }
-        .modern-search-icon {
-            color: #9aa0a6;
-            font-size: 20px;
-            margin-right: 13px;
-            display: flex;
-            align-items: center;
-        }
-        .modern-search-input {
-            border: none;
-            background: transparent;
-            font-size: 16px;
-            color: rgba(0,0,0,0.87);
-            outline: none;
-            width: 100%;
-            padding: 0;
-            font-family: 'Google Sans', 'Roboto', Arial, sans-serif;
-            line-height: 34px;
-            font-weight: 400;
-        }
-        .modern-search-input::placeholder {
-            color: #9aa0a6;
-            font-weight: 400;
-            font-size: 16px;
-        }
-        .modern-search-btn {
-            background: #f8f9fa;
-            color: #3c4043;
-            border: 1px solid #f8f9fa;
-            border-radius: 4px;
-            padding: 0 16px;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 1px 1px rgba(0,0,0,0.1);
-            transition: box-shadow 0.2s ease, border 0.2s ease;
-            font-family: 'Google Sans', 'Roboto', Arial, sans-serif;
-            line-height: 27px;
-            min-height: 36px;
-        }
-        .modern-search-btn:hover {
-            background: #f8f9fa;
-            color: #3c4043;
-            box-shadow: 0 1px 1px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.12);
-            border-color: #dadce0;
-        }
-        .modern-search-btn:active {
-            background: #f1f3f4;
-            box-shadow: 0 1px 1px rgba(0,0,0,0.1);
-        }
-        @media (max-width: 768px) {
-            .modern-search-box {
-                width: 95vw;
-                max-width: 95vw;
-                padding: 6px 6px 6px 16px;
-                border-radius: 20px;
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .student-card .card-content {
+                grid-template-columns: auto 1fr;
+                gap: var(--spacing-md);
             }
-            .modern-search-btn {
-                padding: 0 12px;
-                font-size: 13px;
-                min-height: 32px;
+            
+            .student-card .basic-info {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-sm);
             }
-            .modern-search-icon {
-                font-size: 18px;
-                margin-right: 10px;
-            }
-            .modern-search-input {
-                font-size: 15px;
-                line-height: 30px;
-            }
-        }
-        @media (max-width: 480px) {
-            .modern-search-box {
-                flex-direction: column;
-                gap: 12px;
-                padding: 12px 16px;
-                border-radius: 16px;
-            }
-            .modern-search-btn {
-                width: 100%;
+
+            .student-card .actions {
+                flex-direction: row;
+                gap: var(--spacing-sm);
+                align-items: center;
                 justify-content: center;
-                font-size: 14px;
-                padding: 8px 16px;
-                min-height: 40px;
             }
-            .modern-search-input-wrapper {
+        }
+
+        @media (max-width: 768px) {
+            .navbar_classified {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 0.5rem 0.5rem;
+                min-height: 48px;
+            }
+
+            .navbar_classified .nav-menu {
+                flex-direction: column;
                 width: 100%;
+                background: #ffffff;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+                position: absolute;
+                top: 56px;
+                left: 0;
+                display: none;
+                border-top: 1px solid #e9ecef;
+                z-index: 1001;
             }
-        }
-        /* --- AI Search Box (from index.html) --- */
-        .ai-search-container {
-            position: relative;
+
+            .navbar_classified .nav-menu.active {
             display: flex;
-            justify-content: center;
-            margin: 2.5rem 0 2rem 0;
-        }
-        .ai-search-box {
-            display: flex;
-            align-items: center;
-            width: 100%;
-            max-width: 700px;
-            background: #fff;
-            border-radius: 999px;
-            box-shadow: 0 4px 32px 0 rgba(20, 85, 20, 0.10);
-            border: 1.5px solid #e5e7ea;
-            padding: 0.8rem 0.8rem 0.8rem 1.8rem;
-            transition: box-shadow 0.32s cubic-bezier(.4, 1.4, .6, 1), border 0.22s cubic-bezier(.4, 1.4, .6, 1);
-        }
-        .ai-search-icon {
-            color: #166534;
-            font-size: 1.6rem;
-            margin-right: 1rem;
-            opacity: 0.92;
-        }
-        .ai-search-box input {
-            flex: 1;
+            }
+
+            .navbar_classified .nav-menu li a {
+                padding: 1rem 2rem;
+                border-radius: 0;
             border: none;
-            outline: none;
-            background: transparent;
             font-size: 1.1rem;
-            color: #1a1a1a;
-            padding: 1.2rem 0.8rem;
-            font-weight: 500;
-            transition: color 0.22s, box-shadow 0.22s;
-            line-height: 1.4;
-        }
-        .ai-search-box input::placeholder {
-            color: #666;
-            font-size: 1.1rem;
-        }
-        .ai-search-box button {
-            background: #166534;
-            color: #fff;
-            border: none;
-            border-radius: 999px;
-            padding: 1.2rem 2rem;
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-left: 0.8rem;
-            cursor: pointer;
-            box-shadow: 0 2px 8px 0 rgba(20, 85, 20, 0.10);
-            transition: background 0.18s, box-shadow 0.18s, transform 0.18s;
-        }
-        .ai-search-box button:active {
-            animation: ai-btn-pop 0.18s cubic-bezier(.4, 1.4, .6, 1);
-        }
-        @keyframes ai-btn-pop {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.09); }
-            100% { transform: scale(1); }
-        }
-        @media (max-width: 700px) {
+            }
+
+            .navbar_classified .hamburger {
+                display: block;
+                position: absolute;
+                right: 1rem;
+                top: 0.7rem;
+            }
+
+            .dashboard-content {
+                padding: calc(80px + var(--spacing-md)) var(--spacing-md) var(--spacing-lg);
+            }
+
             .ai-search-box {
-                max-width: 95vw;
-                padding: 0.6rem 0.6rem 0.6rem 1.2rem;
+                flex-direction: row;
+                gap: var(--spacing-xs);
+                padding: var(--spacing-sm);
+                max-width: 95%;
+                border-radius: var(--radius-md);
             }
+
             .ai-search-box button {
-                font-size: 1.1rem;
-                padding: 1rem 1.5rem;
+                width: auto;
+            justify-content: center;
+                white-space: nowrap;
+            flex-shrink: 0;
             }
+
+            .ai-search-container {
+                margin: var(--spacing-xs) 0;
+            }
+
+            .ai-search-box input {
+                font-size: 1.1rem;
+                padding: var(--spacing-xs) 0;
+                min-width: 0;
+            }
+
+            .ai-search-box input::placeholder {
+                font-size: 1.1rem;
+            }
+
+            .ai-search-box button {
+                font-size: 0.95rem;
+                padding: var(--spacing-xs) var(--spacing-sm);
+            }
+
+            .student-card .card-content {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-sm);
+                text-align: center;
+            }
+
+            .student-card .basic-info {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-sm);
+                text-align: center;
+            }
+
+            .student-card .basic-info h4 {
+                justify-content: center;
+            }
+
+            .student-card .profile-pic {
+            margin: 0 auto;
+            }
+
+            .student-card .actions {
+                justify-content: center;
+                flex-wrap: wrap;
+                flex-direction: row;
+                gap: var(--spacing-sm);
+                align-items: center;
+            }
+
+            .hiring-ad-section {
+                padding: var(--spacing-lg);
+            }
+
+            .hiring-ad-text h3 {
+                font-size: 1.5rem;
+            }
+
+            .connection-request-content,
+            .student-details-content {
+                padding: var(--spacing-lg);
+            }
+
+            .message-popup {
+                max-width: 95%;
+                width: 95%;
+            }
+
+            .message-popup h2 {
+                font-size: 1.1rem;
+                padding: var(--spacing-md) var(--spacing-md) 0 var(--spacing-md);
+            }
+
+            .message-popup textarea {
+                margin: 0 var(--spacing-md) var(--spacing-md) var(--spacing-md);
+                font-size: 0.9rem;
+            }
+
+            .message-popup .send-btn {
+                margin: 0 var(--spacing-md) var(--spacing-md) var(--spacing-md);
+                width: calc(100% - 2 * var(--spacing-md));
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .dashboard-section h1 {
+                font-size: 1.75rem;
+            }
+
+            .dashboard-section p {
+                font-size: 1rem;
+            }
+
+            .ai-search-box {
+                border-radius: var(--radius-sm);
+                max-width: 98%;
+                padding: var(--spacing-xs) var(--spacing-sm);
+                flex-direction: row;
+                gap: var(--spacing-xs);
+            }
+
             .ai-search-box input {
                 font-size: 1rem;
-                padding: 1rem 0.6rem;
+                min-width: 0;
             }
+
             .ai-search-box input::placeholder {
                 font-size: 1rem;
             }
-        }
-        /* --- End AI Search Box --- */
-        .ai-search-explanation {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 0.2rem 0;
-        }
-        .explanation-header {
-            text-align: center;
-            margin-bottom: 0.8rem;
-        }
-        .explanation-header h2 {
-            font-family: 'Playfair Display', 'Georgia', serif;
-            font-size: 1.8rem;
-            font-weight: 600;
-            color: #1a1a1a;
-            letter-spacing: -0.02em;
-        }
-        .explanation-steps {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            align-items: center;
-        }
-        .step-line {
-            display: flex;
-            align-items: flex-start;
-            gap: 1rem;
-            padding: 0.5rem 0;
-            border-bottom: 1px solid #f0f0f0;
-            max-width: 600px;
-            width: 100%;
-            justify-content: center;
-        }
-        .step-line:last-child {
-            border-bottom: none;
-        }
-        .step-number {
-            background: linear-gradient(135deg, #166534, #22c55e);
-            color: #fff;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            font-size: 0.9rem;
-            flex-shrink: 0;
-            margin-top: 0.1rem;
-        }
-        .step-text {
-            font-family: 'Inter', sans-serif;
-            font-size: 0.95rem;
-            color: #666;
-            line-height: 1.5;
-            font-weight: 400;
-            text-align: left;
-        }
-        .step-text strong {
-            color: #1a1a1a;
-            font-weight: 600;
-        }
-        @media (max-width: 768px) {
-            .explanation-header h2 {
-                font-size: 1.5rem;
-            }
-            .step-text {
+
+            .ai-search-box button {
                 font-size: 0.9rem;
+                padding: var(--spacing-xs) var(--spacing-sm);
+                width: auto;
+                flex-shrink: 0;
+                white-space: nowrap;
             }
-            .step-line {
-                gap: 0.8rem;
-                padding: 0.4rem 0;
+
+            .ai-search-icon {
+                font-size: 1.1rem;
+                margin-right: var(--spacing-xs);
             }
-        }
-        
-        /* Hiring Ad Section Styles */
-        .hiring-ad-section {
-            background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 50%, #f0f0f0 100%);
-            border: none;
-            border-radius: 20px;
-            margin: 3rem 0;
-            padding: 3rem 2.5rem;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-        }
-        
-        .hiring-ad-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.1) 50%, transparent 100%);
-        }
-        
-        .hiring-ad-section::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.05) 50%, transparent 100%);
-        }
-        
-        .hiring-ad-content {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 3rem;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-        
-        .hiring-ad-text {
-            width: 100%;
-            max-width: 600px;
-            margin: 0 auto;
-            text-align: center;
-        }
-        
-        .hiring-ad-text h3 {
-            font-size: 2.2rem;
-            font-weight: 300;
-            color: #1a1a1a;
-            margin-bottom: 1rem;
-            letter-spacing: -0.02em;
-            line-height: 1.3;
-            font-family: 'Playfair Display', serif;
-        }
-        
-        .hiring-ad-text p {
-            font-size: 1.1rem;
-            color: #666;
-            line-height: 1.7;
-            margin: 0;
-            font-weight: 400;
-            letter-spacing: 0.01em;
-        }
-        
-        .hiring-ad-text strong {
-            color: #1a1a1a;
-            font-weight: 600;
-        }
-        
-        .hiring-ad-actions {
-            flex-shrink: 0;
-        }
-        
-        .hiring-ad-btn {
-            padding: 1.2rem 2.5rem;
-            border: none;
-            border-radius: 50px;
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            display: inline-block;
-            text-decoration: none;
-            font-family: 'Inter', sans-serif;
-            letter-spacing: 0.02em;
-            text-transform: uppercase;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .hiring-ad-btn.primary {
-            background: linear-gradient(135deg, #1a1a1a 0%, #333 100%);
-            color: white;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-        }
-        
-        .hiring-ad-btn.primary::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.6s;
-        }
-        
-        .hiring-ad-btn.primary:hover {
-            background: linear-gradient(135deg, #333 0%, #1a1a1a 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
-        }
-        
-        .hiring-ad-btn.primary:hover::before {
-            left: 100%;
-        }
-        
-        @media (max-width: 768px) {
+
+            .student-card {
+                padding: var(--spacing-md);
+            }
+
             .hiring-ad-section {
-                padding: 2rem 1.5rem;
-                margin: 2rem 0;
-                border-radius: 16px;
-            }
-            
-            .hiring-ad-content {
-                flex-direction: column;
-                text-align: center;
-                gap: 2rem;
-            }
-            
-            .hiring-ad-text h3 {
-                font-size: 1.8rem;
-            }
-            
-            .hiring-ad-text p {
-                font-size: 1rem;
-            }
-            
-            .hiring-ad-btn {
-                width: 100%;
-                padding: 1rem 2rem;
-                font-size: 0.95rem;
+                padding: var(--spacing-md);
             }
         }
-        
-        @media (max-width: 480px) {
-            .hiring-ad-section {
-                padding: 1.5rem 1rem;
-            }
-            
-            .hiring-ad-text h3 {
-                font-size: 1.6rem;
-            }
-            
-            .hiring-ad-text p {
-                font-size: 0.95rem;
-            }
-        }
-        
-        .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(248, 249, 250, 0.9); display: none; justify-content: center; align-items: center; z-index: 1001; }
     </style>
 </head>
 <body>
@@ -1716,7 +1084,12 @@
                     </div>
             
             <div class="loading-overlay" id="loadingOverlay">
-                <div class="loader"></div>
+                <div class="loading-content">
+                    <div class="loading-text" id="loadingText">Analysing your prompt...</div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar"></div>
+                    </div>
+                </div>
             </div>
             <div class="students-list" id="students-list"></div>
             <div class="pagination" id="pagination"></div>
@@ -1742,7 +1115,7 @@
     </div>
     <div class="student-details-popup" id="studentDetailsPopup">
         <div class="macos-close" onclick="closeStudentDetailsPopup()"><i class="fas fa-times"></i></div>
-        <div class="student-details-content" id="studentDetailsContent"></div>
+        <iframe id="studentProfileFrame" src="" frameborder="0" style="width: 100%; height: 100%; border: none; border-radius: 16px; overflow: hidden;"></iframe>
     </div>
     <div class="overlay" id="studentDetailsOverlay"></div>
     <!-- Firebase SDK -->
@@ -1792,6 +1165,38 @@ const loadingOverlay = document.getElementById('loadingOverlay');
 const messagePopup = document.getElementById('messagePopup');
 const introMessage = document.getElementById('introMessage');
 const searchInfo = document.getElementById('searchInfo');
+
+// Loading text messages for search process
+const loadingMessages = [
+    "Analysing your prompt...",
+    "Searching database...",
+    "Picking best talent with AI...",
+    "Finalising results..."
+];
+
+let currentMessageIndex = 0;
+let loadingInterval;
+
+function updateLoadingText() {
+    const loadingText = document.getElementById('loadingText');
+    if (loadingText) {
+        loadingText.textContent = loadingMessages[currentMessageIndex];
+        currentMessageIndex = (currentMessageIndex + 1) % loadingMessages.length;
+    }
+}
+
+function startLoadingAnimation() {
+    currentMessageIndex = 0;
+    updateLoadingText();
+    loadingInterval = setInterval(updateLoadingText, 1500); // Change message every 1.5 seconds
+}
+
+function stopLoadingAnimation() {
+    if (loadingInterval) {
+        clearInterval(loadingInterval);
+        loadingInterval = null;
+    }
+}
 
 // Fetch student data and connected students
 document.addEventListener('DOMContentLoaded', async () => {
@@ -1852,6 +1257,7 @@ async function aiSearch(query = '') {
         return;
     }
     loadingOverlay.style.display = 'flex';
+    startLoadingAnimation();
     searchInfo.style.display = 'none'; // Hide help cards when searching
 
     const csvText = [
@@ -1946,28 +1352,23 @@ async function aiSearch(query = '') {
                 
                 return `
                     <div class="student-card">
-                        <img src="https://firebasestorage.googleapis.com/v0/b/taska-45011.appspot.com/o/profile%2F${student.id}.webp?alt=media" alt="Profile Picture" class="profile-pic" onerror="this.src='../assets/avatar/1.png'">
                         <div class="card-content">
+                            <img src="https://firebasestorage.googleapis.com/v0/b/taska-45011.appspot.com/o/profile%2F${student.id}.webp?alt=media" alt="Profile Picture" class="profile-pic" onerror="this.src='../assets/avatar/1.png'">
                             <div class="basic-info">
-                                <h3>${personal.name || 'Unnamed'}</h3>
-                                <h4>${education.college || 'Not set'}<span class="year-badge">${yearLabel}</span></h4>
-                            </div>
-                            <div class="education-info">
-                                <p><strong>${education.degree || 'Not set'}</strong></p>
-                                <p>${education.branch || 'Not set'}</p>
-                                ${education.cgpa ? `<p>CGPA: ${education.cgpa}</p>` : ''}
-                            </div>
-                            <div class="skills-info">
-                                <p><strong>Skills:</strong> ${student.skills || 'Not specified'}</p>
-                                ${personal.about ? `<p>${personal.about.substring(0, 80)}${personal.about.length > 80 ? '...' : ''}</p>` : ''}
-                            </div>
-                            <div class="actions">
-                                <span class="ai-intro-btn${isConnected ? ' connected' : ''}" 
-                                      onclick="${isConnected ? '' : `generateAIIntro('${student.id}')`}" 
-                                      ${isConnected ? 'style="cursor: not-allowed;"' : ''}>
-                                    ${isConnected ? 'Connected' : 'Connect'}
-                                </span>
-                                <span class="toggle-details" onclick="showStudentDetailsPopup('${student.id}')">View Profile</span>
+                                <div>
+                                    <h3>${personal.name || 'Unnamed'}</h3>
+                                </div>
+                                <div>
+                                    <h4>${education.college || 'Not set'}<span class="year-badge">${yearLabel}</span></h4>
+                                </div>
+                                <div class="actions">
+                                    <span class="ai-intro-btn${isConnected ? ' connected' : ''}" 
+                                          onclick="${isConnected ? '' : `generateAIIntro('${student.id}')`}" 
+                                          ${isConnected ? 'style="cursor: not-allowed;"' : ''}>
+                                        ${isConnected ? 'Connected' : 'Connect'}
+                                    </span>
+                                    <span class="toggle-details" onclick="showStudentDetailsPopup('${student.id}')">View Profile</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1979,6 +1380,7 @@ async function aiSearch(query = '') {
         studentsList.innerHTML = `<p>Error performing search: ${error.message}</p>`;
     }
     loadingOverlay.style.display = 'none';
+    stopLoadingAnimation();
 }
 
 function basicKeywordMatch(query) {
@@ -2027,10 +1429,12 @@ window.toggleStudentDetails = (element) => {
 window.generateAIIntro = async (studentId) => {
     currentStudentId = studentId;
     loadingOverlay.style.display = 'flex';
+    startLoadingAnimation();
     const student = studentsData.find(s => s.id === studentId);
     const user = firebase.auth().currentUser;
     if (!user || !student) {
         loadingOverlay.style.display = 'none';
+        stopLoadingAnimation();
         alert('Error: User not authenticated or student not found.');
         return;
     }
@@ -2049,6 +1453,7 @@ window.generateAIIntro = async (studentId) => {
         console.error('Error sending connection request:', error);
         alert('Failed to send connection request.');
     }
+    stopLoadingAnimation();
     loadingOverlay.style.display = 'none';
 };
 
@@ -2192,64 +1597,14 @@ overlay.addEventListener('click', () => {
 window.showStudentDetailsPopup = (studentId) => {
     const student = studentsData.find(s => s.id === studentId);
     if (!student) return;
-    const personal = student.personal || {};
-    const education = student.education || {};
-    const profiles = student.profiles || {};
-    const availability = student.availability || {};
-    const softSkills = student.softSkills || {};
-    const preferences = student.preferences || {};
-    let content = '';
-    content += `<div class='popup-header-row'>`;
-    content += `<img class='popup-avatar' src='${personal.profilePic || '../assets/avatar/1.png'}' alt='Profile Picture'>`;
-    content += `<div class='popup-header-info'>`;
-    content += `<div class='popup-name'>${personal.name || 'Unnamed'}</div>`;
-    content += `<div class='popup-title'>${education.college || 'Unknown College'}${education.branch ? ' - ' + education.branch : ''}</div>`;
-    content += `</div></div>`;
-    content += `<div class='popup-section'><h5>About</h5><p>${personal.about || 'No about info.'}</p></div>`;
-    content += `<div class='popup-section'><h5>Skills & Experience</h5>`;
-    if (student.skills) content += `<p><strong>Skills:</strong> ${student.skills}</p>`;
-    if (student.experience) content += `<p><strong>Experience:</strong> ${student.experience}</p>`;
-    content += `</div>`;
-    content += `<div class='popup-section'><h5>Education</h5>`;
-    content += `<p><strong>College:</strong> ${education.college || 'Not specified'}</p>`;
-    content += `<p><strong>Degree:</strong> ${education.degree || 'Not specified'}</p>`;
-    content += `<p><strong>Branch:</strong> ${education.branch || 'Not specified'}</p>`;
-    content += `<p><strong>Year:</strong> ${education.year || 'Not specified'}</p>`;
-    if (education.cgpa) content += `<p><strong>CGPA:</strong> ${education.cgpa}</p>`;
-    if (education.graduation) content += `<p><strong>Graduation:</strong> ${education.graduation}</p>`;
-    if (education.achievements) content += `<p><strong>Achievements:</strong> ${education.achievements}</p>`;
-    content += `</div>`;
-    content += `<div class='popup-section'><h5>Online Profiles</h5>`;
-    if (profiles.github?.username) content += `<p><strong>GitHub:</strong> <a href='https://github.com/${profiles.github.username}' target='_blank'>${profiles.github.username}</a></p>`;
-    if (profiles.codeforces?.username) content += `<p><strong>Codeforces:</strong> <a href='https://codeforces.com/profile/${profiles.codeforces.username}' target='_blank'>${profiles.codeforces.username}</a></p>`;
-    if (profiles.leetcode?.username) content += `<p><strong>LeetCode:</strong> <a href='https://leetcode.com/${profiles.leetcode.username}' target='_blank'>${profiles.leetcode.username}</a></p>`;
-    if (!profiles.github?.username && !profiles.codeforces?.username && !profiles.leetcode?.username) content += `<p>No online profiles available</p>`;
-    content += `</div>`;
-    if (student.portfolio && student.portfolio.length > 0) {
-        content += `<div class='popup-section'><h5>Portfolio</h5><ul>`;
-        content += student.portfolio.map(item => `<li><a href='${item}' target='_blank'>${item}</a></li>`).join('');
-        content += `</ul></div>`;
-    }
-    content += `<div class='popup-section'><h5>Availability</h5>`;
-    content += `<p><strong>Hours/Week:</strong> ${availability.hours || 'N/A'}</p>`;
-    content += `<p><strong>Preferred Time:</strong> ${availability.worktime || 'N/A'}</p>`;
-    content += `<p><strong>Duration:</strong> ${availability.duration || 'N/A'}</p>`;
-    content += `</div>`;
-    if (softSkills.communication || softSkills.deadlines) {
-        content += `<div class='popup-section'><h5>Soft Skills</h5>`;
-        if (softSkills.communication) content += `<p><strong>Communication:</strong> ${softSkills.communication}</p>`;
-        if (softSkills.deadlines) content += `<p><strong>Deadlines:</strong> ${softSkills.deadlines}</p>`;
-        content += `</div>`;
-    }
-    if (preferences.roles || preferences.why) {
-        content += `<div class='popup-section'><h5>Preferences</h5>`;
-        if (preferences.roles) content += `<p><strong>Preferred Roles:</strong> ${preferences.roles}</p>`;
-        if (preferences.why) content += `<p><strong>Why Interested:</strong> ${preferences.why}</p>`;
-        content += `</div>`;
-    }
-    document.getElementById('studentDetailsContent').innerHTML = content;
+    
+    // Load the workplace/view-profile page in the iframe
+    const iframe = document.getElementById('studentProfileFrame');
+    iframe.src = `../workplace/view-profile.html?studentId=${studentId}`;
+    
     document.getElementById('studentDetailsPopup').classList.add('active');
     document.getElementById('studentDetailsOverlay').classList.add('active');
+    
     // Focus close button for accessibility
     const closeBtn = document.querySelector('.student-details-popup .macos-close');
     if (closeBtn) closeBtn.focus();
@@ -2316,9 +1671,7 @@ function addTooltipListenersToCardCells() {
     // Select all card content cells that may overflow
     const selectors = [
         '.student-card .basic-info h3',
-        '.student-card .basic-info h4',
-        '.student-card .education-info p',
-        '.student-card .skills-info p'
+        '.student-card .basic-info h4'
     ];
     document.querySelectorAll(selectors.join(',')).forEach(cell => {
         cell.onmouseenter = function(e) {
