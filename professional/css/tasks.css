@@ -15,7 +15,7 @@ body {
 /* Fashion-styled h3 elements */
 h3 {
     font-family: 'Poppins', sans-serif;
-    font-weight: 400;
+    font-weight: 550;
     font-size: 1.4rem;
     color: #2c3e50;
     letter-spacing: 0.5px;
@@ -122,7 +122,7 @@ h3.fashion-minimal {
     padding: 1rem; 
     margin: 0; 
     border-bottom: 1px solid #e0e0e0; 
-    font-weight: 400;
+    font-weight: 550;
 }
 
 .user-item { 
@@ -200,7 +200,7 @@ h3.fashion-minimal {
     color: #1a1a1a; 
     padding: 1rem 0; 
     margin: 0; 
-    font-weight: 400;
+    font-weight: 550;
 }
 
 .pending-item { 
@@ -803,7 +803,7 @@ h3.fashion-minimal {
     margin: 0;
     font-size: 1.2rem;
     color: #1a1a1a;
-    font-weight: 400;
+    font-weight: 550;
 }
 
 .add-task-btn {
