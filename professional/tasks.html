@@ -168,6 +168,17 @@
                 <button class="submit-btn" onclick="submitTask()">Submit</button>
             </div>
         </div>
+        
+        <!-- Task Popup Loading Overlay -->
+        <div class="task-popup-loading" id="task-popup-loading">
+            <div class="loading-content">
+                <div class="loading-spinner"></div>
+                <div class="loading-text" id="task-loading-text">Uploading files...</div>
+                <div class="loading-progress">
+                    <div class="progress-bar" id="task-progress-bar"></div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Files Popup -->
@@ -286,7 +297,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
 import { getDatabase, ref, get, push, set, onValue, update, remove } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
-import { getStorage, ref as storageRef, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-storage.js";
+import { getStorage, ref as storageRef, uploadBytesResumable, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-storage.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyDZIDlEtaNRxODoFhRw0xF2yYFBqqBexqo",
@@ -1486,6 +1497,9 @@ async function submitTask() {
         return;
     }
 
+    // Show loading overlay
+    showTaskPopupLoading();
+
     try {
         let taskRef;
         let taskData;
@@ -1496,6 +1510,7 @@ async function submitTask() {
             const existingTaskSnapshot = await get(existingTaskRef);
             
             if (!existingTaskSnapshot.exists()) {
+                hideTaskPopupLoading();
                 alert('Task not found.');
                 return;
             }
@@ -1511,52 +1526,93 @@ async function submitTask() {
             
             // Handle files - preserve existing files and add new ones
             if (uploadedTaskFiles.length > 0) {
+                updateTaskLoadingText('Processing files...');
                 taskData.files = {};
-                let fileIndex = 0;
                 
-                // First, add existing files that weren't removed
+                // First, preserve existing files with their original structure
                 if (existingTask.files) {
-                    for (const key in existingTask.files) {
-                        const existingFile = existingTask.files[key];
-                        // Check if this file still exists in uploadedTaskFiles
+                    // Add existing files that are still in uploadedTaskFiles
+                    Object.entries(existingTask.files).forEach(([key, existingFile]) => {
                         const stillExists = uploadedTaskFiles.some(file => 
                             file.url === existingFile.url && file.name === existingFile.name
                         );
                         if (stillExists) {
-                            taskData.files[fileIndex] = existingFile;
-                            fileIndex++;
+                            taskData.files[key] = existingFile; // Preserve original key
                         }
-                    }
+                    });
                 }
                 
-                // Then add new files
+                // Then add new files with new indices
+                let newFileIndex = 0;
                 for (let i = 0; i < uploadedTaskFiles.length; i++) {
                     const file = uploadedTaskFiles[i];
+                    
+                    // Check if this is a new file (no URL)
                     if (!file.url) {
+                        // Find the next available index by checking all existing keys
+                        const existingKeys = Object.keys(taskData.files).map(Number).sort((a, b) => a - b);
+                        newFileIndex = 0;
+                        for (const key of existingKeys) {
+                            if (key === newFileIndex) {
+                                newFileIndex++;
+                            } else {
+                                break;
+                            }
+                        }
+                        
                         // New file - upload it
+                        updateTaskLoadingText(`Uploading file ${i + 1} of ${uploadedTaskFiles.length}...`);
                         const storagePath = `tasks/${editingTaskId}/${Date.now()}_${file.name}`;
                         const fileRef = storageRef(storage, storagePath);
                         const uploadTask = await uploadBytesResumable(fileRef, file);
                         const fileUrl = await getDownloadURL(fileRef);
-                        taskData.files[fileIndex] = {
+                        taskData.files[newFileIndex] = {
                             name: file.name,
                             url: fileUrl,
                             type: file.type,
                             size: file.size
                         };
-                    } else {
-                        // Existing file - keep it
-                        taskData.files[fileIndex] = {
-                            name: file.name,
-                            url: file.url,
-                            type: file.type,
-                            size: file.size
-                        };
+                        newFileIndex++;
                     }
-                    fileIndex++;
+                }
+            } else {
+                // No files selected - clear existing files
+                taskData.files = {};
+            }
+            
+            // Clean up removed files from Firebase Storage
+            if (existingTask.files) {
+                updateTaskLoadingText('Cleaning up removed files...');
+                const filesToDelete = [];
+                
+                // Find files that were removed
+                Object.entries(existingTask.files).forEach(([key, existingFile]) => {
+                    const stillExists = uploadedTaskFiles.some(file => 
+                        file.url === existingFile.url && file.name === existingFile.name
+                    );
+                    if (!stillExists) {
+                        filesToDelete.push(existingFile);
+                    }
+                });
+                
+                // Delete removed files from Firebase Storage
+                for (const fileToDelete of filesToDelete) {
+                    try {
+                        // Extract the storage path from the URL
+                        const urlParts = fileToDelete.url.split('/');
+                        const fileName = urlParts[urlParts.length - 1].split('?')[0]; // Remove query parameters
+                        const storagePath = `tasks/${editingTaskId}/${fileName}`;
+                        const fileRef = storageRef(storage, storagePath);
+                        await deleteObject(fileRef);
+                        console.log(`Deleted file from storage: ${fileName}`);
+                    } catch (error) {
+                        console.error(`Error deleting file from storage: ${fileToDelete.name}`, error);
+                        // Continue with other files even if one fails
+                    }
                 }
             }
             
+            updateTaskLoadingText('Saving task...');
             taskRef = existingTaskRef;
             await update(taskRef, taskData);
         } else {
@@ -1573,9 +1629,11 @@ async function submitTask() {
             };
 
             if (uploadedTaskFiles.length > 0) {
+                updateTaskLoadingText('Uploading files...');
                 taskData.files = {};
                 for (let i = 0; i < uploadedTaskFiles.length; i++) {
                     const file = uploadedTaskFiles[i];
+                    updateTaskLoadingText(`Uploading file ${i + 1} of ${uploadedTaskFiles.length}...`);
                     const storagePath = `tasks/${Date.now()}_${file.name}`;
                     const fileRef = storageRef(storage, storagePath);
                     const uploadTask = await uploadBytesResumable(fileRef, file);
@@ -1589,16 +1647,43 @@ async function submitTask() {
                 }
             }
             
+            updateTaskLoadingText('Saving task...');
             taskRef = ref(db, `tasks`);
             await push(taskRef, taskData);
         }
 
+        // Hide loading overlay and close popup
+        hideTaskPopupLoading();
         closeTaskPopup();
         loadWorkflows();
         loadCompletedTasks();
     } catch (error) {
         console.error('Error submitting task:', error);
-        // Removed error alert since tasks are submitting successfully
+        hideTaskPopupLoading();
+    }
+}
+
+// Function to show task popup loading overlay
+function showTaskPopupLoading() {
+    const loadingOverlay = document.getElementById('task-popup-loading');
+    if (loadingOverlay) {
+        loadingOverlay.classList.add('active');
+    }
+}
+
+// Function to hide task popup loading overlay
+function hideTaskPopupLoading() {
+    const loadingOverlay = document.getElementById('task-popup-loading');
+    if (loadingOverlay) {
+        loadingOverlay.classList.remove('active');
+    }
+}
+
+// Function to update loading text
+function updateTaskLoadingText(text) {
+    const loadingText = document.getElementById('task-loading-text');
+    if (loadingText) {
+        loadingText.textContent = text;
     }
 }
 
@@ -1816,9 +1901,9 @@ function generateTimelineHTML(submissions, comments, taskId) {
                                                 </div>
                                             ` : ''}
                                             <div class="file-actions">
-                                                <a href="${file.url}" download="${file.name}" class="download-btn" title="Download">
+                                                <button onclick="downloadFile('${file.url}', '${file.name}')" class="download-btn" title="Download">
                                                     <i class="fas fa-download"></i>
-                                                </a>
+                                                </button>
                                                 ${isImageFile(file.type) || isVideoFile(file.type) ? `
                                                     <button class="view-btn" onclick="openFileViewer('${file.url}', '${file.type}', '${file.name}')" title="View">
                                                         <i class="fas fa-eye"></i>
@@ -1963,62 +2048,119 @@ function toggleFilesPopup(taskId, event) {
     
     // Get task files
     const taskRef = ref(db, `tasks/${taskId}`);
-    get(taskRef).then((snapshot) => {
+    get(taskRef).then(async (snapshot) => {
             if (snapshot.exists()) {
             const task = snapshot.val();
                         if (task.files) {
-                const filesHTML = Object.values(task.files).map(file => `
-                    <div class="popup-file-item">
-                        <div class="file-thumbnail-container">
-                            ${generateFileThumbnail(file)}
-                        </div>
-                        <div class="file-info">
-                            <div class="file-name">${file.name}</div>
-                            <div class="file-size">${file.size ? (file.size / 1024).toFixed(2) + ' KB' : 'Unknown size'}</div>
-                        </div>
-                        <div class="file-actions">
-                            <a href="${file.url}" download="${file.name}" class="download-btn" title="Download">
-                                <i class="fas fa-download"></i>
-                            </a>
-                            ${isImageFile(file.type) || isVideoFile(file.type) ? `
-                                <button class="view-btn" onclick="openFileViewer('${file.url}', '${file.type}', '${file.name}')" title="View">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                            ` : ''}
-                        </div>
-                    </div>
-                            `).join('');
+                // Debug: Log the files to check for duplicates
+                console.log('Task files from database:', task.files);
+                const fileValues = Object.values(task.files);
+                console.log('File values:', fileValues);
                 
-                popupBody.innerHTML = filesHTML;
+                // Check for duplicates by URL
+                const urls = fileValues.map(f => f.url);
+                const uniqueUrls = [...new Set(urls)];
+                if (urls.length !== uniqueUrls.length) {
+                    console.warn('Duplicate files detected!', {
+                        totalFiles: urls.length,
+                        uniqueFiles: uniqueUrls.length,
+                        duplicates: urls.length - uniqueUrls.length
+                    });
+                    
+                    // Clean up duplicates
+                    const cleanedFiles = await removeDuplicateFiles(taskId, task.files);
+                    const cleanedFileValues = Object.values(cleanedFiles);
+                    
+                    const filesHTML = cleanedFileValues.map(file => `
+                        <div class="popup-file-item">
+                            <div class="file-thumbnail-container">
+                                ${generateFileThumbnail(file)}
+                            </div>
+                            <div class="file-info">
+                                <div class="file-name">${file.name}</div>
+                                <div class="file-size">${file.size ? (file.size / 1024).toFixed(2) + ' KB' : 'Unknown size'}</div>
+                            </div>
+                            <div class="file-actions">
+                                <button onclick="downloadFile('${file.url}', '${file.name}')" class="download-btn" title="Download">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                                ${isImageFile(file.type) || isVideoFile(file.type) ? `
+                                    <button class="view-btn" onclick="openFileViewer('${file.url}', '${file.type}', '${file.name}')" title="View">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                ` : ''}
+                            </div>
+                        </div>
+                    `).join('');
+                    
+                    popupBody.innerHTML = filesHTML;
+                } else {
+                    // No duplicates found, display files normally
+                    const filesHTML = fileValues.map(file => `
+                        <div class="popup-file-item">
+                            <div class="file-thumbnail-container">
+                                ${generateFileThumbnail(file)}
+                            </div>
+                            <div class="file-info">
+                                <div class="file-name">${file.name}</div>
+                                <div class="file-size">${file.size ? (file.size / 1024).toFixed(2) + ' KB' : 'Unknown size'}</div>
+                            </div>
+                            <div class="file-actions">
+                                <button onclick="downloadFile('${file.url}', '${file.name}')" class="download-btn" title="Download">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                                ${isImageFile(file.type) || isVideoFile(file.type) ? `
+                                    <button class="view-btn" onclick="openFileViewer('${file.url}', '${file.type}', '${file.name}')" title="View">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                ` : ''}
+                            </div>
+                        </div>
+                    `).join('');
+                    
+                    popupBody.innerHTML = filesHTML;
+                }
             } else {
                 popupBody.innerHTML = '<div class="no-files">No files attached</div>';
             }
         }
     });
     
-    // Position popup to the left of the clicked element
+    // Position popup based on screen size
     const rect = event.target.getBoundingClientRect();
     const popupWidth = 450;
     const screenWidth = window.innerWidth;
+    const screenHeight = window.innerHeight;
     
-    // Force popup to the left of the cursor
-    let leftPosition = rect.left - popupWidth - 20; // 20px gap from cursor
-    
-    // Only if popup would go off-screen to the left, then position it to the right
-    if (leftPosition < 20) {
-        leftPosition = rect.right + 20;
+    // Check if it's mobile (width <= 768px)
+    if (screenWidth <= 768) {
+        // Mobile: Center the popup
+        const leftPosition = (screenWidth - popupWidth) / 2;
+        const topPosition = Math.max(20, (screenHeight - 400) / 2); // 400px is approximate popup height
+        
+        popup.style.top = topPosition + 'px';
+        popup.style.left = leftPosition + 'px';
+    } else {
+        // Desktop: Position near the button
+        // Force popup to the left of the cursor
+        let leftPosition = rect.left - popupWidth - 20; // 20px gap from cursor
+        
+        // Only if popup would go off-screen to the left, then position it to the right
+        if (leftPosition < 20) {
+            leftPosition = rect.right + 20;
+        }
+        
+        // Ensure popup doesn't go off-screen to the right
+        if (leftPosition + popupWidth > screenWidth - 20) {
+            leftPosition = screenWidth - popupWidth - 20;
+        }
+        
+        // Final safety check
+        leftPosition = Math.max(20, leftPosition);
+        
+        popup.style.top = rect.top + 'px';
+        popup.style.left = leftPosition + 'px';
     }
-    
-    // Ensure popup doesn't go off-screen to the right
-    if (leftPosition + popupWidth > screenWidth - 20) {
-        leftPosition = screenWidth - popupWidth - 20;
-    }
-    
-    // Final safety check
-    leftPosition = Math.max(20, leftPosition);
-    
-    popup.style.top = rect.top + 'px';
-    popup.style.left = leftPosition + 'px';
     
     popup.classList.add('active');
 }
@@ -2026,6 +2168,40 @@ function toggleFilesPopup(taskId, event) {
 function closeFilesPopup() {
     const popup = document.getElementById('files-popup');
     popup.classList.remove('active');
+}
+
+// Function to remove duplicate files from a task
+async function removeDuplicateFiles(taskId, taskFiles) {
+    const fileValues = Object.values(taskFiles);
+    const uniqueFiles = [];
+    const seenUrls = new Set();
+    
+    // Keep only unique files based on URL
+    for (const file of fileValues) {
+        if (!seenUrls.has(file.url)) {
+            seenUrls.add(file.url);
+            uniqueFiles.push(file);
+        }
+    }
+    
+    // If we found duplicates, update the database
+    if (uniqueFiles.length !== fileValues.length) {
+        console.log(`Removing ${fileValues.length - uniqueFiles.length} duplicate files from task ${taskId}`);
+        
+        // Rebuild the files object with sequential indices
+        const cleanedFiles = {};
+        uniqueFiles.forEach((file, index) => {
+            cleanedFiles[index] = file;
+        });
+        
+        // Update the task in the database
+        const taskRef = ref(db, `tasks/${taskId}`);
+        await update(taskRef, { files: cleanedFiles });
+        
+        return cleanedFiles;
+    }
+    
+    return taskFiles;
 }
 
 function generateFileThumbnail(file) {
@@ -2080,6 +2256,39 @@ function closeFileViewer() {
         if (fileContent) {
             fileContent.innerHTML = '';
         }
+    }
+}
+
+// Function to download file directly to local system
+async function downloadFile(fileUrl, fileName) {
+    try {
+        const response = await fetch(fileUrl);
+        const blob = await response.blob();
+        
+        // Create a temporary link element
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = fileName;
+        link.style.display = 'none';
+        
+        // Append to body, click, and remove
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        // Clean up the object URL
+        URL.revokeObjectURL(link.href);
+    } catch (error) {
+        console.error('Error downloading file:', error);
+        // Fallback to direct link if fetch fails
+        const link = document.createElement('a');
+        link.href = fileUrl;
+        link.download = fileName;
+        link.target = '_blank';
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     }
 }
 
@@ -2379,6 +2588,7 @@ window.approveSubmission = approveSubmission;
 window.openApprovalModal = openApprovalModal;
 window.closeApprovalModal = closeApprovalModal;
 window.confirmApproval = confirmApproval;
+window.downloadFile = downloadFile;
 
 // Cache management functions for debugging
 window.clearMessageCache = clearMessageCache;
