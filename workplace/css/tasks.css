@@ -1135,13 +1135,13 @@ h3.fashion-minimal {
 }
 
 .timeline-item:not(:last-child)::after {
-    content: '';
-    position: absolute;
-    left: 15px;
-    top: 40px;
-    bottom: -1rem;
-    width: 2px;
-    background: #e0e0e0;
+    display: none !important;
+    content: none !important;
+    border: none !important;
+    background: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    position: static !important;
 }
 
 .timeline-marker {
@@ -2537,14 +2537,7 @@ h3.fashion-minimal {
     }
     
     .timeline-item:not(:last-child)::after {
-        content: '';
-        position: absolute;
-        left: 14px;
-        top: 32px;
-        bottom: -1rem;
-        width: 2px;
-        background: #e9ecef;
-        z-index: 1;
+        display: none;
     }
     
     .timeline-marker {

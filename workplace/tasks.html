@@ -999,13 +999,7 @@
         }
 
         /* Timeline Approval Status Styles */
-        .timeline-item.approved {
-            border-left: 3px solid #4CAF50;
-        }
-
-        .timeline-item.pending {
-            border-left: 3px solid #FFC107;
-        }
+    
 
         .submission-status {
             display: flex;
@@ -3642,7 +3636,34 @@ async function deleteMessage({ messageId }) {
     try {
         const chatId = [userId, selectedProfessionalId].sort().join("+");
         const messageRef = ref(db, `chats/${chatId}/messages/${messageId}`);
+        
+        // Get the message data first to check if it contains a file
+        const messageSnapshot = await get(messageRef);
+        if (messageSnapshot.exists()) {
+            const message = messageSnapshot.val();
+            
+            // If the message contains a file, delete it from Firebase Storage
+            if (message.file && message.file.url) {
+                try {
+                    // Extract file path from URL and delete from storage
+                    const fileUrl = message.file.url;
+                    const filePath = fileUrl.split('/o/')[1]?.split('?')[0];
+                    
+                    if (filePath) {
+                        const fileRef = storageRef(storage, decodeURIComponent(filePath));
+                        await remove(fileRef);
+                        console.log('File deleted from storage:', filePath);
+                    }
+                } catch (fileError) {
+                    console.warn('Could not delete file from storage:', fileError);
+                    // Continue with message deletion even if file deletion fails
+                }
+            }
+        }
+        
+        // Delete the message from the database
         await remove(messageRef);
+        
     } catch (error) {
         console.error("Error deleting message:", error);
         alert("Failed to delete message.");
