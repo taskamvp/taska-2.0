@@ -1599,8 +1599,20 @@ async function init() {
         auth.onAuthStateChanged(async user => {
             if (user) {
                 userId = user.uid;
+                console.log('User authenticated, userId:', userId); // DEBUG
                 await fetchCurrentUserProfile();
-                loadAssignedTasks();
+                
+                // Ensure DOM is ready before loading assigned tasks
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', () => {
+                        console.log('DOM loaded, calling loadAssignedTasks'); // DEBUG
+                        loadAssignedTasks();
+                    });
+                } else {
+                    console.log('DOM already loaded, calling loadAssignedTasks'); // DEBUG
+                    loadAssignedTasks();
+                }
+                
                 loadConnections();
                 loadPendingRequests();
                 // Remove loadWorkflows() and checkAndShowWorkflowArea() calls
@@ -3153,11 +3165,36 @@ function openAIApp(appType) {
 // Assigned Tasks Functions
 async function loadAssignedTasks() {
     try {
+        console.log('loadAssignedTasks called, userId:', userId); // DEBUG
+        
+        if (!userId) {
+            console.error('userId is not set');
+            return;
+        }
+        
         const assignedTasksRef = ref(db, `students/${userId}/assignedTasks`);
         const snapshot = await get(assignedTasksRef);
         
-        elements.assignedTasksList.innerHTML = '';
+        console.log('Snapshot exists:', snapshot.exists()); // DEBUG
+        
+        // Ensure elements are properly initialized
+        if (!elements.assignedTasksList) {
+            console.error('assignedTasksList element not found');
+            elements.assignedTasksList = document.getElementById('assigned-tasks-list');
+        }
+        
         const assignedTasksSection = document.getElementById('assigned-tasks-section');
+        if (!assignedTasksSection) {
+            console.error('assigned-tasks-section element not found');
+            return;
+        }
+        
+        if (!elements.assignedTasksList) {
+            console.error('assigned-tasks-list element not found');
+            return;
+        }
+        
+        elements.assignedTasksList.innerHTML = '';
         
         if (snapshot.exists()) {
             const tasks = snapshot.val();
@@ -3171,10 +3208,13 @@ async function loadAssignedTasks() {
             const pendingTasks = [];
             for (const taskId in tasks) {
                 const task = tasks[taskId];
+                console.log('Checking task:', taskId, task); // DEBUG
                 if (task.status === 'pending') {
                     pendingTasks.push({ taskId, ...task });
                 }
             }
+
+            console.log('Pending tasks found:', pendingTasks.length); // DEBUG
 
             // Sort pending tasks by deadline (nearest first)
             pendingTasks.sort((a, b) => {
@@ -3191,63 +3231,85 @@ async function loadAssignedTasks() {
                 const professionalPhoto = await loadProfileImage(task.professionalId);
                 
                 const card = createAssignedTaskCard(task, taskId, professionalPhoto);
-                if (card) elements.assignedTasksList.appendChild(card);
+                if (card) {
+                    console.log('Adding card to DOM:', task.title); // DEBUG
+                    elements.assignedTasksList.appendChild(card);
+                }
             }
 
             if (hasPendingTasks) {
+                console.log('Showing assigned tasks section'); // DEBUG
                 assignedTasksSection.style.display = 'block';
             } else {
+                console.log('Hiding assigned tasks section - no pending tasks'); // DEBUG
                 assignedTasksSection.style.display = 'none';
             }
         } else {
+            console.log('No assigned tasks found in database'); // DEBUG
             assignedTasksSection.style.display = 'none';
         }
     } catch (error) {
         console.error('Error loading assigned tasks:', error);
-        document.getElementById('assigned-tasks-section').style.display = 'none';
+        const assignedTasksSection = document.getElementById('assigned-tasks-section');
+        if (assignedTasksSection) {
+            assignedTasksSection.style.display = 'none';
+        }
     }
 }
 
 function createAssignedTaskCard(task, taskId, professionalPhoto) {
-    if (task.status !== 'pending') return null;
+    console.log('createAssignedTaskCard called with:', { task, taskId, professionalPhoto }); // DEBUG
+    
+    if (task.status !== 'pending') {
+        console.log('Task status is not pending:', task.status); // DEBUG
+        return null;
+    }
+    
     const card = document.createElement('div');
     card.className = `assigned-task-card pending`;
     card.dataset.taskId = taskId;
     const daysLeft = calculateDaysLeft(task.deadline);
     
-    console.log('Rendering card for task:', task.title, 'Photo:', professionalPhoto); // DEBUG
-    card.innerHTML = `
-        <div class="assigned-task-content">
-            <div class="assigned-task-main">
-                <div class="assigned-task-header">
-                    <h4 class="assigned-task-title">${task.title}</h4>
-                    <div class="assigned-task-badge">
-                        <i class="fas fa-clock"></i>
-                        ${daysLeft}d
+    console.log('Rendering card for task:', task.title, 'Photo:', professionalPhoto, 'Days left:', daysLeft); // DEBUG
+    
+    try {
+        card.innerHTML = `
+            <div class="assigned-task-content">
+                <div class="assigned-task-main">
+                    <div class="assigned-task-header">
+                        <h4 class="assigned-task-title">${task.title || 'Untitled Task'}</h4>
+                        <div class="assigned-task-badge">
+                            <i class="fas fa-clock"></i>
+                            ${daysLeft}d
+                        </div>
+                    </div>
+                    <p class="assigned-task-description">${task.description || 'No description provided'}</p>
+                    <div class="assigned-task-meta">
+                        <span class="assigned-task-category">${(task.category || 'general').replace('-', ' ')}</span>
+                        <div class="assigned-task-employer">
+                            <img src="${professionalPhoto}" alt="${task.professionalName || 'Professional'}" onerror="this.src='../assets/avatar/1.png'">
+                            <span>${task.professionalName || 'Unknown Professional'}</span>
+                        </div>
                     </div>
                 </div>
-                <p class="assigned-task-description">${task.description || 'No description provided'}</p>
-                <div class="assigned-task-meta">
-                    <span class="assigned-task-category">${task.category.replace('-', ' ')}</span>
-                    <div class="assigned-task-employer">
-                        <img src="${professionalPhoto}" alt="${task.professionalName}" onerror="this.src='../assets/avatar/1.png'">
-                        <span>${task.professionalName}</span>
-                    </div>
+                <div class="assigned-task-actions">
+                    <button class="assigned-task-btn accept-btn" onclick="acceptTask('${taskId}')">
+                        <i class="fas fa-check"></i>
+                        Accept
+                    </button>
+                    <button class="assigned-task-btn reject-btn" onclick="rejectTask('${taskId}')">
+                        <i class="fas fa-times"></i>
+                        Reject
+                    </button>
                 </div>
             </div>
-            <div class="assigned-task-actions">
-                <button class="assigned-task-btn accept-btn" onclick="acceptTask('${taskId}')">
-                    <i class="fas fa-check"></i>
-                    Accept
-                </button>
-                <button class="assigned-task-btn reject-btn" onclick="rejectTask('${taskId}')">
-                    <i class="fas fa-times"></i>
-                    Reject
-                </button>
-            </div>
-        </div>
-    `;
-    return card;
+        `;
+        console.log('Card created successfully'); // DEBUG
+        return card;
+    } catch (error) {
+        console.error('Error creating card:', error); // DEBUG
+        return null;
+    }
 }
 
 async function acceptTask(taskId) {
@@ -4804,6 +4866,70 @@ function shareViaEmailTasks() {
     const emailUrl = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     window.open(emailUrl);
 }
+
+// === End Invite to Connect Modal for Tasks Page ===
+
+// Global function to manually test assigned tasks loading (for debugging)
+window.testAssignedTasks = async function() {
+    console.log('Manual test of assigned tasks loading');
+    console.log('Current userId:', userId);
+    console.log('Elements object:', elements);
+    console.log('assigned-tasks-section element:', document.getElementById('assigned-tasks-section'));
+    console.log('assigned-tasks-list element:', document.getElementById('assigned-tasks-list'));
+    
+    if (userId) {
+        await loadAssignedTasks();
+    } else {
+        console.error('No userId available');
+    }
+};
+
+// Global function to check database directly (for debugging)
+window.checkDatabase = async function() {
+    if (!userId) {
+        console.error('No userId available');
+        return;
+    }
+    
+    try {
+        console.log('Checking database for assigned tasks...');
+        const assignedTasksRef = ref(db, `students/${userId}/assignedTasks`);
+        const snapshot = await get(assignedTasksRef);
+        
+        console.log('Database snapshot exists:', snapshot.exists());
+        if (snapshot.exists()) {
+            const tasks = snapshot.val();
+            console.log('All tasks in database:', tasks);
+            
+            // Check for pending tasks
+            const pendingTasks = [];
+            for (const taskId in tasks) {
+                const task = tasks[taskId];
+                console.log(`Task ${taskId}:`, task);
+                if (task.status === 'pending') {
+                    pendingTasks.push({ taskId, ...task });
+                }
+            }
+            
+            console.log('Pending tasks found:', pendingTasks);
+        } else {
+            console.log('No assigned tasks found in database');
+        }
+    } catch (error) {
+        console.error('Error checking database:', error);
+    }
+};
+
+// Global function to force show assigned tasks section (for testing)
+window.forceShowAssignedTasks = function() {
+    const section = document.getElementById('assigned-tasks-section');
+    if (section) {
+        section.style.display = 'block';
+        console.log('Forced assigned tasks section to show');
+    } else {
+        console.error('assigned-tasks-section not found');
+    }
+};
 
 // === End Invite to Connect Modal for Tasks Page ===
 </script>
