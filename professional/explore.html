@@ -227,7 +227,7 @@
             margin-bottom: var(--spacing-sm);
         }
 
-        /* Student Cards */
+        /* Student Cards - Redesigned */
         .students-list {
             display: flex;
             flex-direction: column;
@@ -238,7 +238,7 @@
         .student-card {
             background: var(--background-primary);
             border: 1px solid var(--border-light);
-            border-radius: var(--radius-md);
+            border-radius: var(--radius-lg);
             padding: var(--spacing-lg);
             transition: all 0.3s ease;
             box-shadow: var(--shadow-sm);
@@ -246,27 +246,25 @@
             overflow: hidden;
         }
 
-        .student-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-        }
-
         .student-card:hover {
             transform: translateY(-2px);
             box-shadow: var(--shadow-lg);
-            border-color: var(--primary-color);
         }
 
         .student-card .card-content {
-            display: grid;
-            grid-template-columns: 80px 1fr;
+            display: flex;
+            align-items: flex-start;
             gap: var(--spacing-lg);
+            width: 100%;
+        }
+
+        .student-card .profile-section {
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
             align-items: center;
+            gap: var(--spacing-sm);
+            width: 120px;
         }
 
         .student-card .profile-pic {
@@ -276,68 +274,95 @@
             object-fit: cover;
             border: 3px solid var(--border-light);
             transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
         }
 
         .student-card:hover .profile-pic {
-            border-color: var(--primary-color);
+            transform: scale(1.05);
         }
 
-        .student-card .basic-info {
-            display: grid;
-            grid-template-columns: 30% 30% 40%;
-            gap: var(--spacing-md);
-            align-items: center;
-            width: 100%;
-            min-width: 0;
-        }
-
-        .student-card .basic-info > div {
-            min-width: 0;
-            overflow: hidden;
-        }
-
-        .student-card .basic-info h3 {
-            font-size: 1.125rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: var(--spacing-xs);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 100%;
-        }
-
-        .student-card .basic-info h4 {
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-            display: flex;
-            align-items: center;
-            gap: var(--spacing-xs);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 100%;
-        }
-
-        .student-card .year-badge {
-            background: var(--primary-light);
-            color: var(--primary-color);
-            padding: 0.25rem 0.5rem;
-            border-radius: var(--radius-sm);
-            font-size: 0.75rem;
-            font-weight: 500;
-            flex-shrink: 0;
-        }
-
-        .student-card .actions {
+        .student-card .info-section {
+            flex: 1;
             display: flex;
             flex-direction: column;
-            gap: var(--spacing-xs);
-            align-items: flex-end;
-            justify-content: center;
-            flex-shrink: 0;
+            gap: var(--spacing-sm);
             min-width: 0;
-            width: 100%;
+            text-align: left;
+        }
+
+        .student-card .name-section {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .student-card .name-section h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .student-card .college-section h4 {
+            font-size: 1.25rem;
+            color: var(--text-primary);
+            margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-weight: 500;
+        }
+
+        .student-card .skills-section {
+            margin-top: var(--spacing-xs);
+        }
+
+        .student-card .skills-section p {
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            margin: 0;
+            line-height: 1.5;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            white-space: normal;
+        }
+
+        .student-card .skills-section p strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .student-card .about-section {
+            margin-top: var(--spacing-xs);
+        }
+
+        .student-card .about-section p {
+            font-size: 1rem;
+            color: var(--text-primary);
+            margin: 0;
+            line-height: 1.5;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            white-space: normal;
+        }
+
+        .student-card .actions-section {
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+            align-items: center;
+            justify-content: center;
+            width: 140px;
         }
 
         .ai-intro-btn {
@@ -345,20 +370,22 @@
             color: white;
             border: none;
             border-radius: var(--radius-sm);
-            padding: var(--spacing-xs) var(--spacing-sm);
+            padding: 0.75rem 1.5rem;
             font-size: 0.875rem;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.2s ease;
             text-decoration: none;
             white-space: nowrap;
-            width: 100%;
+            width: auto;
             text-align: center;
+            font-family: 'Google Sans', 'Roboto', sans-serif;
         }
 
         .ai-intro-btn:hover {
             background: var(--primary-dark);
             transform: translateY(-1px);
+            box-shadow: var(--shadow-sm);
         }
 
         .ai-intro-btn.connected {
@@ -369,6 +396,7 @@
         .ai-intro-btn.connected:hover {
             background: var(--secondary-color);
             transform: none;
+            box-shadow: none;
         }
 
         .toggle-details {
@@ -381,8 +409,9 @@
             text-decoration: underline;
             transition: color 0.2s ease;
             white-space: nowrap;
-            width: 100%;
+            width: auto;
             text-align: center;
+            font-family: 'Google Sans', 'Roboto', sans-serif;
         }
 
         .toggle-details:hover {
@@ -829,20 +858,29 @@
         /* Responsive Design */
         @media (max-width: 1024px) {
             .student-card .card-content {
-                grid-template-columns: auto 1fr;
+                flex-direction: column;
                 gap: var(--spacing-md);
-            }
-            
-            .student-card .basic-info {
-                grid-template-columns: 1fr;
-                gap: var(--spacing-sm);
+                text-align: center;
             }
 
-            .student-card .actions {
-                flex-direction: row;
-                gap: var(--spacing-sm);
-                align-items: center;
+            .student-card .profile-section {
+                order: 1;
+                width: auto;
+            }
+
+            .student-card .info-section {
+                order: 2;
+                width: 100%;
+                text-align: center;
+            }
+
+            .student-card .actions-section {
+                order: 3;
+                flex-direction: column;
                 justify-content: center;
+                align-items: center;
+                width: 100%;
+                gap: var(--spacing-sm);
             }
         }
 
@@ -923,32 +961,52 @@
                 padding: var(--spacing-xs) var(--spacing-sm);
             }
 
+            .student-card {
+                padding: var(--spacing-md);
+            }
+
             .student-card .card-content {
-                grid-template-columns: 1fr;
                 gap: var(--spacing-sm);
+                flex-direction: column;
+                align-items: center;
                 text-align: center;
             }
 
-            .student-card .basic-info {
-                grid-template-columns: 1fr;
-                gap: var(--spacing-sm);
-                text-align: center;
+            .student-card .profile-section {
+                width: auto;
+                align-items: center;
             }
 
-            .student-card .basic-info h4 {
-                justify-content: center;
+            .student-card .info-section {
+                width: 100%;
+                text-align: center;
+                align-items: center;
+            }
+
+            .student-card .name-section,
+            .student-card .college-section,
+            .student-card .skills-section,
+            .student-card .about-section {
+                text-align: center;
+                align-items: center;
             }
 
             .student-card .profile-pic {
-            margin: 0 auto;
+                width: 60px;
+                height: 60px;
             }
 
-            .student-card .actions {
-                justify-content: center;
-                flex-wrap: wrap;
-                flex-direction: row;
-                gap: var(--spacing-sm);
-                align-items: center;
+            .student-card .name-section h3 {
+                font-size: 1.125rem;
+            }
+
+            .student-card .college-section h4 {
+                font-size: 0.95rem;
+            }
+
+            .student-card .skills-section p,
+            .student-card .about-section p {
+                font-size: 0.85rem;
             }
 
             .hiring-ad-section {
@@ -983,6 +1041,13 @@
                 margin: 0 var(--spacing-md) var(--spacing-md) var(--spacing-md);
                 width: calc(100% - 2 * var(--spacing-md));
                 font-size: 0.9rem;
+            }
+            .student-card .actions-section {
+                width: 100%;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: var(--spacing-sm);
             }
         }
 
@@ -1181,6 +1246,13 @@ function updateLoadingText() {
     const loadingText = document.getElementById('loadingText');
     if (loadingText) {
         loadingText.textContent = loadingMessages[currentMessageIndex];
+        
+        // Stop the cycle when we reach the final message
+        if (currentMessageIndex === loadingMessages.length - 1) {
+            stopLoadingAnimation();
+            return;
+        }
+        
         currentMessageIndex = (currentMessageIndex + 1) % loadingMessages.length;
     }
 }
@@ -1240,14 +1312,7 @@ async function getConnectedStudents() {
 // Map education year to label
 function getYearLabel(year) {
     if (!year || year === 'Not set') return 'Student';
-    const yearMap = {
-        '1st': 'Freshman',
-        '2nd': 'Sophomore',
-        '3rd': 'Junior',
-        '4th': 'Senior',
-        '5th': 'Alumni'
-    };
-    return yearMap[year] || 'Alumni';
+    return year; // Return the actual year (1st, 2nd, 3rd, 4th, 5th)
 }
 
 async function aiSearch(query = '') {
@@ -1353,22 +1418,30 @@ async function aiSearch(query = '') {
                 return `
                     <div class="student-card">
                         <div class="card-content">
-                            <img src="https://firebasestorage.googleapis.com/v0/b/taska-45011.appspot.com/o/profile%2F${student.id}.webp?alt=media" alt="Profile Picture" class="profile-pic" onerror="this.src='../assets/avatar/1.png'">
-                            <div class="basic-info">
-                                <div>
+                            <div class="profile-section">
+                                <img src="https://firebasestorage.googleapis.com/v0/b/taska-45011.appspot.com/o/profile%2F${student.id}.webp?alt=media" alt="" class="profile-pic" onerror="this.src='../assets/avatar/1.png'">
+                            </div>
+                            <div class="info-section">
+                                <div class="name-section">
                                     <h3>${personal.name || 'Unnamed'}</h3>
                                 </div>
-                                <div>
-                                    <h4>${education.college || 'Not set'}<span class="year-badge">${yearLabel}</span></h4>
+                                <div class="college-section">
+                                    <h4>${education.college || 'Not set'}</h4>
                                 </div>
-                                <div class="actions">
-                                    <span class="ai-intro-btn${isConnected ? ' connected' : ''}" 
-                                          onclick="${isConnected ? '' : `generateAIIntro('${student.id}')`}" 
-                                          ${isConnected ? 'style="cursor: not-allowed;"' : ''}>
-                                        ${isConnected ? 'Connected' : 'Connect'}
-                                    </span>
-                                    <span class="toggle-details" onclick="showStudentDetailsPopup('${student.id}')">View Profile</span>
+                                <div class="skills-section">
+                                    <p><strong>Skills:</strong> ${student.skills || 'Not specified'}</p>
                                 </div>
+                                <div class="about-section">
+                                    ${personal.about ? `<p>${personal.about.substring(0, 120)}${personal.about.length > 120 ? '...' : ''}</p>` : '<p>No description available</p>'}
+                                </div>
+                            </div>
+                            <div class="actions-section">
+                                <span class="ai-intro-btn${isConnected ? ' connected' : ''}" 
+                                      onclick="${isConnected ? '' : `generateAIIntro('${student.id}')`}" 
+                                      ${isConnected ? 'style="cursor: not-allowed;"' : ''}>
+                                    ${isConnected ? 'Connected' : 'Connect'}
+                                </span>
+                                <span class="toggle-details" onclick="showStudentDetailsPopup('${student.id}')">View Profile</span>
                             </div>
                         </div>
                     </div>
@@ -1670,8 +1743,10 @@ function isTruncated(el) {
 function addTooltipListenersToCardCells() {
     // Select all card content cells that may overflow
     const selectors = [
-        '.student-card .basic-info h3',
-        '.student-card .basic-info h4'
+        '.student-card .name-section h3',
+        '.student-card .college-section h4',
+        '.student-card .skills-section p',
+        '.student-card .about-section p'
     ];
     document.querySelectorAll(selectors.join(',')).forEach(cell => {
         cell.onmouseenter = function(e) {

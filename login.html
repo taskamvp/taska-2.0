@@ -254,111 +254,7 @@
             text-decoration: underline;
         }
 
-        /* Forgot password modal styles */
-        .forgot-password-modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(4px);
-        }
-
-        .forgot-password-content {
-            background-color: #fff;
-            margin: 15% auto;
-            padding: 2rem;
-            border-radius: 1rem;
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            position: relative;
-        }
-
-        .forgot-password-header {
-            text-align: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .forgot-password-header h3 {
-            margin: 0 0 0.5rem 0;
-            color: #111;
-            font-size: 1.4rem;
-            font-weight: 600;
-        }
-
-        .forgot-password-header p {
-            margin: 0;
-            color: #666;
-            font-size: 0.9rem;
-            line-height: 1.4;
-        }
-
-        .forgot-password-form {
-            margin-bottom: 1.5rem;
-        }
-
-        .forgot-password-form input {
-            width: 100%;
-            padding: 0.8rem 1rem;
-            border: 1.5px solid #e5e7ea;
-            border-radius: 0.7rem;
-            font-size: 1rem;
-            color: #111;
-            background: #fff;
-            outline: none;
-            font-weight: 400;
-            font-family: 'Montserrat', 'Manrope', 'Poppins', 'Inter', Arial, sans-serif;
-            transition: border 0.18s, background 0.18s;
-            margin-bottom: 1rem;
-        }
-
-        .forgot-password-form input:focus {
-            border-color: #007bff;
-            background: #f8f9fa;
-        }
-
-        .forgot-password-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-        }
-
-        .forgot-password-btn {
-            padding: 0.8rem 1.5rem;
-            border: none;
-            border-radius: 0.7rem;
-            font-size: 0.95rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.18s;
-            font-family: 'Montserrat', 'Manrope', 'Poppins', 'Inter', Arial, sans-serif;
-        }
-
-        .forgot-password-btn.primary {
-            background: #007bff;
-            color: white;
-        }
-
-        .forgot-password-btn.primary:hover {
-            background: #0056b3;
-            transform: translateY(-1px);
-        }
-
-        .forgot-password-btn.secondary {
-            background: #f8f9fa;
-            color: #666;
-            border: 1.5px solid #e5e7ea;
-        }
-
-        .forgot-password-btn.secondary:hover {
-            background: #e9ecef;
-            color: #111;
-        }
-
+        
         .close-modal {
             position: absolute;
             top: 1rem;
@@ -612,9 +508,7 @@
                         </div>
                         <div class="form-buttons" style="flex-direction: column; gap: 0.7rem; align-items: stretch;">
                             <button class="cta-button login-btn" onclick="login('employer')">Login</button>
-                            <div class="forgot-password-link">
-                                <a href="#" onclick="showForgotPasswordModal('employer')">Forgot Password?</a>
-                            </div>
+                            
                             <div style="text-align:center; color:#888; font-size:0.98rem; margin:0.5rem 0 0.2rem 0; font-family:'Montserrat','Manrope','Poppins','Inter',Arial,sans-serif;">Don't have an account in Taska?</div>
                             <a href="signup.html" class="signup-link">Sign Up</a>
                         </div>
