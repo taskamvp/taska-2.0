@@ -2035,10 +2035,10 @@ async function loadPendingRequests() {
                     pendingItem.dataset.requesterId = requesterId;
                     pendingItem.innerHTML = `
                         <div class="user-info">
-                            <img src="${profilePic}" class="profile-pic" onerror="this.src='../assets/avatar/1.png'">
+                            <img src="${profilePic}" class="profile-pic" onerror="this.src='../assets/avatar/1.png'" onclick="handleProfilePicClick('${requesterId}', '${userRole}')" style="cursor: pointer;">
                             <div class="user-details">
                                 <div class="name">${userName}</div>
-                                <div class="role">${userRole}</div>
+                                <div class="role">${userRole === 'professional' ? 'Employer' : 'Student'}</div>
                             </div>
                         </div>
                         <div class="actions">
@@ -2142,7 +2142,7 @@ async function loadConnections() {
                     userItem.dataset.connectionId = connectionId;
                     userItem.dataset.connectionType = professional ? 'professional' : 'student';
                     userItem.innerHTML = `
-                        <img src="${profilePic}" alt="${userName}" class="profile-pic" onerror="this.src='../assets/avatar/1.png'">
+                        <img src="${profilePic}" alt="${userName}" class="profile-pic" onerror="this.src='../assets/avatar/1.png'" onclick="handleProfilePicClick('${connectionId}', '${userRole}')" style="cursor: pointer;">
                         <div class="user-info">
                             <div class="name">${userName}</div>
                             <div class="last-message">${lastMessage}</div>
@@ -2190,7 +2190,7 @@ async function loadChatHeader() {
         const profilePic = await loadProfileImage(selectedProfessionalId);
         elements.chatHeader.innerHTML = `
             <div style="display: flex; align-items: center; gap: 1rem;">
-                <img src="${profilePic}" alt="${userName}" class="profile-pic">
+                <img src="${profilePic}" alt="${userName}" class="profile-pic" onclick="handleProfilePicClick('${selectedProfessionalId}', 'professional')" style="cursor: pointer;">
                 <div>
                     <div class="name">${userName}</div>
                     <div class="title">${userTitle}</div>
@@ -3287,7 +3287,7 @@ function createAssignedTaskCard(task, taskId, professionalPhoto) {
                     <div class="assigned-task-meta">
                         <span class="assigned-task-category">${(task.category || 'general').replace('-', ' ')}</span>
                         <div class="assigned-task-employer">
-                            <img src="${professionalPhoto}" alt="${task.professionalName || 'Professional'}" onerror="this.src='../assets/avatar/1.png'">
+                            <img src="${professionalPhoto}" alt="${task.professionalName || 'Professional'}" onerror="this.src='../assets/avatar/1.png'" onclick="handleProfilePicClick('${task.professionalId}', 'professional')" style="cursor: pointer;">
                             <span>${task.professionalName || 'Unknown Professional'}</span>
                         </div>
                     </div>
@@ -4180,7 +4180,7 @@ async function createMessageElement(msg, currentUser, professional, taskTitles, 
         
         messageDiv.innerHTML = `
             <div class="message-header">
-                <img src="${profilePic}" class="profile-pic">
+                <img src="${profilePic}" class="profile-pic" onclick="handleProfilePicClick('${isSent ? userId : selectedProfessionalId}', '${isSent ? 'student' : 'professional'}')" style="cursor: pointer;">
                 <div class="name">${senderName}</div>
                 <div class="time">${time}</div>
             </div>
@@ -4213,7 +4213,7 @@ async function createMessageElement(msg, currentUser, professional, taskTitles, 
     } else {
         messageDiv.innerHTML = `
             <div class="message-header">
-                <img src="${profilePic}" class="profile-pic">
+                <img src="${profilePic}" class="profile-pic" onclick="handleProfilePicClick('${isSent ? userId : selectedProfessionalId}', '${isSent ? 'student' : 'professional'}')" style="cursor: pointer;">
                 <div class="name">${senderName}</div>
                 <div class="time">${time}</div>
             </div>
@@ -4928,6 +4928,19 @@ window.forceShowAssignedTasks = function() {
         console.log('Forced assigned tasks section to show');
     } else {
         console.error('assigned-tasks-section not found');
+    }
+};
+
+// === End Invite to Connect Modal for Tasks Page ===
+
+// Global function to handle profile picture clicks
+window.handleProfilePicClick = function(userId, userRole) {
+    if (userRole === 'professional') {
+        // Open professional view profile in new tab
+        window.open(`../professional/view-profile.html?id=${userId}`, '_blank');
+    } else {
+        // Open workplace view profile in new tab
+        window.open(`view-profile.html?id=${userId}`, '_blank');
     }
 };
 

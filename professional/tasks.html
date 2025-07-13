@@ -683,7 +683,7 @@ async function loadConnections() {
                     userItem.className = 'user-item';
                     userItem.dataset.studentId = studentId;
                     userItem.innerHTML = `
-                        <img src="${profilePic}" class="profile-pic">
+                        <img src="${profilePic}" class="profile-pic" onclick="handleProfilePictureClick('${studentId}', 'student')" style="cursor: pointer;">
                         <div class="user-info">
                             <div class="name">${userName}</div>
                             <div class="last-message">${lastMessage}</div>
@@ -731,7 +731,7 @@ async function loadPendingRequests() {
                     pendingItem.dataset.studentId = studentId;
                     pendingItem.innerHTML = `
                         <div class="user-info">
-                            <img src="${profilePic}" class="profile-pic">
+                            <img src="${profilePic}" class="profile-pic" onclick="handleProfilePictureClick('${studentId}', 'student')" style="cursor: pointer;">
                             <div class="name">${userName}</div>
                         </div>
                         <div class="actions">
@@ -1260,7 +1260,7 @@ async function createMessageElement(msg, currentUser, student, taskTitles, chatI
         
         messageDiv.innerHTML = `
             <div class="message-header">
-                <img src="${profilePic}" class="profile-pic">
+                <img src="${profilePic}" class="profile-pic" onclick="handleProfilePictureClick('${msg.senderId}', '${msg.senderId === userId ? 'professional' : 'student'}')" style="cursor: pointer;">
                 <div class="name">${senderName}</div>
                 <div class="time">${time}</div>
             </div>
@@ -1293,7 +1293,7 @@ async function createMessageElement(msg, currentUser, student, taskTitles, chatI
     } else {
         messageDiv.innerHTML = `
             <div class="message-header">
-                <img src="${profilePic}" class="profile-pic">
+                <img src="${profilePic}" class="profile-pic" onclick="handleProfilePictureClick('${msg.senderId}', '${msg.senderId === userId ? 'professional' : 'student'}')" style="cursor: pointer;">
                 <div class="name">${senderName}</div>
                 <div class="time">${time}</div>
             </div>
@@ -2608,6 +2608,23 @@ function manageCacheSize() {
         });
     }
 }
+
+// Global function to handle profile picture clicks
+function handleProfilePictureClick(userId, userRole) {
+    if (!userId) return;
+    
+    let profileUrl;
+    if (userRole === 'professional') {
+        profileUrl = `view-profile.html?id=${encodeURIComponent(userId)}`;
+    } else {
+        profileUrl = `../workplace/view-profile.html?studentId=${encodeURIComponent(userId)}`;
+    }
+    
+    window.open(profileUrl, '_blank');
+}
+
+// Make function globally accessible
+window.handleProfilePictureClick = handleProfilePictureClick;
 
 init();
     </script>

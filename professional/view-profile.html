@@ -38,75 +38,8 @@
 
         .main-container {
             max-width: 1200px;
-            margin: 2rem auto 2rem;
+            margin: 6rem auto 2rem;
             padding: 0 2rem;
-        }
-
-        /* Student ID Input Section */
-        .student-id-section {
-            background: #ffffff;
-            border: 1px solid #dadce0;
-            padding: 3rem 2rem;
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .student-id-section h1 {
-            font-size: 2.4rem;
-            font-weight: 400;
-            color: #202124;
-            margin-bottom: 1rem;
-            letter-spacing: -0.02em;
-            font-family: 'Google Sans', 'Roboto', sans-serif;
-        }
-
-        .student-id-section p {
-            font-size: 1.1rem;
-            color: #5f6368;
-            margin-bottom: 2rem;
-            line-height: 1.6;
-            font-family: 'Roboto', sans-serif;
-        }
-
-        .id-input-container {
-            display: flex;
-            gap: 1rem;
-            max-width: 500px;
-            margin: 0 auto;
-            align-items: center;
-        }
-
-        .id-input {
-            flex: 1;
-            padding: 1rem 1.2rem;
-            border: 1px solid #dadce0;
-            background: #ffffff;
-            color: #202124;
-            font-size: 1rem;
-            outline: none;
-            transition: border 0.2s;
-            font-family: 'Roboto', sans-serif;
-        }
-
-        .id-input:focus {
-            border-color: #1a73e8;
-        }
-
-        .view-btn {
-            padding: 1rem 2rem;
-            background: #1a73e8;
-            color: #ffffff;
-            border: 1px solid #1a73e8;
-            font-weight: 500;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-family: 'Google Sans', 'Roboto', sans-serif;
-        }
-
-        .view-btn:hover {
-            background: #1557b0;
-            border-color: #1557b0;
         }
 
         /* Profile Display Section */
@@ -119,11 +52,11 @@
         }
 
         /* Hide all sections initially */
-        .profile-section, .portfolio-section {
+        .profile-section {
             display: none;
         }
 
-        .profile-section.loaded, .portfolio-section.loaded {
+        .profile-section.loaded {
             display: block;
         }
 
@@ -144,8 +77,6 @@
         .section-title.loaded {
             display: flex;
         }
-
-        /* Loading overlay for entire profile */
 
         /* Section-specific loading states */
         .section-loading {
@@ -170,7 +101,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .profile-section.loaded, .portfolio-section.loaded {
+        .profile-section.loaded {
             animation: fadeIn 0.3s ease-out;
         }
 
@@ -198,6 +129,116 @@
             display: flex;
             align-items: center;
             gap: 2rem;
+        }
+
+        /* Profile Header Loading State */
+        .profile-header.loading {
+            display: none;
+        }
+
+        .profile-header.loaded {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .profile-header-loading {
+            background: #ffffff;
+            border: 1px solid #dadce0;
+            padding: 1.2rem;
+            margin-bottom: 1.2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .profile-header-loading::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: #1a73e8;
+        }
+
+        .profile-header-loading-content {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            justify-content: center;
+        }
+
+        .profile-avatar-loading {
+            width: 120px;
+            height: 120px;
+            background: #f1f3f4;
+            border: 1px solid #dadce0;
+            border-radius: 0;
+            flex-shrink: 0;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .profile-info-loading {
+            flex: 1;
+            max-width: 400px;
+        }
+
+        .profile-name-loading {
+            height: 2.2rem;
+            background: #f1f3f4;
+            margin-bottom: 0.5rem;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .profile-title-loading {
+            height: 1.1rem;
+            background: #f1f3f4;
+            margin-bottom: 1rem;
+            width: 60%;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .profile-location-loading {
+            height: 0.95rem;
+            background: #f1f3f4;
+            margin-bottom: 1rem;
+            width: 40%;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .profile-stats-loading {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-item-loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1rem;
+            background: #ffffff;
+            border: 1px solid #dadce0;
+            min-width: 100px;
+        }
+
+        .stat-value-loading {
+            height: 1.5rem;
+            background: #f1f3f4;
+            margin-bottom: 0.5rem;
+            width: 60%;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .stat-label-loading {
+            height: 0.8rem;
+            background: #f1f3f4;
+            width: 80%;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
 
         .profile-avatar {
@@ -270,7 +311,7 @@
             font-family: 'Roboto', sans-serif;
         }
 
-        .stat-item .stat-value#stat-degree, .stat-item .stat-value#stat-college {
+        .stat-item .stat-value#stat-company, .stat-item .stat-value#stat-experience {
             text-align: center;
             width: 100%;
             display: block;
@@ -345,78 +386,6 @@
             font-family: 'Roboto', sans-serif;
         }
 
-        /* Skills Section */
-        .skills-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.8rem;
-            margin-top: 1rem;
-        }
-
-        .skill-tag {
-            background: #f1f3f4;
-            color: #202124;
-            padding: 0.5rem 1rem;
-            font-size: 0.9rem;
-            font-weight: 400;
-            border: 1px solid #dadce0;
-            font-family: 'Roboto', sans-serif;
-        }
-
-        /* Portfolio Section */
-        .portfolio-section {
-            background: #ffffff;
-            border: 1px solid #dadce0;
-            padding: 1.1rem 1.2rem;
-            margin-top: 1.2rem;
-        }
-
-        /* Drive Portfolio Thumbnails */
-        .drive-thumbnails {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .drive-thumb {
-            background: #ffffff;
-            border: 1px solid #dadce0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 1rem;
-            transition: all 0.2s;
-            cursor: pointer;
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .drive-thumb:hover {
-            border-color: #1a73e8;
-            background: #f8f9fa;
-        }
-
-        .drive-thumb img {
-            width: 120px;
-            height: 120px;
-            object-fit: cover;
-            margin-bottom: 0.8rem;
-            background: #f1f3f4;
-        }
-
-        .drive-thumb .thumb-title {
-            font-size: 0.9rem;
-            color: #202124;
-            text-align: center;
-            font-weight: 400;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            max-width: 120px;
-            font-family: 'Roboto', sans-serif;
-        }
-
         /* Loading States */
         .loading {
             text-align: center;
@@ -450,26 +419,6 @@
             font-family: 'Roboto', sans-serif;
         }
 
-        /* Back Button */
-        .back-btn {
-            position: fixed;
-            top: 2rem;
-            left: 2rem;
-            background: #1a73e8;
-            color: #ffffff;
-            border: none;
-            width: 50px;
-            height: 50px;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            z-index: 1000;
-        }
-
-        .back-btn:hover {
-            background: #1557b0;
-        }
-
         /* Responsive Design */
         @media (max-width: 768px) {
             .main-container {
@@ -485,75 +434,42 @@
                 grid-template-columns: 1fr;
             }
 
-            .id-input-container {
-                flex-direction: column;
-            }
-
             .profile-stats {
                 justify-content: center;
-            }
-
-            .drive-thumbnails {
-                grid-template-columns: repeat(3, 1fr);
-            }
-
-            .drive-thumb img {
-                width: 80px;
-                height: 80px;
             }
         }
 
         @media (max-width: 480px) {
-            .student-id-section {
-                padding: 2rem 1rem;
-            }
-
-            .student-id-section h1 {
-                font-size: 2rem;
-            }
-
             .profile-name {
                 font-size: 1.8rem;
-            }
-
-            .drive-thumbnails {
-                grid-template-columns: repeat(2, 1fr);
             }
         }
     </style>
 </head>
 <body>
+    
+
     <main class="main-container">
-        <!-- REMOVE Student ID Input Section -->
-        <div class="student-id-section">
-            <h1>View Employer Profile</h1>
-            <p>Enter the Employer ID to view their complete profile and professional information</p>
-            <div class="id-input-container">
-                <input type="text" id="student-id-input" class="id-input" placeholder="Enter Employer ID">
-                <button class="view-btn" id="view-profile-btn">View Profile</button>
-            </div>
-        </div>
         <!-- Profile Display Section -->
         <div class="profile-display active" id="profile-display">
-            <!-- REMOVE Back Button -->
             <!-- Profile Header -->
-            <div class="profile-header">
+            <div class="profile-header" id="profile-header">
                 <div class="profile-header-content">
                     <img id="profile-avatar" class="profile-avatar" src="../assets/avatar/1.png" alt="Profile Picture">
                     <div class="profile-info">
-                        <h1 id="profile-name" class="profile-name">Student Name</h1>
+                        <h1 id="profile-name" class="profile-name">Employer Name</h1>
                         <p id="profile-title" class="profile-title"></p>
                         <div class="profile-location">
                             <span id="profile-location">Location</span>
                         </div>
                         <div class="profile-stats">
                             <div class="stat-item">
-                                <div class="stat-value" id="stat-experience">-</div>
-                                <div class="stat-label">Experience</div>
-                            </div>
-                            <div class="stat-item">
                                 <div class="stat-value" id="stat-company">-</div>
                                 <div class="stat-label">Company</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value" id="stat-experience">-</div>
+                                <div class="stat-label">Experience</div>
                             </div>
                             <div class="stat-item">
                                 <div class="stat-value" id="stat-degree">-</div>
@@ -564,11 +480,38 @@
                 </div>
             </div>
 
+            <!-- Profile Header Loading State -->
+            <div class="profile-header-loading" id="profile-header-loading">
+                <div class="profile-header-loading-content">
+                    <div class="profile-avatar-loading"></div>
+                    <div class="profile-info-loading">
+                        <div class="profile-name-loading"></div>
+                        <div class="profile-title-loading"></div>
+                        <div class="profile-location-loading"></div>
+                        <div class="profile-stats-loading">
+                            <div class="stat-item-loading">
+                                <div class="stat-value-loading"></div>
+                                <div class="stat-label-loading"></div>
+                            </div>
+                            <div class="stat-item-loading">
+                                <div class="stat-value-loading"></div>
+                                <div class="stat-label-loading"></div>
+                            </div>
+                            <div class="stat-item-loading">
+                                <div class="stat-value-loading"></div>
+                                <div class="stat-label-loading"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Profile Sections -->
             <div class="profile-sections">
-                <!-- Main Content -->
+                <!-- Personal Information Section -->
                 <div class="profile-section" id="personal-section">
                     <h2 class="section-title" id="personal-title">
+                        <i class="fas fa-user"></i>
                         Personal Information
                     </h2>
                     <div class="info-grid">
@@ -577,22 +520,24 @@
                             <div class="info-value" id="info-name">-</div>
                         </div>
                         <div class="info-item" id="info-item-email">
-                            <div class="info-label">Email Address</div>
+                            <div class="info-label">Email</div>
                             <div class="info-value" id="info-email">-</div>
-                        </div>
-                        <div class="info-item" id="info-item-phone">
-                            <div class="info-label">WhatsApp Number</div>
-                            <div class="info-value" id="info-phone">-</div>
                         </div>
                         <div class="info-item" id="info-item-location">
                             <div class="info-label">Location</div>
                             <div class="info-value" id="info-location">-</div>
                         </div>
+                        <div class="info-item" id="info-item-bio">
+                            <div class="info-label">Bio</div>
+                            <div class="info-value" id="info-bio">-</div>
+                        </div>
                     </div>
                 </div>
 
+                <!-- Professional Information Section -->
                 <div class="profile-section" id="professional-section">
                     <h2 class="section-title" id="professional-title">
+                        <i class="fas fa-briefcase"></i>
                         Professional Information
                     </h2>
                     <div class="info-grid">
@@ -611,8 +556,10 @@
                     </div>
                 </div>
 
+                <!-- Educational Information Section -->
                 <div class="profile-section" id="education-section">
                     <h2 class="section-title" id="education-title">
+                        <i class="fas fa-graduation-cap"></i>
                         Educational Information
                     </h2>
                     <div class="info-grid">
@@ -630,56 +577,26 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="profile-section" id="experience-section">
-                    <h2 class="section-title" id="experience-title">Work Experience</h2>
-                    <div class="about-text" id="info-work-experience">No work experience listed.</div>
-                </div>
-
-                <div class="profile-section" id="skills-section">
-                    <h2 class="section-title" id="skills-title">
-                        Skills
-                    </h2>
-                    <div class="skills-container" id="skills-container">
-                        <!-- Skills will be populated here -->
                     </div>
                 </div>
 
-                <div class="profile-section" id="achievements-section">
-                    <h2 class="section-title" id="achievements-title">
-                        Academic Achievements
-                    </h2>
-                    <div class="about-text" id="info-achievements">No achievements listed.</div>
+        <!-- Loading State -->
+        <div class="loading" id="loading">
+            <div class="loading-spinner"></div>
+            <p>Loading profile...</p>
                 </div>
 
-                <div class="profile-section" id="about-section">
-                    <h2 class="section-title" id="about-title">
-                        About Me
-                    </h2>
-                    <div class="about-text" id="info-about">No information provided.</div>
-                </div>
-                </div>
-
-                <!-- Portfolio Section -->
-                <div class="portfolio-section" id="portfolio-section">
-                    <h2 class="section-title" id="portfolio-title">
-                        Portfolio
-                    </h2>
-                    <div id="portfolio-content">
-                        <div class="section-loading">
-                            <div class="section-loading-spinner"></div>
-                            <p>Loading portfolio...</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <!-- Error State -->
+        <div class="error-message" id="error-message" style="display: none;">
+            <p id="error-text">Failed to load profile</p>
         </div>
     </main>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
-        import { getStorage, ref as storageRef, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+        import { getDatabase, ref, get } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
+        import { getStorage, ref as storageRef, getDownloadURL } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js';
 
         const firebaseConfig = {
             apiKey: "AIzaSyDZIDlEtaNRxODoFhRw0xF2yYFBqqBexqo",
@@ -692,333 +609,181 @@
         };
 
         const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
+        const database = getDatabase(app);
         const storage = getStorage(app);
 
-        // REMOVE DOM elements for input and back button
-        // const studentIdSection = document.getElementById('student-id-section');
-        const profileDisplay = document.getElementById('profile-display');
-        // const studentIdInput = document.getElementById('student-id-input');
-        // const viewProfileBtn = document.getElementById('view-profile-btn');
-        // const backBtn = document.getElementById('back-btn');
-
-        // REMOVE event listeners for input and back button
-        // viewProfileBtn.addEventListener('click', loadProfile);
-        // studentIdInput.addEventListener('keypress', (e) => {
-        //     if (e.key === 'Enter') loadProfile();
-        // });
-        // backBtn.addEventListener('click', showIdInput);
-
-        // Helper to get query param
-        function getQueryParam(name) {
+        // Get employer ID from URL
             const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get(name);
-        }
+        const employerId = urlParams.get('id');
 
-        // On page load, get employerId from query and load profile
-        const employerId = getQueryParam('employerId');
-        if (employerId) {
-            loadProfile(employerId);
+        // Set initial state
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initially hide profile header loading and show actual profile header
+            const profileHeaderLoading = document.getElementById('profile-header-loading');
+            const profileHeader = document.getElementById('profile-header');
+            if (profileHeaderLoading) {
+                profileHeaderLoading.style.display = 'none';
+            }
+            if (profileHeader) {
+                profileHeader.style.display = 'block';
+            }
+        });
+
+        if (!employerId) {
+            showError('No employer ID provided in URL');
         } else {
-            // Show error if no employerId provided
-            document.getElementById('profile-name').textContent = 'No Employer ID Provided';
-            document.getElementById('profile-title').textContent = '';
-            document.getElementById('profile-location').textContent = '';
-            document.getElementById('stat-experience').textContent = '-';
-            document.getElementById('stat-company').textContent = '-';
-            document.getElementById('stat-degree').textContent = '-';
-            document.getElementById('skills-container').innerHTML = '';
-            document.getElementById('info-about').textContent = '';
-            document.getElementById('info-achievements').textContent = '';
-            document.getElementById('portfolio-content').innerHTML = '<div class="error-message">No employer ID provided in the URL.</div>';
+            loadEmployerProfile(employerId);
         }
 
-        // Update loadProfile to accept employerId as argument
-        async function loadProfile(employerId) {
-            showLoading();
+        async function loadEmployerProfile(employerId) {
             try {
-                // Load profile data
-                const snapshot = await get(ref(db, `professionalslist/${employerId}`));
+                showLoading();
+                
+                // Fetch employer data from database
+                const employerRef = ref(database, `professionalslist/${employerId}`);
+                const snapshot = await get(employerRef);
+                
                 if (!snapshot.exists()) {
-                    showError('Employer profile not found. Please check the ID and try again.');
+                    showError('Employer profile not found');
                     return;
                 }
-                const data = snapshot.val();
-                populateProfile(data, employerId);
                 
-                // Load profile photo
+                const employerData = snapshot.val();
+                
+                // Load profile image
+                let profileImageUrl = '../assets/avatar/1.png';
                 try {
                     const profilePhotoRef = storageRef(storage, `profile/${employerId}.webp`);
-                    const profilePhotoUrl = await getDownloadURL(profilePhotoRef);
-                    document.getElementById('profile-avatar').src = profilePhotoUrl;
+                    profileImageUrl = await getDownloadURL(profilePhotoRef);
                 } catch (error) {
-                    console.log('No profile photo found, using default');
+                    console.log('No profile photo found, using default avatar');
                 }
                 
-                // Load portfolio
-                await loadPortfolio(employerId);
+                // Populate profile data
+                populateProfileData(employerData, profileImageUrl);
                 
-                // Hide loading overlay after everything is loaded
+                hideLoading();
+                showProfile();
                 
             } catch (error) {
-                console.error('Error loading profile:', error);
-                showError('Failed to load profile. Please try again.');
-                
+                console.error('Error loading employer profile:', error);
+                showError('Failed to load employer profile: ' + error.message);
             }
         }
 
-        // Helper to hide parent if value is blank
-        function hideIfBlank(elem, value) {
-            if (!value || value.trim() === '' || value === '-' || value === 'Not specified' || value === 'Not provided') {
-                elem.parentElement.style.display = 'none';
-            } else {
-                elem.parentElement.style.display = '';
-            }
-        }
-
-        // Helper to show section if it has data
-        function showSectionIfHasData(sectionId, hasData) {
-            const section = document.getElementById(sectionId);
-            const title = document.getElementById(sectionId.replace('-section', '-title'));
-            
-            if (hasData) {
-                section.classList.add('loaded');
-                if (title) title.classList.add('loaded');
-            } else {
-                section.style.display = 'none';
-            }
-        }
-
-        // Helper to show info item if it has data
-        function showInfoItemIfHasData(itemId, value) {
-            const item = document.getElementById(itemId);
-            if (item) {
-                if (value && value.trim() !== '' && value !== '-' && value !== 'Not specified' && value !== 'Not provided') {
-                    item.classList.add('loaded');
-                } else {
-                    item.style.display = 'none';
-                }
-            }
-        }
-
-        function populateProfile(data, employerId) {
-            const personal = data.personal || {};
-            const professional = data.professional || {};
-            const education = data.education || {};
-
+        function populateProfileData(data, profileImageUrl) {
             // Profile header
-            document.getElementById('profile-name').textContent = personal.name || 'Employer';
-            document.getElementById('profile-title').textContent = professional.jobRole || '';
-            document.getElementById('profile-location').textContent = personal.location || '';
-            hideIfBlank(document.getElementById('profile-location'), personal.location);
+            document.getElementById('profile-avatar').src = profileImageUrl;
+            document.getElementById('profile-name').textContent = data.personal?.name || 'Unnamed Employer';
+            document.getElementById('profile-title').textContent = data.professional?.jobRole || 'Professional';
+            document.getElementById('profile-location').textContent = data.personal?.location || 'Location not specified';
 
-            // Stats - Update for employer context
-            document.getElementById('stat-experience').textContent = professional.experience || '';
-            hideIfBlank(document.getElementById('stat-experience'), professional.experience);
-            document.getElementById('stat-company').textContent = professional.company || '';
-            hideIfBlank(document.getElementById('stat-company'), professional.company);
-            document.getElementById('stat-degree').textContent = education.degree || '';
-            hideIfBlank(document.getElementById('stat-degree'), education.degree);
+            // Stats
+            document.getElementById('stat-company').textContent = data.professional?.company || '-';
+            document.getElementById('stat-experience').textContent = data.professional?.experience || '-';
+            document.getElementById('stat-degree').textContent = data.education?.degree || '-';
 
-            // Personal Information Section
-            let personalHasData = false;
-            const personalFields = [
-                ['info-item-name', 'info-name', personal.name],
-                ['info-item-email', 'info-email', personal.email],
-                ['info-item-phone', 'info-phone', personal.phone],
-                ['info-item-location', 'info-location', personal.location],
-            ];
-            
-            personalFields.forEach(([itemId, valueId, value]) => {
-                const elem = document.getElementById(valueId);
-                if (elem) {
-                    elem.textContent = value || '';
-                    showInfoItemIfHasData(itemId, value);
-                    if (value && value.trim() !== '' && value !== '-' && value !== 'Not specified' && value !== 'Not provided') {
-                        personalHasData = true;
-                    }
-                }
-            });
-            showSectionIfHasData('personal-section', personalHasData);
+            // Personal Information
+            populateInfoItem('info-name', data.personal?.name);
+            populateInfoItem('info-email', data.personal?.email);
+            populateInfoItem('info-location', data.personal?.location);
+            populateInfoItem('info-bio', data.personal?.bio);
 
-            // Professional Information Section
-            let professionalHasData = false;
-            const professionalFields = [
-                ['info-item-jobRole', 'info-jobRole', professional.jobRole],
-                ['info-item-company', 'info-company', professional.company],
-                ['info-item-experience', 'info-experience', professional.experience],
-            ];
-            
-            professionalFields.forEach(([itemId, valueId, value]) => {
-                const elem = document.getElementById(valueId);
-                if (elem) {
-                    elem.textContent = value || '';
-                    showInfoItemIfHasData(itemId, value);
-                    if (value && value.trim() !== '' && value !== '-' && value !== 'Not specified' && value !== 'Not provided') {
-                        professionalHasData = true;
-                    }
-                }
-            });
-            showSectionIfHasData('professional-section', professionalHasData);
+            // Professional Information
+            populateInfoItem('info-jobRole', data.professional?.jobRole);
+            populateInfoItem('info-company', data.professional?.company);
+            populateInfoItem('info-experience', data.professional?.experience);
 
-            // Education Section
-            let educationHasData = false;
-            const educationFields = [
-                ['info-item-college', 'info-college', education.college],
-                ['info-item-degree', 'info-degree', education.degree],
-                ['info-item-areaOfStudy', 'info-areaOfStudy', education.areaOfStudy],
-            ];
-            
-            educationFields.forEach(([itemId, valueId, value]) => {
-                const elem = document.getElementById(valueId);
-                if (elem) {
-                    elem.textContent = value || '';
-                    showInfoItemIfHasData(itemId, value);
-                    if (value && value.trim() !== '' && value !== '-' && value !== 'Not specified' && value !== 'Not provided') {
-                        educationHasData = true;
-                    }
-                }
-            });
-            showSectionIfHasData('education-section', educationHasData);
-
-            // About Section
-            const aboutElem = document.getElementById('info-about');
-            let aboutHasData = false;
-            if (aboutElem && personal.bio) {
-                aboutElem.textContent = personal.bio;
-                aboutHasData = true;
-            }
-            showSectionIfHasData('about-section', aboutHasData);
-
-            // Hide sections that don't apply to employers
-            document.getElementById('experience-section').style.display = 'none';
-            document.getElementById('skills-section').style.display = 'none';
-            document.getElementById('achievements-section').style.display = 'none';
-            document.getElementById('portfolio-section').style.display = 'none';
+            // Educational Information
+            populateInfoItem('info-college', data.education?.college);
+            populateInfoItem('info-degree', data.education?.degree);
+            populateInfoItem('info-areaOfStudy', data.education?.areaOfStudy);
         }
 
-        function populateSkills(skills) {
-            const container = document.getElementById('skills-container');
-            if (!skills) {
-                container.innerHTML = '<p style="color: #9ca3af; font-style: italic;">No skills listed</p>';
-                return;
-            }
-
-            const skillsList = skills.split(',').map(skill => skill.trim()).filter(skill => skill);
-            if (skillsList.length === 0) {
-                container.innerHTML = '<p style="color: #9ca3af; font-style: italic;">No skills listed</p>';
-                return;
-            }
-
-            container.innerHTML = skillsList.map(skill => 
-                `<div class="skill-tag">${skill}</div>`
-            ).join('');
-        }
-
-        async function loadPortfolio(employerId) {
-            const portfolioContent = document.getElementById('portfolio-content');
-            const portfolioSection = document.getElementById('portfolio-section');
-            const portfolioTitle = document.getElementById('portfolio-title');
+        function populateInfoItem(elementId, value) {
+            const element = document.getElementById(elementId);
+            const itemElement = document.getElementById(`info-item-${elementId.replace('info-', '')}`);
             
-            try {
-                // Check for Google Drive folder
-                const snapshot = await get(ref(db, `studentslist/${studentId}/driveFolderId`));
-                const driveFolderId = snapshot.exists() ? snapshot.val() : null;
-
-                if (driveFolderId) {
-                    await loadDrivePortfolio(driveFolderId, portfolioContent);
-                    // Show portfolio section if we have data
-                    portfolioSection.classList.add('loaded');
-                    portfolioTitle.classList.add('loaded');
+            if (element && itemElement) {
+                if (value && value.trim() !== '') {
+                    element.textContent = value;
+                    element.classList.remove('empty');
                 } else {
-                    // Hide portfolio section if no data
-                    portfolioSection.style.display = 'none';
+                    element.textContent = 'Not provided';
+                    element.classList.add('empty');
                 }
-            } catch (error) {
-                console.error('Error loading portfolio:', error);
-                portfolioContent.innerHTML = `
-                    <div class="error-message">
-                        Failed to load portfolio. Please try again later.
-                    </div>
-                `;
-                // Hide portfolio section on error
-                portfolioSection.style.display = 'none';
-            }
-        }
-
-        async function loadDrivePortfolio(folderId, container) {
-            const API_KEY = 'AIzaSyCkrrOkjd6ilFJOR96-Wk-id6rFM_WPgHQ';
-            
-            try {
-                let files = [];
-                let pageToken = '';
                 
-                do {
-                    let url = `https://www.googleapis.com/drive/v3/files?q='${folderId}'+in+parents+and+trashed=false&fields=nextPageToken,files(id,name,thumbnailLink,webViewLink,mimeType)&key=${API_KEY}&pageSize=1000`;
-                    if (pageToken) url += `&pageToken=${pageToken}`;
-                    
-                    const response = await fetch(url);
-                    const data = await response.json();
-                    files = files.concat(data.files || []);
-                    pageToken = data.nextPageToken;
-                } while (pageToken);
-
-                if (files.length === 0) {
-                    container.innerHTML = `
-                        <div style="text-align: center; padding: 2rem; color: #6b7280;">
-                            <i class="fas fa-folder-open" style="font-size: 3rem; margin-bottom: 1rem; color: #d1d5db;"></i>
-                            <p>No files found in portfolio folder</p>
-                        </div>
-                    `;
-                    return;
-                }
-
-                const thumbnails = files
-                    .filter(file => file.mimeType !== 'application/vnd.google-apps.folder')
-                    .map(file => {
-                        const thumb = file.thumbnailLink || 'https://www.gstatic.com/images/branding/product/1x/drive_2020q4_48dp.png';
-                        return `
-                            <a href="${file.webViewLink}" target="_blank" class="drive-thumb">
-                                <img src="${thumb}" alt="${file.name}">
-                                <div class="thumb-title">${file.name}</div>
-                            </a>
-                        `;
-                    });
-
-                container.innerHTML = `
-                    <div class="drive-thumbnails">
-                        ${thumbnails.join('')}
-                    </div>
-                `;
-
-            } catch (error) {
-                console.error('Error loading Drive portfolio:', error);
-                container.innerHTML = `
-                    <div class="error-message">
-                        Failed to load Google Drive portfolio. Please try again later.
-                    </div>
-                `;
+                // Show the item with animation
+                setTimeout(() => {
+                    itemElement.classList.add('loaded');
+                }, 100);
             }
         }
-
-        // REMOVE showProfileDisplay and showIdInput functions
 
         function showLoading() {
-            document.getElementById('portfolio-content').innerHTML = `
-                <div class="loading">
-                    <div class="loading-spinner"></div>
-                    <p>Loading portfolio...</p>
-                </div>
-            `;
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('profile-display').style.display = 'none';
+            document.getElementById('error-message').style.display = 'none';
+            
+            // Show profile header loading state and hide actual profile header
+            const profileHeaderLoading = document.getElementById('profile-header-loading');
+            const profileHeader = document.getElementById('profile-header');
+            if (profileHeaderLoading) {
+                profileHeaderLoading.style.display = 'block';
+            }
+            if (profileHeader) {
+                profileHeader.style.display = 'none';
+            }
+        }
+
+        function hideLoading() {
+            document.getElementById('loading').style.display = 'none';
+        }
+
+        function showProfile() {
+            document.getElementById('profile-display').style.display = 'block';
+            
+            // Hide the profile header loading state and show actual profile header
+            const profileHeaderLoading = document.getElementById('profile-header-loading');
+            const profileHeader = document.getElementById('profile-header');
+            if (profileHeaderLoading) {
+                profileHeaderLoading.style.display = 'none';
+            }
+            if (profileHeader) {
+                profileHeader.style.display = 'block';
+            }
+            
+            // Show sections with animation
+            setTimeout(() => {
+                document.getElementById('profile-header').classList.add('loaded');
+                document.getElementById('personal-section').classList.add('loaded');
+                document.getElementById('professional-section').classList.add('loaded');
+                document.getElementById('education-section').classList.add('loaded');
+                
+                // Show section titles
+                document.getElementById('personal-title').classList.add('loaded');
+                document.getElementById('professional-title').classList.add('loaded');
+                document.getElementById('education-title').classList.add('loaded');
+            }, 200);
         }
 
         function showError(message) {
-            document.getElementById('portfolio-content').innerHTML = `
-                <div class="error-message">
-                    ${message}
-                </div>
-            `;
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('profile-display').style.display = 'none';
+            document.getElementById('error-message').style.display = 'block';
+            document.getElementById('error-text').textContent = message;
         }
+
+        // Setup hamburger menu
+        document.addEventListener('DOMContentLoaded', () => {
+            const hamburger = document.querySelector('.navbar_classified .hamburger');
+            const navMenu = document.querySelector('.navbar_classified .nav-menu');
+            if (hamburger && navMenu) {
+                hamburger.addEventListener('click', () => {
+                    navMenu.classList.toggle('active');
+                });
+            }
+        });
     </script>
 </body>
 </html> 
