@@ -218,21 +218,39 @@
 
         .password-toggle-icon {
             position: absolute;
-            right: 0.8rem;
-            top: 50%;
+            right: 1rem;
+            top: 40%;
             transform: translateY(-50%);
             background: none;
             border: none;
             color: #888;
             cursor: pointer;
-            padding: 0.3rem;
-            border-radius: 0.3rem;
-            transition: color 0.18s, background 0.18s;
+            padding: 0.25rem;
+            border-radius: 4px;
+            transition: color 0.2s ease, background-color 0.2s ease;
+            font-size: 1rem;
         }
 
         .password-toggle-icon:hover {
             color: #111;
-            background: #f5f5f5;
+            background-color: #f5f5f5;
+        }
+
+        .password-toggle-icon:active {
+            transform: translateY(-50%) scale(0.95);
+        }
+
+        .password-toggle-icon i {
+            transition: all 0.2s ease;
+        }
+
+        .password-toggle-icon:hover i {
+            color: #4CAF50;
+        }
+
+        .password-toggle-icon:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.3);
         }
 
         /* Forgot password link styles */
@@ -527,9 +545,7 @@
                         </div>
                         <div class="form-buttons" style="flex-direction: column; gap: 0.7rem; align-items: stretch;">
                             <button class="cta-button login-btn" onclick="login('student')">Login</button>
-                            <div class="forgot-password-link">
-                                <a href="#" onclick="showForgotPasswordModal('student')">Forgot Password?</a>
-                            </div>
+                            
                             <div style="text-align:center; color:#888; font-size:0.98rem; margin:0.5rem 0 0.2rem 0; font-family:'Montserrat','Manrope','Poppins','Inter',Arial,sans-serif;">Don't have an account in Taska?</div>
                             <a href="signup.html" class="signup-link">Sign Up</a>
                         </div>
@@ -564,6 +580,80 @@
     </footer>
 
     <!-- Scripts -->
+    <script>
+        // Tab switching functionality - defined globally before module scripts
+        function showTab(tabName) {
+            // Remove active class from all tabs and content
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Add active class to selected tab and content
+            const selectedTab = document.querySelector(`[onclick="showTab('${tabName}')"]`);
+            const selectedContent = document.getElementById(`${tabName}-content`);
+            
+            if (selectedTab && selectedContent) {
+                selectedTab.classList.add('active');
+                selectedContent.classList.add('active');
+            }
+            updateEmailPlaceholder();
+        }
+
+        // Dynamic email placeholder
+        function updateEmailPlaceholder() {
+            const isStudent = document.querySelector('.tab-btn.active').textContent.trim().toLowerCase() === 'student';
+            const emailInput = document.getElementById(isStudent ? 'stud-email' : 'emp-email');
+            if (isStudent) {
+                emailInput.placeholder = 'Enter college email id';
+            } else {
+                emailInput.placeholder = 'Enter work mail id';
+            }
+        }
+
+        // Password visibility toggle function
+        function togglePasswordVisibility(inputId) {
+            const input = document.getElementById(inputId);
+            const button = input.parentElement.querySelector('.password-toggle-icon');
+            const icon = button.querySelector('i');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+        // Initialize with Professional tab active
+        document.addEventListener('DOMContentLoaded', () => {
+            showTab('employer');
+            
+            // Check for invite parameter and show appropriate message
+            const urlParams = new URLSearchParams(window.location.search);
+            const inviteId = urlParams.get('invite');
+            const redirect = urlParams.get('redirect');
+            
+            if (inviteId && redirect === 'checkinvite') {
+                // Show a message that they're logging in to accept an invite
+                const title = document.querySelector('h1');
+                if (title) {
+                    title.innerHTML = 'Login to Accept Invite';
+                }
+                
+                // Add a subtitle
+                const subtitle = document.createElement('p');
+                subtitle.style.cssText = 'text-align: center; color: #666; margin-bottom: 1.5rem; font-size: 0.9rem;';
+                subtitle.textContent = 'Complete your login to accept the connection invitation';
+                title.parentNode.insertBefore(subtitle, title.nextSibling);
+            }
+        });
+    </script>
     <script type="module">
         import { login, signup, signOut } from './js/auth.js';
         import { auth } from './js/firebase-config.js';
@@ -678,90 +768,6 @@
                 notice.style.display = 'none';
             }, 3000);
         }
-
-        // Tab switching functionality
-        function showTab(tabName) {
-            // Remove active class from all tabs and content
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.remove('active');
-            });
-
-            // Add active class to selected tab and content
-            const selectedTab = document.querySelector(`[onclick="showTab('${tabName}')"]`);
-            const selectedContent = document.getElementById(`${tabName}-content`);
-            
-            if (selectedTab && selectedContent) {
-                selectedTab.classList.add('active');
-                selectedContent.classList.add('active');
-            }
-            updateEmailPlaceholder();
-        }
-
-        // Make showTab globally available
-        window.showTab = showTab;
-
-        // Initialize with Professional tab active
-        document.addEventListener('DOMContentLoaded', () => {
-            showTab('employer');
-            
-            // Check for invite parameter and show appropriate message
-            const urlParams = new URLSearchParams(window.location.search);
-            const inviteId = urlParams.get('invite');
-            const redirect = urlParams.get('redirect');
-            
-            if (inviteId && redirect === 'checkinvite') {
-                // Show a message that they're logging in to accept an invite
-                const title = document.querySelector('h1');
-                if (title) {
-                    title.innerHTML = 'Login to Accept Invite';
-                }
-                
-                // Add a subtitle
-                const subtitle = document.createElement('p');
-                subtitle.style.cssText = 'text-align: center; color: #666; margin-bottom: 1.5rem; font-size: 0.9rem;';
-                subtitle.textContent = 'Complete your login to accept the connection invitation';
-                title.parentNode.insertBefore(subtitle, title.nextSibling);
-            }
-        });
-
-        // Dynamic email placeholder
-        function updateEmailPlaceholder() {
-            const isStudent = document.querySelector('.tab-btn.active').textContent.trim().toLowerCase() === 'student';
-            const emailInput = document.getElementById(isStudent ? 'stud-email' : 'emp-email');
-            if (isStudent) {
-                emailInput.placeholder = 'Enter college email id';
-            } else {
-                emailInput.placeholder = 'Enter work mail id';
-            }
-        }
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                showTab(this.textContent.trim().toLowerCase());
-            });
-        });
-
-        // Password visibility toggle function
-        function togglePasswordVisibility(inputId) {
-            const input = document.getElementById(inputId);
-            const button = input.parentElement.querySelector('.password-toggle-icon');
-            const icon = button.querySelector('i');
-            
-            if (input.type === 'password') {
-                input.type = 'text';
-                icon.classList.remove('fa-eye');
-                icon.classList.add('fa-eye-slash');
-            } else {
-                input.type = 'password';
-                icon.classList.remove('fa-eye-slash');
-                icon.classList.add('fa-eye');
-            }
-        }
-
-        // Make the function globally available
-        window.togglePasswordVisibility = togglePasswordVisibility;
 
         // Debug function to test Firebase auth
         window.testFirebaseAuth = async function() {

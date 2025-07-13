@@ -709,6 +709,347 @@
             transform: translateY(-1px);
             box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
         }
+
+        /* Submission Modal Styles - macOS Style */
+        .submission-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.4);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            backdrop-filter: blur(8px);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .submission-modal.active {
+            display: flex;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .submission-modal .modal-content {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3), 0 8px 25px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(20px);
+            animation: slideInUp 0.3s ease-out;
+        }
+
+        .submission-modal .modal-header {
+            background: rgba(248, 249, 250, 0.8);
+            padding: 16px 24px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .submission-modal .modal-header h3 {
+            margin: 0;
+            color: #1d1d1f;
+            font-size: 18px;
+            font-weight: 600;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .submission-modal .modal-header .close-modal {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: #6e6e73;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+        }
+
+        .submission-modal .modal-header .close-modal:hover {
+            background: rgba(0, 0, 0, 0.1);
+            color: #1d1d1f;
+        }
+
+        .submission-modal .modal-body {
+            padding: 24px;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .submission-modal .form-group {
+            margin-bottom: 20px;
+        }
+
+        .submission-modal .form-group label {
+            display: block;
+            font-weight: 500;
+            color: #1d1d1f;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .submission-modal .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            resize: vertical;
+            min-height: 100px;
+            box-sizing: border-box;
+            background: rgba(248, 249, 250, 0.8);
+            color: #1d1d1f;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+
+        .submission-modal .form-group textarea:focus {
+            border-color: #007aff;
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .submission-modal .form-group textarea::placeholder {
+            color: #8e8e93;
+        }
+
+        .submission-modal .modal-footer {
+            padding: 16px 24px;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            background: rgba(248, 249, 250, 0.8);
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        .submission-modal .btn-secondary {
+            background: rgba(142, 142, 147, 0.1);
+            color: #1d1d1f;
+            border: 1px solid rgba(142, 142, 147, 0.2);
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .submission-modal .btn-secondary:hover {
+            background: rgba(142, 142, 147, 0.2);
+            border-color: rgba(142, 142, 147, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .submission-modal .btn-primary {
+            background: #007aff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .submission-modal .btn-primary:hover {
+            background: #0056cc;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+        }
+
+        .submission-modal .btn-primary:disabled {
+            background: rgba(142, 142, 147, 0.3);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .submission-modal .btn-primary.loading {
+            background: #007aff;
+            cursor: not-allowed;
+            position: relative;
+            color: transparent;
+        }
+
+        .submission-modal .btn-primary.loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 16px;
+            height: 16px;
+            margin: -8px 0 0 -8px;
+            border: 2px solid transparent;
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Upload Button macOS Style */
+        .submission-modal .upload-btn {
+            background: #007aff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 16px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .submission-modal .upload-btn:hover {
+            background: #0056cc;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+        }
+
+        .submission-modal .upload-btn i {
+            font-size: 14px;
+        }
+
+        /* Uploaded Files macOS Style */
+        .submission-modal .uploaded-files {
+            margin-top: 16px;
+        }
+
+        .submission-modal .uploaded-file {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: rgba(248, 249, 250, 0.8);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.2s ease;
+        }
+
+        .submission-modal .uploaded-file:hover {
+            background: rgba(255, 255, 255, 0.9);
+            border-color: rgba(0, 122, 255, 0.2);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .submission-modal .uploaded-file i {
+            color: #8e8e93;
+            font-size: 16px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .submission-modal .uploaded-file span {
+            flex: 1;
+            font-size: 14px;
+            color: #1d1d1f;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .submission-modal .remove-file {
+            background: rgba(255, 59, 48, 0.1);
+            border: none;
+            color: #ff3b30;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+        }
+
+        .submission-modal .remove-file:hover {
+            background: rgba(255, 59, 48, 0.2);
+            transform: scale(1.1);
+        }
+
+        .submission-modal .remove-file i {
+            font-size: 12px;
+        }
+
+        /* Timeline Approval Status Styles */
+        .timeline-item.approved {
+            border-left: 3px solid #4CAF50;
+        }
+
+        .timeline-item.pending {
+            border-left: 3px solid #FFC107;
+        }
+
+        .submission-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            margin-right: 12px;
+        }
+
+        .submission-status i {
+            font-size: 14px;
+        }
+
+        .approval-feedback {
+            margin-top: 16px;
+            padding: 12px 16px;
+            background: rgba(76, 175, 80, 0.1);
+            border: 1px solid rgba(76, 175, 80, 0.2);
+            border-radius: 8px;
+            border-left: 4px solid #4CAF50;
+        }
+
+        .feedback-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .feedback-header i {
+            font-size: 16px;
+        }
+
+        .feedback-content {
+            color: #333;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-left: 24px;
+        }
+
+        .feedback-content:empty {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -1043,6 +1384,7 @@ let selectedProfessionalId = null;
 let professionalData = null;
 let currentUserProfile = null;
 let uploadedTaskFiles = [];
+let submissionFiles = []; // Add missing variable declaration
 let isDataLoaded = { connections: false, chats: false, tasks: false };
 let currentTaskId = null;
 let editingTaskId = null;
@@ -2325,8 +2667,13 @@ function generateTimelineHTML(submissions, comments, taskId) {
     
     return sortedItems.map(item => {
         if (item.type === 'submission') {
+            const isApproved = item.status === 'approved';
+            const approvalStatus = isApproved ? 'approved' : 'pending';
+            const statusIcon = isApproved ? 'fa-check-circle' : 'fa-clock';
+            const statusColor = isApproved ? '#4CAF50' : '#FFC107';
+            
             return `
-                <div class="timeline-item">
+                <div class="timeline-item ${approvalStatus}">
                     <div class="timeline-marker">
                         <i class="fas fa-upload"></i>
                     </div>
@@ -2335,6 +2682,10 @@ function generateTimelineHTML(submissions, comments, taskId) {
                             <span class="submission-author">${item.authorName}</span>
                             <div class="timeline-item-actions">
                                 <span class="submission-date">${formatSubmissionDate(item.timestamp)}</span>
+                                <div class="submission-status">
+                                    <i class="fas ${statusIcon}" style="color: ${statusColor};"></i>
+                                    <span style="color: ${statusColor}; font-weight: 500;">${isApproved ? 'Approved' : 'Pending'}</span>
+                                </div>
                                 <div class="timeline-item-menu">
                                     <i class="fas fa-ellipsis-v timeline-menu-icon" onclick="toggleTimelineMenu('submission-${item.id}')"></i>
                                     <div class="timeline-menu-dropdown" id="submission-${item.id}">
@@ -2369,6 +2720,14 @@ function generateTimelineHTML(submissions, comments, taskId) {
                                         </div>
                                     </div>
                                 `).join('')}
+                            </div>
+                        ` : ''}
+                        ${isApproved && item.feedback ? `
+                            <div class="approval-feedback">
+                                <div class="feedback-header">
+                                    <span style="color: #4CAF50; font-weight: 500;">Feedback</span>
+                                </div>
+                                <div class="feedback-content">${item.feedback}</div>
                             </div>
                         ` : ''}
                     </div>
@@ -2488,6 +2847,13 @@ async function submitWork() {
         return;
     }
     
+    // Get the submit button and show loading state
+    const submitBtn = document.querySelector('.submission-modal .btn-primary');
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = 'Submitting...';
+    submitBtn.classList.add('loading');
+    submitBtn.disabled = true;
+    
     try {
         const comment = document.getElementById('submission-comment').value.trim();
         const taskRef = ref(db, `tasks/${currentTaskId}`);
@@ -2538,6 +2904,11 @@ async function submitWork() {
     } catch (error) {
         console.error('Error submitting work:', error);
         alert('Failed to submit work. Please try again.');
+    } finally {
+        // Reset button state
+        submitBtn.textContent = originalText;
+        submitBtn.classList.remove('loading');
+        submitBtn.disabled = false;
     }
 }
 

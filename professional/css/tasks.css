@@ -1918,6 +1918,32 @@ h3.fashion-minimal {
     background: #45a049;
 }
 
+.task-popup .actions .submit-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+.task-popup .actions .submit-btn.loading {
+    background: #4CAF50;
+    cursor: not-allowed;
+    position: relative;
+    color: transparent;
+}
+
+.task-popup .actions .submit-btn.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 16px;
+    height: 16px;
+    margin: -8px 0 0 -8px;
+    border: 2px solid transparent;
+    border-top: 2px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
 /* Comment Modal Styles */
 .comment-modal {
     position: fixed;

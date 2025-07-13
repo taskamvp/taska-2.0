@@ -228,53 +228,7 @@
             <div class="approval-body">
                 <div class="approval-message">
                     <i class="fas fa-check-circle"></i>
-                    <p>Please rate the student's performance and provide feedback before approving this submission.</p>
-                </div>
-                
-                <div class="rating-section">
-                    <h4>Rate the Student</h4>
-                    <div class="rating-categories">
-                        <div class="rating-category">
-                            <label>Communication</label>
-                            <div class="star-rating" data-category="communication">
-                                <i class="fas fa-star" data-rating="1"></i>
-                                <i class="fas fa-star" data-rating="2"></i>
-                                <i class="fas fa-star" data-rating="3"></i>
-                                <i class="fas fa-star" data-rating="4"></i>
-                                <i class="fas fa-star" data-rating="5"></i>
-                            </div>
-                        </div>
-                        <div class="rating-category">
-                            <label>Speed</label>
-                            <div class="star-rating" data-category="speed">
-                                <i class="fas fa-star" data-rating="1"></i>
-                                <i class="fas fa-star" data-rating="2"></i>
-                                <i class="fas fa-star" data-rating="3"></i>
-                                <i class="fas fa-star" data-rating="4"></i>
-                                <i class="fas fa-star" data-rating="5"></i>
-                            </div>
-                        </div>
-                        <div class="rating-category">
-                            <label>Clarity</label>
-                            <div class="star-rating" data-category="clarity">
-                                <i class="fas fa-star" data-rating="1"></i>
-                                <i class="fas fa-star" data-rating="2"></i>
-                                <i class="fas fa-star" data-rating="3"></i>
-                                <i class="fas fa-star" data-rating="4"></i>
-                                <i class="fas fa-star" data-rating="5"></i>
-                            </div>
-                        </div>
-                        <div class="rating-category">
-                            <label>Quality</label>
-                            <div class="star-rating" data-category="quality">
-                                <i class="fas fa-star" data-rating="1"></i>
-                                <i class="fas fa-star" data-rating="2"></i>
-                                <i class="fas fa-star" data-rating="3"></i>
-                                <i class="fas fa-star" data-rating="4"></i>
-                                <i class="fas fa-star" data-rating="5"></i>
-                            </div>
-                        </div>
-                    </div>
+                    <p>Please provide feedback before approving this submission.</p>
                 </div>
                 
                 <div class="feedback-section">
@@ -1497,8 +1451,12 @@ async function submitTask() {
         return;
     }
 
-    // Show loading overlay
-    showTaskPopupLoading();
+    // Get the submit button and show loading state
+    const submitBtn = document.querySelector('.task-popup .actions .submit-btn');
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = editingTaskId ? 'Updating...' : 'Creating...';
+    submitBtn.classList.add('loading');
+    submitBtn.disabled = true;
 
     try {
         let taskRef;
@@ -1510,7 +1468,6 @@ async function submitTask() {
             const existingTaskSnapshot = await get(existingTaskRef);
             
             if (!existingTaskSnapshot.exists()) {
-                hideTaskPopupLoading();
                 alert('Task not found.');
                 return;
             }
@@ -1526,7 +1483,7 @@ async function submitTask() {
             
             // Handle files - preserve existing files and add new ones
             if (uploadedTaskFiles.length > 0) {
-                updateTaskLoadingText('Processing files...');
+                submitBtn.textContent = 'Processing files...';
                 taskData.files = {};
                 
                 // First, preserve existing files with their original structure
@@ -1561,7 +1518,7 @@ async function submitTask() {
                         }
                         
                         // New file - upload it
-                        updateTaskLoadingText(`Uploading file ${i + 1} of ${uploadedTaskFiles.length}...`);
+                        submitBtn.textContent = `Uploading file ${i + 1} of ${uploadedTaskFiles.length}...`;
                         const storagePath = `tasks/${editingTaskId}/${Date.now()}_${file.name}`;
                         const fileRef = storageRef(storage, storagePath);
                         const uploadTask = await uploadBytesResumable(fileRef, file);
@@ -1582,7 +1539,7 @@ async function submitTask() {
             
             // Clean up removed files from Firebase Storage
             if (existingTask.files) {
-                updateTaskLoadingText('Cleaning up removed files...');
+                submitBtn.textContent = 'Cleaning up removed files...';
                 const filesToDelete = [];
                 
                 // Find files that were removed
@@ -1612,7 +1569,7 @@ async function submitTask() {
                 }
             }
             
-            updateTaskLoadingText('Saving task...');
+            submitBtn.textContent = 'Saving task...';
             taskRef = existingTaskRef;
             await update(taskRef, taskData);
         } else {
@@ -1629,11 +1586,11 @@ async function submitTask() {
             };
 
             if (uploadedTaskFiles.length > 0) {
-                updateTaskLoadingText('Uploading files...');
+                submitBtn.textContent = 'Uploading files...';
                 taskData.files = {};
                 for (let i = 0; i < uploadedTaskFiles.length; i++) {
                     const file = uploadedTaskFiles[i];
-                    updateTaskLoadingText(`Uploading file ${i + 1} of ${uploadedTaskFiles.length}...`);
+                    submitBtn.textContent = `Uploading file ${i + 1} of ${uploadedTaskFiles.length}...`;
                     const storagePath = `tasks/${Date.now()}_${file.name}`;
                     const fileRef = storageRef(storage, storagePath);
                     const uploadTask = await uploadBytesResumable(fileRef, file);
@@ -1647,43 +1604,22 @@ async function submitTask() {
                 }
             }
             
-            updateTaskLoadingText('Saving task...');
+            submitBtn.textContent = 'Saving task...';
             taskRef = ref(db, `tasks`);
             await push(taskRef, taskData);
         }
 
-        // Hide loading overlay and close popup
-        hideTaskPopupLoading();
         closeTaskPopup();
         loadWorkflows();
         loadCompletedTasks();
     } catch (error) {
         console.error('Error submitting task:', error);
-        hideTaskPopupLoading();
-    }
-}
-
-// Function to show task popup loading overlay
-function showTaskPopupLoading() {
-    const loadingOverlay = document.getElementById('task-popup-loading');
-    if (loadingOverlay) {
-        loadingOverlay.classList.add('active');
-    }
-}
-
-// Function to hide task popup loading overlay
-function hideTaskPopupLoading() {
-    const loadingOverlay = document.getElementById('task-popup-loading');
-    if (loadingOverlay) {
-        loadingOverlay.classList.remove('active');
-    }
-}
-
-// Function to update loading text
-function updateTaskLoadingText(text) {
-    const loadingText = document.getElementById('task-loading-text');
-    if (loadingText) {
-        loadingText.textContent = text;
+        // Remove the alert dialog - just log the error for debugging
+    } finally {
+        // Reset button state
+        submitBtn.textContent = originalText;
+        submitBtn.classList.remove('loading');
+        submitBtn.disabled = false;
     }
 }
 
@@ -1920,21 +1856,9 @@ function generateTimelineHTML(submissions, comments, taskId) {
                                 <button class="approve-submission-btn approved" disabled>
                                     <i class="fas fa-check-circle"></i> Approved
                                 </button>
-                                ${item.ratings ? `
-                                    <div class="submission-ratings">
-                                        <div class="rating-summary">
-                                            ${Object.entries(item.ratings).map(([category, rating]) => `
-                                                <span class="rating-item">
-                                                    <strong>${category.charAt(0).toUpperCase() + category.slice(1)}:</strong> 
-                                                    ${'★'.repeat(rating)}${'☆'.repeat(5-rating)}
-                                                </span>
-                                            `).join('')}
-                                        </div>
-                                        ${item.feedback ? `
-                                            <div class="submission-feedback">
-                                                <strong>Feedback:</strong> ${item.feedback}
-                                            </div>
-                                        ` : ''}
+                                ${item.feedback ? `
+                                    <div class="submission-feedback">
+                                        <strong>Feedback:</strong> ${item.feedback}
                                     </div>
                                 ` : ''}
                             ` : `
@@ -2421,98 +2345,24 @@ function getDeadlineColor(deadline) {
 
 // Approval Modal Functions
 let currentApprovalSubmissionId = null;
-let ratings = {
-    communication: 0,
-    speed: 0,
-    clarity: 0,
-    quality: 0
-};
 
 function openApprovalModal(submissionId) {
     currentApprovalSubmissionId = submissionId;
-    ratings = {
-        communication: 0,
-        speed: 0,
-        clarity: 0,
-        quality: 0
-    };
-    
-    // Reset all stars
-    document.querySelectorAll('.star-rating i').forEach(star => {
-        star.classList.remove('filled', 'active');
-    });
     
     // Reset feedback
     document.getElementById('approval-feedback').value = '';
     
     // Show modal
     document.getElementById('approval-modal').classList.add('active');
-    
-    // Add event listeners for star ratings
-    setupStarRatingListeners();
 }
 
 function closeApprovalModal() {
     document.getElementById('approval-modal').classList.remove('active');
     currentApprovalSubmissionId = null;
-    ratings = {
-        communication: 0,
-        speed: 0,
-        clarity: 0,
-        quality: 0
-    };
-}
-
-function setupStarRatingListeners() {
-    document.querySelectorAll('.star-rating').forEach(ratingContainer => {
-        const category = ratingContainer.dataset.category;
-        const stars = ratingContainer.querySelectorAll('i');
-        
-        stars.forEach((star, index) => {
-            star.addEventListener('click', () => {
-                const rating = index + 1;
-                ratings[category] = rating;
-                
-                // Update visual state
-                stars.forEach((s, i) => {
-                    if (i < rating) {
-                        s.classList.add('filled');
-                        s.classList.remove('active');
-                    } else {
-                        s.classList.remove('filled', 'active');
-                    }
-                });
-            });
-            
-            star.addEventListener('mouseenter', () => {
-                const rating = index + 1;
-                stars.forEach((s, i) => {
-                    if (i < rating) {
-                        s.classList.add('active');
-                    } else {
-                        s.classList.remove('active');
-                    }
-                });
-            });
-            
-            star.addEventListener('mouseleave', () => {
-                stars.forEach(s => {
-                    s.classList.remove('active');
-                });
-            });
-        });
-    });
 }
 
 async function confirmApproval() {
     const feedback = document.getElementById('approval-feedback').value.trim();
-    
-    // Check if all ratings are provided
-    const totalRating = Object.values(ratings).reduce((sum, rating) => sum + rating, 0);
-    if (totalRating === 0) {
-        alert('Please provide ratings for all categories before approving.');
-        return;
-    }
     
     try {
         // Find the task that contains this submission
@@ -2532,7 +2382,6 @@ async function confirmApproval() {
                         status: 'approved',
                         approvedAt: new Date().toISOString(),
                         approvedBy: userId,
-                        ratings: ratings,
                         feedback: feedback || null
                     });
                     
