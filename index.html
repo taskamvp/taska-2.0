@@ -2016,19 +2016,52 @@ body {
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <!-- Firebase Storage -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+    <!-- Firebase Analytics -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-analytics.js"></script>
+    
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ESJMBXMH7Q"></script>
     <script>
-      var firebaseConfig = {
-        apiKey: "AIzaSyDZIDlEtaNRxODoFhRw0xF2yYFBqqBexqo",
-        authDomain: "taska-45011.firebaseapp.com",
-        databaseURL: "https://taska-45011-default-rtdb.asia-southeast1.firebasedatabase.app",
-        projectId: "taska-45011",
-        storageBucket: "taska-45011.appspot.com",
-        messagingSenderId: "205487498813",
-        appId: "1:205487498813:web:0de2c9eab567482781ec54"
-      };
-      if (!window.firebase || !firebase.apps.length) {
-        firebase.initializeApp(firebaseConfig);
-      }
+        // Google Analytics 4 Configuration
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        
+        // Set default consent to denied (GDPR compliant)
+        gtag('consent', 'default', {
+            'analytics_storage': 'denied',
+            'ad_storage': 'denied',
+            'ad_user_data': 'denied',
+            'ad_personalization': 'denied'
+        });
+        
+        gtag('config', 'G-ESJMBXMH7Q', {
+            'anonymize_ip': true,
+            'allow_google_signals': false,
+            'allow_ad_personalization_signals': false
+        });
+        
+        // Initialize Firebase Analytics
+        var firebaseConfig = {
+            apiKey: "AIzaSyDZIDlEtaNRxODoFhRw0xF2yYFBqqBexqo",
+            authDomain: "taska-45011.firebaseapp.com",
+            databaseURL: "https://taska-45011-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "taska-45011",
+            storageBucket: "taska-45011.appspot.com",
+            messagingSenderId: "205487498813",
+            appId: "1:205487498813:web:0de2c9eab567482781ec54",
+            measurementId: "G-ESJMBXMH7Q"
+        };
+        
+        if (!window.firebase || !firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        
+        // Initialize Firebase Analytics (disabled by default)
+        if (typeof firebase !== 'undefined' && firebase.analytics) {
+            firebase.analytics();
+            firebase.analytics().setAnalyticsCollectionEnabled(false);
+        }
     </script>
 </head>
 <body>
@@ -2300,6 +2333,11 @@ body {
 
         // WhatsApp integration for Hire Now button
         function openWhatsAppHire() {
+            trackEvent('whatsapp_hire_click', {
+                'event_category': 'conversion',
+                'event_label': 'startup_package'
+            });
+            
             const phoneNumber = '+919266124039';
             const message = encodeURIComponent(`Hi! I'm interested in hiring expert AI Trained student assistants for my business. I'd like to know more about the complete package for Developer, Marketing & Designing roles.`);
             const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
@@ -2308,29 +2346,35 @@ body {
         
         // Handle search form submission - moved to global scope
         function handleSearchSubmit(event) {
-          event.preventDefault();
-          console.log('Search form submitted!');
-          const searchInput = document.getElementById('ai-search-input');
-          const query = searchInput.value.trim();
-          
-          if (query) {
-            // Redirect to indexaisearch.html with the search query as URL parameter
-            const encodedQuery = encodeURIComponent(query);
-            console.log('Redirecting to:', `indexaisearch.html?q=${encodedQuery}`);
-            window.location.href = `indexaisearch.html?q=${encodedQuery}`;
-          } else {
-            // If no query, show a message instead of redirecting
-            console.log('No query entered');
-            searchInput.focus();
-            searchInput.style.borderColor = '#dc3545';
-            searchInput.style.boxShadow = '0 0 0 0.2rem rgba(220, 53, 69, 0.25)';
+            event.preventDefault();
+            console.log('Search form submitted!');
+            const searchInput = document.getElementById('ai-search-input');
+            const query = searchInput.value.trim();
             
-            // Reset the styling after 2 seconds
-            setTimeout(() => {
-              searchInput.style.borderColor = '';
-              searchInput.style.boxShadow = '';
-            }, 2000);
-          }
+            if (query) {
+                trackEvent('search_submit', {
+                    'event_category': 'engagement',
+                    'event_label': 'ai_search',
+                    'search_term': query
+                });
+                
+                // Redirect to indexaisearch.html with the search query as URL parameter
+                const encodedQuery = encodeURIComponent(query);
+                console.log('Redirecting to:', `indexaisearch.html?q=${encodedQuery}`);
+                window.location.href = `indexaisearch.html?q=${encodedQuery}`;
+            } else {
+                // If no query, show a message instead of redirecting
+                console.log('No query entered');
+                searchInput.focus();
+                searchInput.style.borderColor = '#dc3545';
+                searchInput.style.boxShadow = '0 0 0 0.2rem rgba(220, 53, 69, 0.25)';
+                
+                // Reset the styling after 2 seconds
+                setTimeout(() => {
+                    searchInput.style.borderColor = '';
+                    searchInput.style.boxShadow = '';
+                }, 2000);
+            }
         }
         
       document.addEventListener('DOMContentLoaded', function() {
@@ -2568,28 +2612,50 @@ body {
             // Enable all cookies and tracking when user accepts
             console.log('All cookies enabled');
             
-            // Enable analytics (if you have any)
-            // gtag('consent', 'update', { 'analytics_storage': 'granted' });
+            // Enable Google Analytics
+            gtag('consent', 'update', { 
+                'analytics_storage': 'granted',
+                'ad_storage': 'granted',
+                'ad_user_data': 'granted',
+                'ad_personalization': 'granted'
+            });
             
-            // Enable advertising (if you have any)
-            // gtag('consent', 'update', { 'ad_storage': 'granted' });
+            // Enable Firebase Analytics
+            if (typeof firebase !== 'undefined' && firebase.analytics) {
+                firebase.analytics().setAnalyticsCollectionEnabled(true);
+            }
             
-            // Enable social media tracking (if you have any)
-            // fbq('consent', 'grant');
+            // Track consent event
+            gtag('event', 'cookie_consent', {
+                'event_category': 'engagement',
+                'event_label': 'accepted',
+                'value': 1
+            });
         }
 
         function disableTrackingCookies() {
             // Disable tracking cookies when user declines
             console.log('Tracking cookies disabled - only essential cookies allowed');
             
-            // Disable analytics
-            // gtag('consent', 'update', { 'analytics_storage': 'denied' });
+            // Disable Google Analytics
+            gtag('consent', 'update', { 
+                'analytics_storage': 'denied',
+                'ad_storage': 'denied',
+                'ad_user_data': 'denied',
+                'ad_personalization': 'denied'
+            });
             
-            // Disable advertising
-            // gtag('consent', 'update', { 'ad_storage': 'denied' });
+            // Disable Firebase Analytics
+            if (typeof firebase !== 'undefined' && firebase.analytics) {
+                firebase.analytics().setAnalyticsCollectionEnabled(false);
+            }
             
-            // Disable social media tracking
-            // fbq('consent', 'revoke');
+            // Track consent event
+            gtag('event', 'cookie_consent', {
+                'event_category': 'engagement',
+                'event_label': 'declined',
+                'value': 0
+            });
             
             // Clear any existing tracking cookies
             clearTrackingCookies();
@@ -2618,9 +2684,33 @@ body {
             const consentDate = localStorage.getItem('cookieConsentDate');
             
             if (consent === 'accepted') {
-                enableAllCookies();
+                // Enable analytics if user previously accepted
+                gtag('consent', 'update', { 
+                    'analytics_storage': 'granted',
+                    'ad_storage': 'granted',
+                    'ad_user_data': 'granted',
+                    'ad_personalization': 'granted'
+                });
+                
+                if (typeof firebase !== 'undefined' && firebase.analytics) {
+                    firebase.analytics().setAnalyticsCollectionEnabled(true);
+                }
+                
+                console.log('Analytics enabled based on previous consent');
             } else if (consent === 'declined') {
-                disableTrackingCookies();
+                // Keep analytics disabled if user previously declined
+                gtag('consent', 'update', { 
+                    'analytics_storage': 'denied',
+                    'ad_storage': 'denied',
+                    'ad_user_data': 'denied',
+                    'ad_personalization': 'denied'
+                });
+                
+                if (typeof firebase !== 'undefined' && firebase.analytics) {
+                    firebase.analytics().setAnalyticsCollectionEnabled(false);
+                }
+                
+                console.log('Analytics disabled based on previous consent');
             }
             
             // Check if consent is older than 1 year (GDPR requirement)
@@ -2664,7 +2754,109 @@ body {
         document.addEventListener('DOMContentLoaded', function() {
             checkCookieConsent();
             showCookieConsent();
+            
+            // Track page view
+            trackPageView();
+            
+            // Add event tracking for important interactions
+            setupEventTracking();
         });
+        
+        // Function to track page views
+        function trackPageView() {
+            const consent = localStorage.getItem('cookieConsent');
+            if (consent === 'accepted') {
+                gtag('event', 'page_view', {
+                    'page_title': document.title,
+                    'page_location': window.location.href,
+                    'page_path': window.location.pathname
+                });
+            }
+        }
+        
+        // Function to setup event tracking
+        function setupEventTracking() {
+            // Track signup button clicks
+            const signupButtons = document.querySelectorAll('.signup-btn, .hero-cta-google.primary, .hero-cta-google.secondary');
+            signupButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    trackEvent('signup_click', {
+                        'event_category': 'engagement',
+                        'event_label': this.textContent.trim(),
+                        'button_location': this.closest('section')?.className || 'unknown'
+                    });
+                });
+            });
+            
+            // Track search form submissions
+            const searchForm = document.querySelector('.ai-search-box');
+            if (searchForm) {
+                searchForm.addEventListener('submit', function(e) {
+                    const searchInput = document.getElementById('ai-search-input');
+                    if (searchInput && searchInput.value.trim()) {
+                        trackEvent('search_submit', {
+                            'event_category': 'engagement',
+                            'event_label': 'ai_search',
+                            'search_term': searchInput.value.trim()
+                        });
+                    }
+                });
+            }
+            
+            // Track suggestion clicks
+            const suggestionItems = document.querySelectorAll('.ai-suggestion-item');
+            suggestionItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    trackEvent('search_suggestion_click', {
+                        'event_category': 'engagement',
+                        'event_label': 'ai_suggestion',
+                        'suggestion_text': this.textContent.trim()
+                    });
+                });
+            });
+            
+            // Track category card clicks
+            const categoryCards = document.querySelectorAll('.category-card');
+            categoryCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const categoryTitle = this.querySelector('.category-title')?.textContent || 'unknown';
+                    trackEvent('category_click', {
+                        'event_category': 'engagement',
+                        'event_label': categoryTitle
+                    });
+                });
+            });
+            
+            // Track service tab clicks
+            const serviceTabs = document.querySelectorAll('.service-tab');
+            serviceTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    trackEvent('service_tab_click', {
+                        'event_category': 'engagement',
+                        'event_label': this.textContent.trim()
+                    });
+                });
+            });
+            
+            // Track WhatsApp hire button
+            const whatsappButton = document.querySelector('.startup-cta');
+            if (whatsappButton) {
+                whatsappButton.addEventListener('click', function() {
+                    trackEvent('whatsapp_hire_click', {
+                        'event_category': 'conversion',
+                        'event_label': 'startup_package'
+                    });
+                });
+            }
+        }
+        
+        // Function to track custom events
+        function trackEvent(eventName, parameters = {}) {
+            const consent = localStorage.getItem('cookieConsent');
+            if (consent === 'accepted') {
+                gtag('event', eventName, parameters);
+            }
+        }
     </script>
     <!-- Fiverr-style Footer Start -->
     <footer class="footer">
