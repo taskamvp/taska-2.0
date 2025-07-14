@@ -203,6 +203,7 @@ export async function signup(userType) {
 
         // Send welcome email
         try {
+            console.log('Attempting to send welcome email to:', user.email);
             const welcomeEmailResponse = await fetch('/api/send-welcome-email', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -212,6 +213,10 @@ export async function signup(userType) {
                     userName: user.email.split('@')[0] // Use email prefix as name
                 })
             });
+            
+            console.log('Welcome email response status:', welcomeEmailResponse.status);
+            const emailResult = await welcomeEmailResponse.json();
+            console.log('Welcome email response:', emailResult);
             
             if (welcomeEmailResponse.ok) {
                 console.log('Welcome email sent successfully');

@@ -1,4 +1,6 @@
 export default async function handler(req, res) {
+  console.log('Welcome email API called with:', { method: req.method, body: req.body });
+  
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -6,11 +8,15 @@ export default async function handler(req, res) {
   const { email, userType, userName } = req.body;
   const apiKey = process.env.RESEND_API_KEY;
 
+  console.log('Email sending attempt:', { email, userType, userName, hasApiKey: !!apiKey });
+
   if (!apiKey) {
+    console.error('Resend API key not found in environment variables');
     return res.status(500).json({ error: 'Resend API key not configured.' });
   }
 
   if (!email || !userType) {
+    console.error('Missing required fields:', { email, userType });
     return res.status(400).json({ error: 'Email and user type are required.' });
   }
 
@@ -221,6 +227,7 @@ export default async function handler(req, res) {
   `;
 
   try {
+    console.log('Sending email to Resend API...');
     const response = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
@@ -231,11 +238,13 @@ export default async function handler(req, res) {
         to: email,
         subject: `Welcome to Taska! 🎉`,
         html: welcomeEmailHTML,
-        from: 'Taska <support@jointaska.com>', // Update this to your verified domain
+        from: 'onboarding@resend.dev', // Use verified sender for testing
       }),
     });
 
     const data = await response.json();
+    console.log('Resend API response:', { status: response.status, data });
+    
     if (!response.ok) {
       console.error('Resend API error:', data);
       throw new Error(data.error || 'Failed to send welcome email');
