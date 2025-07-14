@@ -1,0 +1,92 @@
+{
+  "rules": {
+    ".read": "auth != null",
+    ".write": "auth != null",
+    
+    "studentslist": {
+      ".read": "auth != null",
+      ".write": "auth != null",
+      "$studentId": {
+        ".read": "auth != null",
+        ".write": "auth != null"
+      }
+    },
+    
+    "professionalslist": {
+      ".read": "auth != null",
+      ".write": "auth != null",
+      "$professionalId": {
+        ".read": "auth != null",
+        ".write": "auth != null"
+      }
+    },
+    
+    "chats": {
+      ".read": "auth != null",
+      ".write": "auth != null",
+      "$chatId": {
+        ".read": "auth != null",
+        ".write": "auth != null",
+        "messages": {
+          ".read": "auth != null",
+          ".write": "auth != null",
+          "$messageId": {
+            ".read": "auth != null",
+            ".write": "auth != null"
+          }
+        }
+      }
+    },
+    
+    "tasks": {
+      ".read": "auth != null",
+      ".write": "auth != null",
+      "$taskId": {
+        ".read": "auth != null",
+        ".write": "auth != null"
+      }
+    },
+    
+    "invites": {
+      ".read": "auth != null",
+      ".write": "auth != null",
+      "$inviteId": {
+        ".read": "auth != null",
+        ".write": "auth != null"
+      }
+    },
+    
+    "loyalty_students": {
+      ".read": "auth != null",
+      ".write": "auth != null",
+      "$studentId": {
+        ".read": "auth != null",
+        ".write": "auth != null"
+      }
+    },
+    
+    "loyalty_professional": {
+      ".read": "auth != null",
+      ".write": "auth != null",
+      "$professionalId": {
+        ".read": "auth != null",
+        ".write": "auth != null"
+      }
+    },
+    
+    "account_deletions": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    
+    "system": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    
+    "analytics": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    }
+  }
+} 
