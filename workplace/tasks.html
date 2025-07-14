@@ -2141,24 +2141,29 @@ async function loadConnections() {
                     userItem.className = 'user-item';
                     userItem.dataset.connectionId = connectionId;
                     userItem.dataset.connectionType = professional ? 'professional' : 'student';
+                    
+                    // Add disabled class for students
+                    if (!professional) {
+                        userItem.classList.add('student-connection');
+                    }
+                    
                     userItem.innerHTML = `
                         <img src="${profilePic}" alt="${userName}" class="profile-pic" onerror="this.src='../assets/avatar/1.png'" onclick="handleProfilePicClick('${connectionId}', '${userRole}')" style="cursor: pointer;">
                         <div class="user-info">
                             <div class="name">${userName}</div>
+                            <div class="user-role">${userRole}</div>
                             <div class="last-message">${lastMessage}</div>
                         </div>
                         ${hasUnread ? '<div class="unread-dot"></div>' : ''}
+                        ${!professional ? '<div class="student-indicator"><i class="fas fa-graduation-cap"></i></div>' : ''}
                     `;
                     
                     // Add click event listener to the user item
                     userItem.addEventListener('click', () => {
                         if (professional) {
                             selectProfessional(connectionId);
-                        } else {
-                            // For students, you might want to implement a different selection logic
-                            // For now, we'll just show a message
-                            alert('Student connections are not yet fully implemented for collaboration.');
                         }
+                        // For student connections, do nothing - just prevent any action
                     });
                     
                     elements.connectionsList.appendChild(userItem);

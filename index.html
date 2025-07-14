@@ -2323,9 +2323,27 @@ body {
         async function loadUserProfilePic(userId, profilePicElement) {
             if (!profilePicElement) return;
             
+            // Set default avatar first
+            profilePicElement.src = 'assets/avatar/1.png';
+            
+            // Try to load from Firebase Storage in the background
             try {
+                // Check if Firebase is available and initialized
+                if (typeof firebase === 'undefined' || !firebase.apps || !firebase.apps.length) {
+                    console.log('Firebase not initialized, using default avatar');
+                    return;
+                }
+                
+                // Wait a bit to ensure Firebase is fully loaded
+                await new Promise(resolve => setTimeout(resolve, 200));
+                
                 // Try to load from Firebase Storage using the legacy Firebase SDK
                 const storage = firebase.storage();
+                if (!storage) {
+                    console.log('Firebase Storage not available, using default avatar');
+                    return;
+                }
+                
                 const storageRef = storage.ref();
                 const profilePicRef = storageRef.child(`profile/${userId}.webp`);
                 
@@ -2334,9 +2352,8 @@ body {
                 profilePicElement.src = profilePicUrl;
                 
             } catch (error) {
-                console.log('Profile picture not found in Firebase Storage, using default avatar:', error);
-                // If profile pic doesn't exist, use default avatar
-                profilePicElement.src = 'assets/avatar/1.png';
+                console.log('Profile picture not found in Firebase Storage, keeping default avatar:', error);
+                // Keep the default avatar if there's any error
             }
         }
 
