@@ -78,7 +78,7 @@ export default async function handler(req, res) {
             }
             .cta-button {
                 display: inline-block;
-                background:rgb(255, 255, 255);
+                background: #14532d;
                 color: white;
                 text-decoration: none;
                 padding: 12px 24px;
@@ -119,7 +119,6 @@ export default async function handler(req, res) {
     <body>
         <div class="container">
             <div class="header">
-                <img src="https://jointaska.com/assets/logo.png" alt="Taska Logo" class="logo">
                 <h1 class="welcome-title">Welcome to Taska</h1>
             </div>
             
@@ -144,7 +143,7 @@ export default async function handler(req, res) {
                     </a>
                 ` : `
                     <p class="description">
-                        Find affordable solutions for your project needs and connect with top talent from leading institutions.
+                        Find affordable solutions for your projects and connect with top talent from leading institutions.
                     </p>
                     
                     <p class="description">
