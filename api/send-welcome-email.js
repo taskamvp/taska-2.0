@@ -45,7 +45,7 @@ export default async function handler(req, res) {
                 box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             }
             .header {
-                background: #14532d;
+                background:rgb(255, 255, 255);
                 padding: 30px 20px;
                 text-align: center;
                 color: white;
@@ -78,7 +78,7 @@ export default async function handler(req, res) {
             }
             .cta-button {
                 display: inline-block;
-                background: #14532d;
+                background:rgb(255, 255, 255);
                 color: white;
                 text-decoration: none;
                 padding: 12px 24px;
@@ -89,7 +89,7 @@ export default async function handler(req, res) {
                 transition: background 0.2s;
             }
             .cta-button:hover {
-                background: #166534;
+                background:rgb(218, 229, 222);
             }
             .footer {
                 background: #f8f9fa;
@@ -119,7 +119,7 @@ export default async function handler(req, res) {
     <body>
         <div class="container">
             <div class="header">
-                <div class="logo">T</div>
+                <img src="https://jointaska.com/assets/logo.png" alt="Taska Logo" class="logo">
                 <h1 class="welcome-title">Welcome to Taska</h1>
             </div>
             
@@ -128,15 +128,15 @@ export default async function handler(req, res) {
                 
                 ${userType === 'student' ? `
                     <p class="description">
-                        Welcome to Taska, your platform to find real gigs, build your skills, and connect with employers.
+                        Welcome to Taska, your platform to connect with employers for part time jobs and Gig work.
                     </p>
                     
                     <p class="description">
-                        Complete your profile and add your portfolio or resume to showcase your work. Employers will view your profile and contact you directly for paid gigs, internships, and part-time opportunities.
+                        Complete your profile and add your portfolio link to showcase your work. Employers will view your profile and contact you directly for paid gigs, internships, and part-time jobs.
                     </p>
                     
                     <p class="description">
-                        This is your first step toward real-world experience. Let's get started.
+                        This is your first step toward real world experience. Let's get started.
                     </p>
                     
                     <a href="https://jointaska.com/workplace/profile.html" class="cta-button">
@@ -144,15 +144,15 @@ export default async function handler(req, res) {
                     </a>
                 ` : `
                     <p class="description">
-                        Find affordable solutions for your projects and connect with top talent from leading institutions.
+                        Find affordable solutions for your project needs and connect with top talent from leading institutions.
                     </p>
                     
                     <p class="description">
-                        Discover skilled candidates from premier colleges like IITs, NITs, and other top universities. Whether you're looking for short-term tasks, interns, or part-time assistance, Taska helps you reach the right people quickly and efficiently.
+                        Discover skilled candidates from premier colleges like IITs, NITs, and other top universities. Whether you're looking for short term tasks, interns, or part time assistance, Taska helps you reach the right people quickly and efficiently.
                     </p>
                     
                     <p class="description">
-                        Find the right talent for your needs using our AI-powered search and connect with them to start working.
+                        Find the right talent for your needs using our AI powered search and connect with them to start working.
                     </p>
                     
                     <a href="https://jointaska.com/professional/profile.html" class="cta-button">
@@ -182,9 +182,9 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         to: email,
-        subject: `Welcome to Taska! 🎉`,
+        subject: `Welcome to Taska! 🎓`,
         html: welcomeEmailHTML,
-        from: 'support@jointaska.com',
+        from: 'onboarding@jointaska.com',
       }),
     });
 
