@@ -422,7 +422,7 @@
                         // Redirect after 2 seconds
                         setTimeout(() => {
                             const userRole = localStorage.getItem('userRole');
-                            window.location.href = userRole === 'professional' ? 'professional/explore.html' : 'workplace/tasks.html';
+                            window.location.href = userRole === 'professional' ? 'professional/profile.html' : 'workplace/profile.html';
                         }, 2000);
                     } else {
                         errorMessage.style.display = 'block';
@@ -478,13 +478,13 @@
                         completeUserSetup().then(success => {
                             if (success) {
                                 const userRole = localStorage.getItem('userRole');
-                                window.location.href = userRole === 'professional' ? 'professional/explore.html' : 'workplace/tasks.html';
+                                window.location.href = userRole === 'professional' ? 'professional/profile.html' : 'workplace/profile.html';
                             }
                         });
                     } else {
                         // Already set up, just redirect
                         const userRole = localStorage.getItem('userRole');
-                        window.location.href = userRole === 'professional' ? 'professional/explore.html' : 'workplace/tasks.html';
+                        window.location.href = userRole === 'professional' ? 'professional/profile.html' : 'workplace/profile.html';
                     }
                 } else if (autoVerify === 'true') {
                     // Auto-verification requested, check status immediately

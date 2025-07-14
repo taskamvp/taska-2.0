@@ -3317,5 +3317,334 @@ async function loadDrivePortfolio() {
     
     // === End Invite to Connect Popup ===
 </script>
+
+    <!-- Tutorial Modal -->
+    <div id="tutorial-modal" class="tutorial-modal">
+        <div class="tutorial-content">
+            <div class="tutorial-header">
+                <h2>Welcome to Taska Elite! 🎓</h2>
+                <button class="tutorial-close" onclick="closeTutorial()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="tutorial-body">
+                <div class="tutorial-step active" id="step-1">
+                    <div class="step-icon">
+                        <i class="fas fa-user-edit"></i>
+                    </div>
+                    <h3>Complete Your Profile</h3>
+                    <p>Fill out your profile information to get matched with the best opportunities. Include your skills, education, and experience.</p>
+                </div>
+                
+                <div class="tutorial-step" id="step-2">
+                    <div class="step-icon">
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    <h3>Browse Tasks</h3>
+                    <p>Visit the Tasks page to see available projects from employers. Filter by skills, duration, and compensation.</p>
+                </div>
+                
+                <div class="tutorial-step" id="step-3">
+                    <div class="step-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3>Connect & Apply</h3>
+                    <p>Connect with employers and apply for tasks that match your skills. Build your professional network.</p>
+                </div>
+                
+                <div class="tutorial-step" id="step-4">
+                    <div class="step-icon">
+                        <i class="fas fa-portfolio"></i>
+                    </div>
+                    <h3>Showcase Your Work</h3>
+                    <p>Add your portfolio projects and achievements to stand out to potential employers.</p>
+                </div>
+                
+                <div class="tutorial-step" id="step-5">
+                    <div class="step-icon">
+                        <i class="fas fa-question-circle"></i>
+                    </div>
+                    <h3>Need Help?</h3>
+                    <p>Any questions? Reach out to us on WhatsApp at <strong>+92 661 240 39</strong> for immediate support.</p>
+                </div>
+            </div>
+            
+            <div class="tutorial-footer">
+                <div class="tutorial-dots">
+                    <span class="dot active" onclick="goToStep(1)"></span>
+                    <span class="dot" onclick="goToStep(2)"></span>
+                    <span class="dot" onclick="goToStep(3)"></span>
+                    <span class="dot" onclick="goToStep(4)"></span>
+                    <span class="dot" onclick="goToStep(5)"></span>
+                </div>
+                <div class="tutorial-buttons">
+                    <button class="btn btn-secondary" onclick="previousStep()" id="prev-btn" style="display: none;">Previous</button>
+                    <button class="btn btn-primary" onclick="nextStep()" id="next-btn">Next</button>
+                    <button class="btn btn-primary" onclick="closeTutorial()" id="got-it-btn" style="display: none;">Got it!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* Tutorial Modal Styles */
+        .tutorial-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .tutorial-content {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .tutorial-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .tutorial-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #202124;
+            margin: 0;
+        }
+
+        .tutorial-close {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: #5f6368;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: background-color 0.2s;
+        }
+
+        .tutorial-close:hover {
+            background-color: #f1f3f4;
+        }
+
+        .tutorial-step {
+            display: none;
+            text-align: center;
+            padding: 1rem 0;
+        }
+
+        .tutorial-step.active {
+            display: block;
+        }
+
+        .step-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #facc15, #fbbf24);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2rem;
+            color: #111;
+        }
+
+        .tutorial-step h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #202124;
+            margin-bottom: 1rem;
+        }
+
+        .tutorial-step p {
+            font-size: 1rem;
+            color: #5f6368;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .tutorial-footer {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .tutorial-dots {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #dadce0;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .dot.active {
+            background: #facc15;
+        }
+
+        .tutorial-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: #111;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #facc15;
+            color: #111;
+        }
+
+        .btn-secondary {
+            background: #f1f3f4;
+            color: #5f6368;
+        }
+
+        .btn-secondary:hover {
+            background: #e8eaed;
+        }
+
+        @media (max-width: 768px) {
+            .tutorial-content {
+                padding: 1.5rem;
+                margin: 1rem;
+            }
+            
+            .tutorial-header h2 {
+                font-size: 1.3rem;
+            }
+            
+            .step-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+            }
+            
+            .tutorial-step h3 {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+
+    <script>
+        // Tutorial functionality
+        let currentStep = 1;
+        const totalSteps = 5;
+
+        function showTutorial() {
+            document.getElementById('tutorial-modal').style.display = 'flex';
+        }
+
+        function closeTutorial() {
+            document.getElementById('tutorial-modal').style.display = 'none';
+            // Mark tutorial as completed
+            localStorage.setItem('tutorialCompleted', 'true');
+        }
+
+        function nextStep() {
+            if (currentStep < totalSteps) {
+                currentStep++;
+                updateTutorial();
+            }
+        }
+
+        function previousStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                updateTutorial();
+            }
+        }
+
+        function goToStep(step) {
+            currentStep = step;
+            updateTutorial();
+        }
+
+        function updateTutorial() {
+            // Hide all steps
+            for (let i = 1; i <= totalSteps; i++) {
+                document.getElementById(`step-${i}`).classList.remove('active');
+                document.querySelector(`.dot:nth-child(${i})`).classList.remove('active');
+            }
+            
+            // Show current step
+            document.getElementById(`step-${currentStep}`).classList.add('active');
+            document.querySelector(`.dot:nth-child(${currentStep})`).classList.add('active');
+            
+            // Update buttons
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const gotItBtn = document.getElementById('got-it-btn');
+            
+            if (currentStep === 1) {
+                prevBtn.style.display = 'none';
+                nextBtn.style.display = 'inline-block';
+                gotItBtn.style.display = 'none';
+            } else if (currentStep === totalSteps) {
+                prevBtn.style.display = 'inline-block';
+                nextBtn.style.display = 'none';
+                gotItBtn.style.display = 'inline-block';
+            } else {
+                prevBtn.style.display = 'inline-block';
+                nextBtn.style.display = 'inline-block';
+                gotItBtn.style.display = 'none';
+            }
+        }
+
+        // Check if tutorial should be shown on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const tutorialCompleted = localStorage.getItem('tutorialCompleted');
+            const isNewUser = localStorage.getItem('isNewUser');
+            
+            if (isNewUser === 'true' && tutorialCompleted !== 'true') {
+                // Show tutorial after a short delay
+                setTimeout(() => {
+                    showTutorial();
+                }, 1000);
+                // Clear the new user flag
+                localStorage.removeItem('isNewUser');
+            }
+        });
+    </script>
 </body>
 </html>

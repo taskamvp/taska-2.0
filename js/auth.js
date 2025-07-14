@@ -296,6 +296,9 @@ export async function completeUserSetup() {
         // Remove pending verification flag
         localStorage.removeItem('pendingVerification');
         
+        // Set flag to show tutorial for new users
+        localStorage.setItem('isNewUser', 'true');
+        
         return true;
     } catch (error) {
         console.error('Error completing user setup:', error);
