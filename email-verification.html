@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Verify your email address to complete your Taska Elite registration.">
+    <title>Email Verification - Taska Elite</title>
+    <link rel="icon" type="image/png" href="assets/logo.jpg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', 'Manrope', 'Poppins', 'Inter', Arial, sans-serif;
+        }
+        
+        body {
+            background: #fff;
+            min-height: 100vh;
+            width: 100vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Montserrat', 'Manrope', 'Poppins', 'Inter', Arial, sans-serif;
+            padding: 2rem;
+        }
+
+        .verification-container {
+            background: #fff;
+            border: 1px solid #e5e7ea;
+            border-radius: 1rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 3rem 2.5rem;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+        }
+
+        .verification-icon {
+            width: 80px;
+            height: 80px;
+            background: #facc15;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            font-size: 2rem;
+            color: #111;
+        }
+
+        .verification-container h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #111;
+            margin-bottom: 1rem;
+            letter-spacing: -0.01em;
+        }
+
+        .verification-container p {
+            font-size: 1rem;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .email-highlight {
+            font-weight: 600;
+            color: #111;
+            background: #facc15;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.3rem;
+        }
+
+        .verification-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            padding: 0.9rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 500;
+            border-radius: 0.7rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            font-family: 'Montserrat', 'Manrope', 'Poppins', 'Inter', Arial, sans-serif;
+        }
+
+        .btn-primary {
+            background: #111;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #facc15;
+            color: #111;
+        }
+
+        .btn-secondary {
+            background: none;
+            color: #111;
+            border: 1.5px solid #111;
+        }
+
+        .btn-secondary:hover {
+            background: #facc15;
+            color: #111;
+            border-color: #facc15;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .back-link {
+            color: #007bff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+
+        .checking-status {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 1rem 0;
+            color: #666;
+        }
+
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #facc15;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .success-message {
+            display: none;
+            color: #28a745;
+            font-weight: 500;
+            margin: 1rem 0;
+        }
+
+        .error-message {
+            display: none;
+            color: #dc3545;
+            font-weight: 500;
+            margin: 1rem 0;
+        }
+
+        /* Warning notice */
+        .warning-notice {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #dc3545;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .warning-notice i {
+            font-size: 1rem;
+        }
+
+        .warning-notice span {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Loading overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1500;
+        }
+
+        .loading-content {
+            text-align: center;
+        }
+
+        .loading-dots {
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            background: #007bff;
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+
+        .dot:nth-child(1) { animation-delay: -0.32s; }
+        .dot:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% {
+                transform: scale(0);
+            }
+            40% {
+                transform: scale(1);
+            }
+        }
+
+        .loading-text {
+            color: #333;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .verification-container {
+                margin: 1rem;
+                padding: 2rem 1.5rem;
+            }
+
+            .verification-container h1 {
+                font-size: 1.5rem;
+            }
+
+            .verification-actions {
+                gap: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .verification-container {
+                padding: 1.5rem 1rem;
+            }
+
+            .verification-container h1 {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <div class="verification-container">
+            <div class="verification-icon">
+                <i class="fas fa-envelope"></i>
+            </div>
+            
+            <h1>Verify Your Email</h1>
+            
+            <p>
+                We've sent a verification link to <span class="email-highlight" id="user-email">your email</span>. 
+                Please check your inbox and click the verification link to complete your registration.
+            </p>
+            
+            <div class="verification-actions">
+                <button class="btn btn-primary" onclick="checkVerificationStatus()">
+                    <i class="fas fa-check"></i> I've Verified My Email
+                </button>
+                
+                <button class="btn btn-secondary" onclick="resendVerification()" id="resend-btn">
+                    <i class="fas fa-redo"></i> Resend Verification Email
+                </button>
+            </div>
+            
+            <div class="checking-status" id="checking-status">
+                <div class="spinner"></div>
+                <span>Checking verification status...</span>
+            </div>
+            
+            <div class="success-message" id="success-message">
+                <i class="fas fa-check-circle"></i> Email verified successfully! Redirecting...
+            </div>
+            
+            <div class="error-message" id="error-message">
+                <i class="fas fa-exclamation-circle"></i> Email not verified yet. Please check your inbox.
+            </div>
+            
+            <a href="login.html" class="back-link">← Back to Login</a>
+        </div>
+    </main>
+
+    <!-- Warning Notice -->
+    <div class="warning-notice" id="warning-notice">
+        <i class="fas fa-exclamation-triangle"></i>
+        <span id="warning-message"></span>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="loading-content">
+            <div class="loading-dots">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+            <div class="loading-text">Please Wait...</div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module">
+        import { auth } from './js/firebase-config.js';
+        import { resendVerificationEmail, refreshUser } from './js/auth.js';
+        import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+
+        // Show warning notice
+        function showWarning(message) {
+            const notice = document.getElementById('warning-notice');
+            const messageSpan = document.getElementById('warning-message');
+            messageSpan.textContent = message;
+            notice.style.display = 'flex';
+            setTimeout(() => {
+                notice.style.display = 'none';
+            }, 3000);
+        }
+
+        // Show/Hide loading overlay
+        function toggleLoading(show) {
+            const overlay = document.getElementById('loading-overlay');
+            overlay.style.display = show ? 'flex' : 'none';
+        }
+
+        // Set user email in the page
+        function setUserEmail() {
+            const user = auth.currentUser;
+            if (user && user.email) {
+                document.getElementById('user-email').textContent = user.email;
+            }
+        }
+
+        // Check verification status
+        window.checkVerificationStatus = async function() {
+            const checkingStatus = document.getElementById('checking-status');
+            const successMessage = document.getElementById('success-message');
+            const errorMessage = document.getElementById('error-message');
+            
+            // Hide previous messages
+            successMessage.style.display = 'none';
+            errorMessage.style.display = 'none';
+            checkingStatus.style.display = 'flex';
+            
+            try {
+                // Refresh user data to get latest verification status
+                const isVerified = await refreshUser();
+                
+                if (isVerified) {
+                    checkingStatus.style.display = 'none';
+                    successMessage.style.display = 'block';
+                    
+                    // Update database
+                    const user = auth.currentUser;
+                    if (user) {
+                        const userRole = localStorage.getItem('userRole');
+                        const list = userRole === 'professional' ? 'professionalslist' : 'studentslist';
+                        const path = userRole === 'professional' 
+                            ? `${list}/${user.uid}` 
+                            : `${list}/${user.uid}/personal`;
+                        
+                        const { ref, set } = await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js');
+                        const { database } = await import('./js/firebase-config.js');
+                        const userRef = ref(database, path);
+                        
+                        await set(userRef, { emailVerified: true }, { merge: true });
+                    }
+                    
+                    // Redirect after 2 seconds
+                    setTimeout(() => {
+                        const userRole = localStorage.getItem('userRole');
+                        window.location.href = userRole === 'professional' ? 'professional/explore.html' : 'workplace/tasks.html';
+                    }, 2000);
+                } else {
+                    checkingStatus.style.display = 'none';
+                    errorMessage.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Error checking verification status:', error);
+                checkingStatus.style.display = 'none';
+                errorMessage.style.display = 'block';
+                showWarning('Error checking verification status. Please try again.');
+            }
+        };
+
+        // Resend verification email
+        window.resendVerification = async function() {
+            const resendBtn = document.getElementById('resend-btn');
+            const originalText = resendBtn.innerHTML;
+            
+            resendBtn.disabled = true;
+            resendBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            
+            try {
+                await resendVerificationEmail();
+            } catch (error) {
+                console.error('Error resending verification:', error);
+            } finally {
+                resendBtn.disabled = false;
+                resendBtn.innerHTML = originalText;
+            }
+        };
+
+        // Auto-check verification status every 30 seconds
+        let autoCheckInterval;
+
+        // Listen for auth state changes
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                setUserEmail();
+                
+                // If email is already verified, redirect
+                if (user.emailVerified) {
+                    const userRole = localStorage.getItem('userRole');
+                    window.location.href = userRole === 'professional' ? 'professional/explore.html' : 'workplace/tasks.html';
+                }
+                
+                // Start auto-checking
+                autoCheckInterval = setInterval(async () => {
+                    const isVerified = await refreshUser();
+                    if (isVerified) {
+                        clearInterval(autoCheckInterval);
+                        window.checkVerificationStatus();
+                    }
+                }, 30000); // Check every 30 seconds
+            } else {
+                // No user logged in, redirect to login
+                window.location.href = 'login.html';
+            }
+        });
+
+        // Clean up interval when page unloads
+        window.addEventListener('beforeunload', () => {
+            if (autoCheckInterval) {
+                clearInterval(autoCheckInterval);
+            }
+        });
+    </script>
+    <script type="module" src="js/firebase-config.js"></script>
+    <script type="module" src="js/auth.js"></script>
+</body>
+</html> 

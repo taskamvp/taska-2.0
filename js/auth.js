@@ -1,6 +1,6 @@
 // js/auth.js
 import { auth, database } from './firebase-config.js';
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, setPersistence, browserLocalPersistence, fetchSignInMethodsForEmail } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, setPersistence, browserLocalPersistence, fetchSignInMethodsForEmail, sendEmailVerification, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
 import { ref, set } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
 
 // Show form based on role selection
@@ -63,6 +63,16 @@ export function login(userType) {
         .then((userCredential) => {
             const user = userCredential.user;
             console.log(`${mappedUserType} logged in: ${user.email}, UID: ${user.uid}`);
+            
+            // Check if email is verified
+            if (!user.emailVerified) {
+                toggleLoading(false);
+                showWarning("Please verify your email before logging in. Check your inbox for a verification link.");
+                // Redirect to verification page
+                window.location.href = 'email-verification.html';
+                return;
+            }
+            
             localStorage.setItem('userId', user.uid);
             localStorage.setItem('userRole', mappedUserType);
             localStorage.setItem('userEmail', user.email);
@@ -98,22 +108,31 @@ export async function signup(userType) {
     const mappedUserType = userType === 'employer' ? 'professional' : userType;
     
     // Get the correct email and password field IDs
-    let emailFieldId, passwordFieldId;
+    let emailFieldId, passwordFieldId, confirmPasswordFieldId;
     
     if (mappedUserType === 'professional') {
         emailFieldId = 'prof-email';
         passwordFieldId = 'prof-password';
+        confirmPasswordFieldId = 'prof-confirm-password';
     } else {
         emailFieldId = 'stud-email';
         passwordFieldId = 'stud-password';
+        confirmPasswordFieldId = 'stud-confirm-password';
     }
     
     const email = document.getElementById(emailFieldId).value;
     const password = document.getElementById(passwordFieldId).value;
+    const confirmPassword = document.getElementById(confirmPasswordFieldId).value;
 
     // Password length validation
     if (password.length < 6) {
         showWarning("Password must be at least 6 characters long");
+        return;
+    }
+
+    // Password confirmation validation
+    if (password !== confirmPassword) {
+        showWarning("Passwords do not match. Please try again.");
         return;
     }
 
@@ -175,6 +194,16 @@ export async function signup(userType) {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
         console.log(`${mappedUserType} signed up: ${user.email}, UID: ${user.uid}`);
+        
+        // Send email verification
+        try {
+            await sendEmailVerification(user);
+            console.log('Email verification sent successfully');
+        } catch (verificationError) {
+            console.error('Error sending email verification:', verificationError);
+            // Continue with signup even if verification email fails
+        }
+
         localStorage.setItem('userId', user.uid);
         localStorage.setItem('userRole', mappedUserType);
         localStorage.setItem('userEmail', user.email);
@@ -186,7 +215,8 @@ export async function signup(userType) {
             : `${list}/${user.uid}/personal`;
         const userRef = ref(database, path);
         const initialData = {
-            email: user.email
+            email: user.email,
+            emailVerified: false
         };
 
         await set(userRef, initialData);
@@ -229,7 +259,9 @@ export async function signup(userType) {
         }
 
         toggleLoading(false);
-        window.location.href = mappedUserType === 'professional' ? 'professional/profile.html' : 'workplace/profile.html';
+        
+        // Redirect to email verification page instead of profile
+        window.location.href = 'email-verification.html';
     } catch (error) {
         toggleLoading(false);
         console.debug("Signup error:", error.code, error.message);
@@ -243,6 +275,47 @@ export async function signup(userType) {
             showWarning("Signup failed. Please try again!");
         }
     }
+}
+
+// Function to resend email verification
+export async function resendVerificationEmail() {
+    const user = auth.currentUser;
+    if (!user) {
+        showWarning("No user found. Please sign up first.");
+        return;
+    }
+
+    if (user.emailVerified) {
+        showWarning("Email is already verified!");
+        return;
+    }
+
+    toggleLoading(true);
+    try {
+        await sendEmailVerification(user);
+        toggleLoading(false);
+        showWarning("Verification email sent! Please check your inbox.");
+    } catch (error) {
+        toggleLoading(false);
+        console.error('Error resending verification email:', error);
+        showWarning("Failed to send verification email. Please try again.");
+    }
+}
+
+// Function to check if email is verified
+export function isEmailVerified() {
+    const user = auth.currentUser;
+    return user ? user.emailVerified : false;
+}
+
+// Function to refresh user data (useful after email verification)
+export async function refreshUser() {
+    const user = auth.currentUser;
+    if (user) {
+        await user.reload();
+        return user.emailVerified;
+    }
+    return false;
 }
 
 // Logout function
