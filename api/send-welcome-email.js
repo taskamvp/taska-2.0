@@ -78,18 +78,27 @@ export default async function handler(req, res) {
             }
             .cta-button {
                 display: inline-block;
-                background: #14532d;
-                color: white;
-                text-decoration: none;
+                background:rgb(167, 204, 182) !important;
+                color: white !important;
+                text-decoration: none !important;
                 padding: 12px 24px;
                 border-radius: 6px;
                 font-weight: 500;
                 font-size: 16px;
                 margin: 20px 0;
                 transition: background 0.2s;
+                border: none !important;
+                outline: none !important;
             }
             .cta-button:hover {
-                background:rgb(218, 229, 222);
+                background: #166534 !important;
+                color: white !important;
+            }
+            .cta-button:visited {
+                color: white !important;
+            }
+            .cta-button:active {
+                color: white !important;
             }
             .footer {
                 background: #f8f9fa;
