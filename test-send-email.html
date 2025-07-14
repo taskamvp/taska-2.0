@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Send Email</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f8f9fa; padding: 40px; }
+    .container { max-width: 400px; margin: 60px auto; background: #fff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 32px; text-align: center; }
+    button { background: #14532d; color: #fff; border: none; border-radius: 8px; padding: 14px 32px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+    button:hover { background: #166534; }
+    #result { margin-top: 24px; font-size: 1rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Send Test Email</h2>
+    <p>This will send a test email to the user email stored in localStorage.</p>
+    <button id="sendBtn">Send Email</button>
+    <div id="result"></div>
+  </div>
+  <script>
+    document.getElementById('sendBtn').onclick = async function() {
+      const email = localStorage.getItem('userEmail');
+      const resultDiv = document.getElementById('result');
+      if (!email) {
+        resultDiv.textContent = 'No user email found in localStorage.';
+        resultDiv.style.color = 'red';
+        return;
+      }
+      resultDiv.textContent = 'Sending email to ' + email + '...';
+      resultDiv.style.color = '#333';
+      try {
+        const res = await fetch('/api/send-welcome-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: email,
+            userType: 'test',
+            userName: email.split('@')[0]
+          })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          resultDiv.textContent = 'Email sent successfully!';
+          resultDiv.style.color = 'green';
+        } else {
+          resultDiv.textContent = 'Failed to send email: ' + (data.error || 'Unknown error');
+          resultDiv.style.color = 'red';
+        }
+      } catch (err) {
+        resultDiv.textContent = 'Error: ' + err.message;
+        resultDiv.style.color = 'red';
+      }
+    };
+  </script>
+</body>
+</html> 
