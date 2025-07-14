@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Hire talented remote assistants to streamline your company's tasks. For unmatched creativity and precision, opt for our premium service powered by elite students from IITs, NITs, and IIITs.">
     <title>Taska | Find Elite Student Talent</title>
-    <link rel="icon" type="image/png" href="assets/logo.png">
+    <link rel="icon" type="image/png" href="assets/logo.jpg">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&family=Inter:wght@400;600;700&family=Montserrat:wght@700;600;500;400&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -1890,6 +1890,126 @@ body {
             }
         }
     </style>
+    
+    <!-- Cookie Consent Popup Styles -->
+    <style>
+        .cookie-consent {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            max-width: 400px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+            border: 1px solid #e5e7ea;
+            padding: 1rem;
+            z-index: 9999;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .cookie-consent.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .cookie-consent .cookie-content {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+
+        .cookie-consent .cookie-icon {
+            width: 24px;
+            height: 24px;
+            background: #facc15;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 0.1rem;
+        }
+
+        .cookie-consent .cookie-icon i {
+            color: #1a1a1a;
+            font-size: 0.8rem;
+        }
+
+        .cookie-consent .cookie-text {
+            flex: 1;
+        }
+
+        .cookie-consent .cookie-text p {
+            margin: 0 0 0.75rem 0;
+            font-size: 0.875rem;
+            color: #374151;
+            line-height: 1.4;
+        }
+
+        .cookie-consent .cookie-actions {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .cookie-consent .accept-btn {
+            background: #14532d;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 0.5rem 1rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .cookie-consent .accept-btn:hover {
+            background: #166534;
+            transform: translateY(-1px);
+        }
+
+        .cookie-consent .decline-btn {
+            background: transparent;
+            color: #6b7280;
+            border: none;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .cookie-consent .decline-btn:hover {
+            color: #374151;
+        }
+
+        @media (max-width: 480px) {
+            .cookie-consent {
+                bottom: 10px;
+                left: 10px;
+                right: 10px;
+                padding: 0.875rem;
+            }
+
+            .cookie-consent .cookie-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .cookie-consent .accept-btn,
+            .cookie-consent .decline-btn {
+                text-align: center;
+                padding: 0.6rem 1rem;
+            }
+        }
+    </style>
+    
     <!-- Firebase App (the core Firebase SDK) -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <!-- Firebase Auth -->
@@ -1912,6 +2032,21 @@ body {
     </script>
 </head>
 <body>
+    <!-- Cookie Consent Popup -->
+    <div class="cookie-consent" id="cookie-consent">
+        <div class="cookie-content">
+            <div class="cookie-icon">
+                <i class="fas fa-cookie-bite"></i>
+            </div>
+            <div class="cookie-text">
+                <p>We use cookies to enhance your experience. By continuing to visit this site you agree to our use of cookies.</p>
+                <div class="cookie-actions">
+                    <button class="accept-btn" onclick="acceptCookies()">Accept</button>
+                    <button class="decline-btn" onclick="declineCookies()">Decline</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <nav class="navbar">
         <div class="logo"><img src="assets/logo.png" alt="Taska Logo"></div>
         
@@ -2397,6 +2532,139 @@ body {
 
         // Check login status immediately
         checkLoginStatus();
+
+        // Cookie Consent Functions
+        function showCookieConsent() {
+            const cookieConsent = document.getElementById('cookie-consent');
+            if (cookieConsent && !localStorage.getItem('cookieConsent')) {
+                setTimeout(() => {
+                    cookieConsent.classList.add('show');
+                }, 1000); // Show after 1 second
+            }
+        }
+
+        function acceptCookies() {
+            localStorage.setItem('cookieConsent', 'accepted');
+            localStorage.setItem('cookieConsentDate', new Date().toISOString());
+            enableAllCookies();
+            hideCookieConsent();
+        }
+
+        function declineCookies() {
+            localStorage.setItem('cookieConsent', 'declined');
+            localStorage.setItem('cookieConsentDate', new Date().toISOString());
+            disableTrackingCookies();
+            hideCookieConsent();
+        }
+
+        function hideCookieConsent() {
+            const cookieConsent = document.getElementById('cookie-consent');
+            if (cookieConsent) {
+                cookieConsent.classList.remove('show');
+            }
+        }
+
+        function enableAllCookies() {
+            // Enable all cookies and tracking when user accepts
+            console.log('All cookies enabled');
+            
+            // Enable analytics (if you have any)
+            // gtag('consent', 'update', { 'analytics_storage': 'granted' });
+            
+            // Enable advertising (if you have any)
+            // gtag('consent', 'update', { 'ad_storage': 'granted' });
+            
+            // Enable social media tracking (if you have any)
+            // fbq('consent', 'grant');
+        }
+
+        function disableTrackingCookies() {
+            // Disable tracking cookies when user declines
+            console.log('Tracking cookies disabled - only essential cookies allowed');
+            
+            // Disable analytics
+            // gtag('consent', 'update', { 'analytics_storage': 'denied' });
+            
+            // Disable advertising
+            // gtag('consent', 'update', { 'ad_storage': 'denied' });
+            
+            // Disable social media tracking
+            // fbq('consent', 'revoke');
+            
+            // Clear any existing tracking cookies
+            clearTrackingCookies();
+        }
+
+        function clearTrackingCookies() {
+            // Clear tracking cookies from all domains
+            const trackingCookies = [
+                '_ga', '_gid', '_gat', // Google Analytics
+                '_fbp', '_fbc', // Facebook Pixel
+                'ads_prefs', 'ads_user_data_consent', // Advertising
+                'NID', '1P_JAR', // Google Ads
+                'IDE', 'test_cookie' // DoubleClick
+            ];
+            
+            trackingCookies.forEach(cookieName => {
+                // Clear from current domain
+                document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
+                document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=.${window.location.hostname}`;
+                document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=${window.location.hostname}`;
+            });
+        }
+
+        function checkCookieConsent() {
+            const consent = localStorage.getItem('cookieConsent');
+            const consentDate = localStorage.getItem('cookieConsentDate');
+            
+            if (consent === 'accepted') {
+                enableAllCookies();
+            } else if (consent === 'declined') {
+                disableTrackingCookies();
+            }
+            
+            // Check if consent is older than 1 year (GDPR requirement)
+            if (consentDate) {
+                const consentTime = new Date(consentDate);
+                const oneYearAgo = new Date();
+                oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+                
+                if (consentTime < oneYearAgo) {
+                    // Consent expired, show popup again
+                    localStorage.removeItem('cookieConsent');
+                    localStorage.removeItem('cookieConsentDate');
+                    showCookieConsent();
+                }
+            }
+        }
+
+        function showCookiePreferences() {
+            const currentConsent = localStorage.getItem('cookieConsent');
+            const cookieConsent = document.getElementById('cookie-consent');
+            
+            if (cookieConsent) {
+                // Update the popup text to show current preference
+                const cookieText = cookieConsent.querySelector('.cookie-text p');
+                if (cookieText) {
+                    if (currentConsent === 'accepted') {
+                        cookieText.textContent = 'You have accepted cookies. You can change your preference below.';
+                    } else if (currentConsent === 'declined') {
+                        cookieText.textContent = 'You have declined cookies. You can change your preference below.';
+                    } else {
+                        cookieText.textContent = 'We use cookies to enhance your experience. By continuing to visit this site you agree to our use of cookies.';
+                    }
+                }
+                
+                // Show the popup
+                cookieConsent.classList.add('show');
+            }
+        }
+
+        // Show cookie consent on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            checkCookieConsent();
+            showCookieConsent();
+        });
     </script>
     <!-- Fiverr-style Footer Start -->
     <footer class="footer">
@@ -2424,7 +2692,7 @@ body {
             <h3 class="footer-title">Support</h3>
                 <ul class="footer-links">
               <li><a href="footer-pages/help-and-support.html">Help & Support</a></li>
-              <li><a href="footer-pages/trust-and-safety.html">Trust & Safety</a></li>
+              
               
               <li><a href="footer-pages/hiring-from-taska.html">Hiring from Taska</a></li>
                 </ul>
@@ -2441,11 +2709,12 @@ body {
           <div class="footer-col">
                 <h3 class="footer-title">Contact</h3>
                 <ul class="footer-links">
-                    <li><a href="#">Email</a></li>
-                    <li><a href="#">Phone</a></li>
-                    <li><a href="#">Address</a></li>
+                    <li><a href="mailto:support@jointaska.com">Email</a></li>
+                    <li><a href="https://wa.me/919266124039" target="_blank">WhatsApp</a></li>
+                    <li style="color: #74767e;">IIT Delhi, Hauz Khas, New Delhi 110016</li>
                 </ul>
             </div>
+          
                 </div>
         <hr class="footer-divider">
         <div class="footer-bottom-bar">
@@ -2454,9 +2723,9 @@ body {
             <span class="footer-copyright">&copy; 2025 Taska. All rights reserved.</span>
                 </div>
           <div class="footer-socials">
-            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-            <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+            <a href="https://www.instagram.com/jointaska/" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://wa.me/919266124039" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+            <a href="https://linkedin.com/company/taskaforce" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
            
             </div>
         </div>
