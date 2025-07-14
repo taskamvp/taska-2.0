@@ -29,7 +29,7 @@ export default async function handler(req, res) {
         <title>Welcome to Taska!</title>
         <style>
             body {
-                font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
                 line-height: 1.6;
                 color: #333;
                 margin: 0;
@@ -37,133 +37,81 @@ export default async function handler(req, res) {
                 background-color: #f8f9fa;
             }
             .container {
-                max-width: 600px;
+                max-width: 500px;
                 margin: 0 auto;
                 background-color: #ffffff;
-                border-radius: 12px;
+                border-radius: 8px;
                 overflow: hidden;
-                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             }
             .header {
-                background: linear-gradient(135deg, #14532d 0%, #166534 100%);
-                padding: 40px 30px;
+                background: #14532d;
+                padding: 30px 20px;
                 text-align: center;
                 color: white;
             }
             .logo {
-                width: 80px;
-                height: 80px;
-                background: white;
-                border-radius: 50%;
-                margin: 0 auto 20px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 24px;
+                font-size: 32px;
                 font-weight: bold;
-                color: #14532d;
+                margin-bottom: 10px;
             }
             .welcome-title {
-                font-size: 28px;
-                font-weight: 700;
-                margin: 0 0 10px 0;
-                letter-spacing: -0.02em;
-            }
-            .welcome-subtitle {
-                font-size: 16px;
-                opacity: 0.9;
+                font-size: 24px;
+                font-weight: 600;
                 margin: 0;
+                letter-spacing: -0.01em;
             }
             .content {
-                padding: 40px 30px;
+                padding: 30px 20px;
             }
             .greeting {
-                font-size: 20px;
+                font-size: 18px;
                 font-weight: 600;
                 color: #14532d;
                 margin-bottom: 20px;
             }
             .description {
                 font-size: 16px;
-                color: #666;
-                margin-bottom: 25px;
-                line-height: 1.7;
-            }
-            .features {
-                background: #f8f9fa;
-                border-radius: 8px;
-                padding: 25px;
-                margin: 25px 0;
-            }
-            .features h3 {
-                color: #14532d;
-                font-size: 18px;
-                margin: 0 0 15px 0;
-                font-weight: 600;
-            }
-            .feature-list {
-                list-style: none;
-                padding: 0;
-                margin: 0;
-            }
-            .feature-list li {
-                padding: 8px 0;
                 color: #555;
-                position: relative;
-                padding-left: 25px;
-            }
-            .feature-list li:before {
-                content: "✓";
-                position: absolute;
-                left: 0;
-                color: #14532d;
-                font-weight: bold;
+                margin-bottom: 20px;
+                line-height: 1.7;
             }
             .cta-button {
                 display: inline-block;
-                background: linear-gradient(135deg, #14532d, #166534);
+                background: #14532d;
                 color: white;
                 text-decoration: none;
-                padding: 15px 30px;
-                border-radius: 8px;
-                font-weight: 600;
+                padding: 12px 24px;
+                border-radius: 6px;
+                font-weight: 500;
                 font-size: 16px;
-                margin: 25px 0;
-                transition: all 0.3s ease;
+                margin: 20px 0;
+                transition: background 0.2s;
             }
             .cta-button:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 8px 25px rgba(20, 83, 45, 0.3);
+                background: #166534;
             }
             .footer {
                 background: #f8f9fa;
-                padding: 30px;
+                padding: 20px;
                 text-align: center;
                 color: #666;
                 font-size: 14px;
-            }
-            .social-links {
-                margin: 20px 0;
-            }
-            .social-links a {
-                color: #14532d;
-                text-decoration: none;
-                margin: 0 10px;
-                font-weight: 500;
+                border-top: 1px solid #e9ecef;
             }
             @media (max-width: 600px) {
                 .container {
                     margin: 10px;
-                    border-radius: 8px;
+                    border-radius: 6px;
                 }
                 .header {
-                    padding: 30px 20px;
+                    padding: 25px 15px;
                 }
                 .content {
-                    padding: 30px 20px;
+                    padding: 25px 15px;
                 }
                 .welcome-title {
-                    font-size: 24px;
+                    font-size: 20px;
                 }
             }
         </style>
@@ -172,52 +120,50 @@ export default async function handler(req, res) {
         <div class="container">
             <div class="header">
                 <div class="logo">T</div>
-                <h1 class="welcome-title">Welcome to Taska!</h1>
-                <p class="welcome-subtitle">Your gateway to elite talent and opportunities</p>
+                <h1 class="welcome-title">Welcome to Taska</h1>
             </div>
             
             <div class="content">
                 <h2 class="greeting">Hi ${userName || 'there'}! 👋</h2>
                 
-                <p class="description">
-                    Welcome to Taska! You've just joined a community that connects ${userType === 'professional' ? 'skilled students with amazing opportunities' : 'elite talent with exciting projects'}.
-                </p>
-                
-                <div class="features">
-                    <h3>What is Taska?</h3>
-                    <p style="margin-bottom: 15px; color: #555;">
-                        Taska is a platform that bridges the gap between talented students and professionals seeking skilled individuals for their projects.
+                ${userType === 'student' ? `
+                    <p class="description">
+                        Welcome to Taska, your platform to find real gigs, build your skills, and connect with employers.
                     </p>
                     
-                    <ul class="feature-list">
-                        <li>AI-powered talent matching</li>
-                        <li>Direct connection with verified students</li>
-                        <li>Secure project collaboration</li>
-                        <li>Professional networking opportunities</li>
-                        <li>Quality-focused community</li>
-                    </ul>
-                </div>
-                
-                <p class="description">
-                    ${userType === 'professional' 
-                        ? 'Start exploring our talented student community and find the perfect match for your next project!' 
-                        : 'Complete your profile to showcase your skills and start receiving exciting project opportunities!'
-                    }
-                </p>
-                
-                <a href="https://taska.com" class="cta-button">
-                    ${userType === 'professional' ? 'Explore Talent' : 'Complete Profile'}
-                </a>
+                    <p class="description">
+                        Complete your profile and add your portfolio or resume to showcase your work. Employers will view your profile and contact you directly for paid gigs, internships, and part-time opportunities.
+                    </p>
+                    
+                    <p class="description">
+                        This is your first step toward real-world experience. Let's get started.
+                    </p>
+                    
+                    <a href="https://jointaska.com/workplace/profile.html" class="cta-button">
+                        Complete Profile
+                    </a>
+                ` : `
+                    <p class="description">
+                        Find affordable solutions for your projects and connect with top talent from leading institutions.
+                    </p>
+                    
+                    <p class="description">
+                        Discover skilled candidates from premier colleges like IITs, NITs, and other top universities. Whether you're looking for short-term tasks, interns, or part-time assistance, Taska helps you reach the right people quickly and efficiently.
+                    </p>
+                    
+                    <p class="description">
+                        Find the right talent for your needs using our AI-powered search and connect with them to start working.
+                    </p>
+                    
+                    <a href="https://jointaska.com/professional/profile.html" class="cta-button">
+                        Complete Profile
+                    </a>
+                `}
             </div>
             
             <div class="footer">
-                <p>© 2025 Taska Elite. All rights reserved.</p>
-                <div class="social-links">
-                    <a href="#">Privacy Policy</a> • 
-                    <a href="#">Terms of Service</a> • 
-                    <a href="#">Support</a>
-                </div>
-                <p style="margin-top: 15px; font-size: 12px; color: #999;">
+                <p>Team Taska</p>
+                <p style="margin-top: 10px; font-size: 12px; color: #999;">
                     This email was sent to ${email}. If you didn't sign up for Taska, please ignore this email.
                 </p>
             </div>
@@ -238,7 +184,7 @@ export default async function handler(req, res) {
         to: email,
         subject: `Welcome to Taska! 🎉`,
         html: welcomeEmailHTML,
-        from: 'onboarding@resend.dev', // Use verified sender for testing
+        from: 'support@jointaska.com',
       }),
     });
 
