@@ -461,6 +461,124 @@
 
         // Make the function globally available
         window.togglePasswordVisibility = togglePasswordVisibility;
+
+        // Check if user is coming from verification page
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const verified = urlParams.get('verified');
+            
+            if (verified === 'true') {
+                // User has verified their email, pre-fill the form
+                const verifiedEmail = localStorage.getItem('verifiedEmail');
+                if (verifiedEmail) {
+                    document.getElementById('stud-email').value = verifiedEmail;
+                    document.getElementById('stud-email').disabled = true;
+                    document.getElementById('stud-email').style.backgroundColor = '#f8f9fa';
+                    document.getElementById('stud-email').style.color = '#666';
+                }
+            }
+        });
+
+        // Override the signup function to handle email verification
+        window.signup = async function(userType) {
+            // Check if email is already verified
+            const emailVerified = localStorage.getItem('emailVerified');
+            const verifiedEmail = localStorage.getItem('verifiedEmail');
+            const currentEmail = document.getElementById('stud-email').value;
+            
+            if (emailVerified === 'true' && verifiedEmail === currentEmail) {
+                // Email is verified, proceed with normal signup
+                await originalSignup(userType);
+            } else {
+                // Need to verify email first
+                await initiateEmailVerification(userType);
+            }
+        };
+
+        // Store the original signup function
+        let originalSignup;
+        document.addEventListener('DOMContentLoaded', function() {
+            // Wait for auth.js to load and then store the original function
+            setTimeout(() => {
+                originalSignup = window.signup;
+            }, 100);
+        });
+
+        // Function to initiate email verification
+        async function initiateEmailVerification(userType) {
+            const email = document.getElementById('stud-email').value;
+            const password = document.getElementById('stud-password').value;
+            const confirmPassword = document.getElementById('stud-confirm-password').value;
+            
+            // Basic validation
+            if (!email || !password || !confirmPassword) {
+                showWarning('Please fill in all fields');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                showWarning('Passwords do not match');
+                return;
+            }
+            
+            if (password.length < 6) {
+                showWarning('Password must be at least 6 characters long');
+                return;
+            }
+
+            // Store form data temporarily
+            localStorage.setItem('tempSignupData', JSON.stringify({
+                email: email,
+                password: password,
+                userType: userType
+            }));
+
+            toggleLoading(true);
+
+            try {
+                const response = await fetch('/api/send-otp', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        userType: userType
+                    })
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    // Redirect to verification page
+                    window.location.href = `verify-email.html?email=${encodeURIComponent(email)}&userType=${userType}`;
+                } else {
+                    showWarning(result.error || 'Failed to send verification email. Please try again.');
+                }
+            } catch (error) {
+                console.error('Send OTP error:', error);
+                showWarning('Network error. Please check your connection and try again.');
+            } finally {
+                toggleLoading(false);
+            }
+        }
+
+        // Show warning notice
+        function showWarning(message) {
+            const notice = document.getElementById('warning-notice');
+            const messageSpan = document.getElementById('warning-message');
+            messageSpan.textContent = message;
+            notice.style.display = 'flex';
+            setTimeout(() => {
+                notice.style.display = 'none';
+            }, 3000);
+        }
+
+        // Show/Hide loading overlay
+        function toggleLoading(show) {
+            const overlay = document.getElementById('loading-overlay');
+            overlay.style.display = show ? 'flex' : 'none';
+        }
     </script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9278424a29b3ed32',t:'MTc0MzE3Njc3Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>

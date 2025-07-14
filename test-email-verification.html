@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Email Verification - Taska</title>
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Montserrat', 'Manrope', 'Poppins', 'Inter', Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #111;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+        }
+        .test-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            background: #111;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #facc15;
+            color: #111;
+        }
+        .result {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Email Verification System Test</h1>
+        
+        <div class="test-section">
+            <h3>1. Send OTP</h3>
+            <input type="email" id="test-email" placeholder="Enter email address" value="test@example.com">
+            <select id="test-user-type">
+                <option value="student">Student</option>
+                <option value="professional">Employer</option>
+            </select>
+            <button onclick="sendOTP()">Send OTP</button>
+            <div id="send-result" class="result" style="display: none;"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>2. Verify OTP</h3>
+            <input type="text" id="test-otp" placeholder="Enter 6-digit OTP" maxlength="6">
+            <button onclick="verifyOTP()">Verify OTP</button>
+            <div id="verify-result" class="result" style="display: none;"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>3. Test Signup Flow</h3>
+            <button onclick="testSignupFlow()">Test Complete Signup Flow</button>
+            <div id="signup-result" class="result" style="display: none;"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>4. Clear Test Data</h3>
+            <button onclick="clearTestData()">Clear All Test Data</button>
+            <div id="clear-result" class="result" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script>
+        async function sendOTP() {
+            const email = document.getElementById('test-email').value;
+            const userType = document.getElementById('test-user-type').value;
+            const resultDiv = document.getElementById('send-result');
+            
+            if (!email) {
+                showResult(resultDiv, 'Please enter an email address', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/send-otp', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        userType: userType
+                    })
+                });
+
+                const result = await response.json();
+                
+                if (response.ok && result.success) {
+                    showResult(resultDiv, `✅ OTP sent successfully!\nEmail: ${email}\nUser Type: ${userType}\nResponse: ${JSON.stringify(result, null, 2)}`, 'success');
+                } else {
+                    showResult(resultDiv, `❌ Failed to send OTP\nError: ${result.error}\nResponse: ${JSON.stringify(result, null, 2)}`, 'error');
+                }
+            } catch (error) {
+                showResult(resultDiv, `❌ Network error: ${error.message}`, 'error');
+            }
+        }
+
+        async function verifyOTP() {
+            const email = document.getElementById('test-email').value;
+            const otp = document.getElementById('test-otp').value;
+            const resultDiv = document.getElementById('verify-result');
+            
+            if (!email || !otp) {
+                showResult(resultDiv, 'Please enter both email and OTP', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/verify-otp', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        otp: otp
+                    })
+                });
+
+                const result = await response.json();
+                
+                if (response.ok && result.success) {
+                    showResult(resultDiv, `✅ OTP verified successfully!\nEmail: ${email}\nUser Type: ${result.userType}\nResponse: ${JSON.stringify(result, null, 2)}`, 'success');
+                } else {
+                    showResult(resultDiv, `❌ OTP verification failed\nError: ${result.error}\nResponse: ${JSON.stringify(result, null, 2)}`, 'error');
+                }
+            } catch (error) {
+                showResult(resultDiv, `❌ Network error: ${error.message}`, 'error');
+            }
+        }
+
+        function testSignupFlow() {
+            const resultDiv = document.getElementById('signup-result');
+            const email = document.getElementById('test-email').value;
+            const userType = document.getElementById('test-user-type').value;
+            
+            // Simulate the complete flow
+            const flowSteps = [
+                '1. User enters email and password',
+                '2. System validates form data',
+                '3. System sends OTP to email',
+                '4. User receives email with 6-digit code',
+                '5. User enters OTP on verification page',
+                '6. System verifies OTP',
+                '7. User is redirected back to signup page',
+                '8. Email field is pre-filled and disabled',
+                '9. User completes signup with verified email',
+                '10. Account is created successfully'
+            ];
+            
+            const flowInfo = `📋 Complete Signup Flow for ${userType}:\n\n${flowSteps.join('\n')}\n\n🔗 Test URLs:\n- Verification Page: verify-email.html?email=${encodeURIComponent(email)}&userType=${userType}\n- Student Signup: signupstu.html?verified=true\n- Employer Signup: signuppro.html?verified=true`;
+            
+            showResult(resultDiv, flowInfo, 'info');
+        }
+
+        function clearTestData() {
+            const resultDiv = document.getElementById('clear-result');
+            
+            // Clear localStorage
+            localStorage.removeItem('emailVerified');
+            localStorage.removeItem('verifiedEmail');
+            localStorage.removeItem('verifiedUserType');
+            localStorage.removeItem('tempSignupData');
+            
+            // Clear form fields
+            document.getElementById('test-email').value = '';
+            document.getElementById('test-otp').value = '';
+            
+            showResult(resultDiv, '✅ All test data cleared successfully!\n- localStorage verification data removed\n- Form fields cleared', 'success');
+        }
+
+        function showResult(element, message, type) {
+            element.textContent = message;
+            element.className = `result ${type}`;
+            element.style.display = 'block';
+        }
+
+        // Auto-fill test email on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('test-email').value = 'test@example.com';
+        });
+    </script>
+</body>
+</html> 
