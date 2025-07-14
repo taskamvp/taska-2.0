@@ -336,7 +336,7 @@
     <!-- Scripts -->
     <script type="module">
         import { auth } from './js/firebase-config.js';
-        import { resendVerificationEmail, refreshUser } from './js/auth.js';
+        import { resendVerificationEmail, refreshUser, completeUserSetup } from './js/auth.js';
         import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
 
         // Show warning notice
@@ -383,27 +383,19 @@
                     checkingStatus.style.display = 'none';
                     successMessage.style.display = 'block';
                     
-                    // Update database
-                    const user = auth.currentUser;
-                    if (user) {
-                        const userRole = localStorage.getItem('userRole');
-                        const list = userRole === 'professional' ? 'professionalslist' : 'studentslist';
-                        const path = userRole === 'professional' 
-                            ? `${list}/${user.uid}` 
-                            : `${list}/${user.uid}/personal`;
-                        
-                        const { ref, set } = await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js');
-                        const { database } = await import('./js/firebase-config.js');
-                        const userRef = ref(database, path);
-                        
-                        await set(userRef, { emailVerified: true }, { merge: true });
-                    }
+                    // Complete user setup (store data and send welcome email)
+                    const setupSuccess = await completeUserSetup();
                     
-                    // Redirect after 2 seconds
-                    setTimeout(() => {
-                        const userRole = localStorage.getItem('userRole');
-                        window.location.href = userRole === 'professional' ? 'professional/explore.html' : 'workplace/tasks.html';
-                    }, 2000);
+                    if (setupSuccess) {
+                        // Redirect after 2 seconds
+                        setTimeout(() => {
+                            const userRole = localStorage.getItem('userRole');
+                            window.location.href = userRole === 'professional' ? 'professional/explore.html' : 'workplace/tasks.html';
+                        }, 2000);
+                    } else {
+                        errorMessage.style.display = 'block';
+                        errorMessage.innerHTML = '<i class="fas fa-exclamation-circle"></i> Error setting up account. Please try again.';
+                    }
                 } else {
                     checkingStatus.style.display = 'none';
                     errorMessage.style.display = 'block';
@@ -442,20 +434,34 @@
             if (user) {
                 setUserEmail();
                 
-                // If email is already verified, redirect
+                // If email is already verified, complete setup and redirect
                 if (user.emailVerified) {
-                    const userRole = localStorage.getItem('userRole');
-                    window.location.href = userRole === 'professional' ? 'professional/explore.html' : 'workplace/tasks.html';
+                    const pendingVerification = localStorage.getItem('pendingVerification');
+                    if (pendingVerification === 'true') {
+                        // Complete user setup for newly verified users
+                        completeUserSetup().then(success => {
+                            if (success) {
+                                const userRole = localStorage.getItem('userRole');
+                                window.location.href = userRole === 'professional' ? 'professional/explore.html' : 'workplace/tasks.html';
+                            }
+                        });
+                    } else {
+                        // Already set up, just redirect
+                        const userRole = localStorage.getItem('userRole');
+                        window.location.href = userRole === 'professional' ? 'professional/explore.html' : 'workplace/tasks.html';
+                    }
                 }
                 
-                // Start auto-checking
-                autoCheckInterval = setInterval(async () => {
-                    const isVerified = await refreshUser();
-                    if (isVerified) {
-                        clearInterval(autoCheckInterval);
-                        window.checkVerificationStatus();
-                    }
-                }, 30000); // Check every 30 seconds
+                // Start auto-checking for unverified users
+                if (!user.emailVerified) {
+                    autoCheckInterval = setInterval(async () => {
+                        const isVerified = await refreshUser();
+                        if (isVerified) {
+                            clearInterval(autoCheckInterval);
+                            window.checkVerificationStatus();
+                        }
+                    }, 30000); // Check every 30 seconds
+                }
             } else {
                 // No user logged in, redirect to login
                 window.location.href = 'login.html';

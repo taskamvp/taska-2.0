@@ -191,6 +191,7 @@ export async function signup(userType) {
             }
         }
 
+        // Create user in Firebase Auth only (no database storage yet)
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
         console.log(`${mappedUserType} signed up: ${user.email}, UID: ${user.uid}`);
@@ -204,10 +205,43 @@ export async function signup(userType) {
             // Continue with signup even if verification email fails
         }
 
+        // Store minimal data in localStorage for verification page
         localStorage.setItem('userId', user.uid);
         localStorage.setItem('userRole', mappedUserType);
         localStorage.setItem('userEmail', user.email);
+        localStorage.setItem('pendingVerification', 'true'); // Flag to indicate pending verification
 
+        toggleLoading(false);
+        
+        // Redirect to email verification page
+        window.location.href = 'email-verification.html';
+    } catch (error) {
+        toggleLoading(false);
+        console.debug("Signup error:", error.code, error.message);
+        if (error.code === 'auth/email-already-in-use') {
+            if (mappedUserType === 'student') {
+                showWarning("Email already registered. Please login.");
+            } else {
+                showWarning("Account already exists. Please login.");
+            }
+        } else {
+            showWarning("Signup failed. Please try again!");
+        }
+    }
+}
+
+// Function to complete user setup after email verification
+export async function completeUserSetup() {
+    const user = auth.currentUser;
+    if (!user || !user.emailVerified) {
+        showWarning("Email not verified yet.");
+        return false;
+    }
+
+    const userRole = localStorage.getItem('userRole');
+    const mappedUserType = userRole === 'employer' ? 'professional' : userRole;
+
+    try {
         // Store user profile data
         const list = mappedUserType === 'professional' ? 'professionalslist' : 'studentslist';
         const path = mappedUserType === 'professional' 
@@ -216,7 +250,8 @@ export async function signup(userType) {
         const userRef = ref(database, path);
         const initialData = {
             email: user.email,
-            emailVerified: false
+            emailVerified: true,
+            createdAt: new Date().toISOString()
         };
 
         await set(userRef, initialData);
@@ -231,7 +266,7 @@ export async function signup(userType) {
 
         await set(loyaltyRef, loyaltyData);
 
-        // Send welcome email
+        // Send welcome email only after verification
         try {
             console.log('Attempting to send welcome email to:', user.email);
             const welcomeEmailResponse = await fetch('/api/send-welcome-email', {
@@ -251,29 +286,21 @@ export async function signup(userType) {
             if (welcomeEmailResponse.ok) {
                 console.log('Welcome email sent successfully');
             } else {
-                console.log('Welcome email failed to send, but signup was successful');
+                console.log('Welcome email failed to send, but setup was successful');
             }
         } catch (emailError) {
             console.log('Welcome email error:', emailError);
-            // Don't fail the signup if email fails
+            // Don't fail the setup if email fails
         }
 
-        toggleLoading(false);
+        // Remove pending verification flag
+        localStorage.removeItem('pendingVerification');
         
-        // Redirect to email verification page instead of profile
-        window.location.href = 'email-verification.html';
+        return true;
     } catch (error) {
-        toggleLoading(false);
-        console.debug("Signup error:", error.code, error.message);
-        if (error.code === 'auth/email-already-in-use') {
-            if (mappedUserType === 'student') {
-                showWarning("Email already registered. Please login.");
-            } else {
-                showWarning("Account already exists. Please login.");
-            }
-        } else {
-            showWarning("Signup failed. Please try again!");
-        }
+        console.error('Error completing user setup:', error);
+        showWarning("Error setting up your account. Please try again.");
+        return false;
     }
 }
 
