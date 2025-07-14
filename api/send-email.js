@@ -21,7 +21,7 @@ export default async function handler(req, res) {
         to,
         subject,
         html,
-        from: 'Taska <noreply@taska.com>', // Update this to your verified domain
+        from: 'Taska <support@jointaska.com>', // Update this to your verified domain
       }),
     });
 

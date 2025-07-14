@@ -231,7 +231,7 @@ export default async function handler(req, res) {
         to: email,
         subject: `Welcome to Taska! 🎉`,
         html: welcomeEmailHTML,
-        from: 'Taska <noreply@taska.com>', // Update this to your verified domain
+        from: 'Taska <support@jointaska.com>', // Update this to your verified domain
       }),
     });
 
