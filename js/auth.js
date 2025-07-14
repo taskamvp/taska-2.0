@@ -117,15 +117,6 @@ export async function signup(userType) {
         return;
     }
 
-    // Check if email is verified
-    const emailVerified = localStorage.getItem('emailVerified');
-    const verifiedEmail = localStorage.getItem('verifiedEmail');
-    
-    if (emailVerified !== 'true' || verifiedEmail !== email) {
-        showWarning("Please verify your email first");
-        return;
-    }
-
     toggleLoading(true);
     
     try {
@@ -187,12 +178,6 @@ export async function signup(userType) {
         localStorage.setItem('userId', user.uid);
         localStorage.setItem('userRole', mappedUserType);
         localStorage.setItem('userEmail', user.email);
-
-        // Clear verification data after successful signup
-        localStorage.removeItem('emailVerified');
-        localStorage.removeItem('verifiedEmail');
-        localStorage.removeItem('verifiedUserType');
-        localStorage.removeItem('tempSignupData');
 
         // Store user profile data
         const list = mappedUserType === 'professional' ? 'professionalslist' : 'studentslist';
