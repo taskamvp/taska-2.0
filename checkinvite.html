@@ -208,6 +208,31 @@
             font-family: 'Roboto', sans-serif;
         }
 
+        .login-notice {
+            background: #fff3cd;
+            color: #856404;
+            padding: 1rem;
+            border-radius: 0.7rem;
+            margin: 1.5rem 0;
+            border: 1px solid #ffeaa7;
+            text-align: center;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .login-notice i {
+            color: #f39c12;
+            font-size: 1.1rem;
+        }
+
+        .login-notice span {
+            font-weight: 500;
+        }
+
         /* Footer */
         footer {
             position: fixed;
@@ -458,9 +483,9 @@
 
             <div id="login-state" style="display: none;">
                 <div class="invite-icon">
-                    <i class="fas fa-link"></i>
+                    <i class="fas fa-lock"></i>
                 </div>
-                <h1>You're Invited!</h1>
+                <h1>Login Required</h1>
                 <p class="invite-subtitle">Someone wants to connect with you on Taska. Please log in or sign up to accept this invitation.</p>
                 
                 <div id="inviter-details" class="inviter-info">
@@ -469,14 +494,19 @@
                     <div id="inviter-role" class="inviter-role">Loading...</div>
                 </div>
 
+                <div class="login-notice">
+                    <i class="fas fa-info-circle"></i>
+                    <span>You must be logged in to accept this connection invitation</span>
+                </div>
+
                 <div class="action-buttons">
                     <a href="login.html" class="btn btn-primary">
                         <i class="fas fa-sign-in-alt"></i>
-                        Login
+                        Login to Accept
                     </a>
                     <a href="signup.html" class="btn btn-secondary">
                         <i class="fas fa-user-plus"></i>
-                        Sign Up
+                        Sign Up First
                     </a>
                 </div>
             </div>
@@ -588,9 +618,9 @@
                 document.getElementById('inviter-name').textContent = inviterName;
                 document.getElementById('inviter-role').textContent = inviterData.role || 'user';
                 
-                // Update the subtitle with the inviter's name
+                // Update the subtitle with the inviter's name and clear login requirement
                 document.querySelector('#login-state .invite-subtitle').textContent = 
-                    `${inviterName} wants to connect with you on Taska. Please log in or sign up to accept this invitation.`;
+                    `${inviterName} wants to connect with you on Taska. You need to log in or sign up to accept this invitation.`;
                 
                 // Show/hide avatar based on profile picture availability
                 const avatarElement = document.getElementById('inviter-avatar');
@@ -600,6 +630,10 @@
                 } else {
                     avatarElement.style.display = 'none';
                 }
+            } else {
+                // Fallback if no inviter data
+                document.querySelector('#login-state .invite-subtitle').textContent = 
+                    'You have received a connection invitation on Taska. You need to log in or sign up to accept this invitation.';
             }
             
             // Update login and signup links with invite parameters
