@@ -201,6 +201,28 @@ export async function signup(userType) {
 
         await set(loyaltyRef, loyaltyData);
 
+        // Send welcome email
+        try {
+            const welcomeEmailResponse = await fetch('/api/send-welcome-email', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: user.email,
+                    userType: mappedUserType,
+                    userName: user.email.split('@')[0] // Use email prefix as name
+                })
+            });
+            
+            if (welcomeEmailResponse.ok) {
+                console.log('Welcome email sent successfully');
+            } else {
+                console.log('Welcome email failed to send, but signup was successful');
+            }
+        } catch (emailError) {
+            console.log('Welcome email error:', emailError);
+            // Don't fail the signup if email fails
+        }
+
         toggleLoading(false);
         window.location.href = mappedUserType === 'professional' ? 'professional/profile.html' : 'workplace/profile.html';
     } catch (error) {
