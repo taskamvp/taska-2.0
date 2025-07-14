@@ -3322,7 +3322,7 @@ async function loadDrivePortfolio() {
     <div id="tutorial-modal" class="tutorial-modal">
         <div class="tutorial-content">
             <div class="tutorial-header">
-                <h2>Welcome to Taska Elite! 🎓</h2>
+                <h2>Welcome to Taska Elite!</h2>
                 <button class="tutorial-close" onclick="closeTutorial()">
                     <i class="fas fa-times"></i>
                 </button>
@@ -3330,43 +3330,28 @@ async function loadDrivePortfolio() {
             
             <div class="tutorial-body">
                 <div class="tutorial-step active" id="step-1">
-                    <div class="step-icon">
-                        <i class="fas fa-user-edit"></i>
-                    </div>
                     <h3>Complete Your Profile</h3>
-                    <p>Fill out your profile information to get matched with the best opportunities. Include your skills, education, and experience.</p>
+                    <p>Fill out your profile information with skills, education, and experience to get matched with the best opportunities.</p>
                 </div>
                 
                 <div class="tutorial-step" id="step-2">
-                    <div class="step-icon">
-                        <i class="fas fa-tasks"></i>
-                    </div>
-                    <h3>Browse Tasks</h3>
-                    <p>Visit the Tasks page to see available projects from employers. Filter by skills, duration, and compensation.</p>
+                    <h3>Link Portfolio Account</h3>
+                    <p>Connect your Google Drive portfolio to showcase your work and projects to potential employers.</p>
                 </div>
                 
                 <div class="tutorial-step" id="step-3">
-                    <div class="step-icon">
-                        <i class="fas fa-handshake"></i>
-                    </div>
-                    <h3>Connect & Apply</h3>
-                    <p>Connect with employers and apply for tasks that match your skills. Build your professional network.</p>
+                    <h3>Keep Profile Updated</h3>
+                    <p>Regularly update your profile to reach the top of search results and get more opportunities.</p>
                 </div>
                 
                 <div class="tutorial-step" id="step-4">
-                    <div class="step-icon">
-                        <i class="fas fa-portfolio"></i>
-                    </div>
-                    <h3>Showcase Your Work</h3>
-                    <p>Add your portfolio projects and achievements to stand out to potential employers.</p>
+                    <h3>Use Workplace Page</h3>
+                    <p>Collaborate with connected employers through chat, task management, and project discussions.</p>
                 </div>
                 
                 <div class="tutorial-step" id="step-5">
-                    <div class="step-icon">
-                        <i class="fas fa-question-circle"></i>
-                    </div>
                     <h3>Need Help?</h3>
-                    <p>Any questions? Reach out to us on WhatsApp at <strong>+92 661 240 39</strong> for immediate support.</p>
+                    <p>Contact us on WhatsApp: <strong>+92 661 240 39</strong><br>or Email: <strong>support@jointaska.com</strong></p>
                 </div>
             </div>
             
@@ -3405,9 +3390,9 @@ async function loadDrivePortfolio() {
 
         .tutorial-content {
             background: #ffffff;
-            border-radius: 16px;
+            border-radius: 12px;
             padding: 2rem;
-            max-width: 500px;
+            max-width: 450px;
             width: 90%;
             max-height: 80vh;
             overflow-y: auto;
@@ -3419,13 +3404,13 @@ async function loadDrivePortfolio() {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             padding-bottom: 1rem;
             border-bottom: 1px solid #e0e0e0;
         }
 
         .tutorial-header h2 {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: 600;
             color: #202124;
             margin: 0;
@@ -3456,35 +3441,22 @@ async function loadDrivePortfolio() {
             display: block;
         }
 
-        .step-icon {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #facc15, #fbbf24);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1.5rem;
-            font-size: 2rem;
-            color: #111;
-        }
-
         .tutorial-step h3 {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: 600;
             color: #202124;
             margin-bottom: 1rem;
         }
 
         .tutorial-step p {
-            font-size: 1rem;
+            font-size: 0.95rem;
             color: #5f6368;
             line-height: 1.6;
             margin: 0;
         }
 
         .tutorial-footer {
-            margin-top: 2rem;
+            margin-top: 1.5rem;
             padding-top: 1rem;
             border-top: 1px solid #e0e0e0;
         }
@@ -3493,12 +3465,12 @@ async function loadDrivePortfolio() {
             display: flex;
             justify-content: center;
             gap: 0.5rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
         }
 
         .dot {
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
             background: #dadce0;
             cursor: pointer;
@@ -3506,7 +3478,7 @@ async function loadDrivePortfolio() {
         }
 
         .dot.active {
-            background: #facc15;
+            background: #1a73e8;
         }
 
         .tutorial-buttons {
@@ -3516,9 +3488,9 @@ async function loadDrivePortfolio() {
         }
 
         .btn {
-            padding: 0.75rem 1.5rem;
+            padding: 0.6rem 1.2rem;
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
             font-size: 0.9rem;
             font-weight: 500;
             cursor: pointer;
@@ -3526,13 +3498,12 @@ async function loadDrivePortfolio() {
         }
 
         .btn-primary {
-            background: #111;
+            background: #1a73e8;
             color: #fff;
         }
 
         .btn-primary:hover {
-            background: #facc15;
-            color: #111;
+            background: #1557b0;
         }
 
         .btn-secondary {
@@ -3551,13 +3522,7 @@ async function loadDrivePortfolio() {
             }
             
             .tutorial-header h2 {
-                font-size: 1.3rem;
-            }
-            
-            .step-icon {
-                width: 60px;
-                height: 60px;
-                font-size: 1.5rem;
+                font-size: 1.2rem;
             }
             
             .tutorial-step h3 {
