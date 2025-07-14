@@ -774,11 +774,21 @@ async function deleteRequest({ studentId }) {
         const studentConnectionRef = ref(db, `users/${studentId}/connections/${userId}`);
         await remove(professionalConnectionRef);
         await remove(studentConnectionRef);
-        loadConnections();
-        loadPendingRequests();
+        // Remove the pending item from the DOM directly
+        const pendingItem = document.querySelector(`.pending-item.user-item[data-student-id='${studentId}']`);
+        if (pendingItem) {
+            pendingItem.remove();
+        }
+        // If no more pending items, hide the section
+        const pendingRequestsSection = document.querySelector('.pending-requests');
+        const remaining = document.querySelectorAll('.pending-item.user-item').length;
+        if (pendingRequestsSection && remaining === 0) {
+            pendingRequestsSection.style.display = 'none';
+        }
     } catch (error) {
         console.error("Error deleting request:", error);
-        alert("Failed to delete request.");
+        elements.pendingRequestsList.innerHTML = '<p>Error loading pending requests.</p>';
+        document.querySelector('.pending-requests').style.display = 'none';
     }
 }
 
