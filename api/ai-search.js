@@ -8,7 +8,20 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Prompt is required' });
   }
 
-  const apiKey = process.env.OPENAI_API_KEY; // Set this in your Vercel dashboard
+  const apiKey = process.env.OPENAI_API_KEY;
+  
+  // Debug logging
+  console.log('Environment variable check:', {
+    hasApiKey: !!apiKey,
+    apiKeyLength: apiKey ? apiKey.length : 0,
+    apiKeyPrefix: apiKey ? apiKey.substring(0, 10) + '...' : 'undefined'
+  });
+
+  if (!apiKey) {
+    return res.status(500).json({ 
+      error: 'OpenAI API key not configured. Please set OPENAI_API_KEY environment variable.' 
+    });
+  }
 
   try {
     const openaiRes = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -26,8 +39,18 @@ export default async function handler(req, res) {
     });
 
     const data = await openaiRes.json();
-    res.status(openaiRes.ok ? 200 : 500).json(data);
+    
+    if (!openaiRes.ok) {
+      console.error('OpenAI API error:', data);
+      return res.status(openaiRes.status).json({ 
+        error: data.error?.message || 'OpenAI API request failed',
+        details: data
+      });
+    }
+    
+    res.status(200).json(data);
   } catch (error) {
+    console.error('Server error:', error);
     res.status(500).json({ error: error.message });
   }
 }
