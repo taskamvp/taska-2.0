@@ -483,9 +483,9 @@
             position: fixed;
             top: 0;
             left: 0;
-                width: 100%;
+            width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: transparent;
             z-index: 1000;
             backdrop-filter: blur(4px);
         }
@@ -1098,6 +1098,12 @@
             .hiring-ad-section {
                 padding: var(--spacing-md);
             }
+            .connection-request-popup {
+                width: 90vw !important;
+                max-width: 90vw !important;
+                left: 50% !important;
+                transform: translate(-50%, -50%) !important;
+            }
         }
     </style>
 </head>
@@ -1438,7 +1444,7 @@ async function aiSearch(query = '') {
                             </div>
                             <div class="actions-section">
                                 <span class="ai-intro-btn${isConnected ? ' connected' : ''}" 
-                                      onclick="${isConnected ? '' : `generateAIIntro('${student.id}')`}" 
+                                      onclick="${isConnected ? '' : `connectStudent('${student.id}')`}" 
                                       ${isConnected ? 'style="cursor: not-allowed;"' : ''}>
                                     ${isConnected ? 'Connected' : 'Connect'}
                                 </span>
@@ -1593,8 +1599,7 @@ function showConnectionRequestPopup(studentName) {
     const message = document.getElementById('connectionRequestMessage');
     message.innerHTML = `
         We have sent a connection request to <strong>${studentName}</strong>. 
-        They have been notified via Email. 
-        When they accept, we will inform you through Email. 
+        
         You can <a href="tasks.html" class="manage-connections" target="_blank">manage your connections</a> here.
     `;
     popup.classList.add('active');
@@ -1605,7 +1610,7 @@ window.closeConnectionRequestPopup = () => {
     const popup = document.getElementById('connectionRequestPopup');
     popup.classList.remove('active');
     overlay.classList.remove('active');
-    currentStudentId = null;
+    // Only hide the popup, do not reset currentStudentId or perform any other actions
 };
 
 window.showProfile = (targetUserId) => {
@@ -1782,6 +1787,33 @@ function openWhatsAppHiring() {
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
     window.open(whatsappUrl, '_blank');
 }
+
+window.connectStudent = async (studentId) => {
+    currentStudentId = studentId;
+    const student = studentsData.find(s => s.id === studentId);
+    const user = firebase.auth().currentUser;
+    if (!user || !student) {
+        alert('Error: User not authenticated or student not found.');
+        return;
+    }
+    try {
+        await storeConnectionRequest(studentId);
+        await sendConnectionNotifications(studentId, student.personal?.name || 'Unnamed', student.personal?.email, student.personal?.whatsapp, user.email);
+        showConnectionRequestPopup(student.personal?.name || 'Unnamed');
+        connectedStudents.add(studentId);
+        // Update the button in the DOM to show Connected
+        const card = document.querySelector(`.student-card .ai-intro-btn[onclick*="connectStudent('${studentId}')"]`);
+        if (card) {
+            card.textContent = 'Connection Sent';
+            card.classList.add('connected');
+            card.onclick = null;
+            card.style.cursor = 'not-allowed';
+        }
+    } catch (error) {
+        console.error('Error sending connection request:', error);
+        alert('Failed to send connection request.');
+    }
+};
 </script>
 </body>
 </html>
