@@ -50,6 +50,105 @@ body {
     min-height: 60px;
         }
 
+        .navbar.hidden {
+            display: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+    gap: 1.5rem;
+            list-style: none;
+            margin-left: auto;
+        }
+
+        .nav-menu.hidden {
+            display: none;
+        }
+
+        .hamburger.hidden {
+            display: none;
+        }
+
+        /* Logged-in user interface */
+        .logged-in-nav {
+            display: none;
+            align-items: center;
+            gap: 1rem;
+            margin-left: auto;
+        }
+
+        .logged-in-nav.show {
+            display: flex;
+        }
+
+        .tasks-btn {
+            background: none;
+            color: var(--dark-green);
+            border: 1.5px solid #dadce0;
+            border-radius: 999px;
+            padding: 0.45rem 1.1rem 0.45rem 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 1rem;
+            box-shadow: none;
+            transition: all 0.18s;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            min-height: 40px;
+            min-width: 90px;
+            cursor: pointer;
+        }
+
+        .tasks-btn-text {
+            display: inline;
+        }
+
+        @media (max-width: 700px) {
+            .logged-in-nav {
+                position: fixed;
+                top: 10px;
+                right: 10px;
+                z-index: 2000;
+                background: none;
+                box-shadow: none;
+            }
+            .tasks-btn-text {
+                display: none !important;
+            }
+            .tasks-btn {
+                padding: 0;
+                min-width: 0;
+                border: none;
+                background: none;
+            }
+        }
+
+        .tasks-btn:hover {
+            background: #f7f9fa;
+            color: var(--green);
+            border-color: var(--green);
+            box-shadow: none;
+            transform: none;
+        }
+
+        .profile-pic-nav {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1.5px solid #dadce0;
+            margin-left: 0.5rem;
+            background: #fff;
+            transition: border-color 0.18s, box-shadow 0.18s;
+        }
+
+        .tasks-btn:hover .profile-pic-nav {
+            border-color: var(--green);
+            box-shadow: 0 0 0 2px #e6f4ea;
+        }
+
         .navbar .logo {
     display: flex;
     align-items: center;
@@ -64,14 +163,6 @@ body {
     height: 48px;
     margin-top: 0.2rem;
 }
-
-        .nav-menu {
-            display: flex;
-            align-items: center;
-    gap: 1.5rem;
-            list-style: none;
-            margin-left: auto;
-        }
 
         .nav-menu li {
             list-style: none;
@@ -1803,6 +1894,8 @@ body {
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <!-- Firebase Auth -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <!-- Firebase Storage -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
     <script>
       var firebaseConfig = {
         apiKey: "AIzaSyDZIDlEtaNRxODoFhRw0xF2yYFBqqBexqo",
@@ -1827,6 +1920,15 @@ body {
             <li><a href="login.html">Login</a></li>
             <li><a href="signup.html" class="signup-btn">Signup</a></li>
         </ul>
+        
+        <!-- Logged-in User Interface -->
+        <div class="logged-in-nav" id="logged-in-nav">
+            <a href="#" class="tasks-btn" id="tasks-btn">
+                
+                <span class="tasks-btn-text">Tasks</span>
+                <img src="assets/avatar/1.png" alt="Profile" class="profile-pic-nav" id="profile-pic-nav">
+            </a>
+        </div>
         
         <!-- Mobile Menu Button -->
         <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
@@ -1994,6 +2096,73 @@ body {
    
     
     <script>
+        // Check if user is logged in and control navbar visibility
+        function checkLoginStatus() {
+            const userId = localStorage.getItem('userId');
+            const userRole = localStorage.getItem('userRole');
+            
+            const navbar = document.querySelector('.navbar');
+            const navMenu = document.querySelector('.nav-menu');
+            const hamburger = document.getElementById('hamburger');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const loggedInNav = document.getElementById('logged-in-nav');
+            const tasksBtn = document.getElementById('tasks-btn');
+            const profilePicNav = document.getElementById('profile-pic-nav');
+            
+            if (userId && userRole) {
+                // User is logged in - hide navigation elements, show logged-in interface
+                if (navMenu) navMenu.classList.add('hidden');
+                if (hamburger) hamburger.classList.add('hidden');
+                if (mobileMenu) mobileMenu.style.display = 'none';
+                if (loggedInNav) loggedInNav.classList.add('show');
+                
+                // Set tasks button href based on user role
+                if (tasksBtn) {
+                    if (userRole === 'professional') {
+                        tasksBtn.href = 'professional/tasks.html';
+                    } else {
+                        tasksBtn.href = 'workplace/tasks.html';
+                    }
+                }
+                
+                // Load user's profile picture
+                loadUserProfilePic(userId, profilePicNav);
+                
+                console.log('User is logged in, showing logged-in interface');
+            } else {
+                // User is not logged in - show navigation elements, hide logged-in interface
+                if (navbar) navbar.classList.remove('hidden');
+                if (navMenu) navMenu.classList.remove('hidden');
+                if (hamburger) hamburger.classList.remove('hidden');
+                if (loggedInNav) loggedInNav.classList.remove('show');
+                
+                console.log('User is not logged in, showing navigation elements');
+            }
+        }
+
+        // Check login status immediately
+        checkLoginStatus();
+
+        // Listen for changes in localStorage (when user logs in/out)
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'userId' || e.key === 'userRole') {
+                checkLoginStatus();
+            }
+        });
+
+        // Function to handle logout and show navbar
+        function handleLogout() {
+            localStorage.removeItem('userId');
+            localStorage.removeItem('userRole');
+            checkLoginStatus();
+        }
+
+        // Make handleLogout globally accessible
+        window.handleLogout = handleLogout;
+
+        // Periodic check to ensure navbar state is correct (every 2 seconds)
+        setInterval(checkLoginStatus, 2000);
+
         // WhatsApp integration for Hire Now button
         function openWhatsAppHire() {
             const phoneNumber = '+919266124039';
@@ -2030,6 +2199,9 @@ body {
         }
         
       document.addEventListener('DOMContentLoaded', function() {
+        // Check login status and control navbar visibility
+        checkLoginStatus();
+        
         const tabs = document.querySelectorAll('.service-tab');
         const contents = {
           development: document.getElementById('service-development'),
@@ -2146,6 +2318,68 @@ body {
           });
         });
         });
+
+        // Function to load user's profile picture
+        async function loadUserProfilePic(userId, profilePicElement) {
+            if (!profilePicElement) return;
+            
+            try {
+                // Try to load from Firebase Storage using the legacy Firebase SDK
+                const storage = firebase.storage();
+                const storageRef = storage.ref();
+                const profilePicRef = storageRef.child(`profile/${userId}.webp`);
+                
+                // Get download URL
+                const profilePicUrl = await profilePicRef.getDownloadURL();
+                profilePicElement.src = profilePicUrl;
+                
+            } catch (error) {
+                console.log('Profile picture not found in Firebase Storage, using default avatar:', error);
+                // If profile pic doesn't exist, use default avatar
+                profilePicElement.src = 'assets/avatar/1.png';
+            }
+        }
+
+        // Function to load profile picture from database
+        async function loadProfilePicFromDatabase(userId, profilePicElement) {
+            try {
+                // Check if Firebase is available
+                if (typeof firebase !== 'undefined' && firebase.database) {
+                    const userRef = firebase.database().ref(`professionalslist/${userId}`);
+                    const snapshot = await userRef.once('value');
+                    
+                    if (snapshot.exists()) {
+                        const data = snapshot.val();
+                        if (data.personal && data.personal.profilePic) {
+                            profilePicElement.src = data.personal.profilePic;
+                            return;
+                        }
+                    }
+                    
+                    // Try students database
+                    const studentRef = firebase.database().ref(`studentslist/${userId}`);
+                    const studentSnapshot = await userRef.once('value');
+                    
+                    if (studentSnapshot.exists()) {
+                        const data = studentSnapshot.val();
+                        if (data.personal && data.personal.profilePic) {
+                            profilePicElement.src = data.personal.profilePic;
+                            return;
+                        }
+                    }
+                }
+                
+                // Fallback to default avatar
+                profilePicElement.src = 'assets/avatar/1.png';
+                
+            } catch (error) {
+                console.log('Error loading profile picture from database:', error);
+                profilePicElement.src = 'assets/avatar/1.png';
+            }
+        }
+
+        // Check login status immediately
+        checkLoginStatus();
     </script>
     <!-- Fiverr-style Footer Start -->
     <footer class="footer">

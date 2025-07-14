@@ -108,6 +108,15 @@
             background-color: #fce8e6;
         }
 
+        .menu-item.delete-account {
+            color: #ea4335;
+            border-top: 1px solid #dadce0;
+        }
+
+        .menu-item.delete-account:hover {
+            background-color: #fce8e6;
+        }
+
         /* Profile View Modal */
         .profile-modal {
             display: none;
@@ -607,6 +616,10 @@
                         <i class="fas fa-sign-out-alt"></i>
                         Logout
                     </a>
+                    <a href="#" class="menu-item delete-account" onclick="deleteAccount()">
+                        <i class="fas fa-trash"></i>
+                        Delete Account
+                    </a>
                 </div>
             </div>
             <h1 class="form-title">Employer Profile</h1>
@@ -799,7 +812,8 @@
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
         import { getDatabase, ref, get, set, push } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
-        import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js';
+        import { getStorage, ref as storageRef, uploadBytes, getDownloadURL, deleteObject } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js';
+        import { getAuth, signOut } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
 
         const firebaseConfig = {
             apiKey: "AIzaSyDZIDlEtaNRxODoFhRw0xF2yYFBqqBexqo",
@@ -814,7 +828,18 @@
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
         const storage = getStorage(app);
+        const auth = getAuth(app);
         const userId = localStorage.getItem('userId');
+
+        // Make userId and Firebase functions globally accessible
+        window.userId = userId;
+        window.database = database;
+        window.storage = storage;
+        window.auth = auth;
+        window.push = push;
+        window.ref = ref;
+        window.set = set;
+        window.deleteObject = deleteObject;
 
         if (!userId) {
             alert("Please log in or sign up first.");
@@ -1072,17 +1097,7 @@
 
         document.getElementById('logout-btn').addEventListener('click', function(e) {
             e.preventDefault();
-            
-            // Clear all localStorage data
-            localStorage.clear();
-            
-            // Sign out from Firebase
-            if (typeof signOut === 'function') {
-                signOut();
-            } else {
-                // Fallback: redirect to index page
-                window.location.href = '../index.html';
-            }
+            logout(); // Call the comprehensive logout function
         });
     </script>
     
@@ -1129,16 +1144,233 @@
 
         function logout() {
             // Show confirmation dialog
-            if (confirm('Are you sure you want to logout?')) {
-                // Clear all localStorage data
-                localStorage.clear();
-                
-                // Sign out from Firebase
-                if (typeof signOut === 'function') {
-                    signOut();
-                } else {
-                    // Fallback: redirect to index page
+            if (confirm('Are you sure you want to logout? This will clear all your data from this device.')) {
+                try {
+                    // Sign out from Firebase
+                    if (typeof signOut === 'function' && window.auth) {
+                        signOut(window.auth);
+                    }
+                    
+                    // Clear all browser data related to the site
+                    try {
+                        // Clear localStorage
+                        localStorage.clear();
+                        
+                        // Clear sessionStorage
+                        sessionStorage.clear();
+                        
+                        // Clear all cookies
+                        const cookies = document.cookie.split(";");
+                        for (let i = 0; i < cookies.length; i++) {
+                            const cookie = cookies[i];
+                            const eqPos = cookie.indexOf("=");
+                            const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+                            document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+                            document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=" + window.location.hostname;
+                        }
+                        
+                        // Clear IndexedDB if available
+                        if ('indexedDB' in window) {
+                            const databases = indexedDB.databases();
+                            databases.then(dbList => {
+                                dbList.forEach(db => {
+                                    indexedDB.deleteDatabase(db.name);
+                                });
+                            }).catch(err => {
+                                console.log('IndexedDB deletion failed:', err);
+                            });
+                        }
+                        
+                        // Clear service worker cache if available
+                        if ('serviceWorker' in navigator) {
+                            navigator.serviceWorker.getRegistrations().then(registrations => {
+                                for (let registration of registrations) {
+                                    registration.unregister();
+                                }
+                            });
+                        }
+                        
+                        // Clear cache storage if available
+                        if ('caches' in window) {
+                            caches.keys().then(names => {
+                                names.forEach(name => {
+                                    caches.delete(name);
+                                });
+                            });
+                        }
+                        
+                        // Clear application cache if available
+                        if ('applicationCache' in window) {
+                            window.applicationCache.clear();
+                        }
+                        
+                        // Clear browser cache for this domain
+                        if ('caches' in window) {
+                            caches.keys().then(cacheNames => {
+                                return Promise.all(
+                                    cacheNames.map(cacheName => {
+                                        return caches.delete(cacheName);
+                                    })
+                                );
+                            });
+                        }
+                        
+                        console.log('All browser data cleared successfully');
+                    } catch (clearError) {
+                        console.log('Error clearing browser data:', clearError);
+                    }
+                    
+                    // Redirect to index page
                     window.location.href = '../index.html';
+                    
+                } catch (error) {
+                    console.error("Error signing out:", error);
+                    alert("Failed to log out. Please try again.");
+                }
+            }
+        }
+
+        function deleteAccount() {
+            // Show confirmation dialog
+            const confirmed = confirm(
+                "Are you sure you want to delete your account? This action cannot be undone and will permanently remove:\n\n" +
+                "• All your profile data\n" +
+                "• Your connections and messages\n" +
+                "• Your account from the system\n\n" +
+                "This action is irreversible!"
+            );
+            
+            if (!confirmed) {
+                return;
+            }
+            
+            // Ask for reason
+            const reason = prompt(
+                "Please tell us why you're deleting your account. This helps us improve our service.\n\n" +
+                "Reason (optional):"
+            );
+            
+            // Show final confirmation
+            const finalConfirmed = confirm(
+                "FINAL WARNING: This will permanently delete your account and all associated data. Are you absolutely sure?"
+            );
+            
+            if (!finalConfirmed) {
+                return;
+            }
+            
+            // Close menu
+            document.getElementById('profile-menu').classList.remove('show');
+            
+            // Perform account deletion
+            performAccountDeletion(reason);
+        }
+
+        async function performAccountDeletion(reason) {
+            try {
+                // Show loading state
+                const deleteBtn = document.querySelector('.delete-account');
+                const originalText = deleteBtn.innerHTML;
+                deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Deleting...';
+                deleteBtn.style.pointerEvents = 'none';
+                
+                // Store deletion reason in Firebase
+                const deletionData = {
+                    userId: window.userId,
+                    reason: reason || 'No reason provided',
+                    timestamp: new Date().toISOString(),
+                    userEmail: localStorage.getItem('userEmail') || 'Unknown',
+                    userName: document.getElementById('name').value || 'Unknown',
+                    userType: 'professional'
+                };
+                
+                await window.push(window.ref(window.database, 'account_deletions'), deletionData);
+                
+                // Delete user data from database
+                await window.set(window.ref(window.database, `professionalslist/${window.userId}`), null);
+                
+                // Delete profile photo from storage if exists
+                try {
+                    const profilePhotoRef = window.ref(window.storage, `profile/${window.userId}.webp`);
+                    await window.deleteObject(profilePhotoRef);
+                } catch (storageError) {
+                    console.log('No profile photo to delete or already deleted');
+                }
+                
+                // Delete user from Firebase Authentication
+                const user = window.auth.currentUser;
+                if (user) {
+                    await user.delete();
+                }
+                
+                // Clear all browser data
+                try {
+                    // Clear localStorage
+                    localStorage.clear();
+                    
+                    // Clear sessionStorage
+                    sessionStorage.clear();
+                    
+                    // Clear all cookies
+                    const cookies = document.cookie.split(";");
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i];
+                        const eqPos = cookie.indexOf("=");
+                        const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+                        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+                        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=" + window.location.hostname;
+                    }
+                    
+                    // Clear IndexedDB if available
+                    if ('indexedDB' in window) {
+                        const databases = indexedDB.databases();
+                        databases.then(dbList => {
+                            dbList.forEach(db => {
+                                indexedDB.deleteDatabase(db.name);
+                            });
+                        }).catch(err => {
+                            console.log('IndexedDB deletion failed:', err);
+                        });
+                    }
+                    
+                    // Clear service worker cache if available
+                    if ('serviceWorker' in navigator) {
+                        navigator.serviceWorker.getRegistrations().then(registrations => {
+                            for (let registration of registrations) {
+                                registration.unregister();
+                            }
+                        });
+                    }
+                    
+                    // Clear cache storage if available
+                    if ('caches' in window) {
+                        caches.keys().then(names => {
+                            names.forEach(name => {
+                                caches.delete(name);
+                            });
+                        });
+                    }
+                    
+                    console.log('All browser data cleared successfully');
+                } catch (clearError) {
+                    console.log('Error clearing browser data:', clearError);
+                }
+                
+                alert('Account deleted successfully. Thank you for using Taska.');
+                window.location.href = '../index.html';
+                
+            } catch (error) {
+                console.error("Error deleting account:", error);
+                
+                // Reset button state
+                const deleteBtn = document.querySelector('.delete-account');
+                deleteBtn.innerHTML = '<i class="fas fa-trash"></i> Delete Account';
+                deleteBtn.style.pointerEvents = 'auto';
+                
+                if (error.code === 'auth/requires-recent-login') {
+                    alert("For security reasons, you need to re-authenticate before deleting your account. Please log out and log back in, then try again.");
+                } else {
+                    alert("Failed to delete account: " + error.message);
                 }
             }
         }

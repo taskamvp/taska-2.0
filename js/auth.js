@@ -220,19 +220,94 @@ export async function signup(userType) {
 
 // Logout function
 export function signOut() {
-    toggleLoading(true);
-    auth.signOut()
-        .then(() => {
-            console.log("User signed out, clearing localStorage");
-            localStorage.clear(); // Clear all localStorage data
-            toggleLoading(false);
-            window.location.href = 'index.html';
-        })
-        .catch((error) => {
-            toggleLoading(false);
-            console.debug("Logout error:", error);
-            showWarning("Logout failed. Please try again!");
-        });
+    // Show confirmation dialog
+    if (confirm('Are you sure you want to logout? This will clear all your data from this device.')) {
+        toggleLoading(true);
+        auth.signOut()
+            .then(() => {
+                console.log("User signed out, clearing all browser data");
+                
+                // Clear all browser data related to the site
+                try {
+                    // Clear localStorage
+                    localStorage.clear();
+                    
+                    // Clear sessionStorage
+                    sessionStorage.clear();
+                    
+                    // Clear all cookies
+                    const cookies = document.cookie.split(";");
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i];
+                        const eqPos = cookie.indexOf("=");
+                        const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+                        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+                        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=" + window.location.hostname;
+                    }
+                    
+                    // Clear IndexedDB if available
+                    if ('indexedDB' in window) {
+                        const databases = indexedDB.databases();
+                        databases.then(dbList => {
+                            dbList.forEach(db => {
+                                indexedDB.deleteDatabase(db.name);
+                            });
+                        }).catch(err => {
+                            console.log('IndexedDB deletion failed:', err);
+                        });
+                    }
+                    
+                    // Clear service worker cache if available
+                    if ('serviceWorker' in navigator) {
+                        navigator.serviceWorker.getRegistrations().then(registrations => {
+                            for (let registration of registrations) {
+                                registration.unregister();
+                            }
+                        });
+                    }
+                    
+                    // Clear cache storage if available
+                    if ('caches' in window) {
+                        caches.keys().then(names => {
+                            names.forEach(name => {
+                                caches.delete(name);
+                            });
+                        });
+                    }
+                    
+                    // Clear application cache if available
+                    if ('applicationCache' in window) {
+                        window.applicationCache.clear();
+                    }
+                    
+                    // Clear browser cache for this domain
+                    if ('caches' in window) {
+                        caches.keys().then(cacheNames => {
+                            return Promise.all(
+                                cacheNames.map(cacheName => {
+                                    return caches.delete(cacheName);
+                                })
+                            );
+                        });
+                    }
+                    
+                    console.log('All browser data cleared successfully');
+                } catch (clearError) {
+                    console.log('Error clearing browser data:', clearError);
+                }
+                
+                toggleLoading(false);
+                window.location.href = 'index.html';
+            })
+            .catch((error) => {
+                toggleLoading(false);
+                console.debug("Logout error:", error);
+                showWarning("Logout failed. Please try again!");
+            });
+    } else {
+        // User cancelled logout
+        console.log("Logout cancelled by user");
+    }
 }
 
 // Check auth state
