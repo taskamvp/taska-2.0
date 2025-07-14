@@ -25,7 +25,17 @@ Best regards,
 The Taska Elite Team
 ```
 
-### **Step 2: Set Up Custom Domain (Recommended)**
+### **Step 2: Configure Custom Email Action Handler (IMPORTANT)**
+
+1. **In Firebase Console** → Authentication → Settings
+2. **Scroll to "Authorized domains"**
+3. **Add your domain:** `yourdomain.com`
+4. **For Custom Email Action Handler:**
+   - Scroll to "Action URL" section
+   - Set the action URL to: `https://yourdomain.com/verify.html`
+   - This enables seamless verification flow
+
+### **Step 3: Set Up Custom Domain (Recommended)**
 
 1. **In Firebase Console** → Authentication → Settings
 2. **Scroll to "Authorized domains"**
@@ -34,7 +44,7 @@ The Taska Elite Team
    - Contact Firebase support to set up custom email domain
    - This significantly reduces spam folder delivery
 
-### **Step 3: Configure SPF and DKIM Records**
+### **Step 4: Configure SPF and DKIM Records**
 
 Add these DNS records to your domain:
 
@@ -52,7 +62,7 @@ Name: firebase._domainkey
 Value: [Provided by Firebase support]
 ```
 
-### **Step 4: Email Authentication Best Practices**
+### **Step 5: Email Authentication Best Practices**
 
 1. **Use a professional sender name:** "Taska Elite" not "noreply"
 2. **Clear subject line:** "Verify your email - Taska Elite"
@@ -60,7 +70,7 @@ Value: [Provided by Firebase support]
 4. **Include unsubscribe link** (if required by law)
 5. **Avoid spam trigger words**
 
-### **Step 5: Monitor Email Delivery**
+### **Step 6: Monitor Email Delivery**
 
 1. **Check Firebase Console** → Authentication → Users
 2. **Monitor bounce rates**
@@ -75,7 +85,7 @@ Value: [Provided by Firebase support]
 - ✅ **Email link sign-in:** Optional
 
 ### **Advanced Settings:**
-- **Action URL:** Leave default
+- **Action URL:** `https://yourdomain.com/verify.html` (Custom handler)
 - **Custom domain:** Your domain (if available)
 
 ## 📧 Email Template Best Practices
@@ -99,14 +109,17 @@ Value: [Provided by Firebase support]
 ### **Current Flow:**
 1. User signs up → Firebase Auth only
 2. Verification email sent → Custom template
-3. User verifies email → Complete setup
-4. Data stored + Welcome email sent
+3. User clicks verification link → `verify.html` (custom handler)
+4. `verify.html` verifies email → Redirects to `email-verification.html?autoVerify=true`
+5. `email-verification.html` auto-checks verification → Complete setup
+6. Data stored + Welcome email sent → Redirect to dashboard
 
 ### **Benefits:**
 - ✅ No data stored until verified
 - ✅ No welcome email until verified
 - ✅ Better email deliverability
 - ✅ Professional appearance
+- ✅ **Seamless one-click verification flow**
 
 ## 📊 Monitoring and Testing
 
@@ -137,6 +150,12 @@ Value: [Provided by Firebase support]
 3. Check Firebase console for errors
 4. Test with different email providers
 
+### **If verification flow doesn't work:**
+1. Check Action URL is set correctly in Firebase Console
+2. Ensure `verify.html` is accessible at your domain
+3. Check browser console for JavaScript errors
+4. Verify Firebase configuration in `verify.html`
+
 ## 📞 Support
 
 For custom domain setup and advanced email configuration:
@@ -146,4 +165,4 @@ For custom domain setup and advanced email configuration:
 
 ---
 
-**Note:** The code has been updated to only store user data and send welcome emails after email verification is complete. 
+**Note:** The code has been updated to only store user data and send welcome emails after email verification is complete. The custom verification handler (`verify.html`) provides a seamless one-click verification experience. 

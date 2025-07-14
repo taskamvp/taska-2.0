@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Verification - Taska Elite</title>
+    <link rel="icon" type="image/png" href="assets/logo.jpg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', 'Manrope', 'Poppins', 'Inter', Arial, sans-serif;
+        }
+        
+        body {
+            background: #fff;
+            min-height: 100vh;
+            width: 100vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Montserrat', 'Manrope', 'Poppins', 'Inter', Arial, sans-serif;
+            padding: 2rem;
+        }
+
+        .verification-container {
+            background: #fff;
+            border: 1px solid #e5e7ea;
+            border-radius: 1rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 3rem 2.5rem;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+        }
+
+        .verification-icon {
+            width: 80px;
+            height: 80px;
+            background: #facc15;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            font-size: 2rem;
+            color: #111;
+        }
+
+        .verification-container h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #111;
+            margin-bottom: 1rem;
+            letter-spacing: -0.01em;
+        }
+
+        .verification-container p {
+            font-size: 1rem;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #facc15;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .success-message {
+            color: #28a745;
+            font-weight: 500;
+            margin: 1rem 0;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-weight: 500;
+            margin: 1rem 0;
+        }
+
+        .redirect-message {
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .verification-container {
+                margin: 1rem;
+                padding: 2rem 1.5rem;
+            }
+
+            .verification-container h1 {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .verification-container {
+                padding: 1.5rem 1rem;
+            }
+
+            .verification-container h1 {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <div class="verification-container">
+            <div class="verification-icon">
+                <i class="fas fa-envelope"></i>
+            </div>
+            
+            <h1>Verifying Your Email</h1>
+            
+            <div id="loading-state">
+                <div class="loading-spinner"></div>
+                <p>Please wait while we verify your email address...</p>
+            </div>
+            
+            <div id="success-state" style="display: none;">
+                <div class="verification-icon" style="background: #28a745;">
+                    <i class="fas fa-check" style="color: white;"></i>
+                </div>
+                <h1 style="color: #28a745;">Email Verified!</h1>
+                <p>Your email has been successfully verified. Redirecting you to complete your setup...</p>
+                <div class="redirect-message">
+                    <i class="fas fa-spinner fa-spin"></i> Redirecting in <span id="countdown">3</span> seconds...
+                </div>
+            </div>
+            
+            <div id="error-state" style="display: none;">
+                <div class="verification-icon" style="background: #dc3545;">
+                    <i class="fas fa-exclamation-triangle" style="color: white;"></i>
+                </div>
+                <h1 style="color: #dc3545;">Verification Failed</h1>
+                <p id="error-message">There was an error verifying your email. Please try again.</p>
+                <button onclick="window.location.href='login.html'" style="
+                    padding: 0.75rem 1.5rem;
+                    background: #1a73e8;
+                    color: white;
+                    border: none;
+                    border-radius: 0.5rem;
+                    cursor: pointer;
+                    margin-top: 1rem;
+                ">Go to Login</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+        import { getAuth, applyActionCode } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDZIDlEtaNRxODoFhRw0xF2yYFBqqBexqo",
+            authDomain: "taska-45011.firebaseapp.com",
+            databaseURL: "https://taska-45011-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "taska-45011",
+            storageBucket: "taska-45011.firebasestorage.app",
+            messagingSenderId: "205487498813",
+            appId: "1:205487498813:web:0de2c9eab567482781ec54",
+            measurementId: "G-G0G1F6GQ9B"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Get URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const mode = urlParams.get('mode');
+        const oobCode = urlParams.get('oobCode');
+        const continueUrl = urlParams.get('continueUrl');
+
+        // Check if this is an email verification
+        if (mode === 'verifyEmail' && oobCode) {
+            handleEmailVerification(oobCode);
+        } else {
+            showError('Invalid verification link. Please check your email and try again.');
+        }
+
+        async function handleEmailVerification(oobCode) {
+            try {
+                // Apply the verification code
+                await applyActionCode(auth, oobCode);
+                
+                // Show success state
+                showSuccess();
+                
+                // Start countdown and redirect
+                startRedirectCountdown();
+                
+            } catch (error) {
+                console.error('Verification error:', error);
+                
+                let errorMessage = 'There was an error verifying your email. Please try again.';
+                
+                switch (error.code) {
+                    case 'auth/invalid-action-code':
+                        errorMessage = 'This verification link has expired or is invalid. Please request a new verification email.';
+                        break;
+                    case 'auth/user-disabled':
+                        errorMessage = 'This account has been disabled. Please contact support.';
+                        break;
+                    case 'auth/user-not-found':
+                        errorMessage = 'User account not found. Please sign up again.';
+                        break;
+                    case 'auth/expired-action-code':
+                        errorMessage = 'This verification link has expired. Please request a new verification email.';
+                        break;
+                    case 'auth/invalid-continue-uri':
+                        errorMessage = 'Invalid redirect URL. Please try again.';
+                        break;
+                }
+                
+                showError(errorMessage);
+            }
+        }
+
+        function showSuccess() {
+            document.getElementById('loading-state').style.display = 'none';
+            document.getElementById('success-state').style.display = 'block';
+        }
+
+        function showError(message) {
+            document.getElementById('loading-state').style.display = 'none';
+            document.getElementById('error-state').style.display = 'block';
+            document.getElementById('error-message').textContent = message;
+        }
+
+        function startRedirectCountdown() {
+            let countdown = 3;
+            const countdownElement = document.getElementById('countdown');
+            
+            const timer = setInterval(() => {
+                countdown--;
+                countdownElement.textContent = countdown;
+                
+                if (countdown <= 0) {
+                    clearInterval(timer);
+                    redirectToSignup();
+                }
+            }, 1000);
+        }
+
+        function redirectToSignup() {
+            // Redirect to the signup page with auto-verification parameter
+            // This will trigger the automatic verification check
+            window.location.href = 'email-verification.html?autoVerify=true';
+        }
+    </script>
+</body>
+</html> 

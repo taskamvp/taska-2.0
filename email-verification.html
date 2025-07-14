@@ -249,9 +249,19 @@
 
         /* Responsive design */
         @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+                align-items: center;
+                justify-content: center;
+                min-height: 100vh;
+            }
+
             .verification-container {
-                margin: 1rem;
+                margin: 0;
                 padding: 2rem 1.5rem;
+                width: 100%;
+                max-width: 100%;
+                min-height: auto;
             }
 
             .verification-container h1 {
@@ -264,12 +274,34 @@
         }
 
         @media (max-width: 480px) {
+            body {
+                padding: 0.5rem;
+                align-items: center;
+                justify-content: center;
+            }
+
             .verification-container {
+                margin: 0;
                 padding: 1.5rem 1rem;
+                width: 100%;
+                max-width: 100%;
+                border-radius: 0.8rem;
             }
 
             .verification-container h1 {
                 font-size: 1.3rem;
+            }
+
+            .verification-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .btn {
+                padding: 0.8rem 1.2rem;
+                font-size: 0.9rem;
             }
         }
     </style>
@@ -434,6 +466,10 @@
             if (user) {
                 setUserEmail();
                 
+                // Check if auto-verification is requested
+                const urlParams = new URLSearchParams(window.location.search);
+                const autoVerify = urlParams.get('autoVerify');
+                
                 // If email is already verified, complete setup and redirect
                 if (user.emailVerified) {
                     const pendingVerification = localStorage.getItem('pendingVerification');
@@ -450,10 +486,26 @@
                         const userRole = localStorage.getItem('userRole');
                         window.location.href = userRole === 'professional' ? 'professional/explore.html' : 'workplace/tasks.html';
                     }
-                }
-                
-                // Start auto-checking for unverified users
-                if (!user.emailVerified) {
+                } else if (autoVerify === 'true') {
+                    // Auto-verification requested, check status immediately
+                    setTimeout(async () => {
+                        const isVerified = await refreshUser();
+                        if (isVerified) {
+                            window.checkVerificationStatus();
+                        } else {
+                            // If not verified yet, show normal verification page
+                            // Start auto-checking for unverified users
+                            autoCheckInterval = setInterval(async () => {
+                                const isVerified = await refreshUser();
+                                if (isVerified) {
+                                    clearInterval(autoCheckInterval);
+                                    window.checkVerificationStatus();
+                                }
+                            }, 5000); // Check every 5 seconds for auto-verification
+                        }
+                    }, 1000); // Wait 1 second for Firebase to update
+                } else {
+                    // Start auto-checking for unverified users
                     autoCheckInterval = setInterval(async () => {
                         const isVerified = await refreshUser();
                         if (isVerified) {
