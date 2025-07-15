@@ -156,19 +156,19 @@
                 <i class="fas fa-envelope"></i>
             </div>
             
-            <h1>Verifying Your Email</h1>
+            <h1 id="page-title">Verifying Your Email</h1>
             
             <div id="loading-state">
                 <div class="loading-spinner"></div>
-                <p>Please wait while we verify your email address...</p>
+                <p id="loading-text">Please wait while we verify your email address...</p>
             </div>
             
             <div id="success-state" style="display: none;">
                 <div class="verification-icon" style="background: #28a745;">
                     <i class="fas fa-check" style="color: white;"></i>
                 </div>
-                <h1 style="color: #28a745;">Email Verified!</h1>
-                <p>Your email has been successfully verified. Redirecting you to complete your setup...</p>
+                <h1 style="color: #28a745;" id="success-title">Email Verified!</h1>
+                <p id="success-message">Your email has been successfully verified. Redirecting you to complete your setup...</p>
                 <div class="redirect-message">
                     <i class="fas fa-spinner fa-spin"></i> Redirecting in <span id="countdown">3</span> seconds...
                 </div>
@@ -178,7 +178,7 @@
                 <div class="verification-icon" style="background: #dc3545;">
                     <i class="fas fa-exclamation-triangle" style="color: white;"></i>
                 </div>
-                <h1 style="color: #dc3545;">Verification Failed</h1>
+                <h1 style="color: #dc3545;" id="error-title">Verification Failed</h1>
                 <p id="error-message">There was an error verifying your email. Please try again.</p>
                 <button onclick="window.location.href='login.html'" style="
                     padding: 0.75rem 1.5rem;
@@ -218,11 +218,33 @@
         const oobCode = urlParams.get('oobCode');
         const continueUrl = urlParams.get('continueUrl');
 
-        // Check if this is an email verification
+        // Check the action type and handle accordingly
         if (mode === 'verifyEmail' && oobCode) {
+            // Email verification
+            setupEmailVerification();
             handleEmailVerification(oobCode);
+        } else if (mode === 'resetPassword' && oobCode) {
+            // Password reset
+            setupPasswordReset();
+            handlePasswordReset(oobCode);
         } else {
-            showError('Invalid verification link. Please check your email and try again.');
+            showError('Invalid action link. Please check your email and try again.');
+        }
+
+        function setupEmailVerification() {
+            document.getElementById('page-title').textContent = 'Verifying Your Email';
+            document.getElementById('loading-text').textContent = 'Please wait while we verify your email address...';
+            document.getElementById('success-title').textContent = 'Email Verified!';
+            document.getElementById('success-message').textContent = 'Your email has been successfully verified. Redirecting you to complete your setup...';
+            document.getElementById('error-title').textContent = 'Verification Failed';
+        }
+
+        function setupPasswordReset() {
+            document.getElementById('page-title').textContent = 'Resetting Your Password';
+            document.getElementById('loading-text').textContent = 'Please wait while we process your password reset...';
+            document.getElementById('success-title').textContent = 'Password Reset Link Sent!';
+            document.getElementById('success-message').textContent = 'Your password has been successfully reset. You can now log in with your new password.';
+            document.getElementById('error-title').textContent = 'Password Reset Failed';
         }
 
         async function handleEmailVerification(oobCode) {
@@ -234,7 +256,7 @@
                 showSuccess();
                 
                 // Start countdown and redirect
-                startRedirectCountdown();
+                startRedirectCountdown('email-verification.html?autoVerify=true');
                 
             } catch (error) {
                 console.error('Verification error:', error);
@@ -263,6 +285,45 @@
             }
         }
 
+        async function handlePasswordReset(oobCode) {
+            try {
+                // For password reset, we just need to confirm the action code is valid
+                // The actual password reset happens when user clicks the link in the email
+                await applyActionCode(auth, oobCode);
+                
+                // Show success state
+                showSuccess();
+                
+                // Start countdown and redirect to login
+                startRedirectCountdown('login.html');
+                
+            } catch (error) {
+                console.error('Password reset error:', error);
+                
+                let errorMessage = 'There was an error processing your password reset. Please try again.';
+                
+                switch (error.code) {
+                    case 'auth/invalid-action-code':
+                        errorMessage = 'This password reset link has expired or is invalid. Please request a new password reset email.';
+                        break;
+                    case 'auth/user-disabled':
+                        errorMessage = 'This account has been disabled. Please contact support.';
+                        break;
+                    case 'auth/user-not-found':
+                        errorMessage = 'User account not found. Please sign up again.';
+                        break;
+                    case 'auth/expired-action-code':
+                        errorMessage = 'This password reset link has expired. Please request a new password reset email.';
+                        break;
+                    case 'auth/invalid-continue-uri':
+                        errorMessage = 'Invalid redirect URL. Please try again.';
+                        break;
+                }
+                
+                showError(errorMessage);
+            }
+        }
+
         function showSuccess() {
             document.getElementById('loading-state').style.display = 'none';
             document.getElementById('success-state').style.display = 'block';
@@ -274,7 +335,7 @@
             document.getElementById('error-message').textContent = message;
         }
 
-        function startRedirectCountdown() {
+        function startRedirectCountdown(redirectUrl) {
             let countdown = 3;
             const countdownElement = document.getElementById('countdown');
             
@@ -284,15 +345,9 @@
                 
                 if (countdown <= 0) {
                     clearInterval(timer);
-                    redirectToSignup();
+                    window.location.href = redirectUrl;
                 }
             }, 1000);
-        }
-
-        function redirectToSignup() {
-            // Redirect to the signup page with auto-verification parameter
-            // This will trigger the automatic verification check
-            window.location.href = 'email-verification.html?autoVerify=true';
         }
     </script>
 </body>
