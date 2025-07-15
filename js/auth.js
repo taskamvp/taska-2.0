@@ -60,20 +60,30 @@ export function login(userType) {
         .then(() => {
             return signInWithEmailAndPassword(auth, email, password);
         })
-        .then((userCredential) => {
+        .then(async (userCredential) => {
             const user = userCredential.user;
+            if (mappedUserType === 'professional') {
+                // Check if user exists in professionalslist
+                const { get } = await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js');
+                const professionalsRef = ref(database, `professionalslist/${user.uid}`);
+                const snapshot = await get(professionalsRef);
+                if (!snapshot.exists()) {
+                    // Not in professionalslist, sign out and show error
+                    await auth.signOut();
+                    toggleLoading(false);
+                    showWarning("No employer account found. Please sign up as an employer first.");
+                    return;
+                }
+            }
             console.log(`${mappedUserType} logged in: ${user.email}, UID: ${user.uid}`);
-            
             localStorage.setItem('userId', user.uid);
             localStorage.setItem('userRole', mappedUserType);
             localStorage.setItem('userEmail', user.email);
             toggleLoading(false);
-            
             // Check if there's an invite parameter and redirect parameter
             const urlParams = new URLSearchParams(window.location.search);
             const inviteId = urlParams.get('invite');
             const redirect = urlParams.get('redirect');
-            
             if (inviteId && redirect === 'checkinvite') {
                 // Redirect back to checkinvite.html with the invite parameter
                 window.location.href = `checkinvite.html?invite=${inviteId}`;
