@@ -287,15 +287,17 @@
 
         async function handlePasswordReset(oobCode) {
             try {
-                // For password reset, we just need to confirm the action code is valid
-                // The actual password reset happens when user clicks the link in the email
-                await applyActionCode(auth, oobCode);
+                // For password reset, we need to redirect to a password reset page
+                // or show a form to enter new password
+                // The oobCode should be passed to the reset page
                 
-                // Show success state
+                // Show success state first
                 showSuccess();
                 
-                // Start countdown and redirect to login
-                startRedirectCountdown('login.html');
+                // Redirect to password reset page with the action code
+                setTimeout(() => {
+                    window.location.href = `password-reset.html?oobCode=${oobCode}`;
+                }, 2000);
                 
             } catch (error) {
                 console.error('Password reset error:', error);
