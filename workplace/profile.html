@@ -2146,23 +2146,29 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // File upload handlers for portfolio posts
-    document.getElementById('image-upload').addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            selectedFile = file;
-            selectedFileType = 'image';
-            showMediaPreview(file, 'image');
-        }
-    });
+    const imageUpload = document.getElementById('image-upload');
+    if (imageUpload) {
+        imageUpload.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                selectedFile = file;
+                selectedFileType = 'image';
+                showMediaPreview(file, 'image');
+            }
+        });
+    }
 
-    document.getElementById('video-upload').addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            selectedFile = file;
-            selectedFileType = 'video';
-            showMediaPreview(file, 'video');
-        }
-    });
+    const videoUpload = document.getElementById('video-upload');
+    if (videoUpload) {
+        videoUpload.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                selectedFile = file;
+                selectedFileType = 'video';
+                showMediaPreview(file, 'video');
+            }
+        });
+    }
 
     // Create post handler
     document.getElementById('create-post-btn').addEventListener('click', async () => {
@@ -2444,7 +2450,7 @@ async function loadProfileData(userId) {
         } catch (storageError) {
             // If profile photo doesn't exist in storage, use default avatar
             console.log('No profile photo found in storage, using default avatar');
-        document.getElementById('profile-pic').src = '../assets/avatar/1.png';
+            document.getElementById('profile-pic').src = '../assets/avatar/1.png';
         }
 
         const snapshot = await get(ref(db, `studentslist/${userId}`));
@@ -2452,38 +2458,36 @@ async function loadProfileData(userId) {
 
         if (data) {
             // Personal Information
-            document.getElementById('name').value = data.personal?.name || '';
-            document.getElementById('email').value = data.personal?.email || '';
-            document.getElementById('whatsapp').value = data.personal?.whatsapp || '';
-            document.getElementById('gender').value = data.personal?.gender || '';
-            document.getElementById('location').value = data.personal?.location || '';
-            document.getElementById('linkedin').value = data.personal?.linkedin || '';
-            document.getElementById('about').value = data.personal?.about || '';
+            const personalFields = ['name', 'email', 'whatsapp', 'gender', 'location', 'linkedin', 'about'];
+            personalFields.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = data.personal?.[id] || '';
+            });
 
             // Educational Information
-            document.getElementById('college').value = data.education?.college || '';
-            document.getElementById('degree').value = data.education?.degree || '';
-            document.getElementById('branch').value = data.education?.branch || '';
-            document.getElementById('year').value = data.education?.year || '';
-            document.getElementById('cgpa').value = data.education?.cgpa || '';
-            document.getElementById('graduation').value = data.education?.graduation || '';
-            document.getElementById('achievements').value = data.education?.achievements || '';
+            const educationFields = ['college', 'degree', 'branch', 'year', 'cgpa', 'graduation', 'achievements'];
+            educationFields.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = data.education?.[id] || '';
+            });
 
             // Professional Information
-            document.getElementById('skills').value = data.skills || '';
-            document.getElementById('workExperience').value = data.experience || '';
-            document.getElementById('roles').value = data.roles || '';
-            document.getElementById('headline').value = data.headline || '';
-
+            const profFields = ['skills', 'workExperience', 'roles', 'headline'];
+            profFields.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = data[id] || '';
+            });
         } else {
             // Set default values for empty profile
             ['name', 'email', 'whatsapp', 'location', 'linkedin', 'about', 'college', 
              'branch', 'cgpa', 'graduation', 'achievements', 'skills', 
-             'roles'].forEach(id => {
-                document.getElementById(id).value = '';
+             'roles', 'workExperience', 'headline'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = '';
             });
-            ['gender', 'degree', 'year', 'experience'].forEach(id => {
-                document.getElementById(id).value = '';
+            ['gender', 'degree', 'year'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = '';
             });
         }
     } catch (error) {
