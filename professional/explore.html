@@ -1194,6 +1194,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
     <script>
         // Initialize Firebase
 const firebaseConfig = {
@@ -1201,13 +1202,34 @@ const firebaseConfig = {
     authDomain: "taska-45011.firebaseapp.com",
     databaseURL: "https://taska-45011-default-rtdb.asia-southeast1.firebasedatabase.app",
     projectId: "taska-45011",
-    storageBucket: "taska-45011.appspot.com",
+    storageBucket: "taska-45011.firebasestorage.app",
     messagingSenderId: "205487498813",
     appId: "1:205487498813:web:0de2c9eab567482781ec54",
     measurementId: "G-G0G1F6GQ9B"
 };
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
+const storage = firebase.storage();
+
+// Function to load profile photo from Firebase Storage
+async function loadProfilePhoto(studentId, imgElement) {
+    try {
+        // Check if user is authenticated
+        const user = firebase.auth().currentUser;
+        if (!user) {
+            console.log('User not authenticated, using default avatar');
+            imgElement.src = '../assets/avatar/1.png';
+            return;
+        }
+        
+        const profilePhotoRef = storage.ref(`profile/${studentId}.webp`);
+        const profilePhotoUrl = await profilePhotoRef.getDownloadURL();
+        imgElement.src = profilePhotoUrl;
+    } catch (error) {
+        console.log(`No profile photo found for student ${studentId}, using default avatar:`, error);
+        imgElement.src = '../assets/avatar/1.png';
+    }
+}
 
 // Hamburger menu toggle
 document.addEventListener('DOMContentLoaded', () => {
@@ -1275,27 +1297,37 @@ function stopLoadingAnimation() {
 
 // Fetch student data and connected students
 document.addEventListener('DOMContentLoaded', async () => {
-    try {
-        // Fetch student data from Firebase
-        const snapshot = await database.ref('studentslist').once('value');
-        const data = snapshot.val() || {};
-        studentsData = Object.keys(data).map(id => ({
-            id,
-            ...data[id],
-            personal: data[id].personal || {},
-            education: data[id].education || {},
-            skills: data[id].skills || '',
-            profiles: data[id].profiles || {},
-            portfolio: data[id].portfolio || []
-        }));
+    // Monitor authentication state
+    firebase.auth().onAuthStateChanged(async (user) => {
+        if (user) {
+            console.log('User is authenticated:', user.uid);
+            try {
+                // Fetch student data from Firebase
+                const snapshot = await database.ref('studentslist').once('value');
+                const data = snapshot.val() || {};
+                studentsData = Object.keys(data).map(id => ({
+                    id,
+                    ...data[id],
+                    personal: data[id].personal || {},
+                    education: data[id].education || {},
+                    skills: data[id].skills || '',
+                    profiles: data[id].profiles || {},
+                    portfolio: data[id].portfolio || []
+                }));
 
-        // Fetch connected students
-        const connections = await getConnectedStudents();
-        connectedStudents = new Set(connections);
-    } catch (error) {
-        console.error('Error loading data:', error);
-        studentsList.innerHTML = '<p>Error loading student data.</p>';
-    }
+                // Fetch connected students
+                const connections = await getConnectedStudents();
+                connectedStudents = new Set(connections);
+            } catch (error) {
+                console.error('Error loading data:', error);
+                studentsList.innerHTML = '<p>Error loading student data.</p>';
+            }
+        } else {
+            console.log('User is not authenticated');
+            // Redirect to login if not authenticated
+            window.location.href = '../login.html';
+        }
+    });
 });
 
 // Fetch connected students from Firebase
@@ -1303,7 +1335,7 @@ async function getConnectedStudents() {
     const user = firebase.auth().currentUser;
     if (!user) return [];
     try {
-        const snapshot = await database.ref(`users/${user.uid}/connections`).once('value');
+        const snapshot = await database.ref(`professionalslist/${user.uid}/connections`).once('value');
         const connections = snapshot.val() || {};
         return Object.keys(connections).filter(id => ['pending', 'connected'].includes(connections[id].status));
     } catch (error) {
@@ -1415,7 +1447,7 @@ async function aiSearch(query = '') {
                     <div class="student-card">
                         <div class="card-content">
                             <div class="profile-section">
-                                <img src="https://firebasestorage.googleapis.com/v0/b/taska-45011.appspot.com/o/profile/${student.id}.webp?alt=media" alt="" class="profile-pic" onerror="this.src='../assets/avatar/1.png'">
+                                <img src="../assets/avatar/1.png" alt="" class="profile-pic" data-student-id="${student.id}">
                             </div>
                             <div class="info-section">
                                 <div class="name-section">
@@ -1444,6 +1476,16 @@ async function aiSearch(query = '') {
                 `;
             }).join('')
             : '<p>No matching students found.</p>';
+            
+        // Load profile photos for all displayed students
+        if (filteredStudents.length > 0) {
+            filteredStudents.forEach(student => {
+                const imgElement = document.querySelector(`img[data-student-id="${student.id}"]`);
+                if (imgElement) {
+                    loadProfilePhoto(student.id, imgElement);
+                }
+            });
+        }
     } catch (error) {
         console.error('AI Search Error:', error);
         studentsList.innerHTML = `<p>Error performing search: ${error.message}</p>`;
@@ -1531,12 +1573,12 @@ async function storeConnectionRequest(studentId) {
     const userId = user.uid;
     const timestamp = new Date().toISOString();
     // Store for professional
-    await database.ref(`users/${userId}/connections/${studentId}`).set({
+    await database.ref(`professionalslist/${userId}/connections/${studentId}`).set({
         timestamp: timestamp,
         status: "pending"
     });
     // Store for student
-    await database.ref(`users/${studentId}/connections/${userId}`).set({
+    await database.ref(`studentslist/${studentId}/connections/${userId}`).set({
         timestamp: timestamp,
         status: "pending"
     });
@@ -1637,7 +1679,7 @@ async function storeConnection(studentId) {
     if (user) {
         const userId = user.uid;
         const timestamp = new Date().toISOString();
-        database.ref(`users/${userId}/connections/${studentId}`).set({
+        database.ref(`professionalslist/${userId}/connections/${studentId}`).set({
             timestamp: timestamp,
             status: "pending"
         }).then(() => {
@@ -1646,7 +1688,7 @@ async function storeConnection(studentId) {
         }).catch((error) => {
             console.error("Error storing connection:", error);
         });
-        database.ref(`users/${studentId}/connections/${userId}`).set({
+        database.ref(`studentslist/${studentId}/connections/${userId}`).set({
             timestamp: timestamp,
             status: "pending"
         }).catch((error) => {
