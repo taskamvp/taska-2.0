@@ -1194,6 +1194,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
     <script>
         // Initialize Firebase
 const firebaseConfig = {
@@ -1416,7 +1417,7 @@ async function aiSearch(query = '') {
                     <div class="student-card">
                         <div class="card-content">
                             <div class="profile-section">
-                                <img src="https://firebasestorage.googleapis.com/v0/b/taska-45011.appspot.com/o/profile%2F${student.id}.webp?alt=media" alt="" class="profile-pic" onerror="this.src='../assets/avatar/1.png'">
+                                <img data-student-id="${student.id}" src="../assets/avatar/1.png" alt="" class="profile-pic">
                             </div>
                             <div class="info-section">
                                 <div class="name-section">
@@ -1451,6 +1452,30 @@ async function aiSearch(query = '') {
     }
     loadingOverlay.style.display = 'none';
     stopLoadingAnimation();
+    // Load profile images using Firebase Storage SDK
+    setTimeout(loadProfileImages, 0);
+}
+
+function loadProfileImages() {
+    const storage = firebase.storage();
+    document.querySelectorAll('.profile-pic[data-student-id]').forEach(img => {
+        const studentId = img.getAttribute('data-student-id');
+        const tryExtensions = ['webp', 'jpg', 'png'];
+        let found = false;
+        (function tryNext(i) {
+            if (i >= tryExtensions.length) return; // All failed, keep default
+            const ext = tryExtensions[i];
+            const ref = storage.ref(`profile/${studentId}.${ext}`);
+            ref.getDownloadURL()
+                .then(url => {
+                    img.src = url;
+                    found = true;
+                })
+                .catch(() => {
+                    if (!found) tryNext(i + 1);
+                });
+        })(0);
+    });
 }
 
 function basicKeywordMatch(query) {
