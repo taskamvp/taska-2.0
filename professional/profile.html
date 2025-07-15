@@ -884,6 +884,9 @@
         window.deleteObject = deleteObject;
 
         let userId = null;
+        let authCheckInterval = null;
+        let authTimeout = null;
+        let authCheckCount = 0;
 
         // Listen for authentication state changes
         auth.onAuthStateChanged(async (user) => {
@@ -892,6 +895,17 @@
             if (user) {
                 userId = user.uid;
                 window.userId = userId;
+                
+                // Clear any existing intervals and timeouts
+                if (authCheckInterval) {
+                    clearInterval(authCheckInterval);
+                    authCheckInterval = null;
+                }
+                if (authTimeout) {
+                    clearTimeout(authTimeout);
+                    authTimeout = null;
+                }
+                authCheckCount = 0;
                 
                 // Update localStorage to keep it in sync
                 localStorage.setItem('userId', userId);
@@ -906,21 +920,75 @@
                 // Load profile data
                 await loadProfileData();
             } else {
-                console.log('No user authenticated, checking if this is a fresh page load...');
+                console.log('No user authenticated, waiting for authentication...');
+                
+                // Show loading state with authentication message
+                const loadingState = document.getElementById('loading-state');
+                const loadingText = loadingState.querySelector('.loading-text');
+                loadingText.textContent = 'Checking authentication...';
+                loadingState.style.display = 'flex';
+                
+                // Start periodic authentication check
+                if (!authCheckInterval) {
+                    authCheckInterval = setInterval(async () => {
+                        authCheckCount++;
+                        console.log(`Checking authentication state... (attempt ${authCheckCount})`);
+                        
+                        // Update loading message based on attempt count
+                        if (authCheckCount <= 5) {
+                            loadingText.textContent = 'Checking authentication...';
+                        } else if (authCheckCount <= 15) {
+                            loadingText.textContent = 'Waiting for authentication...';
+                        } else {
+                            loadingText.textContent = 'Still waiting for authentication...';
+                        }
+                        
+                        try {
+                            // Force refresh the user
+                            await auth.currentUser?.reload();
+                            
+                            // Check if user is now authenticated
+                            if (auth.currentUser) {
+                                console.log('User found during periodic check:', auth.currentUser.email);
+                                // The onAuthStateChanged will handle the rest
+                            }
+                        } catch (error) {
+                            console.log('Periodic auth check error:', error);
+                        }
+                        
+                        // After 30 attempts (60 seconds), show a more specific message
+                        if (authCheckCount >= 30) {
+                            loadingText.textContent = 'Authentication taking longer than expected. Please wait...';
+                        }
+                    }, 2000); // Check every 2 seconds
+                }
+                
+                // Set a timeout to prevent infinite waiting (5 minutes)
+                if (!authTimeout) {
+                    authTimeout = setTimeout(() => {
+                        console.log('Authentication timeout reached');
+                        loadingText.textContent = 'Authentication timeout. Please refresh the page or try again.';
+                        
+                        // Clear the interval
+                        if (authCheckInterval) {
+                            clearInterval(authCheckInterval);
+                            authCheckInterval = null;
+                        }
+                    }, 300000); // 5 minutes
+                }
                 
                 // Check if this is a fresh page load (no localStorage data)
                 const storedUserId = localStorage.getItem('userId');
                 const storedUserRole = localStorage.getItem('userRole');
                 
                 if (!storedUserId && !storedUserRole) {
-                    console.log('Fresh page load with no stored data, redirecting to login');
-                    window.location.href = '../login.html';
+                    console.log('Fresh page load with no stored data, waiting for authentication...');
+                    // Keep showing loading screen and wait for authentication
+                    return;
                 } else {
-                    console.log('User data found in localStorage but not authenticated, clearing data and redirecting');
-                    localStorage.removeItem('userId');
-                    localStorage.removeItem('userRole');
-                    localStorage.removeItem('userEmail');
-                    window.location.href = '../login.html';
+                    console.log('User data found in localStorage but not authenticated, waiting for re-authentication...');
+                    // Keep showing loading screen and wait for re-authentication
+                    return;
                 }
             }
         });
