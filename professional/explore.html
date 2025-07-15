@@ -1347,6 +1347,7 @@ async function aiSearch(query = '') {
         ${csvText}
         The user has provided this requirement: "${query}"
         Your task is to:
+        As First thing,you need to search the prompt as simple word to find the student name,college,degree,branch,year,skills,about.
         1. Carefully analyze each student's data (name, college, degree, branch, year, skills, about).
         2. Match students to the requirement based on relevance (e.g., specific college, skills, branch, or about section mentioned in the query).
         3. Rank the students by how well they match the requirement.
@@ -1358,7 +1359,7 @@ async function aiSearch(query = '') {
           - Prioritize students from IIT Delhi, with B.Tech in Applied Mechanics, and Python in skills.
         - Query: "IIT Bombay student with machine learning experience"
           - Prioritize IIT Bombay students with "machine learning" in skills or about section.
-        Return the result STRICTLY as a JSON array of 10 student IDs, e.g.:
+        Return the result STRICTLY as a JSON array of 10 student IDs,Prioritize word match searching first e.g.:
         ["student_1", "student_2", "student_3", "student_4", "student_5", "student_6", "student_7", "student_8", "student_9", "student_10"]
     `;
 
