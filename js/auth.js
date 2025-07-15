@@ -64,15 +64,6 @@ export function login(userType) {
             const user = userCredential.user;
             console.log(`${mappedUserType} logged in: ${user.email}, UID: ${user.uid}`);
             
-            // Check if email is verified
-            if (!user.emailVerified) {
-                toggleLoading(false);
-                showWarning("Please verify your email before logging in. Check your inbox for a verification link.");
-                // Redirect to verification page
-                window.location.href = 'email-verification.html';
-                return;
-            }
-            
             localStorage.setItem('userId', user.uid);
             localStorage.setItem('userRole', mappedUserType);
             localStorage.setItem('userEmail', user.email);

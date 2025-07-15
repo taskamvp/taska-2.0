@@ -4859,11 +4859,23 @@ function shareViaWhatsAppTasks() {
     const inviteLink = document.getElementById('invite-link-tasks').value;
     const message = `Hi! I'd like to connect with you on Taska. Here's my invite link: ${inviteLink}`;
     
-    // Use WhatsApp Web API to open WhatsApp directly
-    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
-    
-    // Open WhatsApp in a new window/tab
-    window.open(whatsappUrl, '_blank');
+    // Use native WhatsApp share API
+    if (navigator.share) {
+        navigator.share({
+            title: 'Connect on Taska',
+            text: message,
+            url: inviteLink
+        }).catch(err => {
+            console.log('Error sharing:', err);
+            // Fallback to WhatsApp Web if native sharing fails
+            const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        });
+    } else {
+        // Fallback for browsers that don't support native sharing
+        const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+        window.open(whatsappUrl, '_blank');
+    }
 }
 
 function shareViaEmailTasks() {
