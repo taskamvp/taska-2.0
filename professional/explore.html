@@ -1572,57 +1572,25 @@ async function storeConnectionRequest(studentId) {
     const user = firebase.auth().currentUser;
     const userId = user.uid;
     const timestamp = new Date().toISOString();
+    const student = studentsData.find(s => s.id === studentId);
+    
+    const connectionData = {
+        timestamp: timestamp,
+        status: "pending",
+        professionalId: userId,
+        professionalEmail: user.email,
+        professionalName: user.displayName || 'Professional',
+        studentId: studentId,
+        studentName: student?.personal?.name || 'Unnamed',
+        studentEmail: student?.personal?.email || '',
+        requestType: "professional_to_student"
+    };
+    
     // Store for professional
-    await database.ref(`professionalslist/${userId}/connections/${studentId}`).set({
-        timestamp: timestamp,
-        status: "pending"
-    });
+    await database.ref(`professionalslist/${userId}/connections/${studentId}`).set(connectionData);
+    
     // Store for student
-    await database.ref(`studentslist/${studentId}/connections/${userId}`).set({
-        timestamp: timestamp,
-        status: "pending"
-    });
-}
-
-async function sendConnectionNotifications(studentId, studentName, studentEmail, studentWhatsApp, professionalEmail) {
-    const user = firebase.auth().currentUser;
-    const professionalName = user.displayName || 'Professional';
-    // Send email notifications
-    try {
-        const response = await fetch('https://your-server.com/send-connection-email', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                studentEmail,
-                studentName,
-                professionalEmail,
-                professionalName
-            })
-        });
-        if (!response.ok) throw new Error('Failed to send email notifications');
-    } catch (error) {
-        console.error('Error sending email notifications:', error);
-    }
-    // Send WhatsApp notification
-    await sendWhatsAppNotification(studentWhatsApp, studentName, professionalName);
-}
-
-async function sendWhatsAppNotification(studentWhatsApp, studentName, professionalName) {
-    if (!studentWhatsApp) return;
-    try {
-        const response = await fetch('https://your-server.com/send-whatsapp', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                to: studentWhatsApp,
-                studentName,
-                professionalName
-            })
-        });
-        if (!response.ok) throw new Error('Failed to send WhatsApp notification');
-    } catch (error) {
-        console.error('Error sending WhatsApp notification:', error);
-    }
+    await database.ref(`studentslist/${studentId}/connections/${userId}`).set(connectionData);
 }
 
 function showConnectionRequestPopup(studentName) {
@@ -1679,19 +1647,27 @@ async function storeConnection(studentId) {
     if (user) {
         const userId = user.uid;
         const timestamp = new Date().toISOString();
-        database.ref(`professionalslist/${userId}/connections/${studentId}`).set({
+        const student = studentsData.find(s => s.id === studentId);
+        
+        const connectionData = {
             timestamp: timestamp,
-            status: "pending"
-        }).then(() => {
+            status: "pending",
+            professionalId: userId,
+            professionalEmail: user.email,
+            professionalName: user.displayName || 'Professional',
+            studentId: studentId,
+            studentName: student?.personal?.name || 'Unnamed',
+            studentEmail: student?.personal?.email || '',
+            requestType: "professional_to_student"
+        };
+        
+        database.ref(`professionalslist/${userId}/connections/${studentId}`).set(connectionData).then(() => {
             console.log("Connection stored successfully");
             connectedStudents.add(studentId);
         }).catch((error) => {
             console.error("Error storing connection:", error);
         });
-        database.ref(`studentslist/${studentId}/connections/${userId}`).set({
-            timestamp: timestamp,
-            status: "pending"
-        }).catch((error) => {
+        database.ref(`studentslist/${studentId}/connections/${userId}`).set(connectionData).catch((error) => {
             console.error("Error storing connection:", error);
         });
     } else {
@@ -1827,24 +1803,82 @@ window.connectStudent = async (studentId) => {
         alert('Error: User not authenticated or student not found.');
         return;
     }
+    
     try {
-        await storeConnectionRequest(studentId);
-        await sendConnectionNotifications(studentId, student.personal?.name || 'Unnamed', student.personal?.email, student.personal?.whatsapp, user.email);
-        showConnectionRequestPopup(student.personal?.name || 'Unnamed');
-        connectedStudents.add(studentId);
-        // Update the button in the DOM to show Connected
-        const card = document.querySelector(`.student-card .ai-intro-btn[onclick*="connectStudent('${studentId}')"]`);
-        if (card) {
-            card.textContent = 'Connection Sent';
-            card.classList.add('connected');
-            card.onclick = null;
-            card.style.cursor = 'not-allowed';
+        // Disable the button immediately
+        const connectBtn = document.querySelector(`.student-card .ai-intro-btn[onclick*="connectStudent('${studentId}')"]`);
+        if (connectBtn) {
+            connectBtn.textContent = 'Sending...';
+            connectBtn.style.pointerEvents = 'none';
+            connectBtn.style.opacity = '0.7';
         }
+        
+        // Store connection request in database
+        await storeConnectionRequest(studentId);
+        
+        // Send email notification to student
+        await sendConnectionEmailNotification(student, user);
+        
+        // Update connected students set
+        connectedStudents.add(studentId);
+        
+        // Update button to show "Connection Sent"
+        if (connectBtn) {
+            connectBtn.textContent = 'Connection Sent';
+            connectBtn.classList.add('connected');
+            connectBtn.onclick = null;
+            connectBtn.style.cursor = 'not-allowed';
+            connectBtn.style.opacity = '1';
+        }
+        
+        // Show success popup
+        showConnectionRequestPopup(student.personal?.name || 'Unnamed');
+        
     } catch (error) {
         console.error('Error sending connection request:', error);
-        alert('Failed to send connection request.');
+        alert('Failed to send connection request. Please try again.');
+        
+        // Re-enable button on error
+        if (connectBtn) {
+            connectBtn.textContent = 'Connect';
+            connectBtn.style.pointerEvents = 'auto';
+            connectBtn.style.opacity = '1';
+        }
     }
 };
+
+async function sendConnectionEmailNotification(student, user) {
+    const professionalName = user.displayName || 'Professional';
+    const professionalEmail = user.email;
+    const studentName = student.personal?.name || 'Unnamed';
+    const studentEmail = student.personal?.email;
+
+    if (!studentEmail) {
+        console.warn('Student email not available for email notification.');
+        return;
+    }
+
+    try {
+        const response = await fetch('/api/send-connection-email', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                studentEmail,
+                studentName,
+                professionalEmail,
+                professionalName
+            })
+        });
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Failed to send email notification');
+        }
+        console.log('Email notification sent successfully.');
+    } catch (error) {
+        console.error('Error sending email notification:', error);
+        throw error; // Re-throw to be caught by the main connectStudent function
+    }
+}
 </script>
 </body>
 </html>
