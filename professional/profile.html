@@ -831,10 +831,8 @@
         const database = getDatabase(app);
         const storage = getStorage(app);
         const auth = getAuth(app);
-        const userId = localStorage.getItem('userId');
 
-        // Make userId and Firebase functions globally accessible
-        window.userId = userId;
+        // Make Firebase functions globally accessible
         window.database = database;
         window.storage = storage;
         window.auth = auth;
@@ -843,12 +841,30 @@
         window.set = set;
         window.deleteObject = deleteObject;
 
-        if (!userId) {
-            alert("Please log in or sign up first.");
-            window.location.href = '../login.html';
-        } else {
-            loadProfileData();
-        }
+        let userId = null;
+
+        // Listen for authentication state changes
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                userId = user.uid;
+                window.userId = userId;
+                
+                // Update localStorage to keep it in sync
+                localStorage.setItem('userId', userId);
+                localStorage.setItem('userEmail', user.email);
+                
+                console.log('User authenticated:', user.email, 'UID:', userId);
+                
+                // Load profile data
+                await loadProfileData();
+            } else {
+                console.log('No user authenticated, redirecting to login');
+                localStorage.removeItem('userId');
+                localStorage.removeItem('userRole');
+                localStorage.removeItem('userEmail');
+                window.location.href = '../login.html';
+            }
+        });
 
         let cropper;
         const profileImageInput = document.getElementById('profile-upload');
@@ -896,6 +912,11 @@
 
         saveBtn.addEventListener('click', async () => {
             if (!cropper) return;
+            if (!userId) {
+                alert("User not authenticated. Please log in again.");
+                return;
+            }
+            
             const canvas = cropper.getCroppedCanvas({
                 width: 200,
                 height: 200,
@@ -969,6 +990,11 @@
         });
 
         async function saveProfileData() {
+            if (!userId) {
+                alert("User not authenticated. Please log in again.");
+                return;
+            }
+            
             try {
                 const saveBtn = document.getElementById('save-btn');
                 const originalText = saveBtn.innerHTML;
@@ -1068,6 +1094,11 @@
         }
 
         async function loadProfileData() {
+            if (!userId) {
+                console.log('User ID not available yet, skipping profile load');
+                return;
+            }
+            
             try {
                 const userRef = ref(database, `professionalslist/${userId}`);
                 const snapshot = await get(userRef);
@@ -1090,10 +1121,10 @@
                     document.getElementById('areaOfStudy').value = data.education?.areaOfStudy || '';
                     profileImagePreview.src = data.personal?.profilePic || '../assets/avatar/1.png';
                 } else {
-                    alert("No profile data found. Please update your profile.");
+                    console.log("No profile data found. User can create new profile.");
                 }
             } catch (error) {
-                alert(`Failed to load profile: ${error.message}`);
+                console.error('Failed to load profile:', error);
             }
         }
 
@@ -1269,6 +1300,11 @@
         }
 
         async function performAccountDeletion(reason) {
+            if (!userId) {
+                alert("User not authenticated. Please log in again.");
+                return;
+            }
+            
             try {
                 // Show loading state
                 const deleteBtn = document.querySelector('.delete-account');
@@ -1278,7 +1314,7 @@
                 
                 // Store deletion reason in Firebase
                 const deletionData = {
-                    userId: window.userId,
+                    userId: userId,
                     reason: reason || 'No reason provided',
                     timestamp: new Date().toISOString(),
                     userEmail: localStorage.getItem('userEmail') || 'Unknown',
@@ -1289,11 +1325,11 @@
                 await window.push(window.ref(window.database, 'account_deletions'), deletionData);
                 
                 // Delete user data from database
-                await window.set(window.ref(window.database, `professionalslist/${window.userId}`), null);
+                await window.set(window.ref(window.database, `professionalslist/${userId}`), null);
                 
                 // Delete profile photo from storage if exists
                 try {
-                    const profilePhotoRef = window.ref(window.storage, `profile/${window.userId}.webp`);
+                    const profilePhotoRef = window.ref(window.storage, `profile/${userId}.webp`);
                     await window.deleteObject(profilePhotoRef);
                 } catch (storageError) {
                     console.log('No profile photo to delete or already deleted');
