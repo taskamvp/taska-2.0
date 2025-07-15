@@ -14,7 +14,7 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Recipient email (to) and studentName are required.' });
   }
 
-  const subject = 'A student accepted your connection on Taska';
+  const subject = 'Connection Accepted on Taska';
   const html = `
     <div style="font-family:Arial,sans-serif;max-width:480px;margin:0 auto;background:#fff;border-radius:8px;box-shadow:0 2px 10px rgba(0,0,0,0.07);padding:32px 24px;">
       <h2 style="color:#1a73e8;font-size:1.3rem;margin-bottom:18px;">Connection Accepted on Taska</h2>
