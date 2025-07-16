@@ -1290,6 +1290,20 @@ document.addEventListener('DOMContentLoaded', async () => {
             portfolio: data[id].portfolio || []
         }));
 
+        // Remove students missing required fields
+        studentsData = studentsData.filter(student => {
+            const name = student.personal?.name?.trim();
+            const college = student.education?.college?.trim();
+            const skills = student.skills?.trim();
+            const about = student.personal?.about?.trim();
+            return (
+                name && name !== 'Unnamed' &&
+                college && college !== 'Not set' &&
+                skills && skills !== 'Not set' &&
+                about && about !== 'Not set'
+            );
+        });
+
         // Fetch connected students
         const connections = await getConnectedStudents();
         connectedStudents = new Set(connections);
