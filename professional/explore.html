@@ -1329,9 +1329,23 @@ async function aiSearch(query = '') {
     startLoadingAnimation();
     searchInfo.style.display = 'none'; // Hide help cards when searching
 
+    // Filter students with all required fields
+    const filteredForAI = studentsData.filter(student => {
+        const name = student.personal?.name?.trim();
+        const college = student.education?.college?.trim();
+        const skills = student.skills?.trim();
+        const about = student.personal?.about?.trim();
+        return (
+            name && name !== 'Unnamed' &&
+            college && college !== 'Not set' &&
+            skills && skills !== 'Not set' &&
+            about && about !== 'Not set'
+        );
+    });
+
     const csvText = [
         ['id', 'personal.name', 'education.college', 'education.degree', 'education.branch', 'education.year', 'skills', 'personal.about'].join(','),
-        ...studentsData.map(student => [
+        ...filteredForAI.map(student => [
             student.id,
             student.personal?.name || 'Unnamed',
             student.education?.college || 'Not set',
