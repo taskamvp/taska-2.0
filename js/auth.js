@@ -1,7 +1,7 @@
 // js/auth.js
 import { auth, database } from './firebase-config.js';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, setPersistence, browserLocalPersistence, fetchSignInMethodsForEmail, sendEmailVerification, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
-import { ref, set } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
+import { ref, set, get, update } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
 
 // Show form based on role selection
 export function showForm(userType) {
@@ -249,12 +249,28 @@ export async function completeUserSetup() {
             ? `${list}/${user.uid}` 
             : `${list}/${user.uid}/personal`;
         const userRef = ref(database, path);
+
+        // Check if welcomeEmailSent flag is set
+        let alreadySent = false;
+        try {
+            const snapshot = await get(userRef);
+            if (snapshot.exists()) {
+                const data = snapshot.val();
+                if (data && data.welcomeEmailSent) {
+                    alreadySent = true;
+                }
+            }
+        } catch (e) {
+            // If error, assume not sent
+        }
+
+        // Always update profile data (for new users)
         const initialData = {
             email: user.email,
             emailVerified: true,
-            createdAt: new Date().toISOString()
+            createdAt: new Date().toISOString(),
+            welcomeEmailSent: true // Will be set to true if email is sent or already sent
         };
-
         await set(userRef, initialData);
 
         // Store loyalty score
@@ -264,42 +280,39 @@ export async function completeUserSetup() {
         const loyaltyData = {
             score: 1000
         };
-
         await set(loyaltyRef, loyaltyData);
 
-        // Send welcome email only after verification
-        try {
-            console.log('Attempting to send welcome email to:', user.email);
-            const welcomeEmailResponse = await fetch('/api/send-welcome-email', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    email: user.email,
-                    userType: mappedUserType,
-                    userName: user.email.split('@')[0] // Use email prefix as name
-                })
-            });
-            
-            console.log('Welcome email response status:', welcomeEmailResponse.status);
-            const emailResult = await welcomeEmailResponse.json();
-            console.log('Welcome email response:', emailResult);
-            
-            if (welcomeEmailResponse.ok) {
-                console.log('Welcome email sent successfully');
-            } else {
-                console.log('Welcome email failed to send, but setup was successful');
+        // Only send welcome email if not already sent
+        if (!alreadySent) {
+            try {
+                console.log('Attempting to send welcome email to:', user.email);
+                const welcomeEmailResponse = await fetch('/api/send-welcome-email', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: user.email,
+                        userType: mappedUserType,
+                        userName: user.email.split('@')[0] // Use email prefix as name
+                    })
+                });
+                console.log('Welcome email response status:', welcomeEmailResponse.status);
+                const emailResult = await welcomeEmailResponse.json();
+                console.log('Welcome email response:', emailResult);
+                if (welcomeEmailResponse.ok) {
+                    console.log('Welcome email sent successfully');
+                } else {
+                    console.log('Welcome email failed to send, but setup was successful');
+                }
+            } catch (emailError) {
+                console.log('Welcome email error:', emailError);
+                // Don't fail the setup if email fails
             }
-        } catch (emailError) {
-            console.log('Welcome email error:', emailError);
-            // Don't fail the setup if email fails
         }
 
         // Remove pending verification flag
         localStorage.removeItem('pendingVerification');
-        
         // Set flag to show tutorial for new users
         localStorage.setItem('isNewUser', 'true');
-        
         return true;
     } catch (error) {
         console.error('Error completing user setup:', error);
