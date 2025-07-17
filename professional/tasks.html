@@ -68,6 +68,27 @@
                         <div class="step-text">View tasks and chat with your selected student</div>
                     </div>
                 </div>
+                
+                <!-- Invite to Connect Button - moved to bottom -->
+                <div style="text-align: center; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #e0e0e0;">
+                    <button id="invite-connect-btn-tasks" style="
+                        font-size: 14px; 
+                        padding: 10px 20px; 
+                        background: #f8f9fa; 
+                        border: 1px solid #dee2e6; 
+                        color: #495057;
+                        border-radius: 6px;
+                        font-weight: 400;
+                        cursor: pointer;
+                        transition: all 0.2s;
+                        font-family: 'Poppins', sans-serif;
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 8px;
+                    " onmouseover="this.style.background='#e9ecef'; this.style.borderColor='#adb5bd'" onmouseout="this.style.background='#f8f9fa'; this.style.borderColor='#dee2e6'">
+                        <i class="fas fa-share-alt" style="font-size: 12px;"></i> Invite to Connect
+                    </button>
+                </div>
             </div>
         </div>
         
@@ -2636,6 +2657,284 @@ function handleProfilePictureClick(userId, userRole) {
 
 // Make function globally accessible
 window.handleProfilePictureClick = handleProfilePictureClick;
+
+// === Invite to Connect Modal for Tasks Page ===
+// Create the invite modal dynamically
+const inviteConnectModalTasks = document.createElement('div');
+inviteConnectModalTasks.id = 'invite-connect-modal-tasks';
+inviteConnectModalTasks.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    font-family: 'Poppins', sans-serif;
+`;
+
+inviteConnectModalTasks.innerHTML = `
+    <div style="
+        background: white;
+        border-radius: 12px;
+        padding: 2rem;
+        max-width: 500px;
+        width: 90%;
+        max-height: 80vh;
+        overflow-y: auto;
+        position: relative;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    ">
+        <div style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e0e0e0;
+        ">
+            <h2 style="
+                margin: 0;
+                font-size: 1.5rem;
+                font-weight: 600;
+                color: #333;
+            ">Invite to Connect</h2>
+            <button id="close-invite-modal-tasks" style="
+                background: none;
+                border: none;
+                font-size: 1.5rem;
+                cursor: pointer;
+                color: #6e6e73;
+                padding: 0;
+                width: 30px;
+                height: 30px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                transition: background 0.2s;
+            " onmouseover="this.style.background='#f0f0f0'" onmouseout="this.style.background='transparent'" onclick="closeInviteModalTasks()">×</button>
+        </div>
+        
+        <div style="margin-bottom: 1.5rem;">
+            <p style="
+                margin: 0 0 1rem 0;
+                color: #666;
+                line-height: 1.6;
+                font-size: 0.95rem;
+            ">
+                Share this invite link with students you'd like to connect with. They can use this link to send you a connection request.
+            </p>
+            
+            <div style="margin-bottom: 1rem;">
+                <label for="invite-link-tasks" style="
+                    display: block;
+                    margin-bottom: 0.5rem;
+                    font-weight: 500;
+                    color: #333;
+                    font-size: 0.9rem;
+                ">Invite Link</label>
+                <div style="
+                    display: flex;
+                    gap: 0.5rem;
+                    align-items: center;
+                ">
+                    <input type="text" id="invite-link-tasks" readonly style="
+                        flex: 1;
+                        padding: 0.75rem;
+                        border: 1px solid #ddd;
+                        border-radius: 6px;
+                        font-size: 0.9rem;
+                        background: #f8f9fa;
+                        color: #333;
+                        font-family: 'Courier New', monospace;
+                    ">
+                    <button onclick="copyInviteLinkTasks()" style="
+                        padding: 0.75rem 1rem;
+                        background: #007bff;
+                        color: white;
+                        border: none;
+                        border-radius: 6px;
+                        cursor: pointer;
+                        font-size: 0.9rem;
+                        font-weight: 500;
+                        transition: background 0.2s;
+                    " onmouseover="this.style.background='#0056b3'" onmouseout="this.style.background='#007bff'">
+                        Copy
+                    </button>
+                </div>
+            </div>
+            
+            <div style="
+                background: #f8f9fa;
+                border: 1px solid #e9ecef;
+                border-radius: 8px;
+                padding: 1rem;
+                margin-bottom: 1rem;
+            ">
+                <h4 style="
+                    margin: 0 0 0.5rem 0;
+                    font-size: 1rem;
+                    color: #333;
+                ">How it works:</h4>
+                <ol style="
+                    margin: 0;
+                    padding-left: 1.2rem;
+                    color: #666;
+                    font-size: 0.9rem;
+                    line-height: 1.5;
+                ">
+                    <li>Share the invite link with a student</li>
+                    <li>They click the link and sign up/login</li>
+                    <li>They can send you a connection request</li>
+                    <li>You'll receive a notification to accept</li>
+                    <li>Once connected, you can collaborate on tasks</li>
+                </ol>
+            </div>
+            
+            <div style="text-align: center;">
+                <button onclick="shareInviteLinkTasks()" style="
+                    padding: 0.75rem 1.5rem;
+                    background: #28a745;
+                    color: white;
+                    border: none;
+                    border-radius: 6px;
+                    cursor: pointer;
+                    font-size: 0.95rem;
+                    font-weight: 500;
+                    transition: background 0.2s;
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                " onmouseover="this.style.background='#218838'" onmouseout="this.style.background='#28a745'">
+                    <i class="fas fa-share-alt"></i>
+                    Share via WhatsApp
+                </button>
+            </div>
+        </div>
+    </div>
+`;
+
+// Add the modal to the page
+document.body.appendChild(inviteConnectModalTasks);
+
+// Add event listeners for the tasks page invite modal
+document.addEventListener('DOMContentLoaded', function() {
+    // Add event listener for the invite button in tasks page
+    const inviteBtnTasks = document.getElementById('invite-connect-btn-tasks');
+    if (inviteBtnTasks) {
+        inviteBtnTasks.addEventListener('click', function() {
+            openInviteModalTasks();
+        });
+    }
+    
+    // Add event listener for the close button
+    const closeBtnTasks = document.getElementById('close-invite-modal-tasks');
+    if (closeBtnTasks) {
+        closeBtnTasks.addEventListener('click', function() {
+            closeInviteModalTasks();
+        });
+    }
+    
+    // Close modal when clicking outside
+    inviteConnectModalTasks.addEventListener('click', function(e) {
+        if (e.target === inviteConnectModalTasks) {
+            closeInviteModalTasks();
+        }
+    });
+    
+    // Add event listener for copy button
+    const copyBtnTasks = document.querySelector('#invite-connect-modal-tasks button[onclick="copyInviteLinkTasks()"]');
+    if (copyBtnTasks) {
+        copyBtnTasks.addEventListener('click', function() {
+            copyInviteLinkTasks();
+        });
+    }
+});
+
+// Functions for tasks page invite modal
+function openInviteModalTasks() {
+    const userId = localStorage.getItem('userId');
+    if (!userId) {
+        alert('You must be logged in to generate an invite link.');
+        return;
+    }
+    
+    try {
+        // Generate invite link
+        let inviteLink;
+        
+        // User is a professional - invite to checkinvite.html
+        inviteLink = `${window.location.origin}/checkinvite.html?invite=${userId}`;
+        
+        // Set the invite link in the input field
+        document.getElementById('invite-link-tasks').value = inviteLink;
+        
+        // Show the modal
+        inviteConnectModalTasks.style.display = 'flex';
+        
+        // Generate QR code if needed
+        generateQRCodeTasks(inviteLink);
+        
+    } catch (error) {
+        console.error('Error generating invite link:', error);
+        alert('Failed to generate invite link. Please try again.');
+    }
+}
+
+function closeInviteModalTasks() {
+    inviteConnectModalTasks.style.display = 'none';
+}
+
+function generateQRCodeTasks(inviteLink) {
+    // QR code generation logic can be added here if needed
+    // For now, we'll skip QR code generation
+}
+
+function copyInviteLinkTasks() {
+    const inviteLink = document.getElementById('invite-link-tasks');
+    inviteLink.select();
+    inviteLink.setSelectionRange(0, 99999);
+    
+    try {
+        document.execCommand('copy');
+        
+        // Show success message
+        const copyBtn = document.querySelector('#invite-connect-modal-tasks button[onclick="copyInviteLinkTasks()"]');
+        const originalText = copyBtn.textContent;
+        copyBtn.textContent = 'Copied!';
+        copyBtn.style.background = '#28a745';
+        
+        setTimeout(() => {
+            copyBtn.textContent = originalText;
+            copyBtn.style.background = '#007bff';
+        }, 2000);
+        
+    } catch (err) {
+        console.error('Failed to copy: ', err);
+        alert('Failed to copy link. Please copy it manually.');
+    }
+}
+
+function shareInviteLinkTasks() {
+    const inviteLink = document.getElementById('invite-link-tasks').value;
+    const message = `Hi! I'd like to connect with you on Taska. Here's my invite link: ${inviteLink}`;
+    
+    // Create WhatsApp share URL
+    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+    
+    // Open WhatsApp in new window
+    window.open(whatsappUrl, '_blank');
+}
+
+// Make functions globally accessible
+window.openInviteModalTasks = openInviteModalTasks;
+window.closeInviteModalTasks = closeInviteModalTasks;
+window.copyInviteLinkTasks = copyInviteLinkTasks;
+window.shareInviteLinkTasks = shareInviteLinkTasks;
 
 init();
     </script>
