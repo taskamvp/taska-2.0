@@ -14,6 +14,21 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Recipient email (to) and studentName are required.' });
   }
 
+  // Function to check if email is a beta test email
+  function isBetaTestEmail(email) {
+    const betaEmails = [
+      'beta1@gmail.com', 'beta2@gmail.com', 'beta3@gmail.com', 'beta4@gmail.com', 'beta5@gmail.com',
+      'beta6@gmail.com', 'beta7@gmail.com', 'beta8@gmail.com', 'beta9@gmail.com', 'beta10@gmail.com'
+    ];
+    return betaEmails.includes(email.toLowerCase());
+  }
+
+  // Skip sending email if it's a beta test email
+  if (isBetaTestEmail(to)) {
+    console.log('Skipping connection accepted email for beta test email:', to);
+    return res.status(200).json({ success: true, message: 'Email skipped for beta test account' });
+  }
+
   const subject = 'Connection Accepted on Taska';
   const html = `
     <div style="font-family:Arial,sans-serif;max-width:480px;margin:0 auto;background:#fff;border-radius:8px;box-shadow:0 2px 10px rgba(0,0,0,0.07);padding:32px 24px;">

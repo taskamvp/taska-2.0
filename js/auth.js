@@ -199,8 +199,12 @@ export async function signup(userType) {
         
         // Send email verification
         try {
-            await sendEmailVerification(user);
-            console.log('Email verification sent successfully');
+            if (!isBetaTestEmail(user.email)) {
+                await sendEmailVerification(user);
+                console.log('Email verification sent successfully');
+            } else {
+                console.log('Skipping email verification for beta test email:', user.email);
+            }
         } catch (verificationError) {
             console.error('Error sending email verification:', verificationError);
             // Continue with signup even if verification email fails
@@ -336,9 +340,14 @@ export async function resendVerificationEmail() {
 
     toggleLoading(true);
     try {
-        await sendEmailVerification(user);
-        toggleLoading(false);
-        showWarning("Verification email sent! Please check your inbox.");
+        if (!isBetaTestEmail(user.email)) {
+            await sendEmailVerification(user);
+            toggleLoading(false);
+            showWarning("Verification email sent! Please check your inbox.");
+        } else {
+            toggleLoading(false);
+            showWarning("Email verification skipped for beta test account.");
+        }
     } catch (error) {
         toggleLoading(false);
         console.error('Error resending verification email:', error);
@@ -478,4 +487,13 @@ export function getUserId() {
 // Function to get the user role
 export function getUserRole() {
     return localStorage.getItem('userRole');
+}
+
+// Function to check if email is a beta test email
+function isBetaTestEmail(email) {
+    const betaEmails = [
+        'beta1@gmail.com', 'beta2@gmail.com', 'beta3@gmail.com', 'beta4@gmail.com', 'beta5@gmail.com',
+        'beta6@gmail.com', 'beta7@gmail.com', 'beta8@gmail.com', 'beta9@gmail.com', 'beta10@gmail.com'
+    ];
+    return betaEmails.includes(email.toLowerCase());
 }

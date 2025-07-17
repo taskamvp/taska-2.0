@@ -20,6 +20,21 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Email and user type are required.' });
   }
 
+  // Function to check if email is a beta test email
+  function isBetaTestEmail(email) {
+    const betaEmails = [
+      'beta1@gmail.com', 'beta2@gmail.com', 'beta3@gmail.com', 'beta4@gmail.com', 'beta5@gmail.com',
+      'beta6@gmail.com', 'beta7@gmail.com', 'beta8@gmail.com', 'beta9@gmail.com', 'beta10@gmail.com'
+    ];
+    return betaEmails.includes(email.toLowerCase());
+  }
+
+  // Skip sending email if it's a beta test email
+  if (isBetaTestEmail(email)) {
+    console.log('Skipping welcome email for beta test email:', email);
+    return res.status(200).json({ success: true, message: 'Email skipped for beta test account' });
+  }
+
   const welcomeEmailHTML = `
     <!DOCTYPE html>
     <html lang="en">
