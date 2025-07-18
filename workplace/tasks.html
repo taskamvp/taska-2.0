@@ -2204,6 +2204,9 @@ async function loadChatHeader() {
                 </div>
             </div>
             <div class="chat-actions">
+                <button class="notify-btn" onclick="openNotifyPopup()" title="Notify about chat updates">
+                    <i class="fas fa-bell"></i> Notify
+                </button>
                 <button class="hide-chat-btn" onclick="hideChat()" title="Hide Chat">
                     <i class="fas fa-chevron-right"></i>
                 </button>
@@ -4984,7 +4987,120 @@ window.handleProfilePicClick = function(userId, userRole) {
 };
 
 // === End Invite to Connect Modal for Tasks Page ===
+
+// Notify Modal HTML (add at end of <body>)
+// ... existing code ...
+// Add JS functions for notify popup
+function openNotifyPopup() {
+    let modal = document.getElementById('notify-modal');
+    if (modal) {
+        modal.classList.add('active');
+        document.getElementById('notify-modal-message').style.display = 'none';
+        document.getElementById('notify-modal-message').textContent = '';
+    }
+}
+function closeNotifyPopup() {
+    let modal = document.getElementById('notify-modal');
+    if (modal) modal.classList.remove('active');
+}
+async function sendNotify() {
+    const notifyMsg = document.getElementById('notify-modal-message');
+    notifyMsg.style.display = 'none';
+    notifyMsg.textContent = '';
+    if (!selectedProfessionalId || !userId) {
+        notifyMsg.textContent = 'No chat selected.';
+        notifyMsg.style.display = 'block';
+        return;
+    }
+    try {
+        // Determine chatId (sorted)
+        const chatId = [userId, selectedProfessionalId].sort().join("+");
+        // Check last notified time
+        const notifRef = ref(db, `notifications/${chatId}`);
+        const notifSnap = await get(notifRef);
+        const now = Date.now();
+        if (notifSnap.exists() && notifSnap.val().lastNotified) {
+            const last = notifSnap.val().lastNotified;
+            if (now - last < 30 * 60 * 1000) {
+                notifyMsg.textContent = 'You can only notify once every 30 minutes.';
+                notifyMsg.style.display = 'block';
+                return;
+            }
+        }
+        // Get receiver info (always professional here)
+        let receiverId = selectedProfessionalId;
+        let receiverType = 'professional';
+        // Fetch receiver email and name
+        let receiverEmail = '';
+        let receiverName = '';
+        const profSnap = await get(ref(db, `professionalslist/${receiverId}`));
+        if (profSnap.exists()) {
+            receiverEmail = profSnap.val().personal?.email || profSnap.val().email || '';
+            receiverName = profSnap.val().personal?.name || profSnap.val().name || 'Employer';
+        }
+        if (!receiverEmail) {
+            notifyMsg.textContent = 'Could not find employer email.';
+            notifyMsg.style.display = 'block';
+            return;
+        }
+        // Call backend API to send email
+        const resp = await fetch('/api/new-chatnotify.js', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                to: receiverEmail,
+                receiverName,
+                receiverType
+            })
+        });
+        const data = await resp.json();
+        if (!resp.ok) throw new Error(data.error || 'Failed to send notification');
+        // Update last notified time
+        await set(notifRef, { lastNotified: now });
+        notifyMsg.textContent = 'Notification sent!';
+        notifyMsg.style.color = '#388e3c';
+        notifyMsg.style.display = 'block';
+        setTimeout(() => {
+            closeNotifyPopup();
+            notifyMsg.style.color = '#d32f2f';
+        }, 1500);
+    } catch (err) {
+        notifyMsg.textContent = err.message || 'Failed to send notification.';
+        notifyMsg.style.display = 'block';
+    }
+}
+window.openNotifyPopup = openNotifyPopup;
+window.closeNotifyPopup = closeNotifyPopup;
+window.sendNotify = sendNotify;
+// ... existing code ...
+// At end of <body> add:
+/*
+<div class="notify-modal" id="notify-modal">
+    <div class="notify-modal-content">
+        <h3>Notify Employer?</h3>
+        <p>Do you want to notify the employer about new chats or the updates in the work?</p>
+        <div class="notify-modal-actions">
+            <button class="notify-cancel-btn" onclick="closeNotifyPopup()">Cancel</button>
+            <button class="notify-confirm-btn" onclick="sendNotify()">Notify</button>
+        </div>
+        <div id="notify-modal-message"></div>
+    </div>
+</div>
+*/
+// ... existing code ...
 </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93b153f5ba4ebd25',t:'MTc0NjQ1OTUzOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+<!-- Notify Confirmation Modal -->
+<div class="notify-modal" id="notify-modal">
+    <div class="notify-modal-content">
+        <h3>Notify Employer?</h3>
+        <p>Do you want to notify the employer about new chats or the updates in the work?</p>
+        <div class="notify-modal-actions">
+            <button class="notify-cancel-btn" onclick="closeNotifyPopup()">Cancel</button>
+            <button class="notify-confirm-btn" onclick="sendNotify()">Notify</button>
+        </div>
+        <div id="notify-modal-message"></div>
+    </div>
+</div>
+// ... existing code ...
 </body>
 </html>
