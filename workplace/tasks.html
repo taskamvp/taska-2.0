@@ -5015,12 +5015,12 @@ async function sendNotify() {
     try {
         // Determine chatId (sorted)
         const chatId = [userId, selectedProfessionalId].sort().join("+");
-        // Check last notified time
-        const notifRef = ref(db, `notifications/${chatId}`);
+        // Check last notified time for this user
+        const notifRef = ref(db, `notifications/${chatId}/lastNotified/${userId}`);
         const notifSnap = await get(notifRef);
         const now = Date.now();
-        if (notifSnap.exists() && notifSnap.val().lastNotified) {
-            const last = notifSnap.val().lastNotified;
+        if (notifSnap.exists()) {
+            const last = notifSnap.val();
             if (now - last < 30 * 60 * 1000) {
                 notifyMsg.textContent = 'You can only notify once every 30 minutes.';
                 notifyMsg.style.display = 'block';
@@ -5030,7 +5030,6 @@ async function sendNotify() {
         // Get receiver info (always professional here)
         let receiverId = selectedProfessionalId;
         let receiverType = 'professional';
-        // Fetch receiver email and name
         let receiverEmail = '';
         let receiverName = '';
         const profSnap = await get(ref(db, `professionalslist/${receiverId}`));
@@ -5055,8 +5054,8 @@ async function sendNotify() {
         });
         const data = await resp.json();
         if (!resp.ok) throw new Error(data.error || 'Failed to send notification');
-        // Update last notified time
-        await set(notifRef, { lastNotified: now });
+        // Update last notified time for this user only
+        await set(notifRef, now);
         notifyMsg.textContent = 'Notification sent!';
         notifyMsg.style.color = '#388e3c';
         notifyMsg.style.display = 'block';
