@@ -1666,6 +1666,36 @@ async function submitTask() {
             submitBtn.textContent = 'Saving task...';
             taskRef = ref(db, `tasks`);
             await push(taskRef, taskData);
+
+            // --- Send email to student ---
+            try {
+                // Fetch student data
+                const studentSnapshot = await get(ref(db, `studentslist/${selectedStudentId}`));
+                const student = studentSnapshot.exists() ? studentSnapshot.val() : null;
+                const studentEmail = student?.personal?.email || student?.email;
+                const studentName = student?.personal?.name || student?.name || 'Student';
+
+                // Fetch employer (current user) data
+                const employerSnapshot = await get(ref(db, `professionalslist/${userId}`));
+                const employer = employerSnapshot.exists() ? employerSnapshot.val() : null;
+                const employerName = employer?.personal?.name || employer?.name || 'Employer';
+
+                if (studentEmail) {
+                    await fetch('/api/added-task.js', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            to: studentEmail,
+                            studentName,
+                            employerName,
+                            taskTitle: title
+                        })
+                    });
+                }
+            } catch (mailErr) {
+                console.error('Error sending new task email:', mailErr);
+            }
+            // --- End email ---
         }
 
         closeTaskPopup();
