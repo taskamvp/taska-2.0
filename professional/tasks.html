@@ -961,6 +961,9 @@ async function loadChatHeader() {
                 </div>
             </div>
             <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <button class="notify-btn" onclick="openNotifyPopup()" title="Notify about chat updates" style="background: #f5f5f5; border: 1px solid #ccc; border-radius: 4px; padding: 4px 10px; font-size: 13px; cursor: pointer; margin-right: 0.5rem;">
+                <i class="fas fa-bell"></i> Notify
+            </button>
             <div class="menu">
                 <i class="fas fa-ellipsis-v menu-icon"></i>
                 <div class="menu-dropdown">
@@ -2966,7 +2969,112 @@ window.closeInviteModalTasks = closeInviteModalTasks;
 window.copyInviteLinkTasks = copyInviteLinkTasks;
 window.shareInviteLinkTasks = shareInviteLinkTasks;
 
+// Add JS functions for notify popup
+function openNotifyPopup() {
+    document.getElementById('notify-modal').style.display = 'flex';
+    document.getElementById('notify-modal-message').style.display = 'none';
+    document.getElementById('notify-modal-message').textContent = '';
+}
+function closeNotifyPopup() {
+    document.getElementById('notify-modal').style.display = 'none';
+}
+window.openNotifyPopup = openNotifyPopup;
+window.closeNotifyPopup = closeNotifyPopup;
+
+async function sendNotify() {
+    const notifyMsg = document.getElementById('notify-modal-message');
+    notifyMsg.style.display = 'none';
+    notifyMsg.textContent = '';
+    if (!selectedStudentId || !userId) {
+        notifyMsg.textContent = 'No chat selected.';
+        notifyMsg.style.display = 'block';
+        return;
+    }
+    try {
+        // Determine chatId (sorted)
+        const chatId = [userId, selectedStudentId].sort().join("+");
+        // Check last notified time
+        const notifRef = ref(db, `notifications/${chatId}`);
+        const notifSnap = await get(notifRef);
+        const now = Date.now();
+        if (notifSnap.exists() && notifSnap.val().lastNotified) {
+            const last = notifSnap.val().lastNotified;
+            if (now - last < 30 * 60 * 1000) {
+                notifyMsg.textContent = 'You can only notify once every 30 minutes.';
+                notifyMsg.style.display = 'block';
+                return;
+            }
+        }
+        // Get receiver info (is professional or student)
+        let receiverId = selectedStudentId;
+        let receiverType = 'student';
+        // If current user is student, receiver is professional
+        if (window.location.pathname.includes('/workplace/')) {
+            receiverId = userId;
+            receiverType = 'professional';
+        }
+        // Fetch receiver email and name
+        let receiverEmail = '';
+        let receiverName = '';
+        if (receiverType === 'professional') {
+            const profSnap = await get(ref(db, `professionalslist/${receiverId}`));
+            if (profSnap.exists()) {
+                receiverEmail = profSnap.val().personal?.email || profSnap.val().email || '';
+                receiverName = profSnap.val().personal?.name || profSnap.val().name || 'Employer';
+            }
+        } else {
+            const stuSnap = await get(ref(db, `studentslist/${receiverId}`));
+            if (stuSnap.exists()) {
+                receiverEmail = stuSnap.val().personal?.email || stuSnap.val().email || '';
+                receiverName = stuSnap.val().personal?.name || stuSnap.val().name || 'Student';
+            }
+        }
+        if (!receiverEmail) {
+            notifyMsg.textContent = 'Could not find receiver email.';
+            notifyMsg.style.display = 'block';
+            return;
+        }
+        // Call backend API to send email
+        const resp = await fetch('/api/new-chatnotify.js', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                to: receiverEmail,
+                receiverName,
+                receiverType
+            })
+        });
+        const data = await resp.json();
+        if (!resp.ok) throw new Error(data.error || 'Failed to send notification');
+        // Update last notified time
+        await set(notifRef, { lastNotified: now });
+        notifyMsg.textContent = 'Notification sent!';
+        notifyMsg.style.color = '#388e3c';
+        notifyMsg.style.display = 'block';
+        setTimeout(() => {
+            closeNotifyPopup();
+            notifyMsg.style.color = '#d32f2f';
+        }, 1500);
+    } catch (err) {
+        notifyMsg.textContent = err.message || 'Failed to send notification.';
+        notifyMsg.style.display = 'block';
+    }
+}
+window.sendNotify = sendNotify;
+
 init();
     </script>
+    <!-- Notify Confirmation Modal -->
+    <div class="notify-modal" id="notify-modal">
+        <div class="notify-modal-content">
+            <h3>Notify Student?</h3>
+            <p>Do you want to notify the student about new chats or the updates in the work?</p>
+            <div class="notify-modal-actions">
+                <button class="notify-cancel-btn" onclick="closeNotifyPopup()">Cancel</button>
+                <button class="notify-confirm-btn" onclick="sendNotify()">Notify</button>
+            </div>
+            <div id="notify-modal-message"></div>
+        </div>
+    </div>
 </body>
 </html>
