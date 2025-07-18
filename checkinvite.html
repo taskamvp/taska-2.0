@@ -763,6 +763,9 @@
                     inviterRole: userType
                 });
 
+                // Send email notification to the inviter
+                await sendInvitationAcceptedEmail(inviterId, userId, inviterData);
+
                 hideConnectionPopup();
                 window.connectionPopupResolve(true);
                 
@@ -777,6 +780,46 @@
         function handleConnectionCancel() {
             hideConnectionPopup();
             window.connectionPopupResolve(false);
+        }
+
+        // Send invitation accepted email
+        async function sendInvitationAcceptedEmail(inviterId, accepterId, inviterData) {
+            try {
+                // Get current user (accepter) data
+                const accepterSnapshot = await get(ref(db, `${userType === 'student' ? 'studentslist' : 'professionalslist'}/${accepterId}`));
+                const accepterData = accepterSnapshot.val();
+                
+                if (!accepterData) {
+                    console.error('Accepter data not found');
+                    return;
+                }
+
+                // Prepare email data
+                const emailData = {
+                    to: inviterData.personal?.email || inviterData.email,
+                    senderName: inviterData.personal?.name || inviterData.name || 'User',
+                    senderRole: inviterData.role || 'user',
+                    accepterName: accepterData.personal?.name || accepterData.name || 'User',
+                    accepterRole: userType
+                };
+
+                // Send email using the new API
+                const response = await fetch('/api/invitation-accepted.js', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(emailData),
+                });
+
+                if (!response.ok) {
+                    console.error('Failed to send invitation accepted email');
+                } else {
+                    console.log('Invitation accepted email sent successfully');
+                }
+            } catch (error) {
+                console.error('Error sending invitation accepted email:', error);
+            }
         }
 
         // Determine user type
