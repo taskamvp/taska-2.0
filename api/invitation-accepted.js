@@ -1,4 +1,8 @@
 export default async function handler(req, res) {
+  console.log('invitation-accepted.js API called');
+  console.log('Request method:', req.method);
+  console.log('Request body:', req.body);
+  
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -12,6 +16,7 @@ export default async function handler(req, res) {
   } = req.body;
   
   const apiKey = process.env.RESEND_API_KEY;
+  console.log('API Key available:', !!apiKey);
 
   if (!apiKey) {
     return res.status(500).json({ error: 'Resend API key not configured.' });
@@ -83,21 +88,31 @@ export default async function handler(req, res) {
   }
 
   try {
+    console.log('Sending email to:', to);
+    console.log('Email subject:', subject);
+    
+    const emailPayload = {
+      to,
+      subject,
+      html,
+      from: 'Taska <support@jointaska.com>',
+    };
+    
+    console.log('Email payload:', emailPayload);
+    
     const response = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        to,
-        subject,
-        html,
-        from: 'Taska <support@jointaska.com>',
-      }),
+      body: JSON.stringify(emailPayload),
     });
 
+    console.log('Resend API response status:', response.status);
     const data = await response.json();
+    console.log('Resend API response data:', data);
+    
     if (!response.ok) throw new Error(data.error || 'Failed to send email');
     res.status(200).json({ success: true, data });
   } catch (error) {

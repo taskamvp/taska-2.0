@@ -794,14 +794,25 @@
                     return;
                 }
 
+                // Get inviter email
+                const inviterEmail = inviterData.personal?.email || inviterData.email;
+                if (!inviterEmail) {
+                    console.error('Inviter email not found');
+                    return;
+                }
+
                 // Prepare email data
                 const emailData = {
-                    to: inviterData.personal?.email || inviterData.email,
+                    to: inviterEmail,
                     senderName: inviterData.personal?.name || inviterData.name || 'User',
                     senderRole: inviterData.role || 'user',
                     accepterName: accepterData.personal?.name || accepterData.name || 'User',
                     accepterRole: userType
                 };
+
+                console.log('Sending invitation accepted email with data:', emailData);
+                console.log('Inviter data:', inviterData);
+                console.log('Accepter data:', accepterData);
 
                 // Send email using the new API
                 const response = await fetch('/api/invitation-accepted.js', {
@@ -812,8 +823,14 @@
                     body: JSON.stringify(emailData),
                 });
 
+                console.log('Response status:', response.status);
+                console.log('Response headers:', response.headers);
+
+                const responseData = await response.json();
+                console.log('Email API response:', responseData);
+
                 if (!response.ok) {
-                    console.error('Failed to send invitation accepted email');
+                    console.error('Failed to send invitation accepted email:', responseData);
                 } else {
                     console.log('Invitation accepted email sent successfully');
                 }
