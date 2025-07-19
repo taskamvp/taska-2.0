@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taska - Complete User Guide</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #fff;
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            width: 280px;
+            background: #f8f9fa;
+            border-right: 1px solid #e0e0e0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+        
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+            background: #fff;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        .sidebar-header h1 {
+            font-size: 1.5rem;
+            color: #14532d;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+        
+        .sidebar-header p {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .nav-menu {
+            padding: 20px 0;
+        }
+        
+        .nav-section {
+            margin-bottom: 30px;
+        }
+        
+        .nav-section h3 {
+            font-size: 0.8rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+            padding: 0 20px;
+            font-weight: 600;
+        }
+        
+        .nav-item {
+            display: block;
+            padding: 12px 20px;
+            color: #333;
+            text-decoration: none;
+            font-size: 0.95rem;
+            border-left: 3px solid transparent;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        
+        .nav-item:hover {
+            background: #e8f4ea;
+            color: #14532d;
+            border-left-color: #14532d;
+        }
+        
+        .nav-item.active {
+            background: #e8f4ea;
+            color: #14532d;
+            border-left-color: #14532d;
+            font-weight: 600;
+        }
+        
+        .nav-item.active::before {
+            content: "";
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 6px;
+            height: 6px;
+            background: #14532d;
+            border-radius: 50%;
+        }
+        
+        /* Mobile menu toggle */
+        .mobile-menu-toggle {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;
+            background: #14532d;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 40px;
+            max-width: calc(100vw - 280px);
+            transition: margin-left 0.3s ease;
+        }
+        
+        .content-section {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .content-section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .section-header {
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        
+        .section-header h2 {
+            font-size: 2.5rem;
+            color: #14532d;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        .section-header p {
+            font-size: 1.1rem;
+            color: #666;
+            max-width: 600px;
+        }
+        
+        .section h3 {
+            font-size: 1.8rem;
+            color: #333;
+            margin: 40px 0 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .section h4 {
+            font-size: 1.3rem;
+            color: #555;
+            margin: 30px 0 15px 0;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+        
+        .feature-card {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid #e0e0e0;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        
+        .feature-card h4 {
+            color: #14532d;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+        
+        .feature-card p {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        .step-list {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+        
+        .step-list ol {
+            padding-left: 20px;
+        }
+        
+        .step-list li {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #14532d, #166534);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 30px 0;
+        }
+        
+        .highlight-box h3 {
+            color: white;
+            margin-bottom: 15px;
+        }
+        
+        .highlight-box ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .highlight-box li {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .highlight-box li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+        
+        .user-type-section {
+            background: #f0f4ff;
+            padding: 30px;
+            border-radius: 12px;
+            margin: 30px 0;
+            border-left: 4px solid #1a73e8;
+        }
+        
+        .user-type-section h3 {
+            color: #1a73e8;
+            margin-bottom: 20px;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .comparison-table th,
+        .comparison-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .comparison-table th {
+            background: #14532d;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .comparison-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .comparison-table tr:hover {
+            background: #e8f4ea;
+        }
+        
+        .code-block {
+            background: #f4f4f4;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            margin: 20px 0;
+            border-left: 4px solid #14532d;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .info-box {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .breadcrumb a {
+            color: #14532d;
+            text-decoration: none;
+        }
+        
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+        
+        .breadcrumb .separator {
+            margin: 0 10px;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: block;
+            }
+            
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+                max-width: 100vw;
+            }
+            
+            .section-header h2 {
+                font-size: 2rem;
+            }
+            
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .breadcrumb {
+                flex-wrap: wrap;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .main-content {
+                padding: 15px;
+            }
+            
+            .section-header h2 {
+                font-size: 1.8rem;
+            }
+            
+            .section h3 {
+                font-size: 1.5rem;
+            }
+        }
+        
+        /* Scrollbar Styling */
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .sidebar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 3px;
+        }
+        
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+    </style>
+</head>
+<body>
+    <!-- Mobile Menu Toggle -->
+    <button class="mobile-menu-toggle" onclick="toggleSidebar()">
+        ☰
+    </button>
+
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <img src="assets/logo.png" alt="Taska Logo" style="height: 60px; width: auto; margin-bottom: 10px;">
+            <p>Complete User Guide</p>
+        </div>
+        
+        <div class="nav-menu">
+            <div class="nav-section">
+                <h3>Getting Started</h3>
+                <a href="#overview" class="nav-item active" onclick="showSection('overview')">Platform Overview</a>
+                <a href="#getting-started" class="nav-item" onclick="showSection('getting-started')">Getting Started</a>
+            </div>
+            
+            <div class="nav-section">
+                <h3>User Features</h3>
+                <a href="#student-features" class="nav-item" onclick="showSection('student-features')">Student Features</a>
+                <a href="#professional-features" class="nav-item" onclick="showSection('professional-features')">Professional Features</a>
+            </div>
+            
+            <div class="nav-section">
+                <h3>Core Systems</h3>
+                <a href="#ai-search" class="nav-item" onclick="showSection('ai-search')">AI-Powered Search</a>
+                <a href="#task-management" class="nav-item" onclick="showSection('task-management')">Task Management</a>
+                <a href="#communication" class="nav-item" onclick="showSection('communication')">Communication & Chat</a>
+            </div>
+            
+            <div class="nav-section">
+                <h3>Account & Security</h3>
+                <a href="#profile-management" class="nav-item" onclick="showSection('profile-management')">Profile Management</a>
+                <a href="#security" class="nav-item" onclick="showSection('security')">Security & Privacy</a>
+            </div>
+            
+            <div class="nav-section">
+                <h3>Support</h3>
+                <a href="#troubleshooting" class="nav-item" onclick="showSection('troubleshooting')">Troubleshooting</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <!-- Overview Section -->
+        <section id="overview" class="content-section active">
+            <div class="breadcrumb">
+                <a href="#overview">Taska Platform</a>
+                <span class="separator">/</span>
+                <span>Platform Overview</span>
+            </div>
+            
+            <div class="section-header">
+                <h2>Platform Overview</h2>
+                <p>Taska is a revolutionary platform that connects elite college students from premier institutions with professionals seeking affordable, high-quality work assistance.</p>
+            </div>
+            
+            <div class="highlight-box">
+                <h3>Key Platform Benefits</h3>
+                <ul>
+                    <li><strong>AI-Trained Students:</strong> Students proficient in latest AI tools and technologies</li>
+                    <li><strong>Affordable Rates:</strong> Cost-effective solutions compared to traditional freelancing</li>
+                    <li><strong>Quality Assurance:</strong> Students from top-tier institutions ensuring high standards</li>
+                    <li><strong>Real-time Collaboration:</strong> Integrated chat and task management system</li>
+                    <li><strong>Secure Environment:</strong> Protected communication and file sharing</li>
+                </ul>
+            </div>
+
+            <h3>Platform Architecture</h3>
+            <p>The Taska consists of several interconnected modules:</p>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>Authentication System</h4>
+                    <p>Secure user registration and login with email verification for both students and professionals.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>AI Search Engine</h4>
+                    <p>Intelligent matching algorithm that connects professionals with the most suitable students based on skills and requirements.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Task Management</h4>
+                    <p>Comprehensive workflow system for creating, assigning, tracking, and completing tasks with real-time updates.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Communication Hub</h4>
+                    <p>Integrated chat system with file sharing, task mentions, and real-time messaging capabilities.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Profile Management</h4>
+                    <p>Detailed profile system for students and professionals with portfolio integration and skill verification.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Analytics Dashboard</h4>
+                    <p>Performance tracking and insights for both users to monitor productivity and engagement.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Getting Started Section -->
+        <section id="getting-started" class="content-section">
+            <div class="breadcrumb">
+                <a href="#overview">Taska</a>
+                <span class="separator">/</span>
+                <span>Getting Started</span>
+            </div>
+            
+            <div class="section-header">
+                <h2>Getting Started</h2>
+                <p>Learn how to set up your account and start using Taska effectively.</p>
+            </div>
+            
+            <h3>Registration Process</h3>
+            <div class="step-list">
+                <ol>
+                    <li><strong>Visit the Platform:</strong> Navigate to the Taska homepage</li>
+                    <li><strong>Choose Your Role:</strong> Select either "Join as a Student" or "Hire AI Trained Students"</li>
+                    <li><strong>Fill Registration Form:</strong> Provide required information including email, password, and basic details</li>
+                    <li><strong>Email Verification:</strong> Verify your email address through the sent verification link</li>
+                    <li><strong>Complete Profile:</strong> Add detailed information about your skills, education, and experience</li>
+                    <li><strong>Start Using:</strong> Access your dashboard and begin exploring the platform</li>
+                </ol>
+            </div>
+
+            <div class="user-type-section">
+                <h3>Student Registration Requirements</h3>
+                <ul>
+                    <li>Valid college email address from top-tier institutions</li>
+                    <li>Educational details (college, degree, branch, year)</li>
+                    <li>Skills and technical expertise</li>
+                    <li>Portfolio links (GitHub, Codeforces, LeetCode, etc.)</li>
+                    <li>Availability and work preferences</li>
+                </ul>
+            </div>
+
+            <div class="user-type-section">
+                <h3>Professional Registration Requirements</h3>
+                <ul>
+                    <li>Business email address</li>
+                    <li>Company/organization details</li>
+                    <li>Professional background and requirements</li>
+                    <li>Project specifications and expectations</li>
+                    <li>Budget and timeline preferences</li>
+                </ul>
+            </div>
+
+            <div class="info-box">
+                <strong>Important:</strong> Email verification is mandatory for both user types. Users cannot access platform features until their email is verified.
+            </div>
+        </section>
+
+        <!-- Student Features Section -->
+        <section id="student-features" class="content-section">
+            <div class="breadcrumb">
+                <a href="#overview">Taska</a>
+                <span class="separator">/</span>
+                <span>Student Features</span>
+            </div>
+            
+            <div class="section-header">
+                <h2>Student Features & Functions</h2>
+                <p>Discover all the tools and features available to students on Taska.</p>
+            </div>
+            
+            <h3>Student Dashboard Overview</h3>
+            <p>Students from top-tier institutions have access to a comprehensive dashboard that includes task management, professional connections, and profile optimization tools.</p>
+
+            <h4>Core Student Features</h4>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>Task Discovery</h4>
+                    <p>Browse available tasks from connected professionals, filter by skills, deadline, and compensation.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Task Acceptance</h4>
+                    <p>Review task details, submit proposals with plans and timelines, and accept assignments.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Progress Tracking</h4>
+                    <p>Update task status, submit deliverables, and track completion milestones.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Communication</h4>
+                    <p>Real-time chat with professionals, file sharing, and task-specific discussions.</p>
+                </div>
+            </div>
+
+            <h3>Profile Management for Students</h3>
+            <div class="step-list">
+                <ol>
+                    <li><strong>Personal Information:</strong> Name, email, WhatsApp, location, LinkedIn</li>
+                    <li><strong>Educational Details:</strong> College, degree, branch, year of study</li>
+                    <li><strong>Skills Section:</strong> Technical skills, programming languages, tools</li>
+                    <li><strong>Portfolio Integration:</strong> GitHub, Codeforces, LeetCode profiles</li>
+                    <li><strong>Availability Settings:</strong> Work hours, remote preferences, duration</li>
+                    <li><strong>Soft Skills:</strong> Communication style, deadline management</li>
+                </ol>
+            </div>
+
+            <h3>Task Workflow for Students</h3>
+            <div class="step-list">
+                <ol>
+                    <li><strong>Task Notification:</strong> Receive notifications for new tasks from connected professionals</li>
+                    <li><strong>Task Review:</strong> Examine task requirements, deadline, and compensation</li>
+                    <li><strong>Proposal Submission:</strong> Submit detailed plan, questions, and timeline</li>
+                    <li><strong>Task Acceptance:</strong> Accept task and begin work</li>
+                    <li><strong>Progress Updates:</strong> Regular status updates and milestone submissions</li>
+                    <li><strong>Final Delivery:</strong> Submit completed work and documentation</li>
+                    <li><strong>Feedback & Rating:</strong> Receive professional feedback and ratings</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- Professional Features Section -->
+        <section id="professional-features" class="content-section">
+            <div class="breadcrumb">
+                <a href="#overview">Taska</a>
+                <span class="separator">/</span>
+                <span>Professional Features</span>
+            </div>
+            
+            <div class="section-header">
+                <h2>Professional Features & Functions</h2>
+                <p>Explore the powerful tools available to professionals for finding talent and managing projects.</p>
+            </div>
+            
+            <h3>Professional Dashboard Overview</h3>
+            <p>Professionals have access to advanced tools for finding talented college students from top-tier institutions, managing projects, and overseeing task completion.</p>
+
+            <h4>Core Professional Features</h4>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>AI-Powered Student Search</h4>
+                    <p>Use natural language queries to find the most suitable students for your projects.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Connection Management</h4>
+                    <p>Build and manage your network of student connections for ongoing collaboration.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Task Creation & Assignment</h4>
+                    <p>Create detailed tasks with requirements, deadlines, and file attachments.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Progress Monitoring</h4>
+                    <p>Track task progress, review deliverables, and provide feedback in real-time.</p>
+                </div>
+            </div>
+
+            <h3>Student Discovery Process</h3>
+            <div class="step-list">
+                <ol>
+                    <li><strong>AI Search:</strong> Use natural language to describe your requirements</li>
+                    <li><strong>Student Filtering:</strong> Filter results by skills, college, experience level</li>
+                    <li><strong>Profile Review:</strong> Examine student profiles, portfolios, and ratings</li>
+                    <li><strong>Connection Request:</strong> Send connection requests to suitable students</li>
+                    <li><strong>Initial Communication:</strong> Discuss project requirements and expectations</li>
+                    <li><strong>Task Assignment:</strong> Create and assign tasks to connected students</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- AI Search Section -->
+        <section id="ai-search" class="content-section">
+            <div class="breadcrumb">
+                <a href="#overview">Taska</a>
+                <span class="separator">/</span>
+                <span>AI-Powered Search</span>
+            </div>
+            
+            <div class="section-header">
+                <h2>AI-Powered Search & Matching</h2>
+                <p>Learn how our intelligent AI system connects you with the perfect match for your projects.</p>
+            </div>
+            
+            <h3>How AI Search Works</h3>
+            <p>Taska uses advanced AI algorithms to match professionals with the most suitable students based on multiple criteria including skills, experience, availability, and project requirements.</p>
+
+            <div class="highlight-box">
+                <h3>AI Search Capabilities</h3>
+                <ul>
+                    <li><strong>Natural Language Processing:</strong> Understand complex project requirements in plain English</li>
+                    <li><strong>Skill Matching:</strong> Match technical skills with project needs</li>
+                    <li><strong>Institution Filtering:</strong> Prioritize students from specific colleges or institutions</li>
+                    <li><strong>Experience Level Assessment:</strong> Consider student experience and portfolio strength</li>
+                    <li><strong>Availability Matching:</strong> Match project timelines with student availability</li>
+                </ul>
+            </div>
+
+            <h3>Search Process</h3>
+            <div class="step-list">
+                <ol>
+                    <li><strong>Query Input:</strong> Enter your requirements in natural language</li>
+                    <li><strong>AI Analysis:</strong> System analyzes your query and extracts key requirements</li>
+                    <li><strong>Database Search:</strong> Searches through student profiles and skills</li>
+                    <li><strong>Relevance Scoring:</strong> Ranks students based on match quality</li>
+                    <li><strong>Result Presentation:</strong> Displays top matching students with relevant details</li>
+                </ol>
+            </div>
+
+            <div class="info-box">
+                <strong>Example Search Queries:</strong><br>
+                • "College student with Python and machine learning skills"<br>
+                • "Student with React experience for 2-week project"<br>
+                • "College student for data analysis project"<br>
+                • "Top college student with web development skills"
+            </div>
+        </section>
+
+        <!-- Task Management Section -->
+        <section id="task-management" class="content-section">
+            <div class="breadcrumb">
+                <a href="#overview">Taska</a>
+                <span class="separator">/</span>
+                <span>Task Management</span>
+            </div>
+            
+            <div class="section-header">
+                <h2>Task Management System</h2>
+                <p>Master the comprehensive task management workflow from creation to completion.</p>
+            </div>
+            
+            <h3>Task Lifecycle</h3>
+            <p>The task management system provides a complete workflow from creation to completion with real-time tracking and communication.</p>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>Task Creation</h4>
+                    <p>Professionals can create detailed tasks with title, description, deadline, and file attachments.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Task Assignment</h4>
+                    <p>Assign tasks to specific students with clear requirements and expectations.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Progress Tracking</h4>
+                    <p>Monitor task progress with status updates and milestone tracking.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Completion & Review</h4>
+                    <p>Review deliverables, provide feedback, and mark tasks as complete.</p>
+                </div>
+            </div>
+
+            <h3>Task Status Types</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Status</th>
+                        <th>Description</th>
+                        <th>Actions Available</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Pending</strong></td>
+                        <td>Task created but not yet accepted by student</td>
+                        <td>Student can review and accept/reject</td>
+                    </tr>
+                    <tr>
+                        <td><strong>In Progress</strong></td>
+                        <td>Task accepted and work has begun</td>
+                        <td>Updates, file sharing, communication</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Under Review</strong></td>
+                        <td>Work submitted for professional review</td>
+                        <td>Professional can approve or request changes</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Completed</strong></td>
+                        <td>Task successfully completed and approved</td>
+                        <td>Feedback, rating, payment processing</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cancelled</strong></td>
+                        <td>Task cancelled by either party</td>
+                        <td>Documentation and closure</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Communication Section -->
+        <section id="communication" class="content-section">
+            <div class="breadcrumb">
+                <a href="#overview">Taska</a>
+                <span class="separator">/</span>
+                <span>Communication & Chat</span>
+            </div>
+            
+            <div class="section-header">
+                <h2>Communication & Chat</h2>
+                <p>Stay connected with real-time messaging, file sharing, and collaborative features.</p>
+            </div>
+            
+            <h3>Integrated Chat System</h3>
+            <p>The platform features a comprehensive chat system that enables seamless communication between students and professionals.</p>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>Real-time Messaging</h4>
+                    <p>Instant message delivery with typing indicators and read receipts.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>File Sharing</h4>
+                    <p>Share documents, images, and code files directly in chat.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Task Mentions</h4>
+                    <p>Reference specific tasks and projects in conversations.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Message History</h4>
+                    <p>Complete conversation history with search functionality.</p>
+                </div>
+            </div>
+
+            <h3>Communication Best Practices</h3>
+            <div class="step-list">
+                <ol>
+                    <li><strong>Be Clear and Concise:</strong> Use clear language and avoid ambiguity</li>
+                    <li><strong>Respond Promptly:</strong> Maintain good communication response times</li>
+                    <li><strong>Use Task References:</strong> Mention specific tasks when discussing work</li>
+                    <li><strong>Share Relevant Files:</strong> Attach necessary documents and resources</li>
+                    <li><strong>Maintain Professionalism:</strong> Keep communication respectful and professional</li>
+                </ol>
+            </div>
+
+            <div class="warning-box">
+                <strong>Important:</strong> All communications are logged and monitored for quality assurance. Maintain professional conduct in all interactions.
+            </div>
+        </section>
+
+        <!-- Profile Management Section -->
+        <section id="profile-management" class="content-section">
+            <div class="breadcrumb">
+                <a href="#overview">Taska</a>
+                <span class="separator">/</span>
+                <span>Profile Management</span>
+            </div>
+            
+            <div class="section-header">
+                <h2>Profile Management</h2>
+                <p>Create and optimize your profile to maximize your visibility and opportunities.</p>
+            </div>
+            
+            <h3>Student Profile Components</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>Personal Information</h4>
+                    <p>Name, email, contact details, location, and professional links.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Educational Background</h4>
+                    <p>College, degree, branch, year, and academic achievements.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Technical Skills</h4>
+                    <p>Programming languages, tools, frameworks, and technologies.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Portfolio Integration</h4>
+                    <p>GitHub, Codeforces, LeetCode, and other coding platform profiles.</p>
+                </div>
+            </div>
+
+            <h3>Profile Optimization Tips</h3>
+            <div class="step-list">
+                <ol>
+                    <li><strong>Complete All Sections:</strong> Fill out all profile sections thoroughly</li>
+                    <li><strong>Use Keywords:</strong> Include relevant keywords for better search visibility</li>
+                    <li><strong>Update Regularly:</strong> Keep profile information current and accurate</li>
+                    <li><strong>Add Portfolio Links:</strong> Include links to relevant work and projects</li>
+                    <li><strong>Professional Photo:</strong> Use a professional profile picture</li>
+                    <li><strong>Write Clear Descriptions:</strong> Use clear, professional language</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- Security Section -->
+        <section id="security" class="content-section">
+            <div class="breadcrumb">
+                <a href="#overview">Taska</a>
+                <span class="separator">/</span>
+                <span>Security & Privacy</span>
+            </div>
+            
+            <div class="section-header">
+                <h2>Security & Privacy</h2>
+                <p>Learn about our comprehensive security measures and privacy protections.</p>
+            </div>
+            
+            <h3>Platform Security Features</h3>
+            <div class="highlight-box">
+                <h3>Security Measures</h3>
+                <ul>
+                    <li><strong>Authentication Required:</strong> All data access requires user authentication</li>
+                    <li><strong>User-Specific Access:</strong> Users can only access their own data</li>
+                    <li><strong>Secure Chat System:</strong> Chat messages only accessible to conversation participants</li>
+                    <li><strong>Task Security:</strong> Tasks only accessible to involved parties</li>
+                    <li><strong>Data Validation:</strong> Comprehensive validation for all data inputs</li>
+                </ul>
+            </div>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>Encryption</h4>
+                    <p>All data is encrypted in transit and at rest using industry-standard protocols.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Access Control</h4>
+                    <p>Role-based access control ensures users only access authorized data.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Audit Logging</h4>
+                    <p>All platform activities are logged for security monitoring and compliance.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Regular Backups</h4>
+                    <p>Automated backup systems ensure data safety and recovery capabilities.</p>
+                </div>
+            </div>
+
+            <div class="warning-box">
+                <strong>Security Best Practices:</strong><br>
+                • Use strong, unique passwords<br>
+                • Enable two-factor authentication if available<br>
+                • Never share login credentials<br>
+                • Log out from shared devices<br>
+                • Report suspicious activities immediately
+            </div>
+        </section>
+
+        <!-- Troubleshooting Section -->
+        <section id="troubleshooting" class="content-section">
+            <div class="breadcrumb">
+                <a href="#overview">Taska</a>
+                <span class="separator">/</span>
+                <span>Troubleshooting</span>
+            </div>
+            
+            <div class="section-header">
+                <h2>Troubleshooting & Support</h2>
+                <p>Find solutions to common issues and get the help you need.</p>
+            </div>
+            
+            <h3>Common Issues & Solutions</h3>
+            
+            <h4>Authentication Issues</h4>
+            <div class="step-list">
+                <ol>
+                    <li><strong>Email Verification:</strong> Ensure email is verified before accessing platform features</li>
+                    <li><strong>Password Reset:</strong> Use "Forgot Password" feature if unable to login</li>
+                    <li><strong>Account Lockout:</strong> Contact support if account is locked due to multiple failed attempts</li>
+                    <li><strong>Browser Issues:</strong> Clear cache and cookies, try different browser</li>
+                </ol>
+            </div>
+
+            <h4>Task Management Issues</h4>
+            <div class="step-list">
+                <ol>
+                    <li><strong>Task Not Appearing:</strong> Check connection status with professional/student</li>
+                    <li><strong>File Upload Problems:</strong> Verify file size and format requirements</li>
+                    <li><strong>Communication Issues:</strong> Ensure both parties are connected</li>
+                    <li><strong>Status Updates:</strong> Refresh page to see latest status changes</li>
+                </ol>
+            </div>
+
+            <h3>Technical Support</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>Help Documentation</h4>
+                    <p>Comprehensive help articles and tutorials for all platform features.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Email Support</h4>
+                    <p>Direct email support for technical issues and account problems.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Community Forum</h4>
+                    <p>User community for sharing tips and getting peer support.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Live Chat</h4>
+                    <p>Real-time chat support for urgent issues and immediate assistance.</p>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <strong>Support Contact Information:</strong><br>
+                • Email: support@taska.com<br>
+                • Response Time: Within 24 hours<br>
+                • Emergency Issues: Use live chat for immediate assistance
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Navigation functionality
+        function showSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show selected section
+            const selectedSection = document.getElementById(sectionId);
+            if (selectedSection) {
+                selectedSection.classList.add('active');
+            }
+            
+            // Update navigation active state
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            const activeNavItem = document.querySelector(`[onclick="showSection('${sectionId}')"]`);
+            if (activeNavItem) {
+                activeNavItem.classList.add('active');
+            }
+            
+            // Close mobile sidebar
+            if (window.innerWidth <= 768) {
+                document.getElementById('sidebar').classList.remove('open');
+            }
+        }
+        
+        // Mobile sidebar toggle
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('open');
+        }
+        
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function(event) {
+            const sidebar = document.getElementById('sidebar');
+            const mobileToggle = document.querySelector('.mobile-menu-toggle');
+            
+            if (window.innerWidth <= 768 && 
+                !sidebar.contains(event.target) && 
+                !mobileToggle.contains(event.target)) {
+                sidebar.classList.remove('open');
+            }
+        });
+        
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            const sidebar = document.getElementById('sidebar');
+            if (window.innerWidth > 768) {
+                sidebar.classList.remove('open');
+            }
+        });
+        
+        // Smooth scrolling for anchor links
+        document.addEventListener('DOMContentLoaded', function() {
+            const links = document.querySelectorAll('a[href^="#"]');
+            links.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    showSection(targetId);
+                });
+            });
+        });
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && window.innerWidth <= 768) {
+                document.getElementById('sidebar').classList.remove('open');
+            }
+        });
+    </script>
+</body>
+</html> 
